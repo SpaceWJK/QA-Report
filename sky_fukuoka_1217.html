@@ -1,0 +1,802 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fukuoka &amp; Kurokawa: A 5-Day Journey of Gastronomy &amp; Serenity</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --color-primary: #2C5282; /* Deep Blue */
+            --color-secondary: #A0AEC0; /* Cool Gray */
+            --color-accent: #F56565; /* Soft Red */
+            --color-background: #F7FAFC;
+            --color-card-bg: #FFFFFF;
+            --color-text: #2D3748;
+            --color-text-light: #718096;
+            --font-body: 'Noto Sans KR', sans-serif;
+            --font-display: 'Playfair Display', serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://agents-download.skywork.ai/image/rt/ea409dfa95568a988dadfde2dc244a99.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+        }
+
+        h2 {
+            font-family: var(--font-body);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-card-bg);
+            background-color: var(--color-primary);
+            padding: 0.75rem 1.5rem;
+            margin: -2.5rem -2.5rem 2rem -2.5rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 .icon {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        .section-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2.5rem;
+            padding: 2.5rem;
+        }
+        
+        .small-section-card {
+            background-color: var(--color-card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            height: 100%;
+        }
+        
+        .small-section-card h2 {
+            font-size: 1.2rem;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-bar {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #E2E8F0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+        }
+        
+        a { color: var(--color-primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+
+        .icon-list li { display: flex; align-items: flex-start; margin-bottom: 1rem; }
+        .icon-list .icon { color: var(--color-primary); margin-right: 1rem; margin-top: 3px; width: 20px; text-align: center; font-size: 1.1rem; }
+
+        table { border-radius: 8px; overflow: hidden; width: 100%; }
+        th { background-color: #EDF2F7; padding: 0.75rem 1rem; font-weight: 600; text-align: left; font-size: 0.9rem; }
+        td { padding: 0.75rem 1rem; border-bottom: 1px solid #EDF2F7; font-size: 0.95rem; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:nth-child(even) { background-color: #F7FAFC; }
+.callout-box {
+            background-color: #EBF4FF;
+            border-left: 4px solid var(--color-primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1.5rem;
+        }
+        .callout-box p { color: #2C5282; }
+        
+        .pill {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid;
+        }
+        .pill-blue { border-color: #A3BFFA; color: #2C5282; background-color: #EBF4FF; }
+        .pill-green { border-color: #9AE6B4; color: #2F855A; background-color: #F0FFF4; }
+        .pill-yellow { border-color: #F6E05E; color: #B7791F; background-color: #FFFFF0; }
+        .pill-red { border-color: #FEB2B2; color: #C53030; background-color: #FFF5F5; }
+.tab-button {
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            padding: 0.75rem 0.25rem;
+            font-weight: 500;
+            color: var(--color-text-light);
+        }
+        .tab-button.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130
+!important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px
+/ var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.rounded-lg{border-radius:0.5rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-center{text-align:center}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.tracking-tight{letter-spacing:-0.025em}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mx-auto{margin-left:auto;margin-right:auto}.\!mt-0{margin-top:0px !important}.mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}.mb-4{margin-bottom:1rem}.mb-8{margin-bottom:2rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.flex{display:flex}.grid{display:grid}.h-24{height:6rem}.h-auto{height:auto}.max-h-full{max-height:100%}.w-24{width:6rem}.w-8{width:2rem}.w-full{width:100%}.max-w-3xl{max-width:48rem}.max-w-6xl{max-width:72rem}.flex-shrink-0{flex-shrink:0}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.gap-12{gap:3rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.gap-x-12{column-gap:3rem}.gap-x-8{column-gap:2rem}.gap-y-4{row-gap:1rem}.gap-y-8{row-gap:2rem}.space-x-6 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1.5rem * var(--tw-space-x-reverse));margin-left:calc(1.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-8 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(2rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(2rem * var(--tw-space-y-reverse))}.overflow-x-auto{overflow-x:auto}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.rounded-b-xl{border-bottom-right-radius:0.75rem;border-bottom-left-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.\!border-none{border-style:none !important}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254 / var(--tw-border-opacity, 1))}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1))}.object-cover{object-fit:cover}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pl-2{padding-left:0.5rem}.pl-4{padding-left:1rem}.pt-6{padding-top:1.5rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.tracking-tight{letter-spacing:-0.025em}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.\!text-blue-800{--tw-text-opacity:1 !important;color:rgb(30 64 175 / var(--tw-text-opacity, 1)) !important}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity, 1))}.text-blue-900{--tw-text-opacity:1;color:rgb(30 58 138 / var(--tw-text-opacity, 1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81 / var(--tw-text-opacity, 1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity, 1))}.text-green-900{--tw-text-opacity:1;color:rgb(20 83 45 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:mt-0{margin-top:0px}.md\:w-1\/2{width:50%}.md\:w-1\/3{width:33.333333%}.md\:w-2\/3{width:66.666667%}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}</style></head>
+<body class="text-gray-800">
+<div style="max-width: 1000px; margin: auto;">
+<header class="hero text-white text-center py-20 px-6 rounded-b-xl mb-12">
+<h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">후쿠오카 &amp; 쿠로카와 5일간의 여정</h1>
+<p class="text-lg md:text-xl max-w-3xl mx-auto">미식과 힐링, 당신만을 위한 완벽한 여행 계획</p>
+</header>
+<nav class="nav-bar mb-8">
+<div class="max-w-6xl mx-auto px-4 flex items-center">
+<a class="nav-link" href="#section1">사전준비</a>
+<a class="nav-link" href="#section2">날씨</a>
+<a class="nav-link" href="#section3">공항</a>
+<a class="nav-link" href="#section4">맛집</a>
+<a class="nav-link" href="#section5">볼거리</a>
+<a class="nav-link" href="#section6">온센가이드</a>
+<a class="nav-link" href="#section7">교통</a>
+<a class="nav-link" href="#section8">결제</a>
+<a class="nav-link" href="#section9">경비</a>
+<a class="nav-link" href="#section10">회화</a>
+<a class="nav-link" href="#section11">비상/꿀팁</a>
+</div>
+</nav>
+<main class="px-4 md:px-8">
+<section class="section-card" id="section1">
+<h2><i class="fas fa-clipboard-list icon"></i>1. 사전 준비</h2>
+<p class="mb-8 text-gray-600">완벽한 여행은 철저한 준비에서 시작됩니다. 아래 체크리스트를 확인하며 쾌적하고 스마트한 여정을 준비하세요.</p>
+<div class="grid md:grid-cols-2 gap-x-12 gap-y-8">
+<div>
+<h3><i class="fas fa-passport mr-2"></i>필수 서류 및 예약</h3>
+<ul class="icon-list mt-4">
+<li><i class="fas fa-passport icon"></i><strong>여권:</strong> 유효기간 6개월 이상 필수 확인</li>
+<li><i class="fas fa-plane-departure icon"></i><strong>항공권 (E-ticket):</strong> 모바일과 인쇄본 동시 준비</li>
+<li><i class="fas fa-hotel icon"></i><strong>숙소 바우처:</strong> 하카타 및 &#39;오야도 하나보우&#39; 주소/연락처 별도 저장</li>
+<li><i class="fas fa-qrcode icon"></i><strong>Visit Japan Web:</strong> <a href="https://www.vjw.digital.go.jp/" target="_blank">입국심사(청색) 및 세관신고(황색) QR코드</a> 2개 모두 캡처 저장</li>
+<li><i class="fas fa-bus icon"></i><strong>하카타 ↔ 쿠로카와 고속버스:</strong> <a href="https://www.nishitetsu.jp/bus/highwaybus/rosen/kurokawa/" target="_blank">@버스(at bus de)</a> 사이트에서 최소 한 달 전 왕복 예매 필수</li>
+<li><i class="fas fa-shield-alt icon"></i><strong>여행자 보험:</strong> 가입 완료</li>
+</ul>
+</div>
+<div>
+<h3><i class="fas fa-money-bill-wave mr-2"></i>결제, 통신 및 앱</h3>
+<ul class="icon-list mt-4">
+<li><i class="fab fa-cc-visa icon"></i><strong>트래블로그/트래블월렛:</strong> 엔화 환율 좋을 때 미리 충전. <a href="https://blog.naver.com/dbd5ri/223680512931" target="_blank">후쿠오카 대중교통 터치 결제</a> 가능</li>
+<li><i class="fas fa-credit-card icon"></i><strong>해외결제 신용카드 (VISA/Master):</strong> 비상용 예비 카드 준비 및 뒷면 서명</li>
+<li><i class="fas fa-yen-sign icon"></i><strong>엔화 현금:</strong> 최소 3만엔 이상 환전 권장 (쿠로카와 택시, 상점 등 현금 사용처 대비)</li>
+<li><i class="fas fa-wifi icon"></i><strong>eSIM / 포켓 와이파이:</strong> 국내에서 미리 구매 및 설정 완료</li>
+<li><i class="fas fa-mobile-alt icon"></i><strong>실시간 번역 앱 (음성):</strong> &#39;파파고&#39;, &#39;구글 번역&#39; 등. 현지인과 대화 시 음성 번역 기능을 활용하면 유용합니다. (장점: 즉각적인 소통 가능 / 단점: 인터넷 연결 필수, 주변 소음에 영향)</li>
+</ul>
+</div>
+<div class="md:col-span-2">
+<h3><i class="fas fa-suitcase-rolling mr-2"></i>여행 준비물</h3>
+<ul class="icon-list mt-4 grid md:grid-cols-2 gap-x-8">
+<li><i class="fas fa-plug icon"></i><strong>110V 변환 플러그 (돼지코) &amp; 멀티탭</strong></li>
+<li><i class="fas fa-umbrella icon"></i><strong>휴대용 우산:</strong> <a href="https://blog.naver.com/ally0411/223617006554" target="_blank">12월은 비가 올 수 있음</a></li>
+<li><i class="fas fa-pills icon"></i><strong>개인 상비약:</strong> 소화제, 진통제, 감기약 등</li>
+<li><i class="fab fa-chromecast icon"></i><strong>구글 크롬캐스트:</strong> 호텔에서 OTT 시청용</li>
+<li><i class="fas fa-battery-full icon"></i><strong>보조 배터리 및 충전기</strong></li>
+<li><i class="fas fa-shoe-prints icon"></i><strong>편안한 신발 (방수 기능 추천)</strong></li>
+</ul>
+</div>
+</div>
+</section>
+<section class="section-card" id="section2">
+<h2><i class="fas fa-cloud-sun-rain icon"></i>2. 날씨 &amp; 복장 가이드</h2>
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="w-full md:w-2/3">
+<p class="text-gray-600">12월 후쿠오카는 한국의 쌀쌀한 늦가을, 쿠로카와는 초겨울 날씨와 비슷합니다. <a href="https://soultrip7.kr/%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4-12%EC%9B%94-%EB%82%A0%EC%94%A8-%EC%98%B7%EC%B0%A8%EB%A6%BC%EA%B8%B0%EC%98%A8%EC%9E%90%EC%99%B8%EC%84%A0%EC%A7%80%EC%88%98-%EC%99%80-%EC%9B%94%EA%B0%84-%EA%B8%B0/" target="_blank">서울보다 기온은 높지만</a>, 산간 지역인 쿠로카와는 기온이 더 낮으므로 &#39;레이어드&#39;가 핵심입니다. 실내외 온도차에 대비해 입고 벗기 편한 옷차림을 준비하세요.</p>
+<div class="mt-6 space-y-4">
+<div class="flex items-center"><i class="fa-solid fa-shirt text-xl text-blue-500 w-8 text-center"></i> <strong>핵심 아이템:</strong> 경량 패딩, 히트텍, 스웨터, 코트, <a href="https://blog.naver.com/z7435458z/223699979699" target="_blank">여러 겹 껴입을 얇은 옷</a></div>
+<div class="flex items-center"><i class="fa-solid fa-hat-winter text-xl text-blue-500 w-8 text-center"></i> <strong>액세서리:</strong> 목도리, 장갑, 따뜻한 양말, 모자</div>
+<div class="flex items-center"><i class="fa-solid fa-mountain text-xl text-blue-500 w-8 text-center"></i> <strong>쿠로카와 대비:</strong> 방풍/방수 기능이 있는 외투, 미끄럽지 않은 신발 필수</div>
+</div>
+</div>
+<div class="w-full md:w-1/3 mt-6 md:mt-0">
+<img alt="눈 덮인 쿠로카와 온천 마을의 겨울 풍경" class="rounded-lg shadow-md w-full h-auto max-h-full" src="https://agents-download.skywork.ai/image/rt/ca23a87a716ddfab5b897917514647a9.jpg"/>
+</div>
+</div>
+</section>
+<section class="section-card" id="section3">
+<h2><i class="fas fa-plane-arrival icon"></i>3. 공항 프리패스</h2>
+<p class="text-gray-600">후쿠오카 공항은 시내와 가깝지만 입국 심사가 길어질 수 있습니다. 사전 준비로 남들보다 빠르게 공항을 빠져나가는 팁을 확인하세요.</p>
+<ol class="list-decimal list-inside space-y-4 mt-6 text-gray-700">
+<li><strong><h3><i class="fas fa-qrcode mr-2"></i>Visit Japan Web (VJW) 완전 정복</h3>
+<p class="text-sm text-gray-600 mb-4">종이 서류 없이 QR코드로 빠르고 편리하게 입국 심사를 통과하는 핵심 단계입니다. 최소 여행 1-2일 전까지 완료하는 것을 권장합니다.</p>
+<ol class="list-decimal list-inside space-y-2 text-sm">
+<li><strong>계정 생성:</strong> <a href="https://www.vjw.digital.go.jp/" target="_blank">Visit Japan Web 공식 사이트</a>에 접속하여 이메일 주소로 회원가입 및 로그인합니다.</li>
+<li><strong>이용자 등록:</strong> 본인 정보(여권 정보 등)를 정확하게 입력합니다. 동반가족이 있다면 함께 등록할 수 있습니다.</li>
+<li><strong>입국/귀국 예정 등록:</strong> &#39;신규 등록&#39;을 눌러 항공편명, 일본 내 체류지(호텔 주소 및 연락처) 등 여행 정보를 입력합니다.</li>
+<li><strong>QR코드 발급:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li><strong>입국심사 (외국인 입국기록):</strong> 파란색 배경의 QR코드가 생성됩니다.</li>
+<li><strong>세관신고 (휴대품 신고):</strong> 노란색 배경의 QR코드가 생성됩니다.</li>
+</ul>
+</li>
+<li><strong>저장:</strong> 발급된 2개의 QR코드를 즉시 <strong>스크린샷으로 캡처</strong>하여 휴대폰에 저장하세요. 공항 와이파이가 불안정할 수 있으므로 오프라인 저장은 필수입니다.</li>
+</ol>
+<h3 class="mt-6"><i class="fas fa-door-open mr-2"></i>전자신고 게이트 (電子申告ゲート) 활용</h3>
+<p class="text-sm text-gray-600 mb-4">긴 줄을 서는 유인 세관 심사대 대신, 자동화 게이트를 이용해 시간을 획기적으로 단축할 수 있습니다.</p>
+<ol class="list-decimal list-inside space-y-2 text-sm">
+<li><strong>위치:</strong> 수하물을 찾은 후, 세관 검사 구역에서 &#39;電子申告ゲート&#39; 라고 쓰인 표지판을 따라 이동합니다.</li>
+<li><strong>준비물:</strong> 여권과 미리 캡처해 둔 세관신고(노란색) QR코드.</li>
+<li><strong>이용 절차:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li>게이트 앞 키오스크에서 여권의 사진이 있는 면을 펼쳐 스캔합니다.</li>
+<li>다음으로 세관신고 QR코드를 스캐너에 인식시킵니다.</li>
+<li>안면 인식 카메라를 잠시 응시하여 본인 확인을 마칩니다.</li>
+</ul>
+</li>
+<li><strong>통과:</strong> &#34;게이트를 통과하세요&#34; 안내가 나오면 자동으로 문이 열립니다. 모자나 선글라스는 벗어야 인식이 잘 됩니다.</li>
+</ol>
+<h3 class="mt-6"><i class="fas fa-mobile-alt mr-2"></i>모바일 체크인 &amp; 셀프 백드롭 (귀국 시)</h3>
+<p class="text-sm text-gray-600 mb-4">귀국 시 공항 카운터의 긴 대기 줄을 피하고 여유롭게 출국 준비를 마치는 방법입니다.</p>
+<ol class="list-decimal list-inside space-y-2 text-sm">
+<li><strong>모바일 체크인:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li><strong>시간:</strong> 보통 출발 24~48시간 전부터 가능합니다. 이용하는 항공사(대한항공, 아시아나, 제주항공 등)의 앱을 미리 설치해두세요.</li>
+<li><strong>방법:</strong> 앱 실행 후 예약번호 또는 항공권 번호와 영문 성을 입력하여 체크인을 진행하고, 원하는 좌석을 선택합니다.</li>
+<li><strong>탑승권 저장:</strong> 체크인 완료 후 생성된 모바일 탑승권(QR코드)을 캡처하거나 앱 내에 저장해 둡니다.</li>
+</ul>
+</li>
+<li><strong>셀프 백드롭 (자동 수하물 위탁):</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li><strong>위치:</strong> 후쿠오카 공항 출국층에서 이용하는 항공사의 &#39;자동 수하물 위탁&#39; 또는 &#39;Self Bag-drop&#39; 카운터를 찾습니다.</li>
+<li><strong>절차:</strong> 기계의 안내에 따라 여권과 모바일 탑승권을 스캔합니다.</li>
+<li><strong>수하물 태그:</strong> 자동으로 출력되는 수하물 태그를 가방 손잡이에 잘 부착합니다.</li>
+<li><strong>위탁:</strong> 수하물을 벨트 위에 올리고, 화면의 안내에 따라 무게를 측정한 뒤 &#39;보내기&#39; 버튼을 누르면 완료됩니다.</li>
+</ul>
+</li>
+</ol></strong></li>
+</ol>
+</section>
+<section class="section-card" id="section4">
+<h2><i class="fas fa-utensils icon"></i>4. 맛도리</h2>
+<p class="text-gray-600">한국인 블로그뿐만 아니라, 일본 현지 맛집 평가 사이트 &#39;타베로그(Tabelog)&#39;의 높은 평점을 받은 진짜 맛집 리스트입니다. (평점 3.5 이상은 현지에서 인정받는 맛집입니다)</p>
+<div class="grid md:grid-cols-2 gap-8 mt-8">
+<div class="flex gap-4 items-start">
+<img alt="모츠나베 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/6f072a466555be132d6563c4e310da0d.jpg"/>
+<div>
+<h4 class="font-bold text-lg">1. 모츠나베 이치후지</h4>
+<p class="text-sm text-gray-500">모츠나베 | <a href="https://s.tabelog.com/kr/fukuoka/A4001/A400103/13122203/" target="_blank">타베로그 3.57</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 된장 베이스 모츠나베, 말고기 육회<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Motsunabe+Ichifuji+Tenjin" target="_blank">텐진 니시도리점</a><br/><strong>특징:</strong> 예약 필수인 인기점으로, 진하고 깊은 국물 맛이 일품.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="야키니쿠" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/07ed4cd53ee51ba20439bfbe83070414.jpg"/>
+<div>
+<h4 class="font-bold text-lg">2. 사이린 (Sairin)</h4>
+<p class="text-sm text-gray-500">야키니쿠 | <a href="https://s.tabelog.com/kr/fukuoka/A4001/A400101/40045053/" target="_blank">타베로그 3.40</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 규슈산 한우, 립로스 구이샤브<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Sairin+Yakiniku+Hakata" target="_blank">하카타역 근처</a><br/><strong>특징:</strong> 모든 방이 완전 개인실로 구성되어 프라이빗한 식사 가능.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="해산물 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/8adb347c8e862b165f07156ee98589ca.jpg"/>
+<div>
+<h4 class="font-bold text-lg">3. 와라야키 로바타 시푸드</h4>
+<p class="text-sm text-gray-500">해산물 | <a href="https://s.tabelog.com/kr/fukuoka/A4001/A400101/40058988/" target="_blank">타베로그 3.32</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 짚불구이(와라야키) 생선, 창작요리<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Warayaki+Robata+Seafood+Hakata" target="_blank">하카타역 근처</a><br/><strong>특징:</strong> 짚불 향이 배인 독특한 해산물 요리를 맛볼 수 있는 곳.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="야키토리 꼬치" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/811cd222229690fcc41ce7347d4fb785.jpg"/>
+<div>
+<h4 class="font-bold text-lg">4. 노부나가 혼케</h4>
+<p class="text-sm text-gray-500">야키토리 | <a href="https://www.kkday.com/ko/blog/31992/asia-japan-fukuoka-food?srsltid=AfmBOoq_ZlL4JKLZs7g0ODIcBPC82QJtX7iRrk5hsdsZCY1rpdWnYgxN" target="_blank">현지인 인기 이자카야</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 각종 야키토리 꼬치, 이자카야 메뉴<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Nobunaga+Honke+Hakata" target="_blank">2 Chome-4 Hakataekihigashi</a><br/><strong>영업:</strong> 18:00-04:00 (일요일 자정까지)</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="모츠나베 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/261d8d57eb05687812f3951a0ab51ee6.jpg"/>
+<div>
+<h4 class="font-bold text-lg">5. 하카타 멘모츠야</h4>
+<p class="text-sm text-gray-500">모츠나베 | <a href="https://m.blog.naver.com/makeushappy_/223297025852" target="_blank">구글 평점 4.4</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 1인 모츠나베, 최상급 곱창전골<br/><strong>위치:</strong> <a href="https://www.google.com/maps/place/3+Chome-11-17+Haruyoshi,+Chuo+Ward,+Fukuoka" target="_blank">3 Chome-11-17 Haruyoshi, Chuo Ward</a><br/><strong>영업:</strong> 17:00-23:00 (주말 11:30부터)</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="우동 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/b06867bfd6bd4e195bc6f7e187f48706.jpg"/>
+<div>
+<h4 class="font-bold text-lg">6. 우동 타이라</h4>
+<p class="text-sm text-gray-500">우동 | <a href="https://blog.naver.com/benjo11/223271993099" target="_blank">현지인 맛집</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 니쿠고보 우동 (고기+우엉튀김)<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Udon+Taira+Hakata" target="_blank">하카타역 근처</a><br/><strong>특징:</strong> 부드러운 면발이 특징인 하카타 우동의 정석. 웨이팅 필수.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="라멘 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/c07ecc7dacd120898beb5b09e1fedfe7.jpg"/>
+<div>
+<h4 class="font-bold text-lg">7. 하카타 잇소우</h4>
+<p class="text-sm text-gray-500">라멘 | <a href="https://www.instagram.com/p/C9wrYSbSBqf/" target="_blank">타베로그 상위권</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 돈코츠 라멘<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Hakata+Issou+Hakata+Station+East+Main+Store" target="_blank">하카타역 히가시 본점</a><br/><strong>특징:</strong> 진한 돼지뼈 육수와 거품(아와)이 특징인 라멘 맛집.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="스시 요리" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/04b3f944acbb18850083482771f08852.jpg"/>
+<div>
+<h4 class="font-bold text-lg">8. 스시 사카나</h4>
+<p class="text-sm text-gray-500">스시 | <a href="https://s.tabelog.com/kr/fukuoka/A4001/A400101/40000200/" target="_blank">타베로그 3.47</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 오마카세, 제철 생선 스시<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Sushi+Sakana+Hakata" target="_blank">하카타역 근처</a><br/><strong>특징:</strong> 신선한 재료로 만든 가성비 좋은 스시를 즐길 수 있는 곳.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="텐진 호르몬" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/236f6b8d122c28c306dff430a1015206.jpg"/>
+<div>
+<h4 class="font-bold text-lg">9. 텐진 호르몬</h4>
+<p class="text-sm text-gray-500">철판구이 | <a href="https://m.blog.naver.com/tour_of_j/223400328973" target="_blank">한국인에게도 인기</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 호르몬 정식, 마루쵸(대창) 정식<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Tenjin+Horumon+Hakata+1bangai" target="_blank">하카타1번가 (하카타역 지하)</a><br/><strong>특징:</strong> 철판에서 즉석으로 구워주는 곱창과 고기가 일품.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="크루아상" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/9055eed35b283d4b765528350337e091.jpg"/>
+<div>
+<h4 class="font-bold text-lg">10. 일 포르노 델 미뇽</h4>
+<p class="text-sm text-gray-500">베이커리 | <a href="https://blog.naver.com/bada3347/223479306030" target="_blank">하카타역 명물</a></p>
+<p class="text-sm mt-2"><strong>추천:</strong> 플레인, 초코, 고구마 크루아상<br/><strong>위치:</strong> <a href="https://www.google.com/maps/search/?api=1&amp;query=Il+Forno+del+Mignon+Hakata" target="_blank">하카타역 중앙</a><br/><strong>특징:</strong> 역 안에 항상 고소한 냄새를 풍기는 근원지. 줄 서서 먹는 미니 크루아상.</p>
+</div>
+</div>
+</div>
+<h3 class="mt-10">편의점 추천 리스트</h3>
+<p class="text-gray-600">일본 편의점은 작은 맛집입니다. 각 편의점의 시그니처 메뉴를 놓치지 마세요.</p>
+<div class="mt-8 space-y-8">
+<!-- 세븐일레븐 -->
+<div>
+<h4 class="font-bold text-lg text-green-800">🏪 세븐일레븐 (Seven-Eleven)</h4>
+<div class="mt-4 grid md:grid-cols-3 gap-6">
+<div class="flex gap-4 items-start">
+<img alt="세븐일레븐 타마고산도" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/cf85f9b3511885fac99906d4e2a3de70.jpg"/>
+<div>
+<p class="font-bold">타마고산도 (계란 샌드위치)</p>
+<p class="text-sm text-gray-600 mt-1">촉촉한 식빵과 부드럽고 진한 계란의 조화가 일품인 스테디셀러.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="세븐일레븐 삼각김밥" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/51d83ccd9c06e16586ae81d31ebf8b7d.jpg"/>
+<div>
+<p class="font-bold">각종 삼각김밥 (오니기리)</p>
+<p class="text-sm text-gray-600 mt-1">다양한 속재료와 높은 퀄리티로 든든한 한 끼 식사로 손색없습니다.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="세븐일레븐 디저트" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/9335a311f090dbe90e4d4aa6041d7966.jpg"/>
+<div>
+<p class="font-bold">프리미엄 디저트</p>
+<p class="text-sm text-gray-600 mt-1">슈크림, 롤케이크 등 전문점 못지않은 퀄리티의 디저트 라인업.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 로손 -->
+<div>
+<h4 class="font-bold text-lg text-blue-800">🏪 로손 (LAWSON)</h4>
+<div class="mt-4 grid md:grid-cols-3 gap-6">
+<div class="flex gap-4 items-start">
+<img alt="로손 모찌롤" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/452b988399d7a1d5deaab1cdd6f2d07c.jpg"/>
+<div>
+<p class="font-bold">모찌롤 (우치카페)</p>
+<p class="text-sm text-gray-600 mt-1">쫀득한 빵과 부드러운 크림의 환상적인 조화. 로손의 대표 디저트.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="로손 가라아게군" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/3951f1f572e47f414d9b1a703edf3c39.jpg"/>
+<div>
+<p class="font-bold">가라아게군</p>
+<p class="text-sm text-gray-600 mt-1">다양한 맛의 한입 크기 치킨 너겟. 출출할 때 간편한 간식으로 최고.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="로손 에그샌드위치" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/0a400ead1987c742e5176ed2534ed105.jpg"/>
+<div>
+<p class="font-bold">에그 샌드위치</p>
+<p class="text-sm text-gray-600 mt-1">세븐일레븐과 양대산맥을 이루는 맛. 부드러운 계란 샐러드가 듬뿍.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 패밀리마트 -->
+<div>
+<h4 class="font-bold text-lg" style="color: #008A42;">🏪 패밀리마트 (FamilyMart)</h4>
+<div class="mt-4 grid md:grid-cols-3 gap-6">
+<div class="flex gap-4 items-start">
+<img alt="패밀리마트 파미치키" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/dfa5ffeccb8206cab5924121fdc4d538.jpg"/>
+<div>
+<p class="font-bold">파미치키 (FamiChiki)</p>
+<p class="text-sm text-gray-600 mt-1">바삭한 튀김옷과 육즙 가득한 닭다리살로 만든 패밀리마트의 명물 치킨.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="패밀리마트 크림빵" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/e263f151aed6e117ccfeb9b7012c67b7.jpg"/>
+<div>
+<p class="font-bold">수플레 푸딩</p>
+<p class="text-sm text-gray-600 mt-1">부드러운 수플레와 달콤한 커스터드 푸딩을 한 번에 즐길 수 있는 인기 디저트.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<img alt="패밀리마트 야키소바빵" class="w-24 h-auto rounded-lg flex-shrink-0" src="https://agents-download.skywork.ai/image/rt/e27dbda0b6ace032718bc63edff3dcee.jpg"/>
+<div>
+<p class="font-bold">야키소바 빵</p>
+<p class="text-sm text-gray-600 mt-1">탄수화물과 탄수화물의 조합이지만, 짭짤한 야키소바와 빵의 조화가 매력적.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap mt-4">
+<span class="pill pill-blue">타마고산도 (계란 샌드위치)</span>
+<span class="pill pill-green">모찌롤 (특히 우치카페)</span>
+<span class="pill pill-yellow">각종 프리미엄 푸딩</span>
+<span class="pill pill-red">가라아게군 (로손)</span>
+<span class="pill pill-blue">닛신 돈베이 유부우동</span>
+<span class="pill pill-green">산토리 하이볼 &amp; 호로요이</span>
+</div>
+</section>
+<section class="section-card" id="section5">
+<h2><i class="fas fa-camera-retro icon"></i>5. 볼거리</h2>
+<div class="grid md:grid-cols-2 gap-x-8 gap-y-8">
+<div>
+<img alt="캐널시티 하카타의 운하와 건축물" class="rounded-lg shadow-md mb-4 w-full h-auto max-h-full" src="https://agents-download.skywork.ai/image/rt/ce834a18db764024ea7122feb7df4f54.jpg"/>
+<h3 class="!mt-0">캐널시티 하카타: 쇼핑과 엔터테인먼트의 중심</h3>
+<ul class="list-disc list-inside space-y-2 text-gray-600 text-sm mt-2">
+<li><strong>음악 분수쇼:</strong> 매시 정각과 30분에 운하 중앙 무대에서 펼쳐지는 화려한 분수쇼는 필수 관람 코스. 저녁에는 건물 벽면을 활용한 프로젝션 맵핑이 더해져 더욱 장관입니다.</li>
+<li><strong>라멘 스타디움 (5층):</strong> 일본 전국의 유명 라멘 8곳을 모아놓은 곳. 여러 지역의 특색 있는 라멘을 한자리에서 맛볼 수 있어 라멘 애호가라면 꼭 들러야 합니다.</li>
+<li><strong>쇼핑 포인트:</strong> &#39;무인양품&#39;, &#39;유니클로&#39;, &#39;ZARA&#39; 등 대형 SPA 브랜드와 일본 최대 규모의 &#39;지브리 스토어(동구리 공화국)&#39;, &#39;산리오 갤러리&#39;가 있어 쇼핑과 구경하는 재미가 쏠쏠합니다.</li>
+<li><strong>효율적인 동선:</strong> 건물이 복잡하므로 층별 안내도를 먼저 확인하세요. 운하를 따라 한 방향으로 돌며 구경하는 것이 길을 잃지 않는 팁입니다.</li>
+<li><strong>면세 혜택:</strong> 대부분의 상점에서 텍스 리펀(Tax Refund)이 가능하니 여권을 반드시 챙겨 쇼핑하세요.</li>
+</ul>
+</div>
+<div>
+<img alt="활기찬 텐진 거리의 모습" class="rounded-lg shadow-md mb-4 w-full h-auto max-h-full" src="https://agents-download.skywork.ai/image/rt/ac1f177b71571334a210bbf99ed80b9c.jpg"/>
+<h3 class="!mt-0">텐진: 후쿠오카 쇼핑의 심장</h3>
+<ul class="list-disc list-inside space-y-2 text-gray-600 text-sm mt-2">
+<li><strong>텐진 지하상가 (텐치카):</strong> 유럽풍 거리처럼 꾸며진 세련된 지하 쇼핑몰. 날씨와 상관없이 쾌적하게 쇼핑할 수 있으며, 지하철역과 주요 백화점(이와타야, 미츠코시, 다이마루)이 모두 연결되어 이동이 편리합니다.</li>
+<li><strong>다이묘 거리:</strong> &#39;텐진의 가로수길&#39;. 개성 넘치는 편집샵, 빈티지샵, 브랜드 쇼룸, 감성적인 카페들이 모여 있어 현지 젊은이들의 트렌드를 엿볼 수 있습니다.</li>
+<li><strong>백화점 투어:</strong> &#39;이와타야&#39;와 &#39;미츠코시&#39;는 명품 및 화장품, &#39;다이마루&#39;는 지하 식품관이 특히 유명합니다. 손수건, 스타킹 등 일본 브랜드 잡화를 선물용으로 구매하기 좋습니다.</li>
+<li><strong>필수 방문 스토어:</strong> 대형 &#39;애플 스토어&#39;, 최신 문구와 잡화가 가득한 &#39;인큐브(INCUBE)&#39;, 생활용품 전문점 &#39;텐진 로프트(LOFT)&#39;는 꼭 들러볼 만합니다.</li>
+<li><strong>드럭스토어 쇼핑:</strong> 텐진 곳곳에 대형 드럭스토어가 많아 의약품, 화장품 등을 저렴하게 구매하기 좋습니다.</li>
+</ul>
+</div>
+<div>
+<img alt="하카타역의 화려한 크리스마스 일루미네이션" class="rounded-lg shadow-md mb-4 w-full h-auto max-h-full" src="https://agents-download.skywork.ai/image/rt/7bf33b25d1910986cc68283ffdde48ae.jpg"/>
+<h3 class="!mt-0">JR 하카타 시티: 교통, 쇼핑, 미식을 한번에</h3>
+<ul class="list-disc list-inside space-y-2 text-gray-600 text-sm mt-2">
+<li><strong>크리스마스 일루미네이션 (12월):</strong> <a href="https://m.blog.naver.com/under_0/223277370214" target="_blank">역 앞 광장에서 펼쳐지는 화려한 조명과 크리스마스 마켓</a>은 12월 여행의 하이라이트. 저녁에 방문하여 낭만적인 분위기를 즐겨보세요.</li>
+<li><strong>지하 식품관 (데파치카):</strong> &#39;하카타 한큐&#39; 백화점 지하 1층은 맛의 천국. 고급 도시락, 유명 디저트, 지역 특산품이 가득해 보는 것만으로도 즐겁습니다.</li>
+<li><strong>기념품 쇼핑:</strong> 1층 &#39;하카타 데이토스 밋테(みやげもん市場)&#39;에 명란젓, 하카타 토리몬 등 후쿠오카 대표 기념품이 모두 모여 있어 마지막 날 쇼핑하기에 최적입니다.</li>
+<li><strong>레스토랑 플로어 &#39;쿠텐&#39; (9-10층):</strong> &#39;오오야마 모츠나베&#39; 등 유명 맛집들이 입점해 있어 웨이팅 없이 쾌적하게 식사하기 좋습니다.</li>
+<li><strong>옥상정원 &#39;츠바메노모리 히로바&#39;:</strong> 기차를 테마로 한 작은 공원. 후쿠오카 시내를 조망하며 잠시 쉬어가기 좋은 숨은 명소입니다.</li>
+</ul>
+</div>
+<div>
+<img alt="쿠로카와 온천마을 입구를 알리는 표지판" class="rounded-lg shadow-md mb-4 w-full h-auto max-h-full" src="https://agents-download.skywork.ai/image/rt/491b18b436f0c2433590871039ae4fbd.jpg"/>
+<h3 class="!mt-0">쿠로카와 온천 마을: 자연 속 완벽한 힐링</h3>
+<ul class="list-disc list-inside space-y-2 text-gray-600 text-sm mt-2">
+<li><strong>유카타 입고 마을 산책:</strong> <a href="https://triple.guide/attractions/05d360ae-4c0a-4860-9b41-b2845c3a688c" target="_blank">료칸에서 제공하는 유카타와 게타(나막신)를 신고</a> 계곡을 따라 고즈넉한 마을을 거니는 것 자체가 최고의 힐링입니다.</li>
+<li><strong>온천 순례 (뉴토테가타):</strong> 온천 마패를 이용해 3곳의 다른 료칸 노천탕을 경험하며 각기 다른 온천의 매력을 느껴보세요.</li>
+<li><strong>마을 중심 &#39;카제노야(風の舎)&#39;:</strong> 관광안내소이자 기념품점. 온천 마패 구매, 마을 지도 얻기, 택시 호출 등 여행의 베이스캠프 역할을 합니다.</li>
+<li><strong>대표 길거리 간식:</strong> &#39;파티스리 로쿠&#39;의 슈크림, &#39;도라 도라&#39;의 도라야키, &#39;와로쿠야&#39;의 고로케는 산책 중 즐기기 좋은 별미입니다.</li>
+<li><strong>특산품 쇼핑:</strong> 작은 상점에서 판매하는 지역 사케, 수제 간장, 목공예품 등 소박하지만 특색 있는 기념품을 찾아보세요.</li>
+<li><strong>저녁 풍경:</strong> 해가 진 뒤 등불이 켜진 온천 마을의 풍경은 낮과는 또 다른 운치를 선사합니다.</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="section-card" id="section6">
+<h2><i class="fas fa-hot-tub icon"></i>6. 쿠로카와 온센 가이드</h2>
+<div class="flex flex-col md:flex-row gap-12">
+<div class="md:w-1/2">
+<h3>뉴토테가타 (入湯手形) 온천 순례</h3>
+<p class="text-gray-600">쿠로카와 온천의 상징. 이 마패 하나로 3곳의 다른 료칸 노천탕을 체험할 수 있습니다. 료칸 투숙객이 아니어도 쿠로카와의 다양한 온천을 즐길 수 있는 최고의 방법입니다.</p>
+<ul class="icon-list mt-6">
+<li><i class="fas fa-store icon"></i><strong>구입처:</strong> 마을 관광안내소 &#39;카제노야(風の舎)&#39; 또는 각 료칸</li>
+<li><i class="fas fa-tag icon"></i><strong>가격:</strong> 성인 <a href="https://cklee88.tistory.com/782" target="_blank">1,300엔</a>, 어린이 700엔</li>
+<li><i class="fas fa-calendar-alt icon"></i><strong>유효기간:</strong> 구입일로부터 6개월</li>
+<li><i class="fas fa-star icon"></i><strong>추천 온천:</strong> 야마미즈키(자연친화), 신메이칸(동굴온천), 이코이료칸(미인탕)</li>
+</ul>
+</div>
+<div class="md:w-1/2">
+<h3>오야도 하나보우 (おやど華坊)</h3>
+<p class="text-gray-600">예약하신 료칸은 마을 중심에서 약 3km 떨어진 곳에 위치하여, 완벽한 프라이버시와 고요한 휴식을 제공하는 힐링 명소입니다.</p>
+<ul class="icon-list mt-6">
+<li><i class="fas fa-tree icon"></i><strong>특징:</strong> <a href="http://www.ryokanplanner.com/resort/resortD.html?A_code=&amp;B_code=B20071122153034&amp;C_code=C20150522214405&amp;D_code=D20170823113134" target="_blank">5000평 부지, 전 객실 별채 및 개별 온천</a></li>
+<li><i class="fas fa-taxi icon"></i><strong>이동:</strong> 송영 서비스가 없어 <a href="https://bona-archive.tistory.com/101" target="_blank">택시 이용이 필수</a>입니다. (편도 약 1,300엔)</li>
+<li><i class="fas fa-info-circle icon"></i><strong>팁:</strong> &#39;카제노야&#39; 안내소나 료칸 프런트에 택시 호출을 요청하세요. 기사님께 &#39;오야도 하나보우&#39;라고 말씀하시면 됩니다.</li>
+</ul>
+</div>
+</div>
+<div class="callout-box">
+<h3 class="!mt-0 !border-none !text-blue-800"><i class="fas fa-lightbulb mr-2"></i>쿠로카와 즐기기 팁</h3>
+<ul class="list-disc list-inside space-y-2 pl-2 text-gray-700">
+<li><strong>마을 산책:</strong> 계곡을 따라 이어진 길을 걸으며 아기자기한 상점과 카페를 구경해 보세요. <a href="https://kurokawa-kurokawado.jp/column/3142" target="_blank">유카타를 입고</a> 걷는 것만으로도 특별한 경험이 됩니다.</li>
+<li><strong>먹거리:</strong> 파티스리 로쿠의 슈크림, 와로쿠야의 고로케 등 소소한 길거리 음식을 즐겨보세요.</li>
+<li><strong>가제노야(風の舎):</strong> 마을 중심에 위치한 관광안내소로, 뉴토테가타 구매, 지도 얻기, 택시 호출 등 모든 것을 해결할 수 있는 베이스캠프입니다.</li>
+</ul>
+</div>
+</section>
+<section class="section-card" id="section7">
+<h2><i class="fas fa-route icon"></i>7. 동선/교통</h2>
+<p class="text-gray-600">효율적인 이동을 위한 시간대별 교통 플랜입니다. 탭을 클릭하여 날짜별 동선을 확인하세요.</p>
+<div class="mt-6" x-data="{ tab: &#39;day1&#39; }">
+<div class="border-b border-gray-200">
+<nav aria-label="Tabs" class="flex space-x-6">
+<button :class="{ &#39;active&#39;: tab === &#39;day1&#39; }" @click="tab = &#39;day1&#39;" class="tab-button active">Day 1-2: 후쿠오카</button>
+<button :class="{ &#39;active&#39;: tab === &#39;day3&#39; }" @click="tab = &#39;day3&#39;" class="tab-button">Day 3-5: 쿠로카와</button>
+</nav>
+</div>
+<div class="pt-6">
+<div x-show="tab === &#39;day1&#39;">
+<h3>후쿠오카 시내 교통</h3>
+<p class="text-gray-600"><strong>결론: 교통패스 불필요.</strong> 트래블로그/월렛 카드의 컨택리스 결제가 가장 편리하고 경제적입니다. 3회 이상 지하철 탑승 시에만 <a href="https://m.blog.naver.com/mlovehot140/223901192049" target="_blank">지하철 1일권</a> 구매를 고려해볼 수 있습니다.</p>
+<table class="mt-4">
+<thead>
+<tr><th>구간</th><th>교통수단</th><th>소요시간/요금</th><th>팁</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>공항 ↔ 하카타역</td>
+<td>무료 셔틀버스 + 지하철</td>
+<td><a href="https://kr.trip.com/blog/fukuoka-airport-to-hakata-station/" target="_blank">약 20분 / 260엔</a></td>
+<td>국제선 1층 1번 정류장에서 셔틀 탑승 후 국내선 터미널에서 지하철 환승.</td>
+</tr>
+<tr>
+<td>하카타역 ↔ 텐진역</td>
+<td>지하철 공항선</td>
+<td>약 6분 / 210엔</td>
+<td>가장 빠르고 효율적인 이동 방법. 배차 간격이 짧습니다.</td>
+</tr>
+<tr>
+<td>시내 버스</td>
+<td>니시테츠 버스</td>
+<td>구간별 상이</td>
+<td>뒷문으로 타서 정리권 뽑고, 앞문으로 내리며 요금 지불. 카드 터치 가능.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="display: none;" x-show="tab === &#39;day3&#39;">
+<h3>쿠로카와 이동 및 현지 교통</h3>
+<p class="text-gray-600"><strong><strong>결론: 산큐패스 불필요.</strong> 고속버스 왕복권 사전 예매가 가장 경제적이고 효율적입니다. 산큐패스는 여러 도시를 단기간에 집중적으로 여행할 때 유리합니다.</strong></p>
+<h3 class="mt-6"><i class="fas fa-bus-alt mr-2"></i>하카타 ↔ 쿠로카와 고속버스 예매 완벽 가이드</h3>
+<p class="text-sm text-gray-600 mb-4">이 노선은 좌석 지정 예약제이므로 사전 예매가 거의 필수입니다. 특히 주말이나 공휴일은 빠르게 매진되니 최소 한 달 전 예약을 권장합니다.</p>
+<ol class="list-decimal list-inside space-y-4 text-sm text-gray-700">
+<li>
+<strong>예약 사이트 접속:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li><a href="https://www.atbus-de.com/" target="_blank"><strong>@버스(at bus de)</strong></a>: 큐슈 지역 버스 예약을 위한 공식 포털 사이트입니다. (일본어/영어 지원)</li>
+</ul>
+</li>
+<li>
+<strong>예약 절차 (단계별 안내):</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li>사이트 접속 후 출발지(Fukuoka)와 도착지(Kumamoto)를 선택합니다.</li>
+<li>노선 선택에서 &#39;福岡・福岡空港～杖立・黒川温泉(후쿠오카/후쿠오카공항~쓰에타테/쿠로카와 온천)&#39;을 선택합니다.</li>
+<li>탑승일, 인원, 편도/왕복을 지정하고 원하는 시간대의 버스를 선택합니다.</li>
+<li>예약자 정보(이름-영문, 이메일 주소, 전화번호-한국 번호 가능)를 입력합니다.</li>
+<li>결제 방법으로 &#39;온라인 신용카드 결제&#39;를 선택하고 카드 정보를 입력하여 결제를 완료합니다.</li>
+</ul>
+</li>
+<li>
+<strong>예약 확인 및 티켓 수령:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li>결제 완료 후, 입력한 이메일로 예약 확인서가 발송됩니다. 이 확인서를 캡처하거나 인쇄해두세요.</li>
+<li><strong>WEB 회수권(WEB乗車券)</strong>이 발급되며, 이것이 곧 티켓입니다. 별도의 실물 티켓 교환 없이, 버스 탑승 시 기사님께 모바일 화면의 WEB 회수권을 보여주면 됩니다.</li>
+</ul>
+</li>
+<li>
+<strong>예약 변경/취소:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li>예약 변경 및 취소는 &#39;at bus de&#39; 사이트의 예약 관리 페이지에서 가능합니다.</li>
+<li>출발 시간 전까지는 수수료가 발생할 수 있으며, 출발 시간이 지나면 환불이 불가하니 주의해야 합니다.</li>
+</ul>
+</li>
+<li>
+<strong>외국인 예약 팁:</strong>
+<ul class="list-disc list-inside pl-4 mt-1">
+<li>이름 입력 시 가타카나를 요구하는 경우가 있으나, 영문으로 입력해도 대부분 문제없이 진행됩니다.</li>
+<li>사이트가 일본어로 보일 경우, 브라우저의 번역 기능을 활용하면 편리합니다.</li>
+<li><a href="https://www.nishitetsu.jp/bus/highwaybus/rosen/kurokawa/" target="_blank">니시테츠 버스 공식 홈페이지</a>에서 노선 정보를 미리 확인하는 것도 좋습니다.</li>
+</ul>
+</li>
+</ol>
+<table class="mt-4">
+<thead>
+<tr><th>구간</th><th>교통수단</th><th>소요시간/요금</th><th>팁</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>하카타 ↔ 쿠로카와</td>
+<td>고속버스</td>
+<td><a href="https://bus-tabi.net/pref/kumamoto/kumamoto-kurokawaonsen/" target="_blank">약 2시간 40분</a> / 편도 약 4,100엔</td>
+<td>하카타 버스터미널 3층 34번 승강장. 좌석지정제이므로 <a href="https://www.nishitetsu.jp/bus/highwaybus/rosen/kurokawa/" target="_blank">사전 예매 필수</a>.</td>
+</tr>
+<tr>
+<td>쿠로카와 정류장 ↔ 료칸</td>
+<td>택시</td>
+<td>약 10분 / 약 1,300엔</td>
+<td>현금 필수. 관광안내소 &#39;카제노야&#39;에서 호출 요청.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section class="section-card" id="section8">
+<h2><i class="fas fa-credit-card icon"></i>8. 결제</h2>
+<p class="text-gray-600">일본은 현금 사회라는 인식이 강했지만, 최근 카드 결제가 보편화되었습니다. 상황에 맞는 최적의 결제 전략을 확인하세요.</p>
+<div class="mt-6 grid md:grid-cols-2 gap-6">
+<div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+<h3 class="!mt-0 text-green-800"><i class="fas fa-check-circle mr-2"></i>카드 결제 (주력)</h3>
+<p class="text-green-900"><strong>트래블로그/월렛 카드</strong>를 주력으로 사용하세요. 대부분의 식당, 상점, 편의점, 대중교통에서 <a href="https://conquest-earth.tistory.com/entry/%ED%9B%84%EC%BF%A0%EC%98%A4%EC%B9%B4-%EC%A7%80%ED%95%98%EC%B2%A0-%ED%83%88-%EB%95%8C-%EC%8A%B9%EC%B0%A8%EA%B6%8C-%EC%82%AC%EC%A7%80%EB%A7%90%EA%B3%A0-%EC%8B%A0%EC%9A%A9%EC%B9%B4%EB%93%9C%EB%A5%BC-%EA%B5%90%ED%86%B5%EC%B9%B4%EB%93%9C%EB%A1%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0" target="_blank">터치 결제</a>가 가능하여 매우 편리합니다.</p>
+<p class="font-bold text-red-600 mt-4">⚠️ 팁: 결제 시 &#39;엔화(JPY)&#39;로 결제해야 <a href="https://www.smbc-card.com/mem/service/sec/kaigai01.jsp" target="_blank">이중 환전 수수료</a>를 피할 수 있습니다. &#34;JPY or KRW?&#34; 질문에 &#34;JPY&#34;라고 답하세요.</p>
+</div>
+<div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+<h3 class="!mt-0 text-blue-800"><i class="fas fa-yen-sign mr-2"></i>현금 결제 (필수)</h3>
+<p class="text-blue-900"><strong>쿠로카와 온천 마을</strong>에서는 현금이 필수입니다. 아래 장소에서는 카드가 안 될 가능성이 높으니 넉넉히 준비하세요.</p>
+<ul class="list-disc list-inside mt-4 pl-2">
+<li>택시 요금</li>
+<li>뉴토테가타(온천 마패) 구매</li>
+<li>소규모 상점 및 식당</li>
+<li>료칸 내 일부 서비스</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="section-card" id="section9">
+<h2><i class="fas fa-calculator icon"></i>9. 여행 경비</h2>
+<p class="text-gray-600 mb-8">항공/숙박비를 포함한 1인당 총 예상 경비입니다. 개인의 소비 스타일에 따라 변동될 수 있습니다. (환율: 100엔=900원 기준)</p>
+<div class="mb-10 p-8 bg-blue-50 rounded-xl text-center border border-blue-200">
+<p class="text-lg font-semibold text-blue-800">1인당 총 예상 여행 경비</p>
+<p class="text-4xl md:text-5xl font-bold text-blue-900 mt-2">약 1,652,723원</p>
+<p class="text-sm text-gray-600 mt-3">(확정 경비 995,723원 + 예상 경비 657,000원)</p>
+</div>
+<h3 class="text-lg font-bold mb-4">1인 경비 상세 내역</h3>
+<div class="overflow-x-auto">
+<table class="">
+<thead>
+<tr>
+<th class="text-left">항목</th>
+<th class="text-right">비용 (KRW)</th>
+<th class="text-right">비중</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✈️ 항공권</td>
+<td class="text-right">418,675원</td>
+<td class="text-right">25.3%</td>
+</tr>
+<tr>
+<td>🏨 숙박비</td>
+<td class="text-right">577,048원</td>
+<td class="text-right">34.9%</td>
+</tr>
+<tr>
+<td>🍽️ 식비</td>
+<td class="text-right">360,000원</td>
+<td class="text-right">21.8%</td>
+</tr>
+<tr>
+<td>🚌 교통비</td>
+<td class="text-right">99,000원</td>
+<td class="text-right">6.0%</td>
+</tr>
+<tr>
+<td>🎟️ 관광/체험</td>
+<td class="text-right">18,000원</td>
+<td class="text-right">1.1%</td>
+</tr>
+<tr>
+<td>🛍️ 쇼핑/기타</td>
+<td class="text-right">180,000원</td>
+<td class="text-right">10.9%</td>
+</tr>
+</tbody>
+<tfoot>
+<tr class="font-bold bg-gray-100">
+<td class="py-3">💰 1인 총계</td>
+<td class="text-right py-3">1,652,723원</td>
+<td class="text-right py-3">100%</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div class="callout-box mt-8">
+<h4 class="!mt-0 !border-none !text-blue-800"><i class="fas fa-info-circle mr-2"></i>참고: 2인 기준 경비 내역</h4>
+<p class="text-sm text-blue-900"><strong>총 확정 경비 (2인):</strong> 1,991,446원 (항공 837,350원 + 숙박 1,154,096원)</p>
+<p class="text-sm text-blue-900 mt-1"><strong>총 예상 경비 (2인):</strong> 약 1,314,000원 (식비, 교통, 쇼핑 등)</p>
+</div>
+</section>
+<section class="section-card" id="section10">
+<h2><i class="fas fa-language icon"></i>10. 여행 회화</h2>
+<p class="text-gray-600">번역 앱도 좋지만, 간단한 일본어 한마디는 여행을 더욱 즐겁게 만듭니다. 미소와 함께 사용해보세요.</p>
+<div class="grid md:grid-cols-2 gap-x-8 gap-y-4 mt-6">
+<p><strong>안녕하세요 (아침/점심/저녁)</strong><br/>오하요-고자이마스 / 곤니치와 / 곰방와</p>
+<p><strong>감사합니다</strong><br/><a href="https://livejapan.com/ko/in-tokyo/in-pref-tokyo/in-tokyo_train_station/article-a0003255/" target="_blank">아리가토- 고자이마스</a></p>
+<p><strong>실례합니다 / 저기요</strong><br/>스미마셍</p>
+<p><strong>이거 주세요</strong><br/><a href="https://m.blog.naver.com/byeoldream/223366152829" target="_blank">코레 오네가이시마스</a></p>
+<p><strong>이건 얼마인가요?</strong><br/>코레와 이쿠라데스카?</p>
+<p><strong>계산해주세요</strong><br/>오카이케- 오네가이시마스</p>
+<p><strong>정말 맛있어요!</strong><br/>토테모 오이시이데스!</p>
+<p><strong>카드로 되나요?</strong><br/>카-도데 데키마스카?</p>
+</div>
+</section>
+<div class="grid md:grid-cols-3 gap-6" id="section11">
+<div class="small-section-card">
+<h2><i class="fas fa-first-aid icon"></i>11. 비상 대응</h2>
+<ul class="list-disc list-inside space-y-2 text-sm">
+<li><strong>경찰:</strong> 110</li>
+<li><strong>화재/구급차:</strong> 119</li>
+<li><strong>분실물:</strong> 가까운 파출소(코방/交番) 방문하여 분실신고서 작성</li>
+<li><strong>여권 분실:</strong> 주 후쿠오카 대한민국 총영사관 (+81-92-771-0461) 연락 후 긴급여권 발급</li>
+<li><strong>카드 분실:</strong> 즉시 카드사 분실신고 센터에 연락하여 정지</li>
+</ul>
+</div>
+<div class="small-section-card" id="section12">
+<h2><i class="fas fa-star icon"></i>12. 꿀 팁</h2>
+<ul class="list-disc list-inside space-y-2 text-sm">
+<li><strong>구글맵 활용:</strong> 방문할 모든 장소를 미리 저장해 &#39;나만의 여행 지도&#39; 만들기. 오프라인 지도 다운로드 기능도 유용합니다.</li>
+<li><strong>무료 Wi-Fi:</strong> 공항, 지하철역, 편의점 등에서 무료 Wi-Fi 사용 가능. &#39;Fukuoka City Wi-Fi&#39;를 찾아보세요.</li>
+<li><strong>코인라커:</strong> 하카타역 등 주요 역에 짐 보관 가능 (캐리어 크기 확인). IC카드로 결제하면 편리합니다.</li>
+<li><strong>텍스 리펀:</strong> 백화점 등 &#39;Tax-Free&#39; 표시가 있는 곳에서 5,000엔 이상 구매 시, 여권을 제시하고 소비세 환급을 받을 수 있습니다.</li>
+</ul>
+</div>
+<div class="small-section-card" id="section13">
+<h2><i class="fas fa-users icon"></i>13. 현지 문화</h2>
+<ul class="list-disc list-inside space-y-2 text-sm">
+<li><strong>정숙:</strong> 대중교통, 공공장소에서 큰 소리 대화 및 통화 자제. 특히 온천에서는 조용히 즐기는 것이 매너입니다.</li>
+<li><strong>팁 문화 없음:</strong> 팁을 주지 않아도 되며, 오히려 무례하게 여겨질 수 있습니다.</li>
+<li><strong>에스컬레이터:</strong> 후쿠오카는 왼쪽에 서고 오른쪽을 비워둠 (오사카 등 일부 지역 반대)</li>
+<li><strong>쓰레기통:</strong> 길거리에 쓰레기통이 드물기 때문에, 작은 비닐봉투를 챙겨다니면 편리합니다.</li>
+</ul>
+</div>
+</div>
+</main>
+<footer class="text-center text-gray-500 py-12">
+<p>미식과 힐링의 추억으로 가득한 여행이 되기를 바랍니다.</p>
+<p class="text-sm mt-2">Bon Voyage!</p>
+</footer>
+</div>
+<script defer="" src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</body></html>
