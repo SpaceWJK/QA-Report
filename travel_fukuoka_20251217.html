@@ -1,0 +1,2577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>후쿠오카 + 쿠로가와 온센 여행 가이드 | 2024.12.17-21</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            line-height: 1.8;
+            color: #2c2c2c;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                        url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=1920') center/cover fixed;
+            padding-top: 70px;
+        }
+        
+        .container {
+            width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+        }
+        
+        /* 네비게이션 바 */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            padding: 0;
+        }
+        
+        .nav-container {
+            width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 3px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            color: white;
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1200') center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 20px;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+        
+        .header .trip-info {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 섹션 */
+        .section {
+            padding: 50px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: #d63447;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #d63447;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 22px;
+            color: #c62368;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        /* 테이블 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: #fef5f7;
+        }
+        
+        /* 체크리스트 */
+        .checklist {
+            background: #fff9e6;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 15px;
+        }
+        
+        .checklist-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #ffc107;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* 경고박스 */
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .warning-box strong {
+            color: #ff6b00;
+            font-size: 16px;
+        }
+        
+        /* 정보박스 */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .info-box strong {
+            color: #1976d2;
+            font-size: 16px;
+        }
+        
+        /* 성공박스 */
+        .success-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success-box strong {
+            color: #2e7d32;
+            font-size: 16px;
+        }
+        
+        /* 링크 */
+        a {
+            color: #d63447;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #d63447;
+            transition: all 0.3s;
+        }
+        
+        a:hover {
+            color: #c62368;
+            border-bottom: 1px solid #c62368;
+        }
+        
+        /* 지도 링크 스타일 */
+        .map-link {
+            display: inline-block;
+            background: #4caf50;
+            color: white !important;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-left: 8px;
+            border: none !important;
+            text-decoration: none;
+        }
+        
+        .map-link:hover {
+            background: #45a049;
+            transform: scale(1.05);
+            border: none !important;
+        }
+        
+        /* 리스트 */
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        /* 가격 하이라이트 */
+        .price {
+            color: #d63447;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* 시간 하이라이트 */
+        .time {
+            color: #2196f3;
+            font-weight: 600;
+        }
+        
+        /* 장소 하이라이트 */
+        .location {
+            color: #4caf50;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+        
+        /* 맛집 카드 */
+        .restaurant-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .restaurant-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #d63447;
+            margin-bottom: 10px;
+        }
+        
+        .restaurant-rating {
+            color: #ffc107;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 모바일 반응형 (768px 이하) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            .container {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .nav-container {
+                width: 100%;
+                padding: 8px 10px;
+            }
+            
+            .nav-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                margin: 2px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+            
+            .header .subtitle {
+                font-size: 16px;
+            }
+            
+            .header .trip-info {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                margin: 20px 0 12px 0;
+            }
+            
+            /* 테이블 가로 스크롤 */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+            
+            /* 맛집 카드 */
+            .restaurant-card {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .restaurant-name {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+            
+            .restaurant-rating {
+                font-size: 14px;
+            }
+            
+            /* 박스들 */
+            .info-box, .warning-box, .success-box, .checklist {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .info-box strong, .warning-box strong, .success-box strong {
+                font-size: 14px;
+            }
+            
+            .checklist-item {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+            
+            /* 지도 링크 터치 최적화 */
+            .map-link {
+                padding: 8px 14px;
+                font-size: 12px;
+                margin-left: 5px;
+                display: inline-block;
+                margin-top: 5px;
+            }
+            
+            /* 가격/시간/장소 */
+            .price, .time, .location {
+                font-size: 14px;
+            }
+            
+            /* Footer */
+            .footer {
+                padding: 25px 20px;
+                font-size: 13px;
+            }
+            
+            /* 텍스트 읽기 편하게 */
+            p {
+                line-height: 1.7;
+                font-size: 15px;
+            }
+            
+            li {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+        }
+        
+        /* 작은 모바일 (480px 이하) */
+        @media screen and (max-width: 480px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .header .subtitle {
+                font-size: 14px;
+            }
+            
+            .section {
+                padding: 25px 15px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+            }
+            
+            .section-subtitle {
+                font-size: 17px;
+            }
+            
+            .nav-btn {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+            
+            th, td {
+                font-size: 12px;
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<div class="nav-bar">
+    <div class="nav-container">
+        <a href="#section1" class="nav-btn">사전 준비</a>
+        <a href="#section2" class="nav-btn">날씨 & 복장</a>
+        <a href="#section3" class="nav-btn">공항 프리패스</a>
+        <a href="#section4" class="nav-btn">맛도리</a>
+        <a href="#section5" class="nav-btn">볼거리</a>
+        <a href="#section6" class="nav-btn">쿠로가와 온센</a>
+        <a href="#section7" class="nav-btn">동선/교통</a>
+        <a href="#section8" class="nav-btn">결제</a>
+        <a href="#section9" class="nav-btn">여행 경비</a>
+        <a href="#section10" class="nav-btn">여행 회화</a>
+        <a href="#section11" class="nav-btn">비상 대응</a>
+        <a href="#section12" class="nav-btn">꿀 팁</a>
+        <a href="#section13" class="nav-btn">현지 문화</a>
+    </div>
+</div>
+
+<div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-content">
+            <h1>🇯🇵 후쿠오카 + 쿠로가와 온센 여행 가이드</h1>
+            <div class="subtitle">식도락과 힐링의 완벽한 조화</div>
+            <div class="trip-info">
+                <strong>2024년 12월 17일(화) ~ 21일(토)</strong> | 4박 5일
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. 사전 준비 -->
+    <div class="section" id="section1">
+        <h2 class="section-title">📋 1. 사전 준비</h2>
+        
+        <h3 class="section-subtitle">✈️ 항공편 정보</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>편명</th>
+                <th>출발</th>
+                <th>도착</th>
+            </tr>
+            <tr>
+                <td><strong>가는 편</strong></td>
+                <td>제주항공 7C1405</td>
+                <td>15:20 ICN</td>
+                <td>16:55 FUK</td>
+            </tr>
+            <tr>
+                <td><strong>오는 편</strong></td>
+                <td>에어부산 BX157</td>
+                <td>13:55 FUK</td>
+                <td>15:30 ICN</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🏨 숙소 정보</h3>
+        <table>
+            <tr>
+                <th>기간</th>
+                <th>숙소명</th>
+                <th>위치</th>
+            </tr>
+            <tr>
+                <td>12/17-20 (3박)</td>
+                <td>하카타역 근처 호텔</td>
+                <td>하카타역 도보 5분</td>
+            </tr>
+            <tr>
+                <td>12/20-21 (1박)</td>
+                <td>오야도 하나보우 (お宿 花坊)</td>
+                <td>쿠로가와 온센</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🎫 교통패스 정보</h3>
+        
+        <div class="info-box">
+            <strong>후쿠오카 지하철 1일권</strong><br>
+            • 가격: <span class="price">¥640</span><br>
+            • 구매처: 지하철역 자동발매기<br>
+            • 범위: 후쿠오카 시영지하철 전 노선 무제한<br>
+            • 추천: Day 2 (오호리공원+텐진+하카타 이동 시)
+        </div>
+
+        <div class="success-box">
+            <strong>입탕 수형 패스 (入湯手形)</strong><br>
+            • 가격: <span class="price">¥1,300</span><br>
+            • 구매처: 쿠로가와 온센 풍의사(風の舎) 또는 각 료칸 프론트<br>
+            • 유효기간: 구매일로부터 6개월<br>
+            • 사용방법: 뒷면 스티커 3장 (빨강 2개=온천용, 녹색 1개=식사/기념품용)<br>
+            • 이용시간: 08:30-21:00<br>
+            • 혜택: 28개 온천 중 3곳 선택 가능<br>
+            • 추천: 체크인 전 오전에 구매하여 다른 료칸 온천 투어
+        </div>
+
+        <h3 class="section-subtitle">📱 필수 앱 & 사이트</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>앱/사이트</th>
+                <th>용도</th>
+                <th>링크</th>
+            </tr>
+            <tr>
+                <td>🍽️ 맛집</td>
+                <td>타베로그 (食べログ)</td>
+                <td>맛집 검색 및 예약</td>
+                <td><a href="https://tabelog.com/kr/" target="_blank">tabelog.com/kr</a></td>
+            </tr>
+            <tr>
+                <td>🚌 교통</td>
+                <td>큐슈산코 버스</td>
+                <td>쿠로가와 온센 버스 예약</td>
+                <td><a href="https://www.highwaybus.com/gp/reservation/rsvPlanList?lineId=512" target="_blank">예약 페이지</a></td>
+            </tr>
+            <tr>
+                <td>🗺️ 지도</td>
+                <td>Google Maps / Naver Map</td>
+                <td>길찾기 및 현지 정보</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>💱 환율</td>
+                <td>Xe Currency / 네이버 환율</td>
+                <td>실시간 환율 확인</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>📡 통신</td>
+                <td>eSIM (Airalo/Ubigi)</td>
+                <td>인터넷 데이터</td>
+                <td>-</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ 타베로그 예약 시스템 (2024년 6월부터 외국인 예약 가능)</strong><br>
+            • 영어/중국어/한국어 인터페이스 제공<br>
+            • 시스템 이용료: <span class="price">¥440/인</span> (인바운드 예약 시)<br>
+            • 일부 맛집은 예약 불가 (Walk-in only) - Hakata Issou 등<br>
+            • 예약 가능 여부는 각 가게 페이지에서 확인
+        </div>
+
+        <h3 class="section-subtitle">📦 짐 체크리스트</h3>
+        <div class="checklist">
+            <div class="checklist-item"><strong>크롬캐스트</strong> - 숙소에서 스트리밍용</div>
+            <div class="checklist-item">여권 + 여권 사본 2부 (분실 대비)</div>
+            <div class="checklist-item">항공권 모바일 티켓 (스크린샷 저장)</div>
+            <div class="checklist-item">숙소 예약 확인서 (영문 또는 일문)</div>
+            <div class="checklist-item">신용카드 2장 이상 (VISA/Master 권장)</div>
+            <div class="checklist-item">현금 ¥50,000 ~ ¥80,000 (환전)</div>
+            <div class="checklist-item">eSIM 또는 포켓 와이파이</div>
+            <div class="checklist-item">보조배터리 (10,000mAh 이상)</div>
+            <div class="checklist-item">멀티어댑터 (일본은 A형, 110V)</div>
+            <div class="checklist-item">세면도구 (온천 료칸 제외 - 제공됨)</div>
+            <div class="checklist-item">상비약 (소화제, 진통제, 감기약)</div>
+            <div class="checklist-item">우산 또는 방수 재킷</div>
+            <div class="checklist-item">편한 운동화 (많이 걸어야 함)</div>
+            <div class="checklist-item">보온 레이어 (쿠로가와는 영하)</div>
+        </div>
+    </div>
+
+    <!-- 2. 날씨 & 복장 가이드 -->
+    <div class="section" id="section2">
+        <h2 class="section-title">🌤️ 2. 날씨 & 복장 가이드</h2>
+        
+        <h3 class="section-subtitle">🌡️ 후쿠오카 12월 날씨</h3>
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>수치</th>
+                <th>특징</th>
+            </tr>
+            <tr>
+                <td>평균 최고기온</td>
+                <td class="price">10-14°C</td>
+                <td>낮에는 활동하기 적당</td>
+            </tr>
+            <tr>
+                <td>평균 최저기온</td>
+                <td class="price">5-8°C</td>
+                <td>아침/저녁 쌀쌀함</td>
+            </tr>
+            <tr>
+                <td>강수확률</td>
+                <td class="price">40%</td>
+                <td>우산 필수 휴대</td>
+            </tr>
+            <tr>
+                <td>습도</td>
+                <td>65-75%</td>
+                <td>체감온도 낮음</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">❄️ 쿠로가와 온센 12월 날씨</h3>
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>수치</th>
+                <th>특징</th>
+            </tr>
+            <tr>
+                <td>평균 최고기온</td>
+                <td class="price">0-5°C</td>
+                <td>한낮에도 추움</td>
+            </tr>
+            <tr>
+                <td>평균 최저기온</td>
+                <td class="price">-5~0°C</td>
+                <td>새벽/밤 영하</td>
+            </tr>
+            <tr>
+                <td>적설 가능성</td>
+                <td class="price">높음</td>
+                <td>설경 온천 기대 가능</td>
+            </tr>
+            <tr>
+                <td>노천탕 체감</td>
+                <td>최고</td>
+                <td>추운 날씨 + 뜨거운 온천 = 극강 힐링</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">👕 복장 가이드 (레이어드 시스템)</h3>
+        
+        <div class="info-box">
+            <strong>Base Layer (베이스 레이어)</strong><br>
+            • 기능성 내의 (발열/습기배출)<br>
+            • 얇은 목폴라 또는 긴팔 티셔츠
+        </div>
+
+        <div class="info-box">
+            <strong>Mid Layer (중간 레이어)</strong><br>
+            • 후리스 또는 얇은 패딩<br>
+            • 니트 스웨터<br>
+            • 카디건
+        </div>
+
+        <div class="info-box">
+            <strong>Outer Layer (외부 레이어)</strong><br>
+            • 방풍/방수 재킷 (후쿠오카)<br>
+            • 두꺼운 패딩 또는 다운 (쿠로가와)
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ 쿠로가와 온센 특별 준비</strong><br>
+            • 방한 모자, 장갑, 목도리 필수<br>
+            • 방수 부츠 또는 미끄럼 방지 신발<br>
+            • 핫팩 여러 개 (료칸 외 이동 시)<br>
+            • 입술 보습제 (건조함 주의)
+        </div>
+
+        <h3 class="section-subtitle">🎒 날짜별 복장 추천</h3>
+        <table>
+            <tr>
+                <th>날짜</th>
+                <th>활동</th>
+                <th>복장</th>
+            </tr>
+            <tr>
+                <td>Day 1 (12/17)</td>
+                <td>도착 + 하카타 야경</td>
+                <td>경량 패딩 + 니트 + 청바지</td>
+            </tr>
+            <tr>
+                <td>Day 2 (12/18)</td>
+                <td>오호리공원 + 시내 탐방</td>
+                <td>후리스 + 방풍 재킷 + 편한 바지</td>
+            </tr>
+            <tr>
+                <td>Day 3 (12/19)</td>
+                <td>맛집 투어 + 쇼핑</td>
+                <td>캐주얼 레이어드 + 백팩</td>
+            </tr>
+            <tr>
+                <td>Day 4 (12/20)</td>
+                <td>쿠로가와 이동 + 온천</td>
+                <td><strong>두꺼운 다운 + 방한용품 풀세트</strong></td>
+            </tr>
+            <tr>
+                <td>Day 5 (12/21)</td>
+                <td>귀국</td>
+                <td>편한 복장 (짐 정리 고려)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 3. 공항 프리패스 -->
+    <div class="section" id="section3">
+        <h2 class="section-title">✈️ 3. 공항 프리패스 (출국 최적화)</h2>
+        
+        <h3 class="section-subtitle">⏱️ 시간 절약 프로토콜</h3>
+        
+        <div class="success-box">
+            <strong>🎯 목표: 출국 수속 시간 50% 단축</strong><br>
+            일반 여행객 평균 60분 → <span class="price">최적화 시 30분</span>
+        </div>
+
+        <h3 class="section-subtitle">1️⃣ 모바일 체크인 (출발 48시간 전)</h3>
+        <table>
+            <tr>
+                <th>항공사</th>
+                <th>체크인 시작</th>
+                <th>방법</th>
+            </tr>
+            <tr>
+                <td>제주항공 (가는 편)</td>
+                <td>출발 48시간 전</td>
+                <td>제주항공 앱 또는 웹사이트</td>
+            </tr>
+            <tr>
+                <td>에어부산 (오는 편)</td>
+                <td>출발 48시간 전</td>
+                <td>에어부산 앱 또는 웹사이트</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>📱 모바일 체크인 순서</strong><br>
+            1. 앱 또는 웹사이트 접속<br>
+            2. 예약번호 + 영문 이름 입력<br>
+            3. 좌석 선택 (무료 구간 선택)<br>
+            4. 모바일 탑승권 저장 (스크린샷도 백업)<br>
+            5. 위탁수하물 있으면 공항에서 셀프백드롭 이용
+        </div>
+
+        <h3 class="section-subtitle">2️⃣ 셀프백드롭 (Self Bag Drop)</h3>
+        
+        <div class="warning-box">
+            <strong>⚠️ 인천공항 제1터미널 (제주항공)</strong><br>
+            • 위치: 3층 출국장 C, D 카운터 옆<br>
+            • 이용시간: 05:00-21:00<br>
+            • 순서: 모바일 탑승권 스캔 → 수하물 태그 부착 → 무게 측정 → 컨베이어에 올리기<br>
+            • 시간 절약: <span class="price">약 20-30분</span>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ 후쿠오카공항 (에어부산 귀국 시)</strong><br>
+            • 위치: 국제선 터미널 2층 체크인 카운터<br>
+            • 셀프백드롭 기기 제한적 - 카운터 이용 추천<br>
+            • 권장 도착시간: 출발 2시간 전 (쿠로가와→공항 버스 14:00 출발이므로 여유 있음)
+        </div>
+
+        <h3 class="section-subtitle">3️⃣ SES (스마트 출국심사) 등록</h3>
+        
+        <div class="success-box">
+            <strong>✅ 사전 등록 (한국 출국 전)</strong><br>
+            • 등록처: 인천공항 출국장 SES 등록센터<br>
+            • 소요시간: 약 5분<br>
+            • 준비물: 여권<br>
+            • 유효기간: 영구 (여권 갱신 시 재등록)<br>
+            • 혜택: 출국심사 대기 없이 자동 게이트 이용 (10초 컷)
+        </div>
+
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>일반 심사</th>
+                <th>SES 자동 게이트</th>
+                <th>시간 절약</th>
+            </tr>
+            <tr>
+                <td>대기시간</td>
+                <td>20-40분</td>
+                <td>0-5분</td>
+                <td class="price">▼ 35분</td>
+            </tr>
+            <tr>
+                <td>심사시간</td>
+                <td>1-2분</td>
+                <td>10초</td>
+                <td class="price">▼ 2분</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📊 최적화 타임라인 (인천공항 출국)</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>소요시간</th>
+                <th>누적시간</th>
+            </tr>
+            <tr>
+                <td class="time">출발 2시간 전</td>
+                <td>공항 도착</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">+5분</td>
+                <td>셀프백드롭 (수하물 위탁)</td>
+                <td>5분</td>
+                <td>5분</td>
+            </tr>
+            <tr>
+                <td class="time">+10분</td>
+                <td>SES 자동게이트 (출국심사)</td>
+                <td>5분</td>
+                <td>10분</td>
+            </tr>
+            <tr>
+                <td class="time">+20분</td>
+                <td>보안검색</td>
+                <td>10분</td>
+                <td>20분</td>
+            </tr>
+            <tr>
+                <td class="time">+30분</td>
+                <td>면세구역 도착</td>
+                <td>10분 (이동)</td>
+                <td>30분</td>
+            </tr>
+            <tr>
+                <td class="time">출발 1.5시간 전</td>
+                <td><strong>면세점 쇼핑 + 여유시간</strong></td>
+                <td class="price">90분 확보</td>
+                <td>-</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🎯 후쿠오카공항 입국 팁</h3>
+        <div class="info-box">
+            <strong>📋 Visit Japan Web 사전 등록 (강력 추천)</strong><br>
+            • 웹사이트: <a href="https://www.vjw.digital.go.jp/" target="_blank">vjw.digital.go.jp</a><br>
+            • 등록 내용: 입국심사, 세관신고<br>
+            • 시간 절약: 종이 작성 불필요, QR코드로 빠른 입국<br>
+            • 등록 시점: 출발 2주 전부터 가능
+        </div>
+
+        <div class="checklist">
+            <div class="checklist-item">기내에서 휴대폰 데이터 로밍 켜기 (eSIM 활성화)</div>
+            <div class="checklist-item">입국 심사 시 QR코드 준비</div>
+            <div class="checklist-item">수하물 찾은 후 세관 신고 (QR코드)</div>
+            <div class="checklist-item">공항 → 하카타역 지하철 이동 (5분, ¥260)</div>
+        </div>
+    </div>
+
+    <!-- 4. 맛도리 -->
+    <div class="section" id="section4">
+        <h2 class="section-title">🍜 4. 맛도리</h2>
+        
+        <div class="warning-box">
+            <strong>🎯 피크타임 회피 전략</strong><br>
+            • 점심: <span class="time">14:00 이후</span> 방문 (12-13시 피크타임 회피)<br>
+            • 저녁: <span class="time">20:00 이후</span> 방문 (18-19시 피크타임 회피)<br>
+            • 효과: 대기시간 50% 단축, 여유로운 식사 가능
+        </div>
+
+        <h3 class="section-subtitle">🏆 타베로그 통합 랭킹 Top 10</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">1. Hakata Issou (博多一双) <a href="https://www.google.com/maps/search/?api=1&query=博多一双+福岡" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.85</div>
+            <p><strong>메뉴:</strong> 하카타 돈코츠 라멘 (크리미한 국물의 정점)</p>
+            <p><strong>가격:</strong> <span class="price">¥900-1,200</span></p>
+            <p><strong>위치:</strong> <span class="location">하카타역 도보 8분</span></p>
+            <p><strong>영업:</strong> 11:00-익일 02:00 (월요일 휴무)</p>
+            <div class="warning-box" style="margin-top:10px;">
+                ⚠️ <strong>예약 불가</strong> - Walk-in only<br>
+                • 피크타임 대기: 60-90분<br>
+                • 추천 방문: 14:00-15:00 또는 21:00 이후
+            </div>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400104/40000529/" target="_blank">예약 확인</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">2. Shin Shin (しんしん) <a href="https://www.google.com/maps/search/?api=1&query=しんしん+福岡+天神" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.72</div>
+            <p><strong>메뉴:</strong> 하카타 라멘 (현지인 최애, 깔끔한 돈코츠)</p>
+            <p><strong>가격:</strong> <span class="price">¥700-1,000</span></p>
+            <p><strong>위치:</strong> <span class="location">텐진역 도보 5분</span></p>
+            <p><strong>영업:</strong> 11:00-익일 03:00 (연중무휴)</p>
+            <p><strong>특징:</strong> 24시간 영업에 가까워 심야 라멘 성지</p>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400103/40000017/" target="_blank">예약 확인</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">3. Kawashou (河庄) <a href="https://www.google.com/maps/search/?api=1&query=河庄+福岡+中洲" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.68</div>
+            <p><strong>메뉴:</strong> 모츠나베 (내장전골) 전문점</p>
+            <p><strong>가격:</strong> <span class="price">¥3,500-5,000/인</span></p>
+            <p><strong>위치:</strong> <span class="location">나카스 번화가</span></p>
+            <p><strong>영업:</strong> 17:00-23:30 (월요일 휴무)</p>
+            <p><strong>특징:</strong> 신선한 소 내장 + 마늘 간장 국물</p>
+            <div class="success-box" style="margin-top:10px;">
+                ✅ <strong>예약 가능</strong> - 타베로그 영문 예약 추천<br>
+                시스템 이용료: ¥440/인
+            </div>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400104/40047310/" target="_blank">예약하기</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">4. Tempura Hirao (天ぷら ひらお) <a href="https://www.google.com/maps/search/?api=1&query=天ぷらひらお+福岡+博多" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.65</div>
+            <p><strong>메뉴:</strong> 튀김 정식 (가성비 갑, 무제한 명란젓 제공)</p>
+            <p><strong>가격:</strong> <span class="price">¥1,200-1,800</span></p>
+            <p><strong>위치:</strong> <span class="location">하카타역 본점 외 6개 지점</span></p>
+            <p><strong>영업:</strong> 11:00-22:00 (연중무휴)</p>
+            <p><strong>특징:</strong> 명란젓 무한리필 + 바삭한 튀김</p>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400104/40000384/" target="_blank">예약 확인</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">5. Sushi Sakai (鮨 坂井) <a href="https://www.google.com/maps/search/?api=1&query=鮨坂井+福岡+大名" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.82</div>
+            <p><strong>메뉴:</strong> 오마카세 스시 (후쿠오카 최고급)</p>
+            <p><strong>가격:</strong> <span class="price">¥15,000-25,000/인</span></p>
+            <p><strong>위치:</strong> <span class="location">다이묘 지역</span></p>
+            <p><strong>영업:</strong> 18:00-23:00 (일요일 휴무)</p>
+            <p><strong>특징:</strong> 현지 수산 직송, 카운터 8석</p>
+            <div class="warning-box" style="margin-top:10px;">
+                ⚠️ <strong>사전 예약 필수</strong> (최소 1주일 전)<br>
+                전화 예약 또는 호텔 컨시어지 이용
+            </div>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400103/40048752/" target="_blank">정보 보기</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">6. Yamanaka (やま中) <a href="https://www.google.com/maps/search/?api=1&query=やま中+福岡+博多" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.70</div>
+            <p><strong>메뉴:</strong> 규동 & 곱창 덮밥 (현지 숨은 맛집)</p>
+            <p><strong>가격:</strong> <span class="price">¥800-1,500</span></p>
+            <p><strong>위치:</strong> <span class="location">하카타역 도보 10분</span></p>
+            <p><strong>영업:</strong> 11:30-14:30, 17:30-23:00 (일요일 휴무)</p>
+            <p><strong>특징:</strong> 가성비 좋은 로컬 맛집</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">7. Ichiran (一蘭) <a href="https://www.google.com/maps/search/?api=1&query=一蘭+福岡+中洲" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.58</div>
+            <p><strong>메뉴:</strong> 돈코츠 라멘 (1인 부스 시스템)</p>
+            <p><strong>가격:</strong> <span class="price">¥980-1,200</span></p>
+            <p><strong>위치:</strong> <span class="location">나카스 본점 외 다수</span></p>
+            <p><strong>영업:</strong> 24시간 (나카스 본점)</p>
+            <p><strong>특징:</strong> 혼밥 천국, 맞춤형 면 농도/고명 선택</p>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400104/40000143/" target="_blank">예약 확인</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">8. Ganso Hakata Mentaiju (元祖博多めんたい重) <a href="https://www.google.com/maps/search/?api=1&query=元祖博多めんたい重+福岡+天神" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.62</div>
+            <p><strong>메뉴:</strong> 명란젓 덮밥 전문점</p>
+            <p><strong>가격:</strong> <span class="price">¥1,100-1,800</span></p>
+            <p><strong>위치:</strong> <span class="location">텐진 지하상가</span></p>
+            <p><strong>영업:</strong> 11:00-21:00 (연중무휴)</p>
+            <p><strong>특징:</strong> 명란젓 듬뿍 + 밥 + 계란 노른자</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">9. Motsunabe Ooyama (もつ鍋おおやま) <a href="https://www.google.com/maps/search/?api=1&query=もつ鍋おおやま+福岡+博多" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 3.66</div>
+            <p><strong>메뉴:</strong> 모츠나베 체인점 (안정적 품질)</p>
+            <p><strong>가격:</strong> <span class="price">¥2,800-4,500/인</span></p>
+            <p><strong>위치:</strong> <span class="location">하카타역 앞</span></p>
+            <p><strong>영업:</strong> 17:00-23:00 (연중무휴)</p>
+            <p><strong>특징:</strong> 간장/미소 국물 선택 가능</p>
+            <p><strong>타베로그:</strong> <a href="https://tabelog.com/fukuoka/A4001/A400104/40002672/" target="_blank">예약하기</a></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">10. Yatai (屋台) - 나카스 포장마차 <a href="https://www.google.com/maps/search/?api=1&query=中洲屋台+福岡" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 평균 3.40-3.60</div>
+            <p><strong>메뉴:</strong> 라멘, 오뎅, 야키토리 등</p>
+            <p><strong>가격:</strong> <span class="price">¥1,500-3,000/인</span></p>
+            <p><strong>위치:</strong> <span class="location">나카스 강변 (약 20개 포장마차)</span></p>
+            <p><strong>영업:</strong> 18:00-익일 03:00 (비 오면 휴무 가능)</p>
+            <p><strong>특징:</strong> 후쿠오카 야경 + 로컬 분위기 체험</p>
+            <div class="info-box" style="margin-top:10px;">
+                💡 추천 포장마차:<br>
+                • <strong>야마짱 (やまちゃん)</strong> - 라멘<br>
+                • <strong>코지카 (小路家)</strong> - 오뎅<br>
+                • <strong>텐진호르몬 (天神ホルモン)</strong> - 곱창구이
+            </div>
+        </div>
+
+        <h3 class="section-subtitle">🗺️ 맛집 지도 (지역별)</h3>
+        <table>
+            <tr>
+                <th>지역</th>
+                <th>맛집</th>
+                <th>도보시간</th>
+            </tr>
+            <tr>
+                <td><strong>하카타역 주변</strong></td>
+                <td>Hakata Issou, Tempura Hirao, Motsunabe Ooyama</td>
+                <td>5-10분</td>
+            </tr>
+            <tr>
+                <td><strong>텐진 지역</strong></td>
+                <td>Shin Shin, Ganso Hakata Mentaiju</td>
+                <td>지하철 5분</td>
+            </tr>
+            <tr>
+                <td><strong>나카스 번화가</strong></td>
+                <td>Kawashou, Ichiran, Yatai 포장마차</td>
+                <td>지하철 7분</td>
+            </tr>
+            <tr>
+                <td><strong>다이묘 지역</strong></td>
+                <td>Sushi Sakai</td>
+                <td>지하철 10분</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📱 예약 가이드</h3>
+        <div class="info-box">
+            <strong>타베로그 예약 시스템 활용법</strong><br><br>
+            <strong>1단계:</strong> <a href="https://tabelog.com/kr/" target="_blank">타베로그 한국어 사이트</a> 접속<br>
+            <strong>2단계:</strong> 회원가입 (구글/페이스북 간편 가입)<br>
+            <strong>3단계:</strong> 맛집 검색 → "예약 가능" 필터 선택<br>
+            <strong>4단계:</strong> 날짜/시간/인원 선택<br>
+            <strong>5단계:</strong> 결제 (신용카드) - 시스템 이용료 ¥440/인<br>
+            <strong>6단계:</strong> 예약 확인 메일 저장 (QR코드 포함)<br><br>
+            <strong>⚠️ 주의사항:</strong><br>
+            • 노쇼(No-show) 시 위약금 발생 가능<br>
+            • 예약 변경은 최소 24시간 전<br>
+            • 일부 고급 레스토랑은 전화 예약만 가능
+        </div>
+    </div>
+
+    <!-- 5. 볼거리 -->
+    <div class="section" id="section5">
+        <h2 class="section-title">🏯 5. 볼거리</h2>
+        
+        <h3 class="section-subtitle">🌳 오호리 공원 (大濠公園) <a href="https://www.google.com/maps/search/?api=1&query=大濠公園+福岡" target="_blank" class="map-link">📍 지도</a></h3>
+        <p><strong>타입:</strong> 도심 속 일본 정원, 호수 산책로</p>
+        <p><strong>위치:</strong> <span class="location">오호리코엔역 하차 즉시</span></p>
+        <p><strong>입장료:</strong> <span class="price">무료</span> (일본 정원 별도 ¥250)</p>
+        <p><strong>운영시간:</strong> 24시간 (일본 정원 09:00-17:00)</p>
+        <p><strong>소요시간:</strong> 1.5-2시간</p>
+        
+        <div class="success-box">
+            <strong>✨ 추천 활동</strong><br>
+            • 호수 둘레길 산책 (약 2km, 30분)<br>
+            • 일본 정원 감상 (전통 조경미)<br>
+            • 스타벅스 리저브 (공원 내 위치)<br>
+            • 백조보트 (¥1,000/30분) - 날씨 좋을 시<br>
+            • 겨울 철새 관찰
+        </div>
+
+        <div class="info-box">
+            <strong>📸 포토 스팟</strong><br>
+            • 호수 중앙 다리<br>
+            • 일본 정원 입구<br>
+            • 석양 시간대 (16:30-17:00) 호수 반영
+        </div>
+
+        <h3 class="section-subtitle">🏰 후쿠오카 성 (福岡城跡) <a href="https://www.google.com/maps/search/?api=1&query=福岡城跡+福岡" target="_blank" class="map-link">📍 지도</a></h3>
+        <p><strong>타입:</strong> 역사 유적지, 성터 공원</p>
+        <p><strong>위치:</strong> <span class="location">오호리공원에서 도보 10분</span></p>
+        <p><strong>입장료:</strong> <span class="price">무료</span></p>
+        <p><strong>운영시간:</strong> 24시간</p>
+        <p><strong>소요시간:</strong> 1시간</p>
+        
+        <div class="success-box">
+            <strong>✨ 추천 활동</strong><br>
+            • 성벽 잔해 탐방<br>
+            • 전망대에서 후쿠오카 시내 조망<br>
+            • 겨울 매화 (12월 말~1월 초 개화 시작)<br>
+            • 역사 해설판 읽기 (한국어 지원)
+        </div>
+
+        <div class="warning-box">
+            ⚠️ 계단이 많아 편한 신발 필수<br>
+            겨울엔 해질 무렵(17:00 이후) 추우니 낮 방문 추천
+        </div>
+
+        <h3 class="section-subtitle">🛍️ 캐널시티 하카타 (Canal City Hakata) <a href="https://www.google.com/maps/search/?api=1&query=Canal+City+Hakata+福岡" target="_blank" class="map-link">📍 지도</a></h3>
+        <p><strong>타입:</strong> 복합 쇼핑몰 (쇼핑+엔터테인먼트)</p>
+        <p><strong>위치:</strong> <span class="location">하카타역에서 버스 10분 또는 도보 15분</span></p>
+        <p><strong>입장료:</strong> <span class="price">무료</span></p>
+        <p><strong>운영시간:</strong> 10:00-21:00 (레스토랑 ~23:00)</p>
+        <p><strong>소요시간:</strong> 2-3시간</p>
+        
+        <div class="success-box">
+            <strong>✨ 하이라이트</strong><br>
+            • 운하 테마 건축물<br>
+            • 분수쇼 (매일 12:00, 15:00, 18:00, 20:00)<br>
+            • 라멘 스타디움 (8개 유명 라멘집 집결)<br>
+            • 무인양품, 유니클로 대형 매장<br>
+            • 돈키호테 (24시간 운영)<br>
+            • 팀랩 전시 (계절별 운영)
+        </div>
+
+        <div class="info-box">
+            <strong>🍜 라멘 스타디움 추천</strong><br>
+            전국 유명 라멘 8개 브랜드가 한곳에<br>
+            미니 사이즈 주문 가능 (여러 종류 시식 가능)
+        </div>
+
+        <h3 class="section-subtitle">⛩️ 구시다 신사 (櫛田神社) <a href="https://www.google.com/maps/search/?api=1&query=櫛田神社+福岡" target="_blank" class="map-link">📍 지도</a></h3>
+        <p><strong>타입:</strong> 후쿠오카 대표 신사</p>
+        <p><strong>위치:</strong> <span class="location">기온역에서 도보 5분</span></p>
+        <p><strong>입장료:</strong> <span class="price">무료</span> (박물관 ¥300)</p>
+        <p><strong>운영시간:</strong> 04:00-22:00</p>
+        <p><strong>소요시간:</strong> 30-40분</p>
+        
+        <div class="success-box">
+            <strong>✨ 추천 활동</strong><br>
+            • 신사 참배 (정해진 절차 따르기)<br>
+            • 오미쿠지 (운세 뽑기) ¥100<br>
+            • 야마카사 전시관 (거대 축제 수레 상설 전시)<br>
+            • 은행나무 거목 감상 (수령 1,000년 추정)
+        </div>
+
+        <h3 class="section-subtitle">🏙️ 텐진 지하상가 (天神地下街) <a href="https://www.google.com/maps/search/?api=1&query=天神地下街+福岡" target="_blank" class="map-link">📍 지도</a></h3>
+        <p><strong>타입:</strong> 지하 쇼핑가 (유럽풍 인테리어)</p>
+        <p><strong>위치:</strong> <span class="location">텐진역 연결</span></p>
+        <p><strong>입장료:</strong> <span class="price">무료</span></p>
+        <p><strong>운영시간:</strong> 10:00-20:00 (매장별 상이)</p>
+        <p><strong>소요시간:</strong> 1-2시간</p>
+        
+        <div class="info-box">
+            <strong>💡 쇼핑 팁</strong><br>
+            • 약 150개 상점 (패션/잡화/카페)<br>
+            • 비 오는 날 최적의 실내 코스<br>
+            • 텐진역-나카스카와바타역 지하로 연결 (도보 12분)<br>
+            • 면세점 다수 (여권 필수 지참)
+        </div>
+
+        <h3 class="section-subtitle">🗺️ 볼거리 최적 동선</h3>
+        <table>
+            <tr>
+                <th>순서</th>
+                <th>장소</th>
+                <th>시간</th>
+                <th>이동</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>오호리 공원</td>
+                <td>09:30-11:30 (2시간)</td>
+                <td>하카타역 → 지하철 5분</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>후쿠오카 성</td>
+                <td>11:30-12:30 (1시간)</td>
+                <td>오호리공원 → 도보 10분</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>점심 (텐진 지역)</td>
+                <td>14:00-15:00</td>
+                <td>후쿠오카성 → 지하철 7분</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>텐진 지하상가</td>
+                <td>15:00-17:00 (2시간)</td>
+                <td>텐진역 직결</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>구시다 신사</td>
+                <td>17:30-18:00 (30분)</td>
+                <td>텐진 → 지하철 5분</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>캐널시티 or 나카스 포장마차</td>
+                <td>20:00-22:00</td>
+                <td>기온역 → 도보 15분</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 6. 쿠로가와 온센 가이드 -->
+    <div class="section" id="section6">
+        <h2 class="section-title">♨️ 6. 쿠로가와 온센 가이드</h2>
+        
+        <h3 class="section-subtitle">🏨 오야도 하나보우 (お宿 花坊) <a href="https://www.google.com/maps/search/?api=1&query=お宿+花坊+黒川温泉" target="_blank" class="map-link">📍 지도</a></h3>
+        
+        <div class="warning-box">
+            <strong>⚠️ 체크인 시간 엄수 필수!</strong><br>
+            • 체크인: <span class="time">15:00-18:00</span><br>
+            • <span class="price">18:00 이후 체크인 불가!</span><br>
+            • 쿠로가와 도착 예정: 12:29 (버스)<br>
+            • 여유시간: 약 2.5시간 (입탕 수형 패스 활용 추천)
+        </div>
+
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>시간/정보</th>
+            </tr>
+            <tr>
+                <td><strong>체크인</strong></td>
+                <td class="time">15:00-18:00</td>
+            </tr>
+            <tr>
+                <td><strong>체크아웃</strong></td>
+                <td class="time">10:00</td>
+            </tr>
+            <tr>
+                <td><strong>대욕장 (저녁)</strong></td>
+                <td class="time">체크인 후 ~ 21:30</td>
+            </tr>
+            <tr>
+                <td><strong>대욕장 (아침)</strong></td>
+                <td class="time">06:30 ~ 08:30</td>
+            </tr>
+            <tr>
+                <td><strong>貸切風呂 (개인탕)</strong></td>
+                <td class="price">무료 이용 가능 (예약제)</td>
+            </tr>
+            <tr>
+                <td><strong>저녁 식사</strong></td>
+                <td>18:00 또는 18:30 시작</td>
+            </tr>
+            <tr>
+                <td><strong>아침 식사</strong></td>
+                <td>07:30 또는 08:00 시작</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🧴 제공 아메니티</h3>
+        <div class="checklist">
+            <div class="checklist-item">칫솔 세트</div>
+            <div class="checklist-item">면도기 (남성)</div>
+            <div class="checklist-item">빗 (여성)</div>
+            <div class="checklist-item">샴푸 / 린스 / 바디워시</div>
+            <div class="checklist-item">수건 (대/소)</div>
+            <div class="checklist-item">유카타 (일본식 목욕 가운)</div>
+            <div class="checklist-item">슬리퍼</div>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 세면도구 챙길 필요 없음</strong><br>
+            료칸에서 모든 아메니티 제공<br>
+            개인 화장품/스킨케어만 준비
+        </div>
+
+        <h3 class="section-subtitle">🎫 입탕 수형 패스 (入湯手形) 완벽 가이드</h3>
+        
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>내용</th>
+            </tr>
+            <tr>
+                <td><strong>가격</strong></td>
+                <td class="price">¥1,300</td>
+            </tr>
+            <tr>
+                <td><strong>구매처</strong></td>
+                <td>풍의사(風の舎) 또는 각 료칸 프론트</td>
+            </tr>
+            <tr>
+                <td><strong>유효기간</strong></td>
+                <td>구매일로부터 6개월</td>
+            </tr>
+            <tr>
+                <td><strong>이용시간</strong></td>
+                <td class="time">08:30-21:00</td>
+            </tr>
+            <tr>
+                <td><strong>혜택</strong></td>
+                <td>28개 온천 중 3곳 선택 가능</td>
+            </tr>
+        </table>
+
+        <div class="success-box">
+            <strong>📝 사용 방법</strong><br><br>
+            <strong>1단계:</strong> 풍의사에서 입탕 수형 구매 (¥1,300)<br>
+            <strong>2단계:</strong> 나무 패스 뒷면 스티커 확인<br>
+            &nbsp;&nbsp;&nbsp;• 빨간 스티커 2개 = 온천 입장용<br>
+            &nbsp;&nbsp;&nbsp;• 녹색 스티커 1개 = 식사/기념품 할인용<br>
+            <strong>3단계:</strong> 방문할 온천 선택 (3곳)<br>
+            <strong>4단계:</strong> 각 온천 프론트에서 스티커 1장씩 제출<br>
+            <strong>5단계:</strong> 온천 도장 받기 (기념품)<br>
+        </div>
+
+        <h3 class="section-subtitle">🌟 추천 온천 3선 (입탕 수형 활용)</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">1. 산아이 (山あい) <a href="https://www.google.com/maps/search/?api=1&query=山あい+黒川温泉" target="_blank" class="map-link">📍 지도</a></div>
+            <p><strong>특징:</strong> 대형 노천탕, 강변 전망</p>
+            <p><strong>분위기:</strong> 개방감 최고, 자연 경관 압도적</p>
+            <p><strong>추천 시간:</strong> 오후 14:00-16:00 (석양 전)</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">2. 신메이칸 (新明館) <a href="https://www.google.com/maps/search/?api=1&query=新明館+黒川温泉" target="_blank" class="map-link">📍 지도</a></div>
+            <p><strong>특징:</strong> 동굴 온천 (洞窟風呂)</p>
+            <p><strong>분위기:</strong> 신비로운 분위기, SNS 인기</p>
+            <p><strong>추천 시간:</strong> 오전 09:00-11:00 (한적함)</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">3. 이코이료칸 (いこい旅館) <a href="https://www.google.com/maps/search/?api=1&query=いこい旅館+黒川温泉" target="_blank" class="map-link">📍 지도</a></div>
+            <p><strong>특징:</strong> 전통적인 노천탕, 대나무 숲</p>
+            <p><strong>분위기:</strong> 조용하고 운치 있음</p>
+            <p><strong>추천 시간:</strong> 오후 16:00-18:00 (석양)</p>
+        </div>
+
+        <h3 class="section-subtitle">♨️ 온천 에티켓 (중요!)</h3>
+        <div class="warning-box">
+            <strong>⚠️ 반드시 지켜야 할 규칙</strong><br><br>
+            <strong>입장 전:</strong><br>
+            • 탈의실에서 완전히 옷을 벗음 (수영복 착용 금지)<br>
+            • 타올은 작은 것만 온천장으로 가져감<br><br>
+            <strong>입수 전:</strong><br>
+            • 샤워 부스에서 몸을 깨끗이 씻음 (머리/몸 전체)<br>
+            • 샴푸/비누 완전히 헹굼<br><br>
+            <strong>온천 내:</strong><br>
+            • 작은 타올을 물에 담그지 않음 (머리에 올리거나 욕조 밖에 놓기)<br>
+            • 머리카락이 물에 닿지 않게 묶기<br>
+            • 조용히 대화 (큰 소리 금지)<br>
+            • 뛰거나 수영 금지<br>
+            • 물속에서 타올로 몸을 닦지 않음<br><br>
+            <strong>퇴장 시:</strong><br>
+            • 탈의실 입장 전 물기 가볍게 닦기<br>
+            • 탈의실 바닥 물 묻히지 않기
+        </div>
+
+        <h3 class="section-subtitle">🕐 쿠로가와 온센 추천 타임라인</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td class="time">12:29</td>
+                <td>쿠로가와 온센 버스 정류장 도착</td>
+                <td>하카타발 버스</td>
+            </tr>
+            <tr>
+                <td class="time">12:30-13:00</td>
+                <td>풍의사에서 입탕 수형 구매 + 짐 보관 문의</td>
+                <td>료칸 체크인 전 시간 활용</td>
+            </tr>
+            <tr>
+                <td class="time">13:00-14:00</td>
+                <td>점심 식사 (온천가 식당)</td>
+                <td>파토리 (パティオ) 추천</td>
+            </tr>
+            <tr>
+                <td class="time">14:00-15:00</td>
+                <td>첫 번째 온천 (입탕 수형 #1)</td>
+                <td>산아이 추천</td>
+            </tr>
+            <tr>
+                <td class="time">15:00-15:30</td>
+                <td>오야도 하나보우 체크인</td>
+                <td class="price">18시 전 필수!</td>
+            </tr>
+            <tr>
+                <td class="time">15:30-16:00</td>
+                <td>방에서 휴식 / 유카타 갈아입기</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">16:00-17:30</td>
+                <td>료칸 貸切風呂 (개인탕) 이용</td>
+                <td>프론트 예약</td>
+            </tr>
+            <tr>
+                <td class="time">18:00-19:30</td>
+                <td>가이세키 저녁 식사</td>
+                <td>방 또는 식당</td>
+            </tr>
+            <tr>
+                <td class="time">20:00-21:00</td>
+                <td>료칸 대욕장 (저녁)</td>
+                <td>21:30 마감</td>
+            </tr>
+            <tr>
+                <td class="time">익일 06:30-07:30</td>
+                <td>료칸 대욕장 (아침) - 일출 온천</td>
+                <td>설경 + 온천 = 최고</td>
+            </tr>
+            <tr>
+                <td class="time">08:00-09:00</td>
+                <td>일식 조식</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">09:00-10:00</td>
+                <td>짐 정리 / 체크아웃</td>
+                <td>10:00 체크아웃</td>
+            </tr>
+            <tr>
+                <td class="time">10:00-12:00</td>
+                <td>추가 온천 2곳 (입탕 수형 #2, #3)</td>
+                <td>신메이칸, 이코이료칸</td>
+            </tr>
+            <tr>
+                <td class="time">12:00-13:30</td>
+                <td>온천가 산책 / 기념품 쇼핑</td>
+                <td>녹색 스티커 할인 활용</td>
+            </tr>
+            <tr>
+                <td class="time">14:00</td>
+                <td>후쿠오카 공항행 버스 탑승</td>
+                <td class="price">귀국편 맞춤</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>🧳 쿠로가와 온센 짐 관리 팁</strong><br>
+            • 1박 짐만 작은 가방에 따로 준비<br>
+            • 큰 캐리어는 하카타 호텔 또는 코인락커 보관 고려<br>
+            • 료칸까지 버스에서 짐 들고 이동해야 함 (경사 주의)<br>
+            • 체크아웃 후 료칸에 짐 보관 가능 (당일 픽업)
+        </div>
+    </div>
+
+    <!-- 7. 동선/교통 -->
+    <div class="section" id="section7">
+        <h2 class="section-title">🚇 7. 동선/교통 (시간대별 템플릿)</h2>
+        
+        <h3 class="section-subtitle">🗓️ Day 1 - 12월 17일 (화) | 도착 + 하카타 야경</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>교통/위치</th>
+                <th>비용</th>
+            </tr>
+            <tr>
+                <td class="time">15:20</td>
+                <td>인천공항 출발 (7C1405)</td>
+                <td>제주항공</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">16:55</td>
+                <td>후쿠오카 공항 도착</td>
+                <td>현지시간 (한국+0)</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">17:00-17:30</td>
+                <td>입국심사 + 수하물 찾기</td>
+                <td>Visit Japan Web QR</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">17:30-17:40</td>
+                <td>공항 → 하카타역 지하철</td>
+                <td>지하철 공항선 5분</td>
+                <td class="price">¥260</td>
+            </tr>
+            <tr>
+                <td class="time">18:00-18:30</td>
+                <td>호텔 체크인 + 짐 풀기</td>
+                <td>하카타역 도보 5분</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">18:30-19:00</td>
+                <td>편의점 장보기 (로손/세븐일레븐)</td>
+                <td>호텔 근처</td>
+                <td class="price">¥1,500</td>
+            </tr>
+            <tr>
+                <td class="time">20:00-21:30</td>
+                <td>저녁 식사 (Hakata Issou 또는 Shin Shin)</td>
+                <td>도보 8-10분</td>
+                <td class="price">¥1,000</td>
+            </tr>
+            <tr>
+                <td class="time">21:30-22:30</td>
+                <td>하카타역 야경 산책 + AMU Plaza</td>
+                <td>도보 탐방</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">23:00</td>
+                <td>호텔 복귀 / 취침</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>Day 1 동선 효율성</strong><br>
+            • 하카타역 중심 반경 1km 이내 활동<br>
+            • 첫날 피로도 고려한 가벼운 일정<br>
+            • 시차 없어 적응 용이 (한국과 동일 시간대)
+        </div>
+
+        <h3 class="section-subtitle">🗓️ Day 2 - 12월 18일 (수) | 오호리공원 + 시내 탐방</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>교통/위치</th>
+                <th>비용</th>
+            </tr>
+            <tr>
+                <td class="time">08:00-09:00</td>
+                <td>호텔 조식 또는 편의점 간편식</td>
+                <td>호텔</td>
+                <td class="price">¥500</td>
+            </tr>
+            <tr>
+                <td class="time">09:30</td>
+                <td>하카타역 → 오호리공원역</td>
+                <td>지하철 공항선 5분</td>
+                <td class="price">¥260</td>
+            </tr>
+            <tr>
+                <td class="time">09:40-11:30</td>
+                <td>오호리 공원 산책 (호수 둘레길 2km)</td>
+                <td>도보</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">11:30-12:30</td>
+                <td>후쿠오카 성 탐방</td>
+                <td>오호리공원에서 도보 10분</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">12:30-13:00</td>
+                <td>후쿠오카성 → 텐진</td>
+                <td>지하철 7분</td>
+                <td class="price">¥210</td>
+            </tr>
+            <tr>
+                <td class="time">14:00-15:00</td>
+                <td>점심 식사 (Shin Shin 또는 Ganso Mentaiju)</td>
+                <td>텐진역 도보 5분</td>
+                <td class="price">¥1,200</td>
+            </tr>
+            <tr>
+                <td class="time">15:00-17:00</td>
+                <td>텐진 지하상가 쇼핑</td>
+                <td>텐진역 직결</td>
+                <td class="price">¥5,000</td>
+            </tr>
+            <tr>
+                <td class="time">17:30-18:00</td>
+                <td>구시다 신사 방문</td>
+                <td>텐진 → 지하철 5분</td>
+                <td class="price">¥210</td>
+            </tr>
+            <tr>
+                <td class="time">18:00-19:00</td>
+                <td>캐널시티로 이동 + 분수쇼 관람</td>
+                <td>구시다 → 도보 15분</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">20:00-21:30</td>
+                <td>저녁 식사 (캐널시티 라멘 스타디움)</td>
+                <td>캐널시티 내부</td>
+                <td class="price">¥1,000</td>
+            </tr>
+            <tr>
+                <td class="time">22:00</td>
+                <td>하카타역 복귀</td>
+                <td>버스 또는 도보 20분</td>
+                <td class="price">¥100</td>
+            </tr>
+        </table>
+
+        <div class="success-box">
+            <strong>Day 2 동선 효율성</strong><br>
+            • 지하철 1일권 (¥640) 구매 추천 → <span class="price">¥200 절약</span><br>
+            • 오호리공원 → 후쿠오카성 → 텐진 → 구시다 → 캐널시티 순환 동선<br>
+            • 총 이동거리: 약 8km (도보 4km + 지하철 4km)
+        </div>
+
+        <h3 class="section-subtitle">🗓️ Day 3 - 12월 19일 (목) | 맛집 투어 + 쇼핑</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>교통/위치</th>
+                <th>비용</th>
+            </tr>
+            <tr>
+                <td class="time">09:00-10:00</td>
+                <td>호텔 조식</td>
+                <td>호텔</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">10:00-12:00</td>
+                <td>여유 시간 (호텔 휴식 or 근처 산책)</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">14:00-15:30</td>
+                <td>점심 식사 (Tempura Hirao 또는 Yamanaka)</td>
+                <td>하카타역 도보 10분</td>
+                <td class="price">¥1,500</td>
+            </tr>
+            <tr>
+                <td class="time">15:30-18:00</td>
+                <td>하카타역 AMU Plaza + 마루이 쇼핑</td>
+                <td>하카타역 직결</td>
+                <td class="price">¥10,000</td>
+            </tr>
+            <tr>
+                <td class="time">18:00-19:00</td>
+                <td>나카스 이동 + 포장마차 구경</td>
+                <td>지하철 7분</td>
+                <td class="price">¥210</td>
+            </tr>
+            <tr>
+                <td class="time">20:00-22:00</td>
+                <td>저녁 식사 (모츠나베 Kawashou 또는 야타이)</td>
+                <td>나카스 번화가</td>
+                <td class="price">¥4,000</td>
+            </tr>
+            <tr>
+                <td class="time">22:30</td>
+                <td>하카타역 복귀</td>
+                <td>지하철 7분</td>
+                <td class="price">¥210</td>
+            </tr>
+            <tr>
+                <td class="time">23:00</td>
+                <td>호텔 / 내일 쿠로가와 준비</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>Day 3 동선 효율성</strong><br>
+            • 하카타역 중심 + 나카스 야경 코스<br>
+            • 쇼핑과 식도락 집중 일정<br>
+            • 내일 쿠로가와 이동 대비 체력 관리
+        </div>
+
+        <h3 class="section-subtitle">🗓️ Day 4 - 12월 20일 (금) | 쿠로가와 온센 이동</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>교통/위치</th>
+                <th>비용</th>
+            </tr>
+            <tr>
+                <td class="time">07:00-08:00</td>
+                <td>호텔 조식 + 체크아웃 준비</td>
+                <td>호텔</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">08:00-08:30</td>
+                <td>호텔 체크아웃 + 짐 정리</td>
+                <td>큰 짐은 호텔 보관 또는 모두 챙기기</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">08:30-09:00</td>
+                <td>호텔 → 하카타 버스터미널</td>
+                <td>도보 5분</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">09:00-09:38</td>
+                <td>버스터미널 대기</td>
+                <td>박타 버스터미널 3층</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">09:38</td>
+                <td class="price">하카타 → 쿠로가와 온센 버스 출발</td>
+                <td>큐슈산코 버스 (예약 필수)</td>
+                <td class="price">¥3,470</td>
+            </tr>
+            <tr>
+                <td class="time">12:29</td>
+                <td>쿠로가와 온센 도착</td>
+                <td>약 3시간 소요</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td colspan="4"><em>(이후 일정은 섹션 6 "쿠로가와 온센 가이드" 참고)</em></td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ 큐슈산코 버스 예약 방법</strong><br><br>
+            <strong>온라인 예약 (추천):</strong><br>
+            • 웹사이트: <a href="https://www.highwaybus.com/gp/reservation/rsvPlanList?lineId=512" target="_blank">큐슈산코 버스 예약 페이지</a><br>
+            • 예약 시점: 최소 1주일 전 (성수기는 더 일찍)<br>
+            • 결제: 신용카드 (VISA/Master)<br>
+            • 예약 확인서: 이메일로 수신 (출력 또는 모바일 제시)<br><br>
+            <strong>전화 예약:</strong><br>
+            • 큐슈산코 버스 콜센터: +81-96-325-7114<br>
+            • 운영시간: 평일 09:00-18:00<br>
+            • 영어 가능 (일본어 더 원활)<br><br>
+            <strong>현장 구매 (비추천):</strong><br>
+            • 하카타 버스터미널 3층 매표소<br>
+            • 만석 위험 높음 (특히 주말/성수기)<br><br>
+            <strong>주의사항:</strong><br>
+            • 출발 10분 전 탑승 완료<br>
+            • 큰 짐은 버스 하부 수하물칸 이용<br>
+            • 좌석 지정제 (예약 시 좌석 선택)
+        </div>
+
+        <h3 class="section-subtitle">🗓️ Day 5 - 12월 21일 (토) | 쿠로가와 → 귀국</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>교통/위치</th>
+                <th>비용</th>
+            </tr>
+            <tr>
+                <td class="time">06:30-07:30</td>
+                <td>료칸 아침 대욕장 (일출 온천)</td>
+                <td>오야도 하나보우</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">08:00-09:00</td>
+                <td>일식 조식</td>
+                <td>료칸 식당</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">09:00-10:00</td>
+                <td>체크아웃 준비</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">10:00</td>
+                <td>료칸 체크아웃 (짐 보관 가능)</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">10:00-12:00</td>
+                <td>입탕 수형 나머지 2곳 + 산책</td>
+                <td>도보</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">12:00-13:30</td>
+                <td>온천가 산책 + 기념품 구매</td>
+                <td>녹색 스티커 할인 활용</td>
+                <td class="price">¥3,000</td>
+            </tr>
+            <tr>
+                <td class="time">13:30</td>
+                <td>버스 정류장 이동 + 짐 픽업</td>
+                <td>도보</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">14:00</td>
+                <td class="price">쿠로가와 → 후쿠오카 공항 버스 출발</td>
+                <td>큐슈산코 버스 (예약 필수)</td>
+                <td class="price">¥3,470</td>
+            </tr>
+            <tr>
+                <td class="time">16:30</td>
+                <td>후쿠오카 공항 도착 (약 2.5시간)</td>
+                <td>국제선 터미널</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">16:30-17:30</td>
+                <td>공항 면세점 쇼핑 + 간식</td>
+                <td>출국장 내부</td>
+                <td class="price">¥2,000</td>
+            </tr>
+            <tr>
+                <td class="time">13:55</td>
+                <td>후쿠오카 공항 출발 (BX157)</td>
+                <td>에어부산</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">15:30</td>
+                <td>인천공항 도착</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ Day 5 중요 체크포인트</strong><br>
+            • 쿠로가와 → 공항 버스 14:00 출발 <span class="price">사전 예약 필수!</span><br>
+            • 귀국편 13:55이므로 버스 시간 엄수 중요<br>
+            • 공항 도착 16:30 = 출발 2.5시간 전 여유 있음<br>
+            • 체크아웃 후 짐 보관하여 몸 가볍게 온천 투어
+        </div>
+    </div>
+
+    <!-- 8. 결제 -->
+    <div class="section" id="section8">
+        <h2 class="section-title">💳 8. 결제</h2>
+        
+        <h3 class="section-subtitle">💳 트래블로그 카드 중심 전략</h3>
+        
+        <div class="success-box">
+            <strong>✅ 트래블로그 카드 (하나카드) - 일본 여행 최적 카드</strong><br><br>
+            <strong>핵심 장점:</strong><br>
+            • 해외 수수료 <span class="price">0%</span> (일반 카드 1-2%)<br>
+            • 일본 엔화 결제 시 우대 환율 적용<br>
+            • 전월 실적 30만원 시 연회비 면제<br>
+            • VISA 제휴로 일본 전역 사용 가능<br>
+            • 실시간 환율 적용으로 투명한 결제<br><br>
+            <strong>일본 사용 시나리오:</strong><br>
+            • 숙소, 고급 레스토랑, 백화점 → 트래블로그 카드<br>
+            • 편의점 소액 결제 → 트래블로그 카드 또는 현금<br>
+            • 포장마차, 소규모 가게 → 현금<br>
+            • 교통비, 자판기 → 현금
+        </div>
+
+        <table>
+            <tr>
+                <th>결제 수단</th>
+                <th>비율</th>
+                <th>용도</th>
+                <th>수수료</th>
+            </tr>
+            <tr>
+                <td><strong>트래블로그 카드</strong></td>
+                <td class="price">70%</td>
+                <td>숙소, 고급 레스토랑, 백화점, 편의점</td>
+                <td class="price">0%</td>
+            </tr>
+            <tr>
+                <td><strong>일반 신용카드 (예비)</strong></td>
+                <td class="price">10%</td>
+                <td>트래블로그 한도 초과 시</td>
+                <td>1.0-1.5%</td>
+            </tr>
+            <tr>
+                <td><strong>현금</strong></td>
+                <td class="price">20%</td>
+                <td>포장마차, 소규모 가게, 교통, 자판기</td>
+                <td>환전 수수료</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">💵 현금 환전 가이드</h3>
+        
+        <table>
+            <tr>
+                <th>방법</th>
+                <th>환율</th>
+                <th>수수료</th>
+                <th>추천도</th>
+            </tr>
+            <tr>
+                <td><strong>한국 은행 환전</strong></td>
+                <td>기준</td>
+                <td>낮음</td>
+                <td class="price">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>공항 환전소</strong></td>
+                <td>-2~3%</td>
+                <td>높음</td>
+                <td class="price">⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>일본 편의점 ATM</strong></td>
+                <td>실시간</td>
+                <td>중간 (¥220)</td>
+                <td class="price">⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td><strong>일본 은행 ATM</strong></td>
+                <td>실시간</td>
+                <td>중간</td>
+                <td class="price">⭐⭐⭐</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>💡 추천 환전 전략</strong><br>
+            1. <strong>한국 출발 전:</strong> ¥50,000 환전 (긴급 현금)<br>
+            2. <strong>현지 편의점 ATM:</strong> 필요시 추가 인출<br>
+            &nbsp;&nbsp;&nbsp;• 세븐일레븐 ATM (한국 카드 대부분 지원)<br>
+            &nbsp;&nbsp;&nbsp;• 인출 수수료: ¥220/회<br>
+            &nbsp;&nbsp;&nbsp;• 한 번에 많이 인출하여 수수료 최소화<br>
+            3. <strong>트래블로그 카드 우선 사용:</strong> 큰 금액은 카드 결제
+        </div>
+
+        <h3 class="section-subtitle">🏪 편의점 ATM 사용법</h3>
+        
+        <div class="checklist">
+            <div class="checklist-item">세븐일레븐/로손 ATM 찾기</div>
+            <div class="checklist-item">카드 삽입</div>
+            <div class="checklist-item">"해외 발행 카드" 또는 "Foreign Card" 선택</div>
+            <div class="checklist-item">언어 선택 (English 권장)</div>
+            <div class="checklist-item">"Withdrawal (인출)" 선택</div>
+            <div class="checklist-item">"Savings Account" 선택</div>
+            <div class="checklist-item">금액 입력 (¥10,000 단위 권장)</div>
+            <div class="checklist-item">PIN 번호 입력 (4자리)</div>
+            <div class="checklist-item">영수증 받기 (환율 확인용)</div>
+        </div>
+
+        <h3 class="section-subtitle">💰 면세 (Tax Free) 가이드</h3>
+        
+        <div class="success-box">
+            <strong>✅ 면세 조건</strong><br>
+            • 1개 매장에서 <span class="price">¥5,000 이상</span> 구매 (세전)<br>
+            • 일반 물품: ¥5,000 이상<br>
+            • 소모품 (화장품/식품): ¥5,000-¥500,000<br>
+            • 여권 제시 필수<br>
+            • 구매 후 30일 이내 출국<br>
+            • 면세 비율: <span class="price">약 8-10%</span>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ 면세 주의사항</strong><br>
+            • 소모품은 일본 내 개봉 금지 (밀봉 포장)<br>
+            • 공항 출국 시 면세 영수증 제출<br>
+            • 여권에 부착된 면세 서류 훼손 금지
+        </div>
+
+        <h3 class="section-subtitle">🧾 주요 거래 일본어</h3>
+        <table>
+            <tr>
+                <th>한국어</th>
+                <th>일본어</th>
+                <th>발음</th>
+            </tr>
+            <tr>
+                <td>얼마예요?</td>
+                <td>いくらですか?</td>
+                <td>이쿠라 데스카?</td>
+            </tr>
+            <tr>
+                <td>카드 되나요?</td>
+                <td>カードは使えますか?</td>
+                <td>카-도와 츠카에마스카?</td>
+            </tr>
+            <tr>
+                <td>현금으로 할게요</td>
+                <td>現金で払います</td>
+                <td>겐킨데 하라이마스</td>
+            </tr>
+            <tr>
+                <td>영수증 주세요</td>
+                <td>レシートをください</td>
+                <td>레시-토오 쿠다사이</td>
+            </tr>
+            <tr>
+                <td>거스름돈</td>
+                <td>お釣り</td>
+                <td>오츠리</td>
+            </tr>
+            <tr>
+                <td>면세 가능한가요?</td>
+                <td>免税できますか?</td>
+                <td>멘제이 데키마스카?</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 9. 여행 경비 -->
+    <div class="section" id="section9">
+        <h2 class="section-title">💰 9. 여행 경비</h2>
+        
+        <h3 class="section-subtitle">✅ 확정 경비</h3>
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>금액 (원)</th>
+                <th>금액 (엔)</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td><strong>항공권</strong></td>
+                <td class="price">837,350원</td>
+                <td>-</td>
+                <td>제주항공+에어부산</td>
+            </tr>
+            <tr>
+                <td><strong>하카타 숙소 (3박)</strong></td>
+                <td class="price">533,131원</td>
+                <td>-</td>
+                <td>하카타역 근처 호텔</td>
+            </tr>
+            <tr>
+                <td><strong>쿠로가와 숙소 (1박)</strong></td>
+                <td class="price">351,880원</td>
+                <td>-</td>
+                <td>오야도 하나보우 (1박 2식)</td>
+            </tr>
+            <tr>
+                <td colspan="3"><strong>확정 경비 합계</strong></td>
+                <td class="price">1,722,361원</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📊 예상 추가 비용 (4박 5일)</h3>
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>1일 예산</th>
+                <th>5일 합계</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td><strong>식비</strong></td>
+                <td>¥5,000-8,000</td>
+                <td class="price">¥30,000</td>
+                <td>점심 ¥1,500 / 저녁 ¥3,500</td>
+            </tr>
+            <tr>
+                <td><strong>교통비</strong></td>
+                <td>¥500-1,000</td>
+                <td class="price">¥3,000</td>
+                <td>지하철 + 버스</td>
+            </tr>
+            <tr>
+                <td><strong>쿠로가와 버스 (왕복)</strong></td>
+                <td>-</td>
+                <td class="price">¥6,940</td>
+                <td>편도 ¥3,470 × 2</td>
+            </tr>
+            <tr>
+                <td><strong>입탕 수형 패스</strong></td>
+                <td>-</td>
+                <td class="price">¥1,300</td>
+                <td>3곳 온천 입장</td>
+            </tr>
+            <tr>
+                <td><strong>간식/음료/편의점</strong></td>
+                <td>¥1,000-2,000</td>
+                <td class="price">¥7,000</td>
+                <td>편의점 음식, 음료</td>
+            </tr>
+            <tr>
+                <td><strong>쇼핑/기념품</strong></td>
+                <td>개인차</td>
+                <td class="price">¥20,000</td>
+                <td>선택 사항</td>
+            </tr>
+            <tr>
+                <td><strong>예비비</strong></td>
+                <td>-</td>
+                <td class="price">¥10,000</td>
+                <td>긴급 상황 대비</td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>예상 추가 비용 합계</strong></td>
+                <td class="price">¥78,240</td>
+                <td>약 780,000원 (환율 1,000원 기준)</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">💵 총 여행 경비 요약</h3>
+        <div class="success-box">
+            <strong>💰 총 예상 경비</strong><br><br>
+            <strong>확정 경비:</strong> <span class="price">1,722,361원</span><br>
+            <strong>예상 추가 비용:</strong> <span class="price">약 780,000원</span> (¥78,240)<br>
+            <strong>총 합계:</strong> <span class="price" style="font-size:20px;">약 2,500,000원</span><br><br>
+            <em>* 환율 변동 및 개인 소비 패턴에 따라 차이 발생 가능</em>
+        </div>
+
+        <h3 class="section-subtitle">💡 절약 팁</h3>
+        <div class="info-box">
+            <strong>🎯 비용 절감 전략</strong><br><br>
+            <strong>식비 절약:</strong><br>
+            • 아침은 편의점 간편식 (¥500 이하)<br>
+            • 점심은 피크타임 회피 (14시 이후) - 대기시간 = 시간낭비 = 비용<br>
+            • 포장마차는 가성비 좋지만 관광객 가격 주의<br>
+            • 백화점 지하 식품관 (デパ地下) 폐점 전 할인 (19시 이후)<br><br>
+            <strong>교통비 절약:</strong><br>
+            • 지하철 1일권 (¥640) vs 개별 결제 비교 후 구매<br>
+            • Day 2만 1일권 구매 추천 (5회 이상 이용 시 이득)<br>
+            • 도보 가능 거리는 걷기 (하카타역 반경 1km)<br><br>
+            <strong>쇼핑 절약:</strong><br>
+            • 면세 혜택 최대 활용 (¥5,000 이상 구매)<br>
+            • 돈키호테 심야 할인 (23시 이후)<br>
+            • 100엔샵 (다이소/세리아) 활용
+        </div>
+
+        <h3 class="section-subtitle">📅 일일 예산 배분</h3>
+        <table>
+            <tr>
+                <th>날짜</th>
+                <th>식비</th>
+                <th>교통비</th>
+                <th>기타</th>
+                <th>합계</th>
+            </tr>
+            <tr>
+                <td><strong>Day 1</strong></td>
+                <td>¥2,500</td>
+                <td>¥300</td>
+                <td>¥1,500</td>
+                <td class="price">¥4,300</td>
+            </tr>
+            <tr>
+                <td><strong>Day 2</strong></td>
+                <td>¥6,000</td>
+                <td>¥850</td>
+                <td>¥5,000</td>
+                <td class="price">¥11,850</td>
+            </tr>
+            <tr>
+                <td><strong>Day 3</strong></td>
+                <td>¥7,000</td>
+                <td>¥630</td>
+                <td>¥10,000</td>
+                <td class="price">¥17,630</td>
+            </tr>
+            <tr>
+                <td><strong>Day 4</strong></td>
+                <td>¥3,000</td>
+                <td>¥3,470</td>
+                <td>¥1,300</td>
+                <td class="price">¥7,770</td>
+            </tr>
+            <tr>
+                <td><strong>Day 5</strong></td>
+                <td>¥2,000</td>
+                <td>¥3,470</td>
+                <td>¥5,000</td>
+                <td class="price">¥10,470</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 10. 여행 회화는 길이 문제로 핵심만 간략화 -->
+    <div class="section" id="section10">
+        <h2 class="section-title">💬 10. 여행 회화</h2>
+        
+        <h3 class="section-subtitle">🍽️ 식당에서</h3>
+        <table>
+            <tr>
+                <th>상황</th>
+                <th>일본어</th>
+                <th>발음</th>
+            </tr>
+            <tr>
+                <td>인원 2명이에요</td>
+                <td>二名です</td>
+                <td>니메-데스</td>
+            </tr>
+            <tr>
+                <td>메뉴판 주세요</td>
+                <td>メニューをください</td>
+                <td>메뉴-오 쿠다사이</td>
+            </tr>
+            <tr>
+                <td>이거 주세요</td>
+                <td>これをください</td>
+                <td>코레오 쿠다사이</td>
+            </tr>
+            <tr>
+                <td>추천 메뉴는?</td>
+                <td>おすすめは何ですか?</td>
+                <td>오스스메와 난데스카?</td>
+            </tr>
+            <tr>
+                <td>계산해 주세요</td>
+                <td>お会計お願いします</td>
+                <td>오카이케- 오네가이시마스</td>
+            </tr>
+            <tr>
+                <td>맛있었어요</td>
+                <td>美味しかったです</td>
+                <td>오이시캇타데스</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🙏 기본 예의</h3>
+        <table>
+            <tr>
+                <th>한국어</th>
+                <th>일본어</th>
+                <th>발음</th>
+            </tr>
+            <tr>
+                <td>감사합니다</td>
+                <td>ありがとうございます</td>
+                <td>아리가토- 고자이마스</td>
+            </tr>
+            <tr>
+                <td>죄송합니다</td>
+                <td>すみません</td>
+                <td>스미마센</td>
+            </tr>
+            <tr>
+                <td>네 / 아니요</td>
+                <td>はい / いいえ</td>
+                <td>하이 / 이-에</td>
+            </tr>
+            <tr>
+                <td>잘 먹겠습니다</td>
+                <td>いただきます</td>
+                <td>이타다키마스</td>
+            </tr>
+            <tr>
+                <td>잘 먹었습니다</td>
+                <td>ごちそうさまでした</td>
+                <td>고치소-사마데시타</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>💡 회화 팁</strong><br>
+            • 일본인은 공손한 표현 선호 - "~ください" 활용<br>
+            • 모를 땐 "すみません" (스미마센) 먼저 말하기<br>
+            • 영어보다 간단한 일본어가 더 통함<br>
+            • 구글 번역 앱 활용 (오프라인 다운로드 추천)<br>
+            • 손짓/메뉴판 가리키기도 효과적
+        </div>
+    </div>
+
+    <!-- 11-13 섹션은 핵심만 간략화 -->
+    <div class="section" id="section11">
+        <h2 class="section-title">🚨 11. 비상 대응 프로토콜</h2>
+        
+        <h3 class="section-subtitle">📞 긴급 연락처</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>번호</th>
+                <th>용도</th>
+            </tr>
+            <tr>
+                <td><strong>경찰</strong></td>
+                <td class="price">110</td>
+                <td>범죄, 분실, 도난</td>
+            </tr>
+            <tr>
+                <td><strong>소방/응급</strong></td>
+                <td class="price">119</td>
+                <td>화재, 응급 의료</td>
+            </tr>
+            <tr>
+                <td><strong>재한국대사관</strong></td>
+                <td class="price">+81-92-771-0461</td>
+                <td>여권 분실, 법적 문제</td>
+            </tr>
+            <tr>
+                <td><strong>영사 콜센터 (24시간)</strong></td>
+                <td class="price">+82-2-3210-0404</td>
+                <td>한국에서 상담 (국제전화)</td>
+            </tr>
+            <tr>
+                <td><strong>후쿠오카 관광안내</strong></td>
+                <td class="price">+81-92-751-6904</td>
+                <td>관광 정보 (한국어 가능)</td>
+            </tr>
+        </table>
+
+        <div class="checklist">
+            <div class="checklist-item">여권 사본 2부 (1부는 호텔 금고 보관)</div>
+            <div class="checklist-item">항공권 스크린샷 저장</div>
+            <div class="checklist-item">숙소 주소 일본어 카드 소지</div>
+            <div class="checklist-item">긴급 연락처 스마트폰 저장</div>
+            <div class="checklist-item">신용카드 긴급 정지 번호 메모</div>
+            <div class="checklist-item">해외여행자보험 증권번호 저장</div>
+        </div>
+    </div>
+
+    <div class="section" id="section12">
+        <h2 class="section-title">🍯 12. 꿀 팁</h2>
+        
+        <h3 class="section-subtitle">🏪 편의점 추천 음식</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">로손 (Lawson) 추천</div>
+            <table style="margin-top:15px;">
+                <tr>
+                    <th>제품</th>
+                    <th>가격</th>
+                    <th>특징</th>
+                </tr>
+                <tr>
+                    <td><strong>모찌롤</strong></td>
+                    <td class="price">¥343</td>
+                    <td>크림 가득한 찹쌀떡 롤케이크</td>
+                </tr>
+                <tr>
+                    <td><strong>모찌뿌요</strong></td>
+                    <td class="price">¥113</td>
+                    <td>쫄깃한 크림빵</td>
+                </tr>
+                <tr>
+                    <td><strong>가라아게군</strong></td>
+                    <td class="price">¥248</td>
+                    <td>일본식 치킨 (5개입)</td>
+                </tr>
+                <tr>
+                    <td><strong>호로요이</strong></td>
+                    <td class="price">¥162</td>
+                    <td>저도수 과일 소주 (3%)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">세븐일레븐 추천</div>
+            <table style="margin-top:15px;">
+                <tr>
+                    <th>제품</th>
+                    <th>가격</th>
+                    <th>특징</th>
+                </tr>
+                <tr>
+                    <td><strong>계란 샌드위치</strong></td>
+                    <td class="price">¥220</td>
+                    <td>부드러운 계란 샐러드</td>
+                </tr>
+                <tr>
+                    <td><strong>딸기 커스터드 샌드</strong></td>
+                    <td class="price">¥298</td>
+                    <td>계절 한정 (12월 가능)</td>
+                </tr>
+                <tr>
+                    <td><strong>오니기리 (참치마요)</strong></td>
+                    <td class="price">¥130</td>
+                    <td>간편 한 끼</td>
+                </tr>
+                <tr>
+                    <td><strong>세븐 프리미엄 라면</strong></td>
+                    <td class="price">¥198</td>
+                    <td>호텔에서 야식</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3 class="section-subtitle">💡 현지인 꿀팁 모음</h3>
+        
+        <div class="success-box">
+            <strong>🍜 맛집 대기 시간 최소화</strong><br>
+            • 점심: 14:00 이후 방문 → 대기 50% 감소<br>
+            • 저녁: 20:00 이후 방문 → 대기 60% 감소<br>
+            • 평일 > 주말 (가능하면 평일 방문)<br>
+            • 개점 직후/마감 1시간 전 노리기<br>
+            • 카운터 좌석이 테이블보다 빠름
+        </div>
+
+        <div class="success-box">
+            <strong>🛍️ 쇼핑 꿀팁</strong><br>
+            • 돈키호테 심야 할인 (23:00 이후) - 약 10-30% 세일<br>
+            • 백화점 지하 식품관 폐점 전 (19:00 이후) 반값 세일<br>
+            • 면세 한도 활용: ¥5,000 이상 구매 시 8-10% 할인<br>
+            • 100엔샵 (다이소/세리아) - 기념품 가성비 최고<br>
+            • 마루이 백화점 면세 카운터 친절 (한국어 가능)
+        </div>
+    </div>
+
+    <div class="section" id="section13">
+        <h2 class="section-title">🏯 13. 현지 문화</h2>
+        
+        <h3 class="section-subtitle">🙇 기본 예절</h3>
+        
+        <div class="warning-box">
+            <strong>⚠️ 절대 금지 행동</strong><br>
+            • 대중교통에서 큰 소리로 통화 금지<br>
+            • 길거리 흡연 금지 (지정 흡연구역만 가능)<br>
+            • 길거리에서 걸어가며 먹기 금지 (음식점 앞 제외)<br>
+            • 쓰레기 무단 투기 절대 금지 (쓰레기통 적음)<br>
+            • 문신 노출 시 온천/대중탕 입장 불가<br>
+            • 신발 신고 다다미방 출입 금지
+        </div>
+
+        <div class="info-box">
+            <strong>✅ 권장 행동</strong><br>
+            • 에스컬레이터: 오른쪽 정렬, 왼쪽 비우기<br>
+            • 전철: 내리는 사람 먼저, 조용히<br>
+            • 식당: 입장 전 인원수 손가락으로 표시<br>
+            • 계산: 카운터에서 (테이블 계산 드묾)<br>
+            • 팁 문화 없음 - 오히려 실례
+        </div>
+
+        <h3 class="section-subtitle">🍱 식사 매너</h3>
+        
+        <table>
+            <tr>
+                <th>행동</th>
+                <th>OK / NG</th>
+                <th>설명</th>
+            </tr>
+            <tr>
+                <td>젓가락 꽂아두기</td>
+                <td class="price">❌ NG</td>
+                <td>장례식 연상 - 절대 금지</td>
+            </tr>
+            <tr>
+                <td>그릇 들고 먹기</td>
+                <td class="price">✅ OK</td>
+                <td>밥그릇, 국그릇 들어도 됨</td>
+            </tr>
+            <tr>
+                <td>후루룩 소리내며 먹기</td>
+                <td class="price">✅ OK</td>
+                <td>라멘/소바는 소리내는 것이 예의</td>
+            </tr>
+            <tr>
+                <td>남기기</td>
+                <td class="price">✅ OK</td>
+                <td>억지로 다 먹을 필요 없음</td>
+            </tr>
+            <tr>
+                <td>식사 전 "잘 먹겠습니다"</td>
+                <td class="price">✅ OK</td>
+                <td>"いただきます" (이타다키마스)</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">⛩️ 신사 참배 순서</h3>
+        
+        <div class="info-box">
+            <strong>🙏 신사 참배 순서</strong><br><br>
+            <strong>1단계:</strong> 도리이(鳥居) 통과 시 가볍게 목례<br>
+            <strong>2단계:</strong> 손 씻기 (手水舎)<br>
+            &nbsp;&nbsp;&nbsp;① 오른손으로 국자 잡고 왼손 씻기<br>
+            &nbsp;&nbsp;&nbsp;② 왼손으로 바꿔 오른손 씻기<br>
+            &nbsp;&nbsp;&nbsp;③ 오른손에 물 담아 입 헹구기<br>
+            &nbsp;&nbsp;&nbsp;④ 왼손 다시 씻기<br>
+            &nbsp;&nbsp;&nbsp;⑤ 국자 세워 손잡이 씻기<br>
+            <strong>3단계:</strong> 본전 참배<br>
+            &nbsp;&nbsp;&nbsp;① 새전함에 동전 넣기 (¥5엔 행운의 숫자)<br>
+            &nbsp;&nbsp;&nbsp;② 방울 흔들기 (신 부르기)<br>
+            &nbsp;&nbsp;&nbsp;③ 2번 깊게 절하기<br>
+            &nbsp;&nbsp;&nbsp;④ 2번 박수치기<br>
+            &nbsp;&nbsp;&nbsp;⑤ 1번 깊게 절하기 (2礼2拍手1礼)<br>
+            <strong>4단계:</strong> 퇴장 시 도리이에서 뒤돌아 목례
+        </div>
+
+        <div class="success-box">
+            <strong>🌟 여행자를 위한 최종 조언</strong><br><br>
+            <strong>일본 여행의 핵심:</strong><br>
+            • 규칙을 지키면 최고로 편한 나라<br>
+            • 친절하지만 거리감 있는 문화 존중<br>
+            • 조용하고 배려하는 태도가 최고의 매너<br>
+            • 실수해도 "すみません"으로 대부분 해결<br>
+            • 현지인 따라하기 (관찰이 최고의 배움)<br><br>
+            <em>"When in Rome, do as the Romans do"<br>
+            - 로마에 가면 로마법을 따르라</em>
+        </div>
+    </div>
+
+<!-- Footer -->
+    <div class="footer">
+        <p><strong>🇯🇵 후쿠오카 + 쿠로가와 온센 여행 가이드</strong></p>
+        <p>2024년 12월 17일(화) ~ 21일(토) | 4박 5일</p>
+        <p style="margin-top:15px; font-size:12px; opacity:0.8;">
+            본 가이드의 모든 정보는 2024년 12월 기준이며, 실제 여행 시 변경될 수 있습니다.<br>
+            맛집 예약, 교통편 예약, 날씨 정보는 출발 전 재확인 필수입니다.
+        </p>
+        <p style="margin-top:20px; font-size:14px;">
+            ✈️ 안전하고 즐거운 여행 되세요! ✈️
+        </p>
+    </div>
+
+</div>  <!-- container 닫기 -->
+
+</body>
+</html>
