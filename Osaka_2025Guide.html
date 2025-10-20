@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오사카 + 교토 여행 가이드 | 2025.10.28-31</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+            line-height: 1.8;
+            color: #2c2c2c;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                        url('https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=1920') center/cover fixed;
+            padding-top: 70px;
+        }
+        
+        .container {
+            width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 0 50px rgba(0,0,0,0.3);
+        }
+        
+        /* 네비게이션 바 */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            padding: 0;
+        }
+        
+        .nav-container {
+            width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 3px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 헤더 */
+        .header {
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            color: white;
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1590559899731-a382839e5549?w=1200') center/cover;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 20px;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+        
+        .header .trip-info {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 섹션 */
+        .section {
+            padding: 50px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            color: #d63447;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #d63447;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            font-size: 22px;
+            color: #c62368;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        /* 테이블 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #d63447 0%, #c62368 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: #fef5f7;
+        }
+        
+        /* 체크리스트 */
+        .checklist {
+            background: #fff9e6;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 15px;
+        }
+        
+        .checklist-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #ffc107;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* 경고박스 */
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ff9800;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .warning-box strong {
+            color: #ff6b00;
+            font-size: 16px;
+        }
+        
+        /* 정보박스 */
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .info-box strong {
+            color: #1976d2;
+            font-size: 16px;
+        }
+        
+        /* 성공박스 */
+        .success-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success-box strong {
+            color: #2e7d32;
+            font-size: 16px;
+        }
+        
+        /* 링크 */
+        a {
+            color: #d63447;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed #d63447;
+            transition: all 0.3s;
+        }
+        
+        a:hover {
+            color: #c62368;
+            border-bottom: 1px solid #c62368;
+        }
+        
+        /* 지도 링크 스타일 */
+        .map-link {
+            display: inline-block;
+            background: #4caf50;
+            color: white !important;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-left: 8px;
+            border: none !important;
+            text-decoration: none;
+        }
+        
+        .map-link:hover {
+            background: #45a049;
+            transform: scale(1.05);
+            border: none !important;
+        }
+        
+        /* 리스트 */
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        /* 가격 하이라이트 */
+        .price {
+            color: #d63447;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* 시간 하이라이트 */
+        .time {
+            color: #2196f3;
+            font-weight: 600;
+        }
+        
+        /* 장소 하이라이트 */
+        .location {
+            color: #4caf50;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c2c2c;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+        
+        /* 맛집 카드 */
+        .restaurant-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .restaurant-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #d63447;
+            margin-bottom: 10px;
+        }
+        
+        .restaurant-rating {
+            color: #ffc107;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 모바일 반응형 (768px 이하) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            .container {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .nav-container {
+                width: 100%;
+                padding: 8px 10px;
+            }
+            
+            .nav-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                margin: 2px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+            
+            .header .subtitle {
+                font-size: 16px;
+            }
+            
+            .header .trip-info {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                margin: 20px 0 12px 0;
+            }
+            
+            /* 테이블 가로 스크롤 */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+            
+            /* 맛집 카드 */
+            .restaurant-card {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .restaurant-name {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+            
+            .restaurant-rating {
+                font-size: 14px;
+            }
+            
+            /* 박스들 */
+            .info-box, .warning-box, .success-box, .checklist {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .info-box strong, .warning-box strong, .success-box strong {
+                font-size: 14px;
+            }
+            
+            .checklist-item {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+            
+            /* 지도 링크 터치 최적화 */
+            .map-link {
+                padding: 8px 14px;
+                font-size: 12px;
+                margin-left: 5px;
+                display: inline-block;
+                margin-top: 5px;
+            }
+            
+            /* 가격/시간/장소 */
+            .price, .time, .location {
+                font-size: 14px;
+            }
+            
+            /* Footer */
+            .footer {
+                padding: 25px 20px;
+                font-size: 13px;
+            }
+            
+            /* 텍스트 읽기 편하게 */
+            p {
+                line-height: 1.7;
+                font-size: 15px;
+            }
+            
+            li {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+        }
+        
+        /* 작은 모바일 (480px 이하) */
+        @media screen and (max-width: 480px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .header .subtitle {
+                font-size: 14px;
+            }
+            
+            .section {
+                padding: 25px 15px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+            }
+            
+            .section-subtitle {
+                font-size: 17px;
+            }
+            
+            .nav-btn {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+            
+            th, td {
+                font-size: 12px;
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<div class="nav-bar">
+    <div class="nav-container">
+        <a href="#section1" class="nav-btn">사전 준비</a>
+        <a href="#section2" class="nav-btn">날씨 & 복장</a>
+        <a href="#section3" class="nav-btn">공항 이동</a>
+        <a href="#section4" class="nav-btn">음식 가이드</a>
+        <a href="#section5" class="nav-btn">관광명소</a>
+        <a href="#section6" class="nav-btn">나라 & 고베</a>
+        <a href="#section7" class="nav-btn">일정표</a>
+        <a href="#section8" class="nav-btn">결제 방법</a>
+        <a href="#section9" class="nav-btn">예산</a>
+        <a href="#section10" class="nav-btn">여행 회화</a>
+        <a href="#section11" class="nav-btn">비상 대응</a>
+        <a href="#section12" class="nav-btn">꿀 팁</a>
+        <a href="#section13" class="nav-btn">현지 문화</a>
+    </div>
+</div>
+
+<div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="header-content">
+            <h1>🇯🇵 오사카 + 교토 여행 가이드</h1>
+            <div class="subtitle">간사이 미식 탐방 & 고대 수도 여행 | 2025.10.28-31</div>
+            <div class="trip-info">
+                <strong>2025년 10월 28일(화) ~ 31일(금)</strong> | 3박 4일
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. 사전 준비 -->
+    <div class="section" id="section1">
+        <h2 class="section-title">📋 1. 사전 준비</h2>
+        
+        <h3 class="section-subtitle">✈️ 항공편 정보</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>출발</th>
+                <th>도착</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td><strong>가는 편</strong></td>
+                <td>2025.10.28 (화) 16:00 ICN</td>
+                <td>18:00 KIX (현지시각)</td>
+                <td>약 2시간 소요, 시차 없음</td>
+            </tr>
+            <tr>
+                <td><strong>오는 편</strong></td>
+                <td>2025.10.31 (금)</td>
+                <td>귀국편 상세 확인 필요</td>
+                <td>공항 3시간 전 도착 권장</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🏨 숙소 정보</h3>
+        <table>
+            <tr>
+                <th>기간</th>
+                <th>지역</th>
+                <th>추천 이유</th>
+            </tr>
+            <tr>
+                <td>10/28-31 (3박)</td>
+                <td><strong>난바(Namba) 지역</strong></td>
+                <td>도톤보리 도보 5-10분, 지하철 환승 편리, 식당/쇼핑 집중</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>🏨 추천 호텔 (난바 지역)</strong><br>
+            • <strong>크로스 호텔 오사카</strong> - 도톤보리 바로 앞, 루프탑 뷰 <a href="https://www.google.com/maps/search/?api=1&query=CROSS+HOTEL+OSAKA" target="_blank" class="map-link">📍 지도</a><br>
+            • <strong>스위소텔 난카이 오사카</strong> - 난바역 직결, 고층 뷰 <a href="https://www.google.com/maps/search/?api=1&query=Swissotel+Nankai+Osaka" target="_blank" class="map-link">📍 지도</a><br>
+            • <strong>도미 인 프리미엄 난바</strong> - 천연온천, 무료 야식 라멘 <a href="https://www.google.com/maps/search/?api=1&query=Dormy+Inn+Premium+Namba" target="_blank" class="map-link">📍 지도</a><br>
+            • <strong>더 로얄파크 호텔 아이코닉</strong> - 신사이바시 근처, 가성비 <a href="https://www.google.com/maps/search/?api=1&query=The+Royal+Park+Hotel+Iconic+Osaka+Midosuji" target="_blank" class="map-link">📍 지도</a>
+        </div>
+
+        <h3 class="section-subtitle">📱 필수 앱 & 사이트</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>앱/사이트</th>
+                <th>용도</th>
+            </tr>
+            <tr>
+                <td>🍽️ 맛집</td>
+                <td>타베로그 (Tabelog)</td>
+                <td>일본 맛집 평가 사이트, 예약 가능</td>
+            </tr>
+            <tr>
+                <td>🚇 교통</td>
+                <td>구글 지도 / Hyperdia</td>
+                <td>전철 노선 검색, 실시간 경로</td>
+            </tr>
+            <tr>
+                <td>🗺️ 지도</td>
+                <td>Google Maps (오프라인 다운)</td>
+                <td>길찾기 필수</td>
+            </tr>
+            <tr>
+                <td>💱 환율</td>
+                <td>Xe Currency</td>
+                <td>실시간 환율 확인</td>
+            </tr>
+            <tr>
+                <td>📡 통신</td>
+                <td>eSIM (Airalo/Ubigi)</td>
+                <td>출발 전 미리 구매</td>
+            </tr>
+            <tr>
+                <td>🎫 관광</td>
+                <td>Klook / KKday</td>
+                <td>유니버설 스튜디오, 투어 예약</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📦 짐 체크리스트</h3>
+        <div class="checklist">
+            <div class="checklist-item">여권 (유효기간 6개월 이상)</div>
+            <div class="checklist-item">트래블로그 카드 (해외 수수료 0%)</div>
+            <div class="checklist-item">일본 엔화 현금 ¥30,000-50,000</div>
+            <div class="checklist-item">eSIM 또는 포켓 와이파이</div>
+            <div class="checklist-item">보조배터리 10,000mAh 이상</div>
+            <div class="checklist-item">멀티 어댑터 (일본 A형, 110V)</div>
+            <div class="checklist-item">편한 운동화 (하루 2만보 이상)</div>
+            <div class="checklist-item">얇은 외투/가디건 (일교차 대비)</div>
+            <div class="checklist-item">작은 에코백 (일본은 비닐봉지 유료)</div>
+            <div class="checklist-item">상비약 (소화제, 진통제)</div>
+        </div>
+    </div>
+
+    <!-- 2. 날씨 & 복장 가이드 -->
+    <div class="section" id="section2">
+        <h2 class="section-title">🌤️ 2. 날씨 & 복장 가이드</h2>
+        
+        <h3 class="section-subtitle">🌡️ 10월 말 오사카/교토 날씨</h3>
+        <table>
+            <tr>
+                <th>지역</th>
+                <th>평균 기온</th>
+                <th>특징</th>
+            </tr>
+            <tr>
+                <td><strong>오사카</strong></td>
+                <td>최고 20-22°C / 최저 12-14°C</td>
+                <td>선선한 가을, 강수 확률 낮음</td>
+            </tr>
+            <tr>
+                <td><strong>교토</strong></td>
+                <td>최고 19-21°C / 최저 10-12°C</td>
+                <td>오사카보다 2-3도 낮음, 일교차 큼</td>
+            </tr>
+            <tr>
+                <td><strong>나라</strong></td>
+                <td>최고 19-21°C / 최저 10-13°C</td>
+                <td>야외 활동 많아 체감온도 낮음</td>
+            </tr>
+            <tr>
+                <td><strong>고베</strong></td>
+                <td>최고 20-22°C / 최저 13-15°C</td>
+                <td>바람 있음, 야경 시 쌀쌀</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">👔 추천 복장 (레이어링 필수)</h3>
+        
+        <div class="info-box">
+            <strong>🧥 기본 복장</strong><br>
+            • <strong>상의:</strong> 긴팔 티셔츠 + 얇은 가디건/후드집업 + 가벼운 바람막이<br>
+            • <strong>하의:</strong> 긴바지 (청바지, 면바지)<br>
+            • <strong>신발:</strong> 편한 운동화 (하루 2만보 이상)<br>
+            • <strong>액세서리:</strong> 얇은 목도리/스카프 (아침/저녁용)
+        </div>
+
+        <div class="warning-box">
+            <strong>🌙 야간 외출 시</strong><br>
+            • 교토/나라: 일교차 크므로 얇은 패딩 추천<br>
+            • 고베 야경: 바람막이 필수 (마야산/롯코산은 산악지대)<br>
+            • 실내는 난방 잘됨 - 레이어링 중요
+        </div>
+
+        <h3 class="section-subtitle">📅 날짜별 복장 추천</h3>
+        <table>
+            <tr>
+                <th>날짜</th>
+                <th>활동</th>
+                <th>복장</th>
+            </tr>
+            <tr>
+                <td>Day 1 (10/28)</td>
+                <td>도착 + 도톤보리 야경</td>
+                <td>경량 재킷 + 긴팔 티 + 청바지</td>
+            </tr>
+            <tr>
+                <td>Day 2 (10/29)</td>
+                <td>교토 당일치기</td>
+                <td>편한 옷 + 얇은 패딩 (사찰 신발 벗기 쉬운 것)</td>
+            </tr>
+            <tr>
+                <td>Day 3 (10/30)</td>
+                <td>나라 OR 고베</td>
+                <td>활동복 + 레이어드 (나라는 야외 많음)</td>
+            </tr>
+            <tr>
+                <td>Day 4 (10/31)</td>
+                <td>오사카 시내 + 귀국</td>
+                <td>편한 복장 (짐 정리 고려)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 3. 공항 이동 -->
+    <div class="section" id="section3">
+        <h2 class="section-title">✈️ 3. 간사이 공항 이동 & Visit Japan Web</h2>
+        
+        <h3 class="section-subtitle">🚄 간사이 공항 → 난바 이동 방법</h3>
+        <table>
+            <tr>
+                <th>교통수단</th>
+                <th>소요시간</th>
+                <th>요금</th>
+                <th>특징</th>
+            </tr>
+            <tr>
+                <td><strong>난카이 라피트</strong></td>
+                <td>38분</td>
+                <td>¥1,450 (지정석 ¥1,790)</td>
+                <td>✅ 가장 빠르고 편함, 짐 공간 넉넉</td>
+            </tr>
+            <tr>
+                <td><strong>난카이 공항급행</strong></td>
+                <td>45분</td>
+                <td>¥930</td>
+                <td>가성비 좋음, 자유석</td>
+            </tr>
+            <tr>
+                <td><strong>JR 하루카</strong></td>
+                <td>50분</td>
+                <td>¥1,710</td>
+                <td>교토 가는 경우 유용, 난바는 비추</td>
+            </tr>
+        </table>
+
+        <div class="success-box">
+            <strong>💡 추천: 난카이 라피트 α/β</strong><br>
+            • 공항 2층 출구 → 난카이 전철 개찰구<br>
+            • 티켓: 현장 자동발매기 또는 온라인 사전 구매<br>
+            • 난바역 도착 후 호텔까지 도보 5-15분
+        </div>
+
+        <h3 class="section-subtitle">⚡ Visit Japan Web 사전 등록 (필수!)</h3>
+        
+        <div class="info-box">
+            <strong>🚀 입국 대기시간 30분 이상 단축</strong><br>
+            출발 2주 전부터 등록 가능 (강력 추천!)
+        </div>
+
+        <div class="warning-box">
+            <strong>📝 등록 절차</strong><br>
+            1. Visit Japan Web 접속: <a href="https://vjw-lp.digital.go.jp/ko/" target="_blank">https://vjw-lp.digital.go.jp/ko/</a><br>
+            2. 계정 생성 (이메일 회원가입)<br>
+            3. 여행 일정 등록: 입국/출국 날짜, 항공편명, 숙소 주소<br>
+            4. 입국 심사 정보: 여권 사진 업로드, 질문지 작성<br>
+            5. 세관 신고: 휴대품 신고서 작성<br>
+            6. QR 코드 생성: 완료 후 스크린샷 저장<br><br>
+            
+            <strong>✈️ 공항 도착 후:</strong><br>
+            ① 입국 심사대에서 QR 코드 제시<br>
+            ② 자동 게이트 통과 (지문 인식)<br>
+            ③ 세관에서 QR 코드 제시 → 빠른 통과<br><br>
+            
+            ⚠️ <strong>주의:</strong> 반드시 출발 전 등록 (공항 와이파이 느림), QR 코드 오프라인 저장 필수
+        </div>
+
+        <h3 class="section-subtitle">📶 공항에서 바로 해결</h3>
+        <div class="info-box">
+            <strong>📱 유심/eSIM:</strong><br>
+            • eSIM 추천: 에어알로(Airalo), Ubigi 사전 구매<br>
+            • 유심: 클룩/KKday 공항 수령 (¥1,500-3,000/7일)<br><br>
+            
+            <strong>💴 환전:</strong><br>
+            • 한국에서 일부 환전 후, 편의점 ATM 인출 권장<br>
+            • 세븐일레븐 ATM에서 트래블로그 카드로 엔화 인출
+        </div>
+    </div>
+
+    <!-- 4. 음식 가이드 -->
+    <div class="section" id="section4">
+        <h2 class="section-title">🍜 4. 오사카 음식 가이드</h2>
+        
+        <h3 class="section-subtitle">🏆 오사카 3대 음식</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">1. 타코야키 (たこ焼き) - 문어빵</div>
+            <p><strong>설명:</strong> 오사카 대표 B급 먹거리, 겉은 바삭 속은 부드러운 문어 볼</p>
+            <p><strong>추천 가게:</strong></p>
+            <ul>
+                <li><strong>아카시야 (道頓堀 くくる)</strong> - 도톤보리 본점, 크리미한 맛 <a href="https://www.google.com/maps/search/?api=1&query=道頓堀くくる+大阪" target="_blank" class="map-link">📍 지도</a></li>
+                <li><strong>크레오루 난바점</strong> - 타베로그 3.5+, 진한 소스 <a href="https://www.google.com/maps/search/?api=1&query=くれおーる+難波" target="_blank" class="map-link">📍 지도</a></li>
+            </ul>
+            <p><strong>가격:</strong> <span class="price">¥500-800 (6-8개)</span></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">2. 오코노미야키 (お好み焼き) - 일본식 팬케이크</div>
+            <p><strong>설명:</strong> 밀가루 반죽에 양배추, 고기, 해산물 등을 넣고 철판에 구운 요리</p>
+            <p><strong>추천 가게:</strong></p>
+            <ul>
+                <li><strong>치보 (千房)</strong> - 도톤보리 본점, 60년 전통 <a href="https://www.google.com/maps/search/?api=1&query=千房+道頓堀本店" target="_blank" class="map-link">📍 지도</a></li>
+                <li><strong>미즈노 (美津の)</strong> - 야마이모 듬뿍, 부드러움 <a href="https://www.google.com/maps/search/?api=1&query=美津の+大阪" target="_blank" class="map-link">📍 지도</a></li>
+            </ul>
+            <p><strong>가격:</strong> <span class="price">¥1,000-1,800</span></p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">3. 쿠시카츠 (串カツ) - 꼬치튀김</div>
+            <p><strong>설명:</strong> 고기, 채소, 해산물을 꼬치에 꽂아 튀긴 음식. ⚠️ 소스 2번 찍기 금지!</p>
+            <p><strong>추천 가게:</strong></p>
+            <ul>
+                <li><strong>다루마 (串かつだるま)</strong> - 신세카이 본점, 저렴하고 푸짐 <a href="https://www.google.com/maps/search/?api=1&query=串かつだるま+新世界" target="_blank" class="map-link">📍 지도</a></li>
+                <li><strong>쿠시카츠 텐구 (天狗)</strong> - 도톤보리, 24시간 영업 <a href="https://www.google.com/maps/search/?api=1&query=串カツ天狗+道頓堀" target="_blank" class="map-link">📍 지도</a></li>
+            </ul>
+            <p><strong>가격:</strong> <span class="price">¥100-300/꼬치, 세트 ¥1,500-2,500</span></p>
+        </div>
+
+        <h3 class="section-subtitle">🍣 도톤보리 맛집 Top 5</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">긴류 라멘 (金龍ラーメン) <a href="https://www.google.com/maps/search/?api=1&query=金龍ラーメン+道頓堀" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 타베로그 3.46</div>
+            <p><strong>메뉴:</strong> 돈코츠 라멘 (오사카 스타일, 진한 국물)</p>
+            <p><strong>가격:</strong> <span class="price">¥800-1,000</span></p>
+            <p><strong>특징:</strong> 24시간 영업, 도톤보리 상징, 대기 짧음</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">야키니쿠 키타마츠 (焼肉きたまつ) <a href="https://www.google.com/maps/search/?api=1&query=焼肉きたまつ+大阪" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 타베로그 3.7+</div>
+            <p><strong>메뉴:</strong> 고급 야키니쿠, 와규</p>
+            <p><strong>가격:</strong> <span class="price">¥5,000-10,000</span></p>
+            <p><strong>예약:</strong> 인스타그램 DM 또는 타베로그 (필수)</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">이치란 라멘 도톤보리점 (一蘭) <a href="https://www.google.com/maps/search/?api=1&query=一蘭+道頓堀店" target="_blank" class="map-link">📍 지도</a></div>
+            <div class="restaurant-rating">⭐ 타베로그 3.5</div>
+            <p><strong>메뉴:</strong> 돈코츠 라멘 (1인 부스 시스템)</p>
+            <p><strong>가격:</strong> <span class="price">¥980-1,200</span></p>
+            <p><strong>특징:</strong> 24시간 영업, 한국 관광객 많음</p>
+        </div>
+
+        <div class="warning-box">
+            <strong>🎯 피크타임 회피 전략</strong><br>
+            • 점심: 14:00 이후 방문 (12-13시 피크)<br>
+            • 저녁: 20:00 이후 방문 (18-19시 피크)<br>
+            • 효과: 대기시간 50% 단축
+        </div>
+    </div>
+
+    <!-- 5. 관광명소 -->
+    <div class="section" id="section5">
+        <h2 class="section-title">🏯 5. 오사카 관광명소</h2>
+        
+        <h3 class="section-subtitle">🎯 오사카 필수 코스 Top 5</h3>
+        
+        <table>
+            <tr>
+                <th>명소</th>
+                <th>설명</th>
+                <th>소요시간</th>
+                <th>입장료</th>
+            </tr>
+            <tr>
+                <td><strong>도톤보리 (道頓堀)</strong> <a href="https://www.google.com/maps/search/?api=1&query=道頓堀+大阪" target="_blank" class="map-link">📍</a></td>
+                <td>오사카 대표 번화가, 글리코 간판, 먹자골목</td>
+                <td>2-3시간</td>
+                <td>무료</td>
+            </tr>
+            <tr>
+                <td><strong>오사카성 (大阪城)</strong> <a href="https://www.google.com/maps/search/?api=1&query=大阪城" target="_blank" class="map-link">📍</a></td>
+                <td>일본 3대 명성, 전망대에서 오사카 시내 전경</td>
+                <td>2-3시간</td>
+                <td>¥600</td>
+            </tr>
+            <tr>
+                <td><strong>신사이바시 (心斎橋)</strong> <a href="https://www.google.com/maps/search/?api=1&query=心斎橋+大阪" target="_blank" class="map-link">📍</a></td>
+                <td>쇼핑 천국, 명품부터 약국까지</td>
+                <td>2-3시간</td>
+                <td>무료</td>
+            </tr>
+            <tr>
+                <td><strong>우메다 스카이 빌딩</strong> <a href="https://www.google.com/maps/search/?api=1&query=梅田スカイビル" target="_blank" class="map-link">📍</a></td>
+                <td>173m 높이 공중 정원, 360도 파노라마 야경</td>
+                <td>1-2시간</td>
+                <td>¥1,500</td>
+            </tr>
+            <tr>
+                <td><strong>쿠로몬 시장 (黒門市場)</strong> <a href="https://www.google.com/maps/search/?api=1&query=黒門市場+大阪" target="_blank" class="map-link">📍</a></td>
+                <td>오사카 부엌, 신선한 해산물, 과일</td>
+                <td>1-2시간</td>
+                <td>무료 (먹거리 별도)</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🌙 야경 명소</h3>
+        <div class="info-box">
+            <strong>우메다 스카이 빌딩 공중정원</strong><br>
+            • 최고의 오사카 야경 스팟<br>
+            • 추천 시간: 일몰 1시간 전 (17:00-18:00 입장)<br>
+            • 낮→노을→밤 3가지 풍경 감상<br><br>
+            
+            <strong>도톤보리 밤 풍경</strong><br>
+            • 네온사인 거리, 글리코 간판 야경<br>
+            • 추천 시간: 19:00-22:00<br>
+            • 에비스바시(戎橋) 다리에서 단체 사진 필수
+        </div>
+    </div>
+
+    <!-- 6. 나라 & 고베 가이드 -->
+    <div class="section" id="section6">
+        <h2 class="section-title">🦌 6. Day 3 선택: 나라 vs 고베</h2>
+        
+        <div class="warning-box">
+            <strong>⚠️ 3일차는 나라 OR 고베 중 선택!</strong><br>
+            • 나라: 자연 + 사슴 + 문화유산 (가족/힐링 여행 추천)<br>
+            • 고베: 야경 + 고베규 + 이국적 항구 (커플/미식 여행 추천)<br>
+            • 둘 다 오사카에서 당일치기 가능 (왕복 2-3시간)
+        </div>
+
+        <h3 class="section-subtitle">🦌 Option A: 나라 당일치기</h3>
+        
+        <table>
+            <tr>
+                <th>명소</th>
+                <th>설명</th>
+                <th>소요시간</th>
+                <th>입장료</th>
+            </tr>
+            <tr>
+                <td><strong>나라 공원</strong> <a href="https://www.google.com/maps/search/?api=1&query=奈良公園" target="_blank" class="map-link">📍</a></td>
+                <td>1,200마리 사슴이 자유롭게 돌아다님</td>
+                <td>1-2시간</td>
+                <td>무료 (사슴 과자 ¥200)</td>
+            </tr>
+            <tr>
+                <td><strong>도다이지 (東大寺)</strong> <a href="https://www.google.com/maps/search/?api=1&query=東大寺" target="_blank" class="map-link">📍</a></td>
+                <td>세계 최대 목조 건물, 대불상</td>
+                <td>1시간</td>
+                <td>¥600</td>
+            </tr>
+            <tr>
+                <td><strong>카스가 타이샤</strong> <a href="https://www.google.com/maps/search/?api=1&query=春日大社" target="_blank" class="map-link">📍</a></td>
+                <td>3,000개 석등이 있는 신사</td>
+                <td>30분</td>
+                <td>무료 (내부 ¥500)</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>🚇 교통편 (난바 → 나라)</strong><br>
+            • <strong>킨테츠 나라선 (近鉄奈良線)</strong><br>
+            &nbsp;&nbsp;- 난바역 → 킨테츠나라역: 약 35분, ¥680<br>
+            &nbsp;&nbsp;- 급행 이용 시 환승 불필요<br>
+            &nbsp;&nbsp;- 역에서 나라공원까지 도보 5분<br><br>
+            
+            <strong>📅 추천 일정 (5-6시간)</strong><br>
+            09:00 난바 출발<br>
+            10:00 나라 도착 → 나라 공원 사슴과 교감<br>
+            11:30 도다이지 대불 관람<br>
+            13:00 나라마치에서 점심<br>
+            14:30 카스가 타이샤 관람<br>
+            15:30 나라 출발<br>
+            16:30 오사카 도착
+        </div>
+
+        <div class="warning-box">
+            <strong>🦌 나라 사슴 주의사항</strong><br>
+            • 사슴 과자 있으면 적극적으로 다가옴 (조심!)<br>
+            • 종이, 비닐봉지 먹으려 함 - 가방 꼭 닫기<br>
+            • 먹이 없으면 인사 (고개 숙이기) → 사슴도 답례<br>
+            • 절대 등 뒤에서 놀라게 하지 말 것
+        </div>
+
+        <h3 class="section-subtitle">🌃 Option B: 고베 당일치기</h3>
+        
+        <table>
+            <tr>
+                <th>명소</th>
+                <th>설명</th>
+                <th>소요시간</th>
+            </tr>
+            <tr>
+                <td><strong>메리켄 파크</strong> <a href="https://www.google.com/maps/search/?api=1&query=メリケンパーク+神戸" target="_blank" class="map-link">📍</a></td>
+                <td>항구 공원, 고베 포트 타워, 모토마치</td>
+                <td>1-2시간</td>
+            </tr>
+            <tr>
+                <td><strong>키타노 이진칸</strong> <a href="https://www.google.com/maps/search/?api=1&query=北野異人館+神戸" target="_blank" class="map-link">📍</a></td>
+                <td>서양식 이국적 거리, 포토존</td>
+                <td>1-2시간</td>
+            </tr>
+            <tr>
+                <td><strong>마야산/롯코산 야경</strong> <a href="https://www.google.com/maps/search/?api=1&query=摩耶山+神戸" target="_blank" class="map-link">📍</a></td>
+                <td>일본 3대 야경, 1,000만 달러 야경</td>
+                <td>2-3시간</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>🚇 교통편 (난바 → 고베)</strong><br>
+            • <strong>한큐선 또는 JR</strong><br>
+            &nbsp;&nbsp;- 오사카 → 산노미야: 약 30-40분, ¥410-560<br>
+            &nbsp;&nbsp;- 산노미야가 고베 중심지<br><br>
+            
+            <strong>📅 추천 일정 (7-8시간)</strong><br>
+            10:00 난바 출발<br>
+            11:00 고베 산노미야 도착 → 키타노 이진칸 산책<br>
+            13:00 고베규 런치 (스테이크랜드 또는 이시다)<br>
+            15:00 메리켄 파크 + 하버랜드<br>
+            17:00 롯코산/마야산 이동 (케이블카)<br>
+            18:30 야경 감상 (일몰 후)<br>
+            20:00 산노미야로 하산 → 저녁<br>
+            21:30 오사카 복귀
+        </div>
+
+        <h3 class="section-subtitle">🥩 고베규 맛집</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">스테이크랜드 (ステーキランド) <a href="https://www.google.com/maps/search/?api=1&query=ステーキランド+神戸" target="_blank" class="map-link">📍 지도</a></div>
+            <p><strong>가격:</strong> <span class="price">런치 ¥2,500-5,000 / 디너 ¥5,000-10,000</span></p>
+            <p><strong>특징:</strong> 가성비 좋은 고베규, 런치 세트 추천</p>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">이시다 (石田) <a href="https://www.google.com/maps/search/?api=1&query=神戸牛ステーキ石田" target="_blank" class="map-link">📍 지도</a></div>
+            <p><strong>가격:</strong> <span class="price">¥8,000-15,000</span></p>
+            <p><strong>특징:</strong> 프리미엄 고베규, 예약 필수</p>
+        </div>
+    </div>
+
+    <!-- 7. 일정표 -->
+    <div class="section" id="section7">
+        <h2 class="section-title">📅 7. 3박 4일 상세 일정표</h2>
+        
+        <h3 class="section-subtitle">📆 Day 1 (10/28 화요일) - 도착 & 도톤보리</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>일정</th>
+                <th>세부사항</th>
+            </tr>
+            <tr>
+                <td class="time">16:00</td>
+                <td>인천공항 출발</td>
+                <td>제공된 항공편 정보 확인</td>
+            </tr>
+            <tr>
+                <td class="time">18:00</td>
+                <td>간사이 공항 도착</td>
+                <td>Visit Japan Web QR 코드로 빠른 입국</td>
+            </tr>
+            <tr>
+                <td class="time">18:30</td>
+                <td>난카이 라피트 탑승</td>
+                <td>공항 → 난바역 (38분, ¥1,450)</td>
+            </tr>
+            <tr>
+                <td class="time">19:30</td>
+                <td>호텔 체크인</td>
+                <td>난바 지역 호텔</td>
+            </tr>
+            <tr>
+                <td class="time">20:00</td>
+                <td><strong>도톤보리 야경 탐방</strong></td>
+                <td>글리코 간판, 네온사인 거리<br>타코야키 또는 라멘으로 저녁</td>
+            </tr>
+            <tr>
+                <td class="time">22:00</td>
+                <td>호텔 복귀</td>
+                <td>편의점 장보기, 휴식</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📆 Day 2 (10/29 수요일) - 교토 당일치기</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>일정</th>
+                <th>세부사항</th>
+            </tr>
+            <tr>
+                <td class="time">08:00</td>
+                <td>호텔 조식 & 출발 준비</td>
+                <td>편한 옷, 얇은 패딩 준비</td>
+            </tr>
+            <tr>
+                <td class="time">09:00</td>
+                <td>난바 → 교토 이동</td>
+                <td>한큐선 또는 JR (약 50분, ¥630-900)</td>
+            </tr>
+            <tr>
+                <td class="time">10:00</td>
+                <td><strong>후시미 이나리 신사</strong> <a href="https://www.google.com/maps/search/?api=1&query=伏見稲荷大社" target="_blank" class="map-link">📍</a></td>
+                <td>천 개의 붉은 도리이<br>정상까지 왕복 2시간 (체력 따라)</td>
+            </tr>
+            <tr>
+                <td class="time">12:30</td>
+                <td>점심 (교토역 또는 기온)</td>
+                <td>교토 우동/소바 추천</td>
+            </tr>
+            <tr>
+                <td class="time">14:00</td>
+                <td><strong>기요미즈데라 (청수사)</strong> <a href="https://www.google.com/maps/search/?api=1&query=清水寺" target="_blank" class="map-link">📍</a></td>
+                <td>입장료 ¥500<br>니넨자카/산넨자카 거리 산책</td>
+            </tr>
+            <tr>
+                <td class="time">16:00</td>
+                <td><strong>기온 & 하나미코지</strong> <a href="https://www.google.com/maps/search/?api=1&query=祇園+八坂神社" target="_blank" class="map-link">📍</a></td>
+                <td>게이샤 거리, 야사카 신사</td>
+            </tr>
+            <tr>
+                <td class="time">18:00</td>
+                <td>교토 → 오사카 복귀</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">19:30</td>
+                <td>저녁 (오사카)</td>
+                <td>오코노미야키 또는 쿠시카츠</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">📆 Day 3 (10/30 목요일) - 나라 OR 고베</h3>
+        <div class="warning-box">
+            <strong>선택지:</strong><br>
+            • <strong>나라:</strong> 위 Section 6 나라 일정 참고<br>
+            • <strong>고베:</strong> 위 Section 6 고베 일정 참고<br><br>
+            저녁은 오사카 복귀 후 신사이바시/난바에서 쇼핑 + 식사
+        </div>
+
+        <h3 class="section-subtitle">📆 Day 4 (10/31 금요일) - 오사카 시내 & 귀국</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>일정</th>
+                <th>세부사항</th>
+            </tr>
+            <tr>
+                <td class="time">08:00</td>
+                <td>호텔 조식</td>
+                <td>체크아웃 (짐 호텔 보관 or 역 코인라커)</td>
+            </tr>
+            <tr>
+                <td class="time">09:00</td>
+                <td><strong>오사카성</strong> <a href="https://www.google.com/maps/search/?api=1&query=大阪城" target="_blank" class="map-link">📍</a></td>
+                <td>입장료 ¥600, 천수각 전망대<br>소요시간 1.5시간</td>
+            </tr>
+            <tr>
+                <td class="time">11:00</td>
+                <td><strong>쿠로몬 시장</strong></td>
+                <td>신선한 해산물, 과일 간식</td>
+            </tr>
+            <tr>
+                <td class="time">12:30</td>
+                <td>신사이바시 쇼핑</td>
+                <td>마지막 쇼핑, 약국 들리기</td>
+            </tr>
+            <tr>
+                <td class="time">14:00</td>
+                <td>호텔 복귀 & 짐 찾기</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="time">15:00</td>
+                <td>난바 → 공항 이동</td>
+                <td>난카이 라피트 (38분)</td>
+            </tr>
+            <tr>
+                <td class="time">16:00</td>
+                <td>간사이 공항 도착</td>
+                <td>체크인, 면세점</td>
+            </tr>
+            <tr>
+                <td class="time">귀국편</td>
+                <td>인천 도착</td>
+                <td>항공편에 따라</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 8. 결제 방법 -->
+    <div class="section" id="section8">
+        <h2 class="section-title">💳 8. 결제 방법 가이드</h2>
+        
+        <h3 class="section-subtitle">💰 추천 결제 전략</h3>
+        
+        <div class="success-box">
+            <strong>🏆 트래블로그 카드 (최우선 추천)</strong><br>
+            • 해외 수수료: <span class="price">0%</span><br>
+            • 환율: 실시간 Visa/Master 환율 (수수료 없음)<br>
+            • 혜택: 해외 사용액 0.2% 적립<br>
+            • 사용처: 일본 전역 카드 결제 가능한 곳<br>
+            • ATM 인출: 가능 (세븐일레븐, 로손 ATM)
+        </div>
+
+        <h3 class="section-subtitle">💴 현금 vs 카드 비중</h3>
+        <table>
+            <tr>
+                <th>결제 수단</th>
+                <th>비중</th>
+                <th>사용처</th>
+            </tr>
+            <tr>
+                <td><strong>트래블로그 카드</strong></td>
+                <td>70%</td>
+                <td>호텔, 식당, 편의점, 대형 매장</td>
+            </tr>
+            <tr>
+                <td><strong>일본 엔화 현금</strong></td>
+                <td>30%</td>
+                <td>소규모 식당, 노점, 교통 (일부), 사찰 입장료</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>💵 현금 권장 금액</strong><br>
+            • <strong>환전:</strong> 한국에서 ¥30,000-50,000 환전<br>
+            • <strong>ATM 추가 인출:</strong> 필요 시 세븐일레븐/로손 ATM 이용<br>
+            • 트래블로그 카드로 현지 ATM 인출 시 수수료 약 1-2% (한국 환전보다 유리)
+        </div>
+
+        <h3 class="section-subtitle">🏧 현지 ATM 사용법</h3>
+        <div class="warning-box">
+            <strong>세븐일레븐/로손 ATM</strong><br>
+            1. 카드 삽입<br>
+            2. "English" 또는 "한국어" 선택<br>
+            3. "Withdrawal" (인출) 선택<br>
+            4. 금액 입력 (¥10,000 단위 추천)<br>
+            5. 수수료 확인 후 진행<br>
+            6. 영수증 받기 (환율 기록용)
+        </div>
+
+        <h3 class="section-subtitle">📱 기타 결제 수단</h3>
+        <table>
+            <tr>
+                <th>결제 방법</th>
+                <th>가능 여부</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td>Samsung Pay</td>
+                <td>⭕ 가능</td>
+                <td>일부 매장에서 사용 가능</td>
+            </tr>
+            <tr>
+                <td>Apple Pay</td>
+                <td>⭕ 가능</td>
+                <td>교통카드 등록 가능</td>
+            </tr>
+            <tr>
+                <td>PayPay (일본 앱)</td>
+                <td>△ 제한적</td>
+                <td>일본 은행 계좌/카드 필요</td>
+            </tr>
+            <tr>
+                <td>Alipay/WeChat Pay</td>
+                <td>△ 일부</td>
+                <td>관광지 위주로 가능</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 9. 예산 -->
+    <div class="section" id="section9">
+        <h2 class="section-title">💰 9. 여행 경비 (예산 약 130만원)</h2>
+        
+        <h3 class="section-subtitle">📊 항목별 예산 (1인 기준)</h3>
+        <table>
+            <tr>
+                <th>항목</th>
+                <th>금액 (원)</th>
+                <th>금액 (엔)</th>
+                <th>세부 내역</th>
+            </tr>
+            <tr>
+                <td><strong>항공권</strong></td>
+                <td class="price">300,000</td>
+                <td>-</td>
+                <td>인천 ↔ 간사이 왕복 (성수기 변동)</td>
+            </tr>
+            <tr>
+                <td><strong>숙박 (3박)</strong></td>
+                <td class="price">450,000</td>
+                <td>¥45,000</td>
+                <td>난바 지역 호텔 (1박 ¥15,000 x 3)</td>
+            </tr>
+            <tr>
+                <td><strong>교통비</strong></td>
+                <td class="price">80,000</td>
+                <td>¥8,000</td>
+                <td>공항↔시내, 지하철, 교토/나라/고베</td>
+            </tr>
+            <tr>
+                <td><strong>식비</strong></td>
+                <td class="price">300,000</td>
+                <td>¥30,000</td>
+                <td>조식 ¥1,500 / 중식 ¥2,000 / 석식 ¥5,000</td>
+            </tr>
+            <tr>
+                <td><strong>관광/입장료</strong></td>
+                <td class="price">50,000</td>
+                <td>¥5,000</td>
+                <td>오사카성, 사찰, 전망대 등</td>
+            </tr>
+            <tr>
+                <td><strong>쇼핑/기타</strong></td>
+                <td class="price">200,000</td>
+                <td>¥20,000</td>
+                <td>기념품, 약국, 간식 등</td>
+            </tr>
+            <tr style="background:#ffe5ec;">
+                <td><strong>총합</strong></td>
+                <td class="price"><strong>1,380,000원</strong></td>
+                <td><strong>¥108,000</strong></td>
+                <td>여유 예산 포함</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">💡 절약 팁</h3>
+        <div class="info-box">
+            <strong>🎯 비용 절감 전략</strong><br>
+            • <strong>숙소:</strong> 호스텔/게스트하우스 선택 시 1박 ¥5,000-8,000 (50% 절약)<br>
+            • <strong>식사:</strong> 편의점 도시락 (¥500-800), 우동/라멘 (¥800-1,000) 활용<br>
+            • <strong>교통:</strong> JR 패스 대신 일반 지하철 이용 (3박4일은 패스 비효율)<br>
+            • <strong>관광:</strong> 무료 명소 중심 (도톤보리, 신사이바시, 나라 공원 등)<br>
+            • <strong>쇼핑:</strong> 돈키호테, 다이소 등 저가 매장 활용
+        </div>
+
+        <h3 class="section-subtitle">🍜 식사 예산 세부</h3>
+        <table>
+            <tr>
+                <th>식사</th>
+                <th>예산 (엔)</th>
+                <th>추천 메뉴</th>
+            </tr>
+            <tr>
+                <td>조식</td>
+                <td>¥800-1,500</td>
+                <td>호텔 조식 or 편의점 도시락</td>
+            </tr>
+            <tr>
+                <td>중식</td>
+                <td>¥1,500-2,500</td>
+                <td>우동/소바/라멘/규동</td>
+            </tr>
+            <tr>
+                <td>석식</td>
+                <td>¥3,000-6,000</td>
+                <td>오코노미야키/쿠시카츠/야키니쿠</td>
+            </tr>
+            <tr>
+                <td>간식</td>
+                <td>¥500-1,000</td>
+                <td>타코야키/디저트/음료</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ 추가 비용 주의</strong><br>
+            • 고베규 풀코스: +¥10,000-20,000 추가 예산 필요<br>
+            • 유니버설 스튜디오 재팬: 1일권 ¥8,600 (가지 않음 가정)<br>
+            • 쇼핑 과소비 방지: 사전 리스트 작성 권장
+        </div>
+    </div>
+
+    <!-- 10. 여행 회화는 길이 문제로 핵심만 간략화 -->
+    <div class="section" id="section10">
+        <h2 class="section-title">💬 10. 여행 회화</h2>
+        
+        <h3 class="section-subtitle">🍽️ 식당에서</h3>
+        <table>
+            <tr>
+                <th>상황</th>
+                <th>일본어</th>
+                <th>발음</th>
+            </tr>
+            <tr>
+                <td>인원 2명이에요</td>
+                <td>二名です</td>
+                <td>니메-데스</td>
+            </tr>
+            <tr>
+                <td>메뉴판 주세요</td>
+                <td>メニューをください</td>
+                <td>메뉴-오 쿠다사이</td>
+            </tr>
+            <tr>
+                <td>이거 주세요</td>
+                <td>これをください</td>
+                <td>코레오 쿠다사이</td>
+            </tr>
+            <tr>
+                <td>추천 메뉴는?</td>
+                <td>おすすめは何ですか?</td>
+                <td>오스스메와 난데스카?</td>
+            </tr>
+            <tr>
+                <td>계산해 주세요</td>
+                <td>お会計お願いします</td>
+                <td>오카이케- 오네가이시마스</td>
+            </tr>
+            <tr>
+                <td>맛있었어요</td>
+                <td>美味しかったです</td>
+                <td>오이시캇타데스</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">🙏 기본 예의</h3>
+        <table>
+            <tr>
+                <th>한국어</th>
+                <th>일본어</th>
+                <th>발음</th>
+            </tr>
+            <tr>
+                <td>감사합니다</td>
+                <td>ありがとうございます</td>
+                <td>아리가토- 고자이마스</td>
+            </tr>
+            <tr>
+                <td>죄송합니다</td>
+                <td>すみません</td>
+                <td>스미마센</td>
+            </tr>
+            <tr>
+                <td>네 / 아니요</td>
+                <td>はい / いいえ</td>
+                <td>하이 / 이-에</td>
+            </tr>
+            <tr>
+                <td>잘 먹겠습니다</td>
+                <td>いただきます</td>
+                <td>이타다키마스</td>
+            </tr>
+            <tr>
+                <td>잘 먹었습니다</td>
+                <td>ごちそうさまでした</td>
+                <td>고치소-사마데시타</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>💡 회화 팁</strong><br>
+            • 일본인은 공손한 표현 선호 - "~ください" 활용<br>
+            • 모를 땐 "すみません" (스미마센) 먼저 말하기<br>
+            • 영어보다 간단한 일본어가 더 통함<br>
+            • 구글 번역 앱 활용 (오프라인 다운로드 추천)<br>
+            • 손짓/메뉴판 가리키기도 효과적
+        </div>
+    </div>
+
+    <!-- 11-13 섹션은 핵심만 간략화 -->
+    <div class="section" id="section11">
+        <h2 class="section-title">🚨 11. 비상 대응 프로토콜</h2>
+        
+        <h3 class="section-subtitle">📞 긴급 연락처</h3>
+        <table>
+            <tr>
+                <th>구분</th>
+                <th>번호</th>
+                <th>용도</th>
+            </tr>
+            <tr>
+                <td><strong>경찰</strong></td>
+                <td class="price">110</td>
+                <td>범죄, 분실, 도난</td>
+            </tr>
+            <tr>
+                <td><strong>소방/응급</strong></td>
+                <td class="price">119</td>
+                <td>화재, 응급 의료</td>
+            </tr>
+            <tr>
+                <td><strong>재한국대사관</strong></td>
+                <td class="price">+81-92-771-0461</td>
+                <td>여권 분실, 법적 문제</td>
+            </tr>
+            <tr>
+                <td><strong>영사 콜센터 (24시간)</strong></td>
+                <td class="price">+82-2-3210-0404</td>
+                <td>한국에서 상담 (국제전화)</td>
+            </tr>
+            <tr>
+                <td><strong>후쿠오카 관광안내</strong></td>
+                <td class="price">+81-92-751-6904</td>
+                <td>관광 정보 (한국어 가능)</td>
+            </tr>
+        </table>
+
+        <div class="checklist">
+            <div class="checklist-item">여권 사본 2부 (1부는 호텔 금고 보관)</div>
+            <div class="checklist-item">항공권 스크린샷 저장</div>
+            <div class="checklist-item">숙소 주소 일본어 카드 소지</div>
+            <div class="checklist-item">긴급 연락처 스마트폰 저장</div>
+            <div class="checklist-item">신용카드 긴급 정지 번호 메모</div>
+            <div class="checklist-item">해외여행자보험 증권번호 저장</div>
+        </div>
+    </div>
+
+    <div class="section" id="section12">
+        <h2 class="section-title">🍯 12. 꿀 팁</h2>
+        
+        <h3 class="section-subtitle">🏪 편의점 추천 음식</h3>
+        
+        <div class="restaurant-card">
+            <div class="restaurant-name">로손 (Lawson) 추천</div>
+            <table style="margin-top:15px;">
+                <tr>
+                    <th>제품</th>
+                    <th>가격</th>
+                    <th>특징</th>
+                </tr>
+                <tr>
+                    <td><strong>모찌롤</strong></td>
+                    <td class="price">¥343</td>
+                    <td>크림 가득한 찹쌀떡 롤케이크</td>
+                </tr>
+                <tr>
+                    <td><strong>모찌뿌요</strong></td>
+                    <td class="price">¥113</td>
+                    <td>쫄깃한 크림빵</td>
+                </tr>
+                <tr>
+                    <td><strong>가라아게군</strong></td>
+                    <td class="price">¥248</td>
+                    <td>일본식 치킨 (5개입)</td>
+                </tr>
+                <tr>
+                    <td><strong>호로요이</strong></td>
+                    <td class="price">¥162</td>
+                    <td>저도수 과일 소주 (3%)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="restaurant-card">
+            <div class="restaurant-name">세븐일레븐 추천</div>
+            <table style="margin-top:15px;">
+                <tr>
+                    <th>제품</th>
+                    <th>가격</th>
+                    <th>특징</th>
+                </tr>
+                <tr>
+                    <td><strong>계란 샌드위치</strong></td>
+                    <td class="price">¥220</td>
+                    <td>부드러운 계란 샐러드</td>
+                </tr>
+                <tr>
+                    <td><strong>딸기 커스터드 샌드</strong></td>
+                    <td class="price">¥298</td>
+                    <td>계절 한정 (12월 가능)</td>
+                </tr>
+                <tr>
+                    <td><strong>오니기리 (참치마요)</strong></td>
+                    <td class="price">¥130</td>
+                    <td>간편 한 끼</td>
+                </tr>
+                <tr>
+                    <td><strong>세븐 프리미엄 라면</strong></td>
+                    <td class="price">¥198</td>
+                    <td>호텔에서 야식</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3 class="section-subtitle">💡 현지인 꿀팁 모음</h3>
+        
+        <div class="success-box">
+            <strong>🍜 맛집 대기 시간 최소화</strong><br>
+            • 점심: 14:00 이후 방문 → 대기 50% 감소<br>
+            • 저녁: 20:00 이후 방문 → 대기 60% 감소<br>
+            • 평일 > 주말 (가능하면 평일 방문)<br>
+            • 개점 직후/마감 1시간 전 노리기<br>
+            • 카운터 좌석이 테이블보다 빠름
+        </div>
+
+        <div class="success-box">
+            <strong>🛍️ 쇼핑 꿀팁</strong><br>
+            • 돈키호테 심야 할인 (23:00 이후) - 약 10-30% 세일<br>
+            • 백화점 지하 식품관 폐점 전 (19:00 이후) 반값 세일<br>
+            • 면세 한도 활용: ¥5,000 이상 구매 시 8-10% 할인<br>
+            • 100엔샵 (다이소/세리아) - 기념품 가성비 최고<br>
+            • 마루이 백화점 면세 카운터 친절 (한국어 가능)
+        </div>
+    </div>
+
+    <div class="section" id="section13">
+        <h2 class="section-title">🏯 13. 현지 문화</h2>
+        
+        <h3 class="section-subtitle">🙇 기본 예절</h3>
+        
+        <div class="warning-box">
+            <strong>⚠️ 절대 금지 행동</strong><br>
+            • 대중교통에서 큰 소리로 통화 금지<br>
+            • 길거리 흡연 금지 (지정 흡연구역만 가능)<br>
+            • 길거리에서 걸어가며 먹기 금지 (음식점 앞 제외)<br>
+            • 쓰레기 무단 투기 절대 금지 (쓰레기통 적음)<br>
+            • 문신 노출 시 온천/대중탕 입장 불가<br>
+            • 신발 신고 다다미방 출입 금지
+        </div>
+
+        <div class="info-box">
+            <strong>✅ 권장 행동</strong><br>
+            • 에스컬레이터: 오른쪽 정렬, 왼쪽 비우기<br>
+            • 전철: 내리는 사람 먼저, 조용히<br>
+            • 식당: 입장 전 인원수 손가락으로 표시<br>
+            • 계산: 카운터에서 (테이블 계산 드묾)<br>
+            • 팁 문화 없음 - 오히려 실례
+        </div>
+
+        <h3 class="section-subtitle">🍱 식사 매너</h3>
+        
+        <table>
+            <tr>
+                <th>행동</th>
+                <th>OK / NG</th>
+                <th>설명</th>
+            </tr>
+            <tr>
+                <td>젓가락 꽂아두기</td>
+                <td class="price">❌ NG</td>
+                <td>장례식 연상 - 절대 금지</td>
+            </tr>
+            <tr>
+                <td>그릇 들고 먹기</td>
+                <td class="price">✅ OK</td>
+                <td>밥그릇, 국그릇 들어도 됨</td>
+            </tr>
+            <tr>
+                <td>후루룩 소리내며 먹기</td>
+                <td class="price">✅ OK</td>
+                <td>라멘/소바는 소리내는 것이 예의</td>
+            </tr>
+            <tr>
+                <td>남기기</td>
+                <td class="price">✅ OK</td>
+                <td>억지로 다 먹을 필요 없음</td>
+            </tr>
+            <tr>
+                <td>식사 전 "잘 먹겠습니다"</td>
+                <td class="price">✅ OK</td>
+                <td>"いただきます" (이타다키마스)</td>
+            </tr>
+        </table>
+
+        <h3 class="section-subtitle">⛩️ 신사 참배 순서</h3>
+        
+        <div class="info-box">
+            <strong>🙏 신사 참배 순서</strong><br><br>
+            <strong>1단계:</strong> 도리이(鳥居) 통과 시 가볍게 목례<br>
+            <strong>2단계:</strong> 손 씻기 (手水舎)<br>
+            &nbsp;&nbsp;&nbsp;① 오른손으로 국자 잡고 왼손 씻기<br>
+            &nbsp;&nbsp;&nbsp;② 왼손으로 바꿔 오른손 씻기<br>
+            &nbsp;&nbsp;&nbsp;③ 오른손에 물 담아 입 헹구기<br>
+            &nbsp;&nbsp;&nbsp;④ 왼손 다시 씻기<br>
+            &nbsp;&nbsp;&nbsp;⑤ 국자 세워 손잡이 씻기<br>
+            <strong>3단계:</strong> 본전 참배<br>
+            &nbsp;&nbsp;&nbsp;① 새전함에 동전 넣기 (¥5엔 행운의 숫자)<br>
+            &nbsp;&nbsp;&nbsp;② 방울 흔들기 (신 부르기)<br>
+            &nbsp;&nbsp;&nbsp;③ 2번 깊게 절하기<br>
+            &nbsp;&nbsp;&nbsp;④ 2번 박수치기<br>
+            &nbsp;&nbsp;&nbsp;⑤ 1번 깊게 절하기 (2礼2拍手1礼)<br>
+            <strong>4단계:</strong> 퇴장 시 도리이에서 뒤돌아 목례
+        </div>
+
+        <div class="success-box">
+            <strong>🌟 여행자를 위한 최종 조언</strong><br><br>
+            <strong>일본 여행의 핵심:</strong><br>
+            • 규칙을 지키면 최고로 편한 나라<br>
+            • 친절하지만 거리감 있는 문화 존중<br>
+            • 조용하고 배려하는 태도가 최고의 매너<br>
+            • 실수해도 "すみません"으로 대부분 해결<br>
+            • 현지인 따라하기 (관찰이 최고의 배움)<br><br>
+            <em>"When in Rome, do as the Romans do"<br>
+            - 로마에 가면 로마법을 따르라</em>
+        </div>
+    </div>
+
+<!-- Footer -->
+    <div class="footer">
+        <p><strong>🇯🇵 오사카 + 교토 여행 가이드</strong></p>
+        <p>2025년 10월 28일(화) ~ 31일(금) | 3박 4일</p>
+        <p style="margin-top:15px; font-size:12px; opacity:0.8;">
+            본 가이드의 모든 정보는 2024년 12월 기준이며, 실제 여행 시 변경될 수 있습니다.<br>
+            맛집 예약, 교통편 예약, 날씨 정보는 출발 전 재확인 필수입니다.
+        </p>
+        <p style="margin-top:20px; font-size:14px;">
+            ✈️ 안전하고 즐거운 여행 되세요! ✈️
+        </p>
+    </div>
+
+</div>  <!-- container 닫기 -->
+
+</body>
+</html>
