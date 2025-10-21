@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA App Download Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Mode - Warm & Comfortable */
+            --primary-green: #2d9a5a;
+            --secondary-gray: #5a6c7d;
+            --disabled-gray: #d4d9dd;
+            --bg-light: #f7f6f3;
+            --bg-white: #fefefe;
+            --bg-card: #ffffff;
+            --text-dark: #2c3338;
+            --text-medium: #5a6c7d;
+            --text-light: #8b95a1;
+            --border-color: #e4e6e8;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --error-red: #d64545;
+            --success-green: #2d9a5a;
+            --accent-blue: #4a90e2;
+        }
+
+        body.dark-mode {
+            /* Dark Mode - Soft Navy (GitHub Dark Dimmed inspired) */
+            --primary-green: #4db87d;
+            --secondary-gray: #8b949e;
+            --disabled-gray: #373e47;
+            --bg-light: #1c2128;
+            --bg-white: #22272e;
+            --bg-card: #2d333b;
+            --text-dark: #e6edf3;
+            --text-medium: #adbac7;
+            --text-light: #768390;
+            --border-color: #373e47;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.5);
+            --error-red: #f47067;
+            --success-green: #4db87d;
+            --accent-blue: #6cb6ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-dark);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--bg-light);
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .auth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background-color: var(--success-green);
+            color: white;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 0.25rem;
+            transition: transform 0.2s;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            width: 200px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .home-hero {
+            background-color: var(--bg-card);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .home-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .home-hero p {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: var(--text-medium);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .guide-section {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .guide-section h2 {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .guide-section ol {
+            padding-left: 1.5rem;
+            color: var(--text-medium);
+            line-height: 1.8;
+        }
+
+        /* Project Page */
+        .project-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .env-section {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .env-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .env-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .env-title h3 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--text-light);
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-dark);
+            color: var(--bg-card);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--text-dark);
+        }
+
+        .info-icon:hover .tooltip {
+            opacity: 1;
+        }
+
+        .env-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .date-display {
+            padding: 0.3rem 0.6rem;
+            background-color: var(--bg-light);
+            border-radius: 4px;
+            min-width: 140px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .date-display.empty {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--accent-blue);
+            transition: transform 0.2s;
+        }
+
+        .edit-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .builds-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .build-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+        }
+
+        .build-btn.new {
+            background-color: var(--success-green);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .build-btn.old {
+            background-color: var(--secondary-gray);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .build-btn.disabled {
+            background-color: var(--disabled-gray);
+            cursor: not-allowed;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .build-btn.disabled::after {
+            content: '준비 중';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #f59e0b;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .build-btn:not(.disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .build-btn.new:hover {
+            background-color: #268d4e;
+        }
+
+        .build-btn.old:hover {
+            background-color: #4a5664;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.primary {
+            background-color: var(--success-green);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background-color: #268d4e;
+        }
+
+        .modal-btn.secondary {
+            background-color: var(--secondary-gray);
+            color: white;
+        }
+
+        .modal-btn.secondary:hover {
+            background-color: #4a5664;
+        }
+
+        .error-message {
+            background-color: rgba(214, 69, 69, 0.15);
+            border: 1px solid var(--error-red);
+            color: var(--error-red);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        body.dark-mode .error-message {
+            background-color: rgba(244, 112, 103, 0.15);
+        }
+
+        /* iOS Note */
+        .ios-note {
+            background-color: rgba(245, 158, 11, 0.15);
+            border-left: 4px solid #f59e0b;
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .ios-note strong {
+            color: var(--text-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-nav {
+                justify-content: center;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .search-input:focus {
+                width: 100%;
+            }
+
+            .home-hero h1 {
+                font-size: 2rem;
+            }
+
+            .builds-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .env-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+
+            .nav-btn {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .home-hero {
+                padding: 2rem 1rem;
+            }
+
+            .home-hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .builds-grid {
+                gap: 0.75rem;
+            }
+
+            .build-btn {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .auth-badge {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-title">📱 QA App Hub</div>
+            <nav class="header-nav" id="navContainer"></nav>
+            <div class="header-actions">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="프로젝트 검색...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container" id="mainContainer"></main>
+
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h3>🔐 비밀번호 입력</h3>
+            <div class="error-message" id="passwordError">
+                비밀번호가 틀렸습니다.<br>퍼블리싱 QA1팀에 문의하세요.
+            </div>
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요" />
+            <div class="modal-actions">
+                <button class="modal-btn secondary" id="passwordCancel">취소</button>
+                <button class="modal-btn primary" id="passwordSubmit">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Edit Modal -->
+    <div class="modal" id="dateModal">
+        <div class="modal-content">
+            <h3>날짜 수정</h3>
+            <input type="date" id="dateInput" />
+            <div class="modal-actions">
+                <button class="modal-btn secondary" id="modalCancel">취소</button>
+                <button class="modal-btn primary" id="modalSave">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Configuration
+        const APP_DATA = {
+            projects: [
+                {
+                    id: 'epic7',
+                    name: 'Epic Seven',
+                    password: 'EP7',
+                    environments: [
+                        {
+                            id: 'live',
+                            name: 'Live',
+                            description: '서비스 환경 (운영 서버)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Live_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Live_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa1',
+                            name: 'QA1',
+                            description: '서비스와 동일한 환경 (프로덕션 미러링)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA1_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA1_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa2',
+                            name: 'QA2',
+                            description: '업데이트 타겟 환경 (다음 버전 테스트)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA2_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA2_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa3',
+                            name: 'QA3',
+                            description: '로컬라이제이션 환경 (번역/지역화 테스트)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA3_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA3_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'test',
+                            name: 'Test App',
+                            description: '기타 테스트 환경 (특수 테스트용)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test1.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test2.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Test1.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test1.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Test2.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test2.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'huawei-live',
+                            name: 'Huawei - Live',
+                            description: 'Huawei AppGallery 마켓 전용 빌드 (Live 환경)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_Live_New_Huawei.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_Live_Old_Huawei.apk'
+                            }
+                        },
+                        {
+                            id: 'huawei-qa2',
+                            name: 'Huawei - QA2',
+                            description: 'Huawei AppGallery 마켓 전용 빌드 (QA2 환경)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_QA2_New_Huawei.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_QA2_Old_Huawei.apk'
+                            }
+                        },
+                        {
+                            id: 'gpg-live',
+                            name: 'GPG - Live',
+                            description: 'GPG 마켓 전용 빌드 (Live 환경)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_Live_New_GPG.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_Live_Old_GPG.apk'
+                            }
+                        },
+                        {
+                            id: 'gpg-qa2',
+                            name: 'GPG - QA2',
+                            description: 'GPG 마켓 전용 빌드 (QA2 환경)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_QA2_New_GPG.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_QA2_Old_GPG.apk'
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'chaos',
+                    name: 'ChaosZero',
+                    password: 'CZN',
+                    environments: [
+                        {
+                            id: 'live',
+                            name: 'Live',
+                            description: '서비스 환경 (운영 서버)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Old_New.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Live_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Live_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa1',
+                            name: 'QA1',
+                            description: '서비스와 동일한 환경 (프로덕션 미러링)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA1_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA1_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa2',
+                            name: 'QA2',
+                            description: '업데이트 타겟 환경 (다음 버전 테스트)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA2_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA2_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'qa3',
+                            name: 'QA3',
+                            description: '로컬라이제이션 환경 (번역/지역화 테스트)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_New.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_Old.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA3_New.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_New.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA3_Old.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_Old.ipa'
+                                }
+                            }
+                        },
+                        {
+                            id: 'test',
+                            name: 'Test App',
+                            description: '기타 테스트 환경 (특수 테스트용)',
+                            builds: {
+                                android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test1.apk',
+                                android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test2.apk',
+                                ios_new: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Test1.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test1.ipa'
+                                },
+                                ios_old: {
+                                    plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Test2.plist',
+                                    direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test2.ipa'
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    id: 'lordnine',
+                    name: 'LordNine',
+                    password: 'LD9',
+                    environments: [
+                        {
+                            id: 'qa1',
+                            name: 'QA1',
+                            description: '서비스와 동일한 환경 (프로덕션 미러링)',
+                            builds: {}
+                        },
+                        {
+                            id: 'qa2',
+                            name: 'QA2',
+                            description: '업데이트 타겟 환경 (다음 버전 테스트)',
+                            builds: {}
+                        },
+                        {
+                            id: 'qa3',
+                            name: 'QA3',
+                            description: '로컬라이제이션 환경 (번역/지역화 테스트)',
+                            builds: {}
+                        },
+                        {
+                            id: 'test',
+                            name: 'Test App',
+                            description: '기타 테스트 환경 (특수 테스트용)',
+                            builds: {}
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // State Management
+        let currentPage = 'home';
+        let currentEditTarget = null;
+        let pendingProjectId = null;
+
+        // Initialize App
+        function init() {
+            loadDarkMode();
+            renderNav();
+            renderPages();
+            attachEventListeners();
+            loadLastTab();
+            setupIOSDoubleClick();
+        }
+
+        // Dark Mode
+        function loadDarkMode() {
+            const darkMode = localStorage.getItem('qa_app_dark_mode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').textContent = '☀️';
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('qa_app_dark_mode', isDark);
+            document.getElementById('darkModeToggle').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        // Authentication
+        function checkAuth(projectId) {
+            const authKey = `qa_app_auth_${projectId}`;
+            return localStorage.getItem(authKey) === 'true';
+        }
+
+        function authenticate(projectId, password) {
+            const project = APP_DATA.projects.find(p => p.id === projectId);
+            if (project && project.password === password) {
+                localStorage.setItem(`qa_app_auth_${projectId}`, 'true');
+                return true;
+            }
+            return false;
+        }
+
+        function logout(projectId) {
+            localStorage.removeItem(`qa_app_auth_${projectId}`);
+            switchPage('home');
+            renderNav();
+        }
+
+        function getAuthenticatedProjects() {
+            return APP_DATA.projects.filter(p => checkAuth(p.id));
+        }
+
+        function openPasswordModal(projectId) {
+            pendingProjectId = projectId;
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').classList.remove('show');
+            document.getElementById('passwordModal').classList.add('active');
+            setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').classList.remove('active');
+            pendingProjectId = null;
+        }
+
+        function submitPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (authenticate(pendingProjectId, password)) {
+                const projectId = pendingProjectId; // Save before closing modal
+                closePasswordModal();
+                renderNav(); // Update nav to show auth badge
+                switchPage(projectId); // Now switch to the project page
+            } else {
+                const errorEl = document.getElementById('passwordError');
+                errorEl.classList.remove('show');
+                setTimeout(() => errorEl.classList.add('show'), 10);
+            }
+        }
+
+        // Navigation
+        function renderNav() {
+            const navContainer = document.getElementById('navContainer');
+            const navItems = [{ id: 'home', label: 'Home' }];
+            
+            // Add project buttons
+            APP_DATA.projects.forEach(p => {
+                navItems.push({ id: p.id, label: p.name });
+            });
+
+            // Add auth badges
+            const authProjects = getAuthenticatedProjects();
+            
+            navContainer.innerHTML = navItems.map(item => 
+                `<button class="nav-btn ${item.id === currentPage ? 'active' : ''}" 
+                         data-page="${item.id}">${item.label}</button>`
+            ).join('');
+
+            // Add auth badges after nav buttons
+            if (authProjects.length > 0) {
+                const badgesHtml = authProjects.map(p => `
+                    <span class="auth-badge">
+                        🔓 ${p.name}
+                        <button class="logout-btn" data-project="${p.id}" title="로그아웃">×</button>
+                    </span>
+                `).join('');
+                navContainer.innerHTML += badgesHtml;
+            }
+        }
+
+        // Render Pages
+        function renderPages() {
+            const mainContainer = document.getElementById('mainContainer');
+            mainContainer.innerHTML = `
+                ${renderHomePage()}
+                ${APP_DATA.projects.map(project => renderProjectPage(project)).join('')}
+            `;
+        }
+
+        function renderHomePage() {
+            return `
+                <div class="page ${currentPage === 'home' ? 'active' : ''}" id="page-home">
+                    <div class="home-hero">
+                        <h1>🎮 QA App Download Hub</h1>
+                        <p>내부 테스트를 위한 게임 빌드 다운로드 센터입니다.</p>
+                        <p>각 프로젝트별 환경에 맞는 빌드를 빠르게 다운로드할 수 있습니다.</p>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>🟢 Live</h3>
+                            <p>서비스 환경 (운영 서버) - 실제 유저가 사용하는 환경과 동일한 빌드</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔵 QA1</h3>
+                            <p>서비스와 동일한 환경 (프로덕션 미러링) - 현재 서비스 버전 검증</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🟣 QA2</h3>
+                            <p>업데이트 타겟 환경 (다음 버전 테스트) - 다음 업데이트 버전 QA</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🟡 QA3</h3>
+                            <p>로컬라이제이션 환경 (번역/지역화 테스트) - 다국어 및 지역화 검증</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔴 Test App</h3>
+                            <p>기타 테스트 환경 (특수 테스트용) - 특정 기능 테스트 전용</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h2>📖 사용 가이드</h2>
+                        <ol>
+                            <li>상단 내비게이션에서 원하는 프로젝트를 선택하세요.</li>
+                            <li>프로젝트 접근 시 비밀번호를 입력해야 합니다.</li>
+                            <li>테스트하려는 환경(Live, QA1~3, Test App)을 찾으세요.</li>
+                            <li><strong>New</strong>는 최신 마켓 버전, <strong>Old</strong>는 이전 마켓 버전입니다.</li>
+                            <li><strong>iOS 앱 다운로드</strong>: 버튼을 더블클릭하면 .ipa 파일을 직접 다운로드할 수 있습니다.</li>
+                            <li>날짜 옆 ✏️ 아이콘을 클릭하면 빌드 업데이트 날짜를 기록할 수 있습니다.</li>
+                        </ol>
+                        <div class="ios-note">
+                            <strong>📱 iOS 사용자 안내:</strong> iOS 앱 설치는 기기에서 진행해야 합니다. 
+                            버튼 클릭 시 OTA 설치가 시작되며, 더블클릭하면 .ipa 파일을 직접 다운로드할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProjectPage(project) {
+            return `
+                <div class="page ${currentPage === project.id ? 'active' : ''}" id="page-${project.id}">
+                    <div class="project-container">
+                        ${project.environments.map(env => renderEnvironment(project.id, env)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEnvironment(projectId, env) {
+            const dateKey = `qa_app_dates_${projectId}_${env.id}`;
+            const savedDate = localStorage.getItem(dateKey) || '';
+            const formattedDate = savedDate ? formatDate(savedDate) : '';
+            const hasBuilds = Object.keys(env.builds).length > 0;
+
+            return `
+                <div class="env-section">
+                    <div class="env-header">
+                        <div class="env-title">
+                            <h3>${env.name}</h3>
+                            <span class="info-icon">ℹ️
+                                <span class="tooltip">${env.description}</span>
+                            </span>
+                        </div>
+                        <div class="env-date">
+                            <span class="date-display ${!savedDate ? 'empty' : ''}" id="date-${projectId}-${env.id}">
+                                ${formattedDate || '날짜 없음'}
+                            </span>
+                            <span class="edit-icon" data-project="${projectId}" data-env="${env.id}">✏️</span>
+                        </div>
+                    </div>
+                    ${hasBuilds ? renderBuilds(env.builds) : '<p style="color: var(--text-light); text-align: center; padding: 2rem;">준비 중입니다.</p>'}
+                </div>
+            `;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}.${month}.${day} 업데이트`;
+        }
+
+        function renderBuilds(builds) {
+            const buildOrder = ['android_new', 'android_old', 'ios_new', 'ios_old'];
+            const buildLabels = {
+                android_new: 'New Google',
+                android_old: 'Old Google',
+                ios_new: 'New iOS',
+                ios_old: 'Old iOS'
+            };
+
+            return `
+                <div class="builds-grid">
+                    ${buildOrder.map(key => {
+                        const build = builds[key];
+                        const label = buildLabels[key];
+                        
+                        if (!build) {
+                            return `<button class="build-btn disabled">${label}</button>`;
+                        }
+
+                        const isNew = key.includes('new');
+                        const isIOS = key.includes('ios');
+                        const btnClass = isNew ? 'new' : 'old';
+
+                        if (isIOS && typeof build === 'object') {
+                            return `
+                                <a href="${build.plist}" 
+                                   class="build-btn ${btnClass} ios-btn" 
+                                   data-direct="${build.direct}">
+                                    ${label}
+                                </a>
+                            `;
+                        }
+
+                        return `<a href="${build}" class="build-btn ${btnClass}">${label}</a>`;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Event Listeners
+        function attachEventListeners() {
+            // Navigation with Auth Check
+            document.getElementById('navContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-btn')) {
+                    const pageId = e.target.dataset.page;
+                    
+                    if (pageId === 'home') {
+                        switchPage('home');
+                    } else {
+                        if (checkAuth(pageId)) {
+                            switchPage(pageId);
+                        } else {
+                            openPasswordModal(pageId);
+                        }
+                    }
+                } else if (e.target.classList.contains('logout-btn')) {
+                    e.stopPropagation();
+                    const projectId = e.target.dataset.project;
+                    logout(projectId);
+                }
+            });
+
+            // Dark Mode Toggle
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+            // Password Modal
+            document.getElementById('passwordSubmit').addEventListener('click', submitPassword);
+            document.getElementById('passwordCancel').addEventListener('click', closePasswordModal);
+            document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') submitPassword();
+            });
+            document.getElementById('passwordModal').addEventListener('click', (e) => {
+                if (e.target.id === 'passwordModal') closePasswordModal();
+            });
+
+            // Date Edit
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('edit-icon')) {
+                    openDateModal(e.target.dataset.project, e.target.dataset.env);
+                }
+            });
+
+            // Date Modal
+            document.getElementById('modalCancel').addEventListener('click', closeDateModal);
+            document.getElementById('modalSave').addEventListener('click', saveDate);
+            document.getElementById('dateModal').addEventListener('click', (e) => {
+                if (e.target.id === 'dateModal') closeDateModal();
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+        }
+
+        function switchPage(pageId) {
+            currentPage = pageId;
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const targetPage = document.getElementById(`page-${pageId}`);
+            const targetBtn = document.querySelector(`[data-page="${pageId}"]`);
+            
+            if (targetPage) targetPage.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (pageId !== 'home') {
+                localStorage.setItem('qa_app_last_tab', pageId);
+            }
+        }
+
+        function loadLastTab() {
+            const lastTab = localStorage.getItem('qa_app_last_tab');
+            if (lastTab && lastTab !== 'home' && checkAuth(lastTab)) {
+                switchPage(lastTab);
+            }
+        }
+
+        // Date Management
+        function openDateModal(projectId, envId) {
+            currentEditTarget = { projectId, envId };
+            const dateKey = `qa_app_dates_${projectId}_${envId}`;
+            const savedDate = localStorage.getItem(dateKey) || '';
+            
+            document.getElementById('dateInput').value = savedDate;
+            document.getElementById('dateModal').classList.add('active');
+        }
+
+        function closeDateModal() {
+            document.getElementById('dateModal').classList.remove('active');
+            currentEditTarget = null;
+        }
+
+        function saveDate() {
+            if (!currentEditTarget) return;
+            
+            const { projectId, envId } = currentEditTarget;
+            const dateValue = document.getElementById('dateInput').value;
+            const dateKey = `qa_app_dates_${projectId}_${envId}`;
+            
+            localStorage.setItem(dateKey, dateValue);
+            
+            const dateDisplay = document.getElementById(`date-${projectId}-${envId}`);
+            if (dateDisplay) {
+                const formattedDate = formatDate(dateValue);
+                dateDisplay.textContent = formattedDate || '날짜 없음';
+                dateDisplay.classList.toggle('empty', !dateValue);
+            }
+            
+            closeDateModal();
+        }
+
+        // Search
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            navButtons.forEach(btn => {
+                const label = btn.textContent.toLowerCase();
+                if (label.includes(query) || query === '') {
+                    btn.style.display = '';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+
+        // iOS Double Click for Direct Download
+        function setupIOSDoubleClick() {
+            let lastClickTime = 0;
+            const threshold = 300;
+
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('ios-btn')) {
+                    const currentTime = new Date().getTime();
+                    if (currentTime - lastClickTime < threshold) {
+                        e.preventDefault();
+                        const directLink = e.target.dataset.direct;
+                        if (directLink) {
+                            window.open(directLink, '_blank');
+                        }
+                    }
+                    lastClickTime = currentTime;
+                }
+            });
+        }
+
+        // Run App
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
