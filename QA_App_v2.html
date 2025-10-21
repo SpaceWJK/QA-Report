@@ -12,48 +12,49 @@
         }
 
         :root {
-            /* Light Mode - Warm & Comfortable */
-            --primary-green: #2d9a5a;
-            --secondary-gray: #5a6c7d;
-            --disabled-gray: #d4d9dd;
-            --bg-light: #f7f6f3;
-            --bg-white: #fefefe;
+            /* Light Mode - Soft & Eye-Friendly (Sepia inspired) */
+            --primary-green: #36a868;
+            --secondary-gray: #6b7785;
+            --disabled-gray: #d8dce0;
+            --bg-light: #faf9f6;
+            --bg-white: #ffffff;
             --bg-card: #ffffff;
-            --text-dark: #2c3338;
-            --text-medium: #5a6c7d;
-            --text-light: #8b95a1;
-            --border-color: #e4e6e8;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --error-red: #d64545;
-            --success-green: #2d9a5a;
-            --accent-blue: #4a90e2;
+            --text-dark: #37352f;
+            --text-medium: #6b7785;
+            --text-light: #9ba3ab;
+            --border-color: #e8e8e7;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+            --error-red: #d97066;
+            --success-green: #36a868;
+            --accent-blue: #5b9dd9;
         }
 
         body.dark-mode {
-            /* Dark Mode - Soft Navy (GitHub Dark Dimmed inspired) */
-            --primary-green: #4db87d;
-            --secondary-gray: #8b949e;
-            --disabled-gray: #373e47;
-            --bg-light: #1c2128;
-            --bg-white: #22272e;
-            --bg-card: #2d333b;
-            --text-dark: #e6edf3;
-            --text-medium: #adbac7;
-            --text-light: #768390;
-            --border-color: #373e47;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.5);
-            --error-red: #f47067;
-            --success-green: #4db87d;
-            --accent-blue: #6cb6ff;
+            /* Dark Mode - Warm Dark (Easy on eyes) */
+            --primary-green: #5fc88f;
+            --secondary-gray: #9ba3ab;
+            --disabled-gray: #3e4450;
+            --bg-light: #1a1d23;
+            --bg-white: #24272e;
+            --bg-card: #2d3139;
+            --text-dark: #e3e5e8;
+            --text-medium: #b8bfc7;
+            --text-light: #7d8794;
+            --border-color: #3e4450;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --error-red: #f08c82;
+            --success-green: #5fc88f;
+            --accent-blue: #74ade3;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
         }
 
         /* Header */
@@ -63,7 +64,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -99,7 +100,7 @@
             cursor: pointer;
             border-radius: 6px;
             font-size: 0.95rem;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             font-weight: 500;
         }
 
@@ -155,7 +156,7 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             width: 200px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .search-input:focus {
@@ -177,7 +178,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .dark-mode-toggle:hover {
@@ -197,7 +198,7 @@
 
         .page.active {
             display: block;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -241,7 +242,7 @@
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             border: 1px solid var(--border-color);
         }
 
@@ -338,7 +339,7 @@
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
             z-index: 100;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
@@ -384,7 +385,7 @@
             cursor: pointer;
             font-size: 1rem;
             color: var(--accent-blue);
-            transition: transform 0.2s;
+            transition: transform 0.2s ease;
         }
 
         .edit-icon:hover {
@@ -404,7 +405,7 @@
             font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: flex;
             justify-content: center;
@@ -450,11 +451,11 @@
         }
 
         .build-btn.new:hover {
-            background-color: #268d4e;
+            background-color: #2d8d56;
         }
 
         .build-btn.old:hover {
-            background-color: #4a5664;
+            background-color: #5a6470;
         }
 
         /* Modal */
@@ -465,7 +466,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.5);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -521,7 +522,7 @@
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
         .modal-btn.primary {
@@ -530,7 +531,7 @@
         }
 
         .modal-btn.primary:hover {
-            background-color: #268d4e;
+            background-color: #2d8d56;
         }
 
         .modal-btn.secondary {
@@ -539,11 +540,11 @@
         }
 
         .modal-btn.secondary:hover {
-            background-color: #4a5664;
+            background-color: #5a6470;
         }
 
         .error-message {
-            background-color: rgba(214, 69, 69, 0.15);
+            background-color: rgba(217, 112, 102, 0.15);
             border: 1px solid var(--error-red);
             color: var(--error-red);
             padding: 0.75rem;
@@ -555,7 +556,7 @@
 
         .error-message.show {
             display: block;
-            animation: shake 0.5s;
+            animation: shake 0.5s ease;
         }
 
         @keyframes shake {
@@ -565,12 +566,12 @@
         }
 
         body.dark-mode .error-message {
-            background-color: rgba(244, 112, 103, 0.15);
+            background-color: rgba(240, 140, 130, 0.15);
         }
 
         /* iOS Note */
         .ios-note {
-            background-color: rgba(245, 158, 11, 0.15);
+            background-color: rgba(245, 158, 11, 0.12);
             border-left: 4px solid #f59e0b;
             padding: 0.75rem 1rem;
             margin-top: 1rem;
@@ -733,7 +734,7 @@
                         {
                             id: 'qa1',
                             name: 'QA1',
-                            description: '서비스와 동일한 환경 (프로덕션 미러링)',
+                            description: '로컬라이제이션 환경 (번역/지역화 테스트)',
                             builds: {
                                 android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_New.apk',
                                 android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_Old.apk',
@@ -767,7 +768,7 @@
                         {
                             id: 'qa3',
                             name: 'QA3',
-                            description: '로컬라이제이션 환경 (번역/지역화 테스트)',
+                            description: '서비스와 동일한 환경 (프로덕션 미러링)',
                             builds: {
                                 android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_New.apk',
                                 android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_Old.apk',
@@ -1100,7 +1101,7 @@
                         </div>
                         <div class="info-card">
                             <h3>🔵 QA1</h3>
-                            <p>서비스와 동일한 환경 (프로덕션 미러링) - 현재 서비스 버전 검증</p>
+                            <p>Epic Seven: 로컬라이제이션 환경 | 다른 프로젝트: 프로덕션 미러링</p>
                         </div>
                         <div class="info-card">
                             <h3>🟣 QA2</h3>
@@ -1108,7 +1109,7 @@
                         </div>
                         <div class="info-card">
                             <h3>🟡 QA3</h3>
-                            <p>로컬라이제이션 환경 (번역/지역화 테스트) - 다국어 및 지역화 검증</p>
+                            <p>Epic Seven: 프로덕션 미러링 | 다른 프로젝트: 로컬라이제이션 환경</p>
                         </div>
                         <div class="info-card">
                             <h3>🔴 Test App</h3>
