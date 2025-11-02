@@ -406,13 +406,12 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: white;
             box-shadow: var(--shadow);
             border: 1px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
         }
 
         .build-btn.new {
@@ -443,6 +442,11 @@
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .build-btn:not(.disabled):active {
+            transform: translateY(0);
+            box-shadow: var(--shadow);
         }
 
         .build-btn:not(.disabled):hover {
@@ -1035,10 +1039,10 @@
         function submitPassword() {
             const password = document.getElementById('passwordInput').value;
             if (authenticate(pendingProjectId, password)) {
-                const projectId = pendingProjectId; // Save before closing modal
+                const projectId = pendingProjectId;
                 closePasswordModal();
-                renderNav(); // Update nav to show auth badge
-                switchPage(projectId); // Now switch to the project page
+                renderNav();
+                switchPage(projectId);
             } else {
                 const errorEl = document.getElementById('passwordError');
                 errorEl.classList.remove('show');
@@ -1051,12 +1055,10 @@
             const navContainer = document.getElementById('navContainer');
             const navItems = [{ id: 'home', label: 'Home' }];
             
-            // Add project buttons
             APP_DATA.projects.forEach(p => {
                 navItems.push({ id: p.id, label: p.name });
             });
 
-            // Add auth badges
             const authProjects = getAuthenticatedProjects();
             
             navContainer.innerHTML = navItems.map(item => 
@@ -1064,7 +1066,6 @@
                          data-page="${item.id}">${item.label}</button>`
             ).join('');
 
-            // Add auth badges after nav buttons
             if (authProjects.length > 0) {
                 const badgesHtml = authProjects.map(p => `
                     <span class="auth-badge">
@@ -1207,18 +1208,23 @@
 
                         if (isIOS && typeof build === 'object') {
                             return `
-                                <a href="${build.plist}" 
-                                   class="build-btn ${btnClass} ios-btn" 
-                                   data-direct="${build.direct}">
+                                <button class="build-btn ${btnClass} ios-btn" 
+                                        data-plist="${build.plist}"
+                                        data-direct="${build.direct}">
                                     ${label}
-                                </a>
+                                </button>
                             `;
                         }
 
-                        return `<a href="${build}" class="build-btn ${btnClass}">${label}</a>`;
+                        return `<button class="build-btn ${btnClass}" data-url="${build}">${label}</button>`;
                     }).join('')}
                 </div>
             `;
+        }
+
+        // Download Handler
+        function handleDownload(url) {
+            window.location.href = url;
         }
 
         // Event Listeners
@@ -1255,6 +1261,16 @@
             });
             document.getElementById('passwordModal').addEventListener('click', (e) => {
                 if (e.target.id === 'passwordModal') closePasswordModal();
+            });
+
+            // Download Buttons - Android
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('build-btn') && !e.target.classList.contains('disabled')) {
+                    const url = e.target.dataset.url;
+                    if (url) {
+                        handleDownload(url);
+                    }
+                }
             });
 
             // Date Edit
@@ -1355,13 +1371,21 @@
             document.getElementById('mainContainer').addEventListener('click', (e) => {
                 if (e.target.classList.contains('ios-btn')) {
                     const currentTime = new Date().getTime();
+                    const plistUrl = e.target.dataset.plist;
+                    const directUrl = e.target.dataset.direct;
+                    
                     if (currentTime - lastClickTime < threshold) {
-                        e.preventDefault();
-                        const directLink = e.target.dataset.direct;
-                        if (directLink) {
-                            window.open(directLink, '_blank');
+                        // Double click - download .ipa directly
+                        if (directUrl) {
+                            window.location.href = directUrl;
+                        }
+                    } else {
+                        // Single click - OTA install
+                        if (plistUrl) {
+                            window.location.href = plistUrl;
                         }
                     }
+                    
                     lastClickTime = currentTime;
                 }
             });
