@@ -78,6 +78,101 @@
             color: #666;
         }
         
+                /* 우선순위 매트릭스 */
+        .priority-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .priority-card {
+            background-color: #ffffff;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+        
+        .priority-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .priority-card.critical {
+            border: 3px solid #dc3545;
+        }
+        
+        .priority-card.high {
+            border: 3px solid #ffc107;
+        }
+        
+        .priority-card.medium {
+            border: 3px solid #007bff;
+        }
+        
+        .priority-header {
+            font-size: 0.85em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .priority-card.critical .priority-header {
+            color: #dc3545;
+        }
+        
+        .priority-card.high .priority-header {
+            color: #ffc107;
+        }
+        
+        .priority-card.medium .priority-header {
+            color: #007bff;
+        }
+        
+        .priority-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+        
+        .priority-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .priority-items li {
+            padding: 8px 0 8px 20px;
+            position: relative;
+            color: #444;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        
+        .priority-items li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+        
+        .priority-card.critical .priority-items li::before {
+            color: #dc3545;
+        }
+        
+        .priority-card.high .priority-items li::before {
+            color: #ffc107;
+        }
+        
+        .priority-card.medium .priority-items li::before {
+            color: #007bff;
+        }
+        
+
         /* 네비게이션 바 */
         nav {
             background-color: #f8f9fa;
@@ -581,15 +676,19 @@
             <div class="meta-info">
                 <div class="meta-item">
                     <span>📅</span>
-                    <span>분석 기준일: 2025년 11월 4일</span>
+                    <span>분석 기준일: 2025년 11월 6일</span>
                 </div>
                 <div class="meta-item">
                     <span>🎮</span>
-                    <span>출시일: 2025년 10월 22일</span>
+                    <span>출시일: 2025년 10월 22일 (D+15)</span>
                 </div>
                 <div class="meta-item">
                     <span>📊</span>
-                    <span>분석 대상: 15개 유튜버 영상</span>
+                    <span>분석 대상: 15개 유튜버, 11개 영상</span>
+                </div>
+                <div class="meta-item">
+                    <span>📉</span>
+                    <span>현재 상태: 섭종 위기 임박</span>
                 </div>
             </div>
         </header>
@@ -600,6 +699,7 @@
                 <a href="#summary">📊 요약</a>
                 <a href="#youtubers">🎥 유튜버</a>
                 <a href="#timeline">🔥 타임라인</a>
+                <a href="#live">🎙️ 라이브</a>
                 <a href="#community">💬 커뮤니티</a>
                 <a href="#revenue">💰 매출</a>
                 <a href="#conclusion">📋 결론</a>
@@ -611,24 +711,24 @@
             <h2>📊 핵심 지표 요약</h2>
             <div class="dashboard">
                 <div class="metric-card">
-                    <div class="metric-label">분석 영상 수</div>
-                    <div class="metric-value">12개</div>
-                    <div class="metric-subtext">대형/중형/소형 유튜버 포함</div>
+                    <div class="metric-label">분석 유튜버 / 영상</div>
+                    <div class="metric-value">15명 / 11개</div>
+                    <div class="metric-subtext">구독자 수 기준 Top 15</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">가중 평균 평가</div>
-                    <div class="metric-value" style="color: #dc3545;">4.0/10</div>
-                    <div class="metric-subtext">영향력 가중치 적용</div>
+                    <div class="metric-value" style="color: #dc3545;">82.92점</div>
+                    <div class="metric-subtext">구독자 수 가중치 적용</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-label">부정 평가 비율</div>
                     <div class="metric-value" style="color: #dc3545;">67%</div>
-                    <div class="metric-subtext">10개 영상 (중립 20%, 긍정 13%)</div>
+                    <div class="metric-subtext">10명 부정 (중립 20%, 긍정 13%)</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">총 조회수</div>
-                    <div class="metric-value">~130만</div>
-                    <div class="metric-subtext">합산 기준</div>
+                    <div class="metric-label">총 논란 수</div>
+                    <div class="metric-value" style="color: #dc3545;">16개</div>
+                    <div class="metric-subtext">무사고 0시간 게임</div>
                 </div>
             </div>
         </section>
@@ -636,6 +736,16 @@
         <!-- 주요 논란 타임라인 -->
         <section id="timeline" class="section">
             <h2>🔥 주요 논란 타임라인</h2>
+            
+            <div style="background-color: #fff9e6; padding: 20px; margin: 25px 0; border-left: 4px solid #ffc107;">
+                <p style="line-height: 1.8; color: #444; margin: 0;">
+                    <strong>📊 총 16개 논란:</strong> 론칭 전 2개 + 론칭 후 14개<br>
+                    <strong>🚨 론칭 전 (7~9월):</strong> AI 일러스트, 손가락 논란 등 기술적 문제<br>
+                    <strong>💥 론칭 후 (10/22~11/5):</strong> NTR, 버그, 운영 실패 등 신뢰 붕괴
+                </p>
+            </div>
+
+            <h3 style="color: #dc3545; margin-top: 30px; padding: 15px; background-color: #fff5f5; border-left: 4px solid #dc3545;">🔴 론칭 전 논란 (2개) - 출시 전부터 불안 징후</h3>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-date">2025년 7월 9일</div>
@@ -660,7 +770,7 @@
                 </div>
 
                 <div class="timeline-item">
-                    <div class="timeline-date">2025년 9월</div>
+                    <div class="timeline-date">2025년 9월 18일</div>
                     <div class="timeline-title">
                         AI 일러스트 의혹
                         <span class="temp-badge temp-high">🔥 80°C</span>
@@ -685,7 +795,10 @@
                         </ul>
                     </div>
                 </div>
+            </div>
 
+            <h3 style="color: #dc3545; margin-top: 40px; padding: 15px; background-color: #ffe6e6; border-left: 4px solid #dc3545;">🔥 론칭 후 논란 (14개) - 2025년 10월 22일 출시 이후</h3>
+            <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-date">2025년 10월 22일 (D+0)</div>
                     <div class="timeline-title">
@@ -879,9 +992,9 @@
                 </div>
 
                 <div class="timeline-item">
-                    <div class="timeline-date">2025년 11월 1일 (D+10)</div>
+                    <div class="timeline-date">2025년 10월 30일 이후 (D+8~)</div>
                     <div class="timeline-title">
-                        김형석 PD 라이브 역효과
+                        직원 내부 폭로 의혹 확산 (커뮤니티)
                         <span class="temp-badge temp-high">🔥 85°C</span>
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)">
@@ -889,34 +1002,55 @@
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <strong>발단:</strong> 프로듀서가 유튜브 라이브로 유저 소통 시도<br><br>
-                        <strong>라이브 내용:</strong>
+                        <strong>발단:</strong> 10월 30일 이후 익명 게시판에 자칭 개발팀 직원의 폭로글 초기 유출<br><br>
+                        <strong>초기 의혹 내용:</strong>
                         <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>논란에 대한 해명 시도</li>
-                            <li>"의도는 좋았다" 반복 강조</li>
-                            <li>구체적 보상안 부재</li>
-                            <li>질문 선별 답변으로 유저 불만</li>
+                            <li>원작 스토리와 게임 스토리가 다름</li>
+                            <li>경영진이 상업적 이유로 원안 수정 지시</li>
+                            <li>개발팀 내부 갈등 심각</li>
+                            <li>출시 일정 강행으로 QA 부실</li>
                         </ul>
-                        <strong>유저 반응:</strong>
-                        <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>"사과가 아닌 변명" 비난</li>
-                            <li>"책임 회피" 지적</li>
-                            <li>라이브 후 더 악화된 여론</li>
-                            <li>조회수 대비 낮은 좋아요, 높은 싫어요</li>
-                        </ul>
-                        <strong>소통 실패 원인:</strong>
-                        <ul style="margin: 10px 0; padding-left: 20px;">
-                            <li>유저 감정 미독해</li>
-                            <li>구체적 해결책 없이 추상적 답변</li>
-                            <li>핵심 논란(NTR, 조작)에 대한 회피</li>
-                        </ul>
+                        <strong>커뮤니티 반응:</strong> 의혹으로 받아들임, 11/1 라이브에서 확인 대기<br>
+                        <strong>QA 관점:</strong> <span class="highlight">출시 일정 강행으로 QA 시간 부족, 조직 문화 문제</span>
                     </div>
                 </div>
 
-                <div class="timeline-item">
+<div class="timeline-item">
+                    <div class="timeline-date">2025년 11월 1일 (D+10)</div>
+                    <div class="timeline-title">
+                        김형석 디렉터 라이브 방송 (역대급 실패)
+                        <span class="temp-badge temp-critical">🔥 95°C</span>
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <strong>발단:</strong> 김형석 디렉터가 유튜브 라이브로 논란 해명 시도<br><br>
+                        <strong>4가지 핵심 실패 요인:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><strong>준비 부족:</strong> 보상 우선 제시, 대본 미비, 방송 퀸리티 저하</li>
+                            <li><strong>핵심 논란 회피:</strong> AI 동문서답, 번역 '버그' 변명, 직장 괴롭힘 회피</li>
+                            <li><strong>치명적 비교 실수:</strong> 원신 직접 언급 (30% 저렴) → 중국 커뮤니티 반발 촉발</li>
+                            <li><strong>책임 전가:</strong> 스토리 개입 인정하나 '조급함' 탓, 로드맵 부재</li>
+                        </ul>
+                        <strong>유튜버 5개 영상 분석 결과:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>영래기 100점: "역대급 재앙"</li>
+                            <li>샘웨 95점: "실패한 데미지 컨트롤"</li>
+                            <li>지존조세 90점: "역대급 최악의 방송"</li>
+                            <li>이클리피아 70점: "사과 인정하나 대책 부재"</li>
+                            <li>대요리 60점: "황당, '기다려 달라'만 반복"</li>
+                        </ul>
+                        <strong>통계:</strong> 좋아요 823개, 싫어요 4,200개 (11/3 20:03 기준)<br>
+                        <strong>QA 관점:</strong> <span class="highlight">홀보 포인트 대응 초동 부재, 소통 전략 붕괴, 신뢰 완전 무너짐</span><br>
+                        <strong>핵심:</strong> 라이브에서 <span class="highlight">"마감 직전 조급함으로 직접 각본 참여"를 시인</span>하며 10/30 이후 커뮤니티 의혹 확인
+                    </div>
+                </div>
+<div class="timeline-item">
                     <div class="timeline-date">2025년 11월 2~3일 (D+11~12)</div>
                     <div class="timeline-title">
-                        직원 내부 폭로 + 원안 훼손
+                        구체적 증거 유출 + 원안 훼손 상세 폭로
                         <span class="temp-badge temp-critical">🔥 90°C</span>
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)">
@@ -924,7 +1058,7 @@
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <strong>발단:</strong> 익명 게시판에 자칭 개발팀 직원의 폭로글<br><br>
+                        <strong>발단:</strong> 11/1 라이브 이후 더 구체적인 증거와 상세 내용이 추가로 유출<br><br>
                         <strong>폭로 내용:</strong>
                         <ul style="margin: 10px 0; padding-left: 20px;">
                             <li>원작 스토리와 게임 스토리가 다름</li>
@@ -943,6 +1077,9 @@
                 </div>
 
                 <div class="timeline-item">
+                </div>
+
+                                <div class="timeline-item">
                     <div class="timeline-date">지속적 논란</div>
                     <div class="timeline-title">
                         번역 불일치 논란
@@ -1027,297 +1164,524 @@
                         <strong>QA 관점:</strong> <span class="highlight">경제 시스템 검증 부재 반복, 더 이상 버그 허용 불가</span>
                     </div>
                 </div>
-            </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">2025년 11월 5일 (D+14)</div>
+                    <div class="timeline-title">
+                        2차 창작물 저작권 소유주 논란
+                        <span class="temp-badge temp-high">🔥 83°C</span>
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <strong>발단:</strong> 11월 5일 카오스 제로 나이트메어의 2차 창작 가이드라인에 '회사가 유저 2차 창작물을 자유롭게 사용할 수 있다'는 내용 발견<br><br>
+                        <strong>핵심 문제:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li><strong>침해적 약관:</strong> 회사가 유저 2차 창작물을 무상으로 자유롭게 사용 가능</li>
+                            <li><strong>차별적 약관:</strong> 일본 서버만 해당 조항이 없는 차별적 약관</li>
+                            <li><strong>상업적 활용:</strong> 저작권료 없이 공식이 팬아트를 상업적으로 활용 가능</li>
+                            <li><strong>AI 학습 의혹:</strong> 유저 2차 창작물을 AI 학습 데이터로 사용 가능성</li>
+                        </ul>
+                        <strong>커뮤니티 반응:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>다른 게임에서는 볼 수 없는 조항이라 이해 불가</li>
+                            <li>'도로롱' 같은 인기 2차 창작을 저작권료 없이 가져가려는 속셈 의혹</li>
+                            <li>에픽세븐의 '찌그러진 천젤콘', '디압' 등 인기 2차 창작물을 공식이 사용하지 못한 것이 억울했다는 추측</li>
+                            <li>콘텐츠 크리에이터 모집이 AI 학습 자료 수집용이었냐는 비아냥</li>
+                            <li>니케는 저작권을 정당하게 구매해 '도로롱' 활용하는데 카제나는 탈취하려 한다는 비교</li>
+                        </ul>
+                        <strong>법적 이슈:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>유저 창작물의 저작재산권 일방적 양도 조항</li>
+                            <li>일본 서버 제외 차별적 약관 적용 - 공정거래법 위반 가능성</li>
+                            <li>창작자 권리 침해 및 창작 의욕 저하</li>
+                            <li>저작권법상 2차적 저작물 권리 침해 가능성</li>
+                        </ul>
+                        <strong>배경:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>10월 1일자 인터뷰에서도 비슷한 주장 (사전 계획 의혹)</li>
+                            <li>전작 에픽세븐의 인기 2차 창작물을 공식이 활용하지 못한 것에 대한 아쉬움</li>
+                            <li>니케의 '도로롱' 사례처럼 2차 창작의 상업적 가치 인식</li>
+                        </ul>
+                        <strong>QA 관점:</strong> <span class="highlight">약관 검토 부재, 법무팀 협의 결여, 국가별 차별 약관 위험성</span>
+                    </div>
+                </div>
+
+
         </section>
 
         <!-- 유튜버 분석 -->
+        <!-- 유튜버 분석 -->
         <section id="youtubers" class="section">
-            <h2>🎥 유튜버 분석 (15개 영상)</h2>
+            <h2>🎥 유튜버 분석 (15명, 11개 영상)</h2>
             
             <h3>평가 분포</h3>
             <div class="chart-container">
                 <table>
                     <tr>
                         <th>평가 성향</th>
-                        <th>영상 수</th>
+                        <th>유튜버 수</th>
                         <th>비율</th>
                     </tr>
                     <tr>
                         <td><span class="stance-badge stance-negative">부정</span></td>
-                        <td>10개</td>
+                        <td>10명</td>
                         <td><strong>67%</strong></td>
                     </tr>
                     <tr>
                         <td><span class="stance-badge stance-neutral">중립</span></td>
-                        <td>3개</td>
+                        <td>3명</td>
                         <td>20%</td>
                     </tr>
                     <tr>
                         <td><span class="stance-badge stance-positive">긍정</span></td>
-                        <td>2개</td>
+                        <td>2명</td>
                         <td>13%</td>
                     </tr>
                 </table>
             </div>
 
+            <div style="background-color: #f8f9fa; padding: 20px; margin: 25px 0; border-left: 4px solid #007bff;">
+                <p style="line-height: 1.8; color: #444; margin: 0;">
+                    <strong>⚠️ 중요:</strong> 본 리포트는 <strong>구독자 수 기준 Top 15 유튜버</strong>를 선정하였으며, 
+                    <strong>가중 평균 82.92점</strong>(단순 평균 75.3점)으로 산출되었습니다. 
+                    구독자가 많은 대형 채널(김성회 94.7만, 중년게이머 43만)이 상대적으로 균형잡힌 평가를 내려 
+                    가중 평균이 7.62점 높게 나타났습니다.
+                </p>
+            </div>
+
             <h3>유튜버별 평가 상세</h3>
             <div class="youtuber-grid">
+                <!-- 1위: 김성회의 G식백과 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">영래기</div>
-                    <div class="youtuber-subs">구독자 50만명</div>
+                    <div class="youtuber-name">1. 김성회의 G식백과</div>
+                    <div class="youtuber-subs">구독자 94.7만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-negative">88점</div>
+                        <div class="score-value score-neutral">88점</div>
+                        <span class="stance-badge stance-neutral">균형</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "논란은 자승자박이지만 숨은 장점 있음"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">김성회는 카제나의 논란을 '과도한 자신감→공격적 마케팅→자승자박' 구조로 분석하며, AI, BM, 스토리 논란을 각각 원인 분석했습니다. 하지만 핵심 덱빌딩 시스템 등 숨은 장점을 강조하며, 논란에도 불구하고 잠재력을 인정하는 가장 균형 잡힌 시각을 보였습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>논란은 '과도한 자신감→공격적 마케팅→자승자박' 구조</li>
+                            <li>AI, BM, 스토리 논란을 각각 원인 분석</li>
+                            <li>핵심 덱빌딩 시스템 등 숨은 장점 강조</li>
+                            <li>논란에도 불구하고 잠재력 인정 - 가장 균형 잡힌 시각</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2위: 중년게이머 김실장 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">2. 중년게이머 김실장</div>
+                    <div class="youtuber-subs">구독자 43만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-negative">78점</div>
                         <span class="stance-badge stance-negative">부정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "연속된 버그와 운영 실수로 게임 수명 단축 우려"
+                        "게임성은 괜찮지만 구조적 질만감"
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
                         <span>상세 내용 보기</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">영래기는 출시 후 연속된 가챠 복사 버그, 계정 삭제 버그, 잠수함 패치 등으로 운영의 신뢰성이 심각하게 훼손되었다고 비판했습니다. 특히 QA 프로세스 부재로 치명적 버그가 발견되지 않고 출시되었으며, 개발사의 대응도 항상 뒤늦고 불충분했다고 지적했습니다. 이러한 반복된 실수가 게임의 수명을 단축시킬 것이라고 우려했습니다.</p>
+                        <p style="line-height: 1.7; color: #555;">중년게이머 김실장은 전투 시스템은 재미있지만, 세이브 데이터 제한·육성 과다·엔드 콘텐츠 부재로 장기적 불만이 누적될 것으로 예상했습니다. 세이브 데이터 가치 제한이 덱 완성을 방해해 불쾌감을 주고, 육성 재화 과다로 캐릭터 다양성이 제한되며, 엔드 콘텐츠가 없어 완성 덱의 활용처가 없다고 비판했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>전투 시스템 자체는 재미있음 (슬레이더 스파이어 기반)</li>
+                            <li>세이브 데이터 가치 제한 → 덱 완성 방해 → 불쾌감</li>
+                            <li>육성 재화 과다 → 캐릭터 다양성 제한</li>
+                            <li>엔드 콘텐츠 부재 → 완성 덱 활용처 없음</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 3위: 펭귄몬스터 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">펭귄몬스터</div>
-                    <div class="youtuber-subs">구독자 50만명</div>
+                    <div class="youtuber-name">3. 펭귄몬스터</div>
+                    <div class="youtuber-subs">구독자 34.4만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-negative">60점</div>
+                        <div class="score-value score-negative">82점</div>
                         <span class="stance-badge stance-negative">부정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "스토리 5번 갈아엎고 AI 일러스트. 과금 강요"
+                        "원래 루프물, 디렉터가 마감 직전 변경"
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
                         <span>상세 내용 보기</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">펭귄몬스터는 카제나가 2025년 최악의 서브컬처 게임이 되었다고 평가하며, 스토리를 5번이나 갈아엎었음에도 불구하고 최종 결과물이 이 정도라면 개발 프로세스에 심각한 문제가 있다고 지적했습니다. AI 일러스트 사용과 과금 강요 시스템도 비판했으며, 전투는 나쁘지 않으나 다른 모든 요소가 무너졌다고 평가했습니다.</p>
+                        <p style="line-height: 1.7; color: #555;">펭귄몬스터는 카제나가 원래 '코즈믹 루프 RPG'였으나 디렉터가 마감 직전 스토리를 강제 변경해 파편화되었다고 분석했습니다. 2024년 4월 PV에 '코즈믹 루프 RPG' 명시, 2025년 7월 뮤비에 '이건 루프가 아니다' 가사 등 증거를 제시하며, 세이브 데이터, 가챠 명칭(구출), 돌파 단계 등 모두 루프물 흔적이라고 지적했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>2024년 4월 PV: '코즈믹 루프 RPG' 명시</li>
+                            <li>2025년 7월 뮤비: '이건 루프가 아니다' 가사 = 변경 암시</li>
+                            <li>세이브 데이터, 가챠 명칭(구출), 돌파 단계 - 모두 루프물 흔적</li>
+                            <li>디렉터 발언: '마감 직전 조급함으로 직접 각본 참여'</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 4위: 악인전-인물소개 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">영래기 (신규)</div>
-                    <div class="youtuber-subs">구독자 50만명</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-negative">55점</div>
-                        <span class="stance-badge stance-negative">부정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "한국 게임 역사상 가장 역겨운 게임. 개발사 혜오"
-                    </div>
-                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
-                        <span>상세 내용 보기</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">영래기는 11/4 신규 영상에서 카제나를 한국 게임 역사상 가장 역겨운 게임이라고 규정하며, 남혈 논란, AI 무단 사용, 망가진 스토리 모두를 종합적으로 비판했습니다. 특히 개발사 전체에 대한 혜오감을 표현하며, 이런 게임을 만들고 출시한 것 자체가 유저들에 대한 모욕이라고 강도 높게 비난했습니다.</p>
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">김성회의 G식백과</div>
-                    <div class="youtuber-subs">구독자 초대형 체널</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-neutral">67점</div>
-                        <span class="stance-badge stance-neutral">중립</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "덱빌딩은 인정. 하지만 공격적 마케팅이 역풍"
-                    </div>
-                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
-                        <span>상세 내용 보기</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">김성회의 G식백과는 카제나의 공격적 비교형 마케팅이 다른 서브컬처 게이머들을 대동단결시켜 역풍을 불러일으켰다고 분석했습니다. AI 일러스트 논란, NTR 논란, 스토리 갈아엎음 의혹 등을 비판했으나, 덱빌딩 시스템과 게임플레이는 독특한 쿠감이 있다고 인정했습니다. 4년 반 동안 쌓아올린 체급을 인정받을 수 있는 숨은 저력은 있다고 평가하며 균형 잡힌 시각을 보여주었습니다.</p>
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">샘웨</div>
-                    <div class="youtuber-subs">구독자 30만명</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-negative">90점</div>
-                        <span class="stance-badge stance-negative">부정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "스토리 NTR 논란이 치명적. 유저 신뢰 회복 불가능 수준"
-                    </div>
-                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
-                        <span>상세 내용 보기</span>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">샘웨는 카제나의 NTR 논란을 가장 강력하게 비판하며, 출시 첫날부터 유저들이 배신감을 느꼈다고 지적했습니다. 특히 사전 정보 없이 메인 히로인의 과거 스토리가 공개되면서 신뢰도가 바닥으로 떨어졌다고 분석했습니다. 샘웨는 이후 계정 삭제 버그, 잠수함 패치, 여론 조작 의혹 등이 연속되면서 회복 불가능한 수준이 되었다고 결론지었습니다.</p>
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">센터로드TV</div>
-                    <div class="youtuber-subs">구독자 20만명</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-positive">72점</div>
-                        <span class="stance-badge stance-positive">긍정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "게임 자체는 완성도 있음. 논란은 시간이 해결할 것"
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">이클리피아</div>
-                    <div class="youtuber-subs">구독자 15만명</div>
+                    <div class="youtuber-name">4. 악인전-인물소개</div>
+                    <div class="youtuber-subs">구독자 32.3만명</div>
                     <div class="youtuber-score">
                         <div class="score-value score-neutral">75점</div>
                         <span class="stance-badge stance-neutral">중립</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "게임성은 괜찮으나 운영과 소통이 문제"
+                        "논란 10가지 간결 정리"
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
                         <span>상세 내용 보기</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">이클리피아는 카제나의 덱빌딩과 전투 시스템은 독창적이고 재미있다고 평가했지만, 운영 팀의 소통 부재와 불투명한 의사결정이 문제라고 지적했습니다. 특히 잠수함 패치와 공략 저격 패치가 반복되면서 유저들의 불만이 커졌다고 분석했습니다. 개선 가능성은 있으나 현재 추세로는 유저 이탈이 계속될 것으로 전망했습니다.</p>
+                        <p style="line-height: 1.7; color: #555;">악인전-인물소개는 카제나의 10가지 주요 논란을 짧고 간결하게 요약 정리했습니다. AI, 계정 초기화, 가챠 복사, 표절, 확률 조작 등 논란을 빠르게 파악할 수 있도록 4분 33초 짧은 영상으로 구성했으며, 디렉터 라이브에서 작가 퇴사 인정 및 직접 각본 참여 시인, 출시 6일 만에 5만 리뷰 등 평점 조작 의혹도 다뤘습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>10가지 논란 총정리: AI, 계정 초기화, 가챠 복사, 표절, 확률 조작 등</li>
+                            <li>디렉터 라이브: 작가 퇴사 인정, 직접 각본 참여 시인</li>
+                            <li>평점 조작 의혹: 출시 6일 만에 5만 리뷰</li>
+                            <li>간결한 요약형 영상 (4분 33초)</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 5위: 지존조세 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">퀴디온</div>
-                    <div class="youtuber-subs">구독자 10만명</div>
+                    <div class="youtuber-name">5. 지존조세</div>
+                    <div class="youtuber-subs">구독자 30.7만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-negative">73점</div>
+                        <div class="score-value score-negative">90점</div>
                         <span class="stance-badge stance-negative">부정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "초기 기대감 대비 실망. QA 부실이 치명적"
+                        "역대급 최악의 방송"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">지존조세는 11/1 라이브 방송을 '역대급 최악의 방송'으로 규정하며, 디렉터의 준비 부족과 비전문적 태도를 비판했습니다. 보상을 우선 제시해 본질을 회피했고, 스토리 개입을 인정하면서도 책임을 전가했으며, 직장 괴롭힘 논란에 대해서는 회피적 태도를 보였다고 지적했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>11/1 라이브를 '역대급 최악의 방송'으로 규정</li>
+                            <li>보상 우선 제시로 본질 회피</li>
+                            <li>스토리 개입 인정하면서 책임 전가</li>
+                            <li>직장 괴롭힘 논란 회피적 태도</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 6위: 영래기 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">발컨띵컨</div>
-                    <div class="youtuber-subs">구독자 8만명</div>
+                    <div class="youtuber-name">6. 영래기</div>
+                    <div class="youtuber-subs">구독자 29만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-positive">65점</div>
+                        <div class="score-value score-critical">100점</div>
+                        <span class="stance-badge stance-negative">부정</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "욕망의 잔해, 창작에 대한 폭력"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">영래기는 카제나를 '욕망의 잔해', '창작자와 유저에 대한 폭력'으로 규정하는 가장 강력한 비판을 펼쳤습니다. 11/1 라이브 방송을 '역대급 재앙'으로 평가하며, 디렉터의 준비 부족과 비전문적 태도를 비판했고, 스토리 파괴를 '창작에 대한 폭력'으로 확대 해석하며 게임 산업의 구조적 문제(돈→품질 역전)를 지적했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>11/1 라이브 방송을 '역대급 재앙'으로 규정</li>
+                            <li>디렉터의 준비 부족, 비전문적 태도 비판</li>
+                            <li>스토리 파괴를 '창작에 대한 폭력'으로 확대 해석</li>
+                            <li>게임 산업의 구조적 문제 지적 (돈→품질 역전)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 7위: 센터로드TV -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">7. 센터로드TV</div>
+                    <div class="youtuber-subs">구독자 18.3만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-neutral">68점</div>
                         <span class="stance-badge stance-positive">긍정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "로그라이크 요소가 재미있음. 과민 반응도 있다"
+                        "가벼운 서브컬처 게임" (11/1 이전)
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">센터로드TV는 11/1 라이브 이전 영상으로, 카제나를 가볍게 즐기기 좋은 서브컬처 덱빌딩 게임으로 평가했습니다. 덱빌딩 턴제 전투의 전략성과 재미, 일러스트·애니메이션·사운드 퀄리티 준수, 로그라이크 콘텐츠(카오스 던전) 다양성을 긍정적으로 평가하며 추천했습니다. (주의: 라이브 이전 영상으로 라이브 비판 없음)</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>덱빌딩 턴제 전투의 전략성과 재미</li>
+                            <li>일러스트·애니메이션·사운드 퀄리티 준수</li>
+                            <li>로그라이크 콘텐츠(카오스 던전) 다양성</li>
+                            <li>가벼운 서브컬처 게임으로 추천 - 긍정적 평가</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 8위: 샘웨 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">대요리</div>
-                    <div class="youtuber-subs">구독자 5만명</div>
+                    <div class="youtuber-name">8. 샘웨</div>
+                    <div class="youtuber-subs">구독자 15.3만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-negative">63점</div>
+                        <div class="score-value score-critical">95점</div>
                         <span class="stance-badge stance-negative">부정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "잠수함 패치로 유저를 기만. 추천 불가"
+                        "실패한 데미지 컨트롤"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">샘웨는 11/1 라이브를 '실패한 데미지 컨트롤', '논란 해결보다 변명으로 일관'으로 평가했습니다. 준비 부족으로 변명만 일관하며 논란 해결에 실패했고, AI 논란에는 동문서답, 번역 오류를 '버그'로 변명했으며, 원신을 직접 언급하며 BM을 비교(30% 저렴 주장)하는 치명적 실수를 범했다고 비판했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>11/1 라이브는 '실패한 데미지 컨트롤'</li>
+                            <li>준비 부족으로 변명 일관, 논란 해결 실패</li>
+                            <li>AI 논란 동문서답, 번역 오류를 버그로 변명</li>
+                            <li>원신 직접 언급하며 BM 비교 (30% 저렴 주장)</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 9위: 이클리피아 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">시롤</div>
+                    <div class="youtuber-name">9. 이클리피아</div>
+                    <div class="youtuber-subs">구독자 14.6만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-neutral">70점</div>
+                        <span class="stance-badge stance-neutral">중립</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "사과 인정하나 대책 부재" (2시간)
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">이클리피아는 2시간 풀영상으로 11/1 라이브를 분석하며, 사과의 진정성은 인정하나 구체적 실행 방안이 부족하다고 평가했습니다. 방송 퀄리티 저하(카메라·음향·화면 구성 불안정), 사전 준비 부족(커뮤니티 논란 예상 질문인데도 대본 미비), 개선 시점 지연(내년 상반기)으로 유저 이탈이 불가피하다고 분석했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>사과 진정성 인정, 그러나 실질적 대책 부재</li>
+                            <li>방송 퀄리티 저하: 카메라·음향·화면 구성 불안정</li>
+                            <li>사전 준비 부족: 커뮤니티 논란 예상 질문인데도 대본 미비</li>
+                            <li>개선 시점 지연(내년 상반기) → 유저 이탈 불가피</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 10위: 다크사이드코리아 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">10. 다크사이드코리아</div>
+                    <div class="youtuber-subs">구독자 12.3만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-negative">85점</div>
+                        <span class="stance-badge stance-negative">부정</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "사내 정치가 원인"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">다크사이드코리아는 스토리 붕괴의 원인을 사내 정치로 지목하며, 시나리오 작가 퇴사와 디렉터 개입을 연결했습니다. 내부 자료 유출(루프물→비루프 변경)을 분석하며, 구조적 문제로 인한 회복 불가능 전망을 제시했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>스토리 붕괴의 원인을 사내 정치로 지목</li>
+                            <li>시나리오 작가 퇴사와 디렉터 개입 연결</li>
+                            <li>내부 자료 유출(루프물→비루프 변경) 분석</li>
+                            <li>구조적 문제로 인한 회복 불가능 전망</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 11위: 발컨띵컨 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">11. 발컨띵컨</div>
+                    <div class="youtuber-subs">구독자 8만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-neutral">65점</div>
+                        <span class="stance-badge stance-neutral">중립</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "재미와 스토리 좋으나 BM 과도"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">발컨띵컨은 재미와 스토리는 좋으나 BM(과금 모델)이 원신·명일방주식으로 과도해 부담스럽다고 평가했습니다. 게임성은 턴제 카드 배틀로 재미있고 다양한 변수가 있으며, 스토리는 준수한 전개와 연출이지만, BM 에러로 원신·명조식 고가 뽑기를 그대로 따라해 부담스럽다고 지적했습니다. NTR·AI 논란은 가볍게 보고 넘어가야 할 사안으로 평가했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>게임성: 턴제 카드 배틀 재미있음, 다양한 변수</li>
+                            <li>스토리: 준수한 전개와 연출</li>
+                            <li>BM 에러: 원신·명조식 고가 뽑기를 그대로 따라함</li>
+                            <li>NTR·AI 논란은 가볍게 보고 넘어가야 할 사안</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 12위: 시롤 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">12. 시롤</div>
                     <div class="youtuber-subs">구독자 5만명</div>
                     <div class="youtuber-score">
                         <div class="score-value score-neutral">62점</div>
                         <span class="stance-badge stance-neutral">중립</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "호불호 갈릴 게임. 개선 여부 지켜봐야"
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">행진</div>
-                    <div class="youtuber-subs">구독자 3만명</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-negative">60점</div>
-                        <span class="stance-badge stance-negative">부정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "스토리 논란 외에도 과금 압박이 심함"
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">카르오</div>
-                    <div class="youtuber-subs">구독자 2만명</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-negative">58점</div>
-                        <span class="stance-badge stance-negative">부정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "초반 기대와 달리 실망. 재미 요소 부족"
-                    </div>
-                </div>
-
-                <div class="youtuber-card">
-                    <div class="youtuber-name">지존조세</div>
-                    <div class="youtuber-subs">정보 없음</div>
-                    <div class="youtuber-score">
-                        <div class="score-value score-negative">85점</div>
-                        <span class="stance-badge stance-negative">부정</span>
-                    </div>
-                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "여론 조작 시도가 악질. 개발사 신뢰도 제로"
+                        "출시 후 성패 지켜봐야" (출시 전)
                     </div>
                     <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
                         <span>상세 내용 보기</span>
                         <span class="toggle-icon">▼</span>
                     </div>
                     <div class="collapsible-content">
-                        <p style="line-height: 1.7; color: #555;">지존조세는 디시인사이드 갤러리에서 발각된 여론 조작 의혹을 가장 강도 높게 비판했습니다. 갤러리 운영자가 개발사 직원이라는 의혹, 비판 게시글 삭제 및 차단, 긍정 후기 도배 등이 확인되면서 개발사에 대한 신뢰가 완전히 사라졌다고 평가했습니다. 이러한 조작 시도는 게임 자체의 문제보다 더 심각한 윤리적 문제라고 지적했습니다.</p>
+                        <p style="line-height: 1.7; color: #555;">시롤은 출시 전 사전 리뷰로, 덱빌딩 로그라이크 장르와 세계관은 긍정적이나 스토리 톤·일러스트 퀄리티·BM 논란이 존재해 출시 후 성패를 지켜봐야 한다고 평가했습니다. 덱빌딩 로그라이크 + 서브컬처 조합은 긍정적이나, 스토리 톤이 세계관 대비 지나치게 명랑하고, 일러스트 퀄리티에 AI 의혹 및 디자인 일관성 결여가 있다고 지적했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>덱빌딩 로그라이크 + 서브컬처 조합은 긍정적</li>
+                            <li>스토리 톤 미스매치: 세계관 대비 지나치게 명랑</li>
+                            <li>일러스트 퀄리티 문제: AI 의혹 및 디자인 일관성 결여</li>
+                            <li>출시 후 성패 지켜봐야 - 명확한 예측 없음</li>
+                        </ul>
                     </div>
                 </div>
 
+                <!-- 13위: 대요리 -->
                 <div class="youtuber-card">
-                    <div class="youtuber-name">다크사이드코리아</div>
-                    <div class="youtuber-subs">정보 없음</div>
+                    <div class="youtuber-name">13. 대요리</div>
+                    <div class="youtuber-subs">구독자 5만명</div>
                     <div class="youtuber-score">
-                        <div class="score-value score-negative">55점</div>
+                        <div class="score-value score-neutral">60점</div>
                         <span class="stance-badge stance-negative">부정</span>
                     </div>
                     <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                        "논란이 너무 많아 추천 불가. 기다리는 게 나음"
+                        "황당, '기다려 달라'만 반복"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">대요리는 11/1 라이브에서 디렉터가 '고칠 테니 기다려 달라'만 반복하고, 구체적 개선책·로드맵이 전혀 없어 황당하다고 평가했습니다. BM 개선 설명·로드맵이 전혀 없고, 유저들은 '영상도 공략도 올릴 게 없다'고 반응하며, 대기 전에 유저 이탈이 예상된다고 분석했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>'고칠 테니 기다려 달라'만 반복</li>
+                            <li>BM 개선 설명·로드맵 전혀 없음</li>
+                            <li>유저: '영상도 공략도 올릴 게 없다'</li>
+                            <li>대기 전에 유저 이탈 예상</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 14위: 행진 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">14. 행진</div>
+                    <div class="youtuber-subs">구독자 3만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-negative">72점</div>
+                        <span class="stance-badge stance-negative">부정</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "이탈 선언, 섭종 가능성"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">행진은 '카제나 이탈 선언'을 하며, 전투·스토리·라이브 모두 실망스럽고, 두 달간 콘텐츠가 없어 섭종 가능성이 높다고 평가했습니다. 전투는 스트레스 케어가 불가능(랜덤 3중첩)하고 카오스 의존도가 90%이며, 스토리는 4장이 1-3장보다 더 나쁘고, 라이브에서는 두 가지만 긍정(진행, 시인)하고 나머지는 실패했다고 분석했습니다. 개편 약속이 내년 상반기로 두 달간 콘텐츠가 없어 이탈한다고 선언했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>전투: 스트레스 케어 불가(랜덤 3중첩), 카오스 의존도 90%</li>
+                            <li>스토리: 4장이 1-3장보다 더 나쁨</li>
+                            <li>라이브: 두 가지만 긍정(진행, 시인), 나머지 실패</li>
+                            <li>개편 약속: 내년 상반기 → 두 달간 콘텐츠 없음 → 이탈</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 15위: 카르오 -->
+                <div class="youtuber-card">
+                    <div class="youtuber-name">15. 카르오</div>
+                    <div class="youtuber-subs">구독자 2만명</div>
+                    <div class="youtuber-score">
+                        <div class="score-value score-neutral">58점</div>
+                        <span class="stance-badge stance-negative">부정</span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        "스토리 전면 재구성 필요"
+                    </div>
+                    <div class="collapsible-header" onclick="toggleCollapse(this)" style="margin-top: 15px;">
+                        <span>상세 내용 보기</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="collapsible-content">
+                        <p style="line-height: 1.7; color: #555;">카르오는 1~3장 스토리가 주인공 설정 부실·개연성 결여·세계관 설명 미흡·분량 부족으로 전면 재구성이 필요하다고 평가했습니다. 주인공(퍼스트)이 무능하게만 보이고, 개연성이 결여(레이 시간적 불일치, 중간 전개 생략)되어 있으며, 세계관이 부실(행성 명칭 이유·배경 정보·몬스터 기원 미제공)하고, 분량이 부족(프롤로그 제외 전부 너무 짧음)하다고 지적했습니다.</p>
+                        <strong>핵심 포인트:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>주인공(퍼스트) 설정 부실 → 무능하게만 보임</li>
+                            <li>개연성 결여: 레이 시간적 불일치, 중간 전개(승) 생략</li>
+                            <li>세계관 부실: 행성 명칭 이유·배경 정보·몬스터 기원 미제공</li>
+                            <li>분량 부족: 프롤로그 제외 전부 너무 짧음</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <h3>가중 평균 계산 방식</h3>
-            <div style="background-color: #f8f9fa; padding: 20px; border-left: 4px solid #007bff; margin: 20px 0;">
-                <p><strong>영향력 가중치 모델:</strong></p>
-                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8;">
-                    <li><strong>대형 유튜버</strong> (10만+ 구독자): 가중치 1.5배</li>
-                    <li><strong>중형 유튜버</strong> (5~10만): 가중치 1.0배</li>
-                    <li><strong>소형 유튜버</strong> (5만 미만): 가중치 0.8배</li>
+            <!-- 종합 분석 -->
+            <div style="background-color: #f8f9fa; padding: 25px; margin-top: 30px; border-left: 4px solid #dc3545;">
+                <h3 style="margin-top: 0; color: #dc3545;">🚨 종합 평가</h3>
+                <p style="line-height: 1.8; color: #444;">
+                    Top 15 유튜버 중 <strong>67%가 부정적 평가</strong>를 내렸으며, 
+                    가중 평균 <strong>82.92점</strong>(구독자 수 기반)으로 
+                    <strong>게임의 근본적 문제를 지적</strong>하고 있습니다.
+                </p>
+                <ul style="line-height: 1.8; color: #444; margin: 15px 0; padding-left: 20px;">
+                    <li><strong>가장 강력한 비판:</strong> 영래기 (100점) - "욕망의 잔해, 창작에 대한 폭력"</li>
+                    <li><strong>PR 전문 분석:</strong> 샘웨 (95점) - "실패한 데미지 컨트롤"</li>
+                    <li><strong>팩트 기반 비판:</strong> 지존조세 (90점) - "역대급 최악의 방송"</li>
+                    <li><strong>가장 균형잡힌 시각:</strong> 김성회의 G식백과 (88점) - "논란은 자승자박이지만 숨은 장점 있음"</li>
                 </ul>
-                <p style="margin-top: 15px;"><strong>최종 가중 평균:</strong> <span class="highlight" style="font-size: 1.2em;">4.0/10점</span></p>
-            </div>
-
-            <h3>유튜버 동향 종합 평가</h3>
-            <div style="background-color: #fff5f5; padding: 25px; border: 2px solid #dc3545; margin: 20px 0;">
-                <p style="line-height: 1.8; color: #444; margin-bottom: 15px;">
-                    15개 유튜버 영상 분석 결과, <strong>부정 평가가 67%</strong>로 압도적이며 가중 평균 <strong>4.0/10점</strong>으로 매우 낮은 수준입니다. 
-                    특히 <strong>대형 유튜버 대부분이 부정 또는 중립</strong> 평가를 내리면서 부정적 여론이 대중에게 긑게 확산되고 있습니다.
+                <p style="line-height: 1.8; color: #444; margin-top: 15px;">
+                    <strong>핵심 문제점:</strong>
                 </p>
-                <p style="line-height: 1.8; color: #444; margin-bottom: 15px;">
-                    <strong>핵심 문제점으로 지적된 부분:</strong>
-                </p>
-                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #444;">
-                    <li><strong>NTR 논란:</strong> 서브컬처 핵심 유저층에게 치명적, 거의 모든 유튜버가 언급</li>
-                    <li><strong>운영 신뢰도 붕괴:</strong> 계정 삭제, 가챠 복사, 잠수함 패치 등 반복된 치명적 실수</li>
-                    <li><strong>여론 조작 의혹:</strong> 개발사 신뢰도를 완전히 상실시킨 결정타</li>
-                    <li><strong>스토리 완성도:</strong> 5번 갈아엎음 의혹, 루프물 흔적 잔존, 개연성 부실</li>
-                    <li><strong>공격적 마케팅 역풍:</strong> 타 게임 비교하듩 선언이 논란 화력 증폭</li>
+                <ul style="line-height: 1.8; color: #444; margin: 15px 0; padding-left: 20px;">
+                    <li><strong>11/1 라이브 실패:</strong> 준비 부족, 핵심 논란 회피, 원신 언급으로 중국 커뮤니티 반발</li>
+                    <li><strong>스토리 붕괴:</strong> 루프물→비루프 강제 변경, 디렉터 마감 직전 개입</li>
+                    <li><strong>구조적 문제:</strong> 세이브 데이터 제한, 육성 과다, 엔드 콘텐츠 부재</li>
+                    <li><strong>2차 창작 논란:</strong> 저작권 탈취 시도, 일본 제외 차별 약관</li>
                 </ul>
                 <p style="line-height: 1.8; color: #444; margin-top: 15px;">
                     <strong>인정받는 부분:</strong> 덱빌딩과 전투 시스템은 대부분의 유튜버가 독창성과 재미를 인정했습니다. 
@@ -1327,305 +1691,336 @@
             </div>
         </section>
 
+
+        <!-- 라이브 방송 동향 분석 -->
+        <section id="live" class="section">
+            <h2>🎙️ 라이브 방송 동향 분석</h2>
+            
+            <h3 style="color: #dc3545; margin: 30px 0 20px 0; padding: 15px; background-color: #fff5f5; border-left: 4px solid #dc3545; font-size: 1.4em;">🎥 1차: 디렉터 사과 방송 (11/1)</h3>
+            
+            <div style="background-color: #fff3cd; padding: 20px; margin: 25px 0; border-left: 4px solid #ffc107;">
+                <p style="line-height: 1.8; color: #856404; margin: 0;">
+                    <strong>📅 방송일:</strong> 2025년 11월 1일 (D+10)<br>
+                    <strong>📺 분석 영상:</strong> 5개 (지존조세, 샘웨, 영래기, 이클리피아, 대요리)<br>
+                    <strong>🎯 종합 평가:</strong> <span style="color: #dc3545; font-weight: 700;">라이브 방송은 논란 해결이 아닌 추가 논란 생성으로 귀결. 유저 신뢰 회복 실패</span>
+                </p>
+            </div>
+
+            <h3>4가지 핵심 실패 요인</h3>
+            
+            <!-- 실패 요인 1: 준비 부족 -->
+            <div class="priority-card critical" style="margin-bottom: 25px;">
+                <div class="priority-header">Critical Issue #1</div>
+                <div class="priority-title">준비 부족</div>
+                <ul class="priority-items">
+                    <li><strong>보상 우선 제시:</strong> 본질적 문제 해결보다 보상으로 달래려는 시도</li>
+                    <li><strong>대본 미비:</strong> 사전에 예상 가능한 질문(커뮤니티에서 이미 논란)에도 답변 준비 없음</li>
+                    <li><strong>방송 퀄리티 저하:</strong> 카메라, 음향 불안정 - 비전문적 인상</li>
+                </ul>
+                <div style="margin-top: 15px; padding: 15px; background-color: rgba(220, 53, 69, 0.1); border-radius: 4px;">
+                    <strong>출처:</strong> 지존조세, 샘웨, 이클리피아
+                </div>
+            </div>
+
+            <!-- 실패 요인 2: 핵심 논란 회피 -->
+            <div class="priority-card critical" style="margin-bottom: 25px;">
+                <div class="priority-header">Critical Issue #2</div>
+                <div class="priority-title">핵심 논란 회피</div>
+                <ul class="priority-items">
+                    <li><strong>AI 논란:</strong> 동문서답, '레퍼런스에만 사용' 주장하나 증거 제시 없음</li>
+                    <li><strong>번역 오류:</strong> '버그'로 변명 - 논리적으로 말이 안 되는 해명</li>
+                    <li><strong>직장 괴롭힘:</strong> '모든 책임은 나에게' 반복하나 구체적 해명 회피</li>
+                </ul>
+                <div style="margin-top: 15px; padding: 15px; background-color: rgba(220, 53, 69, 0.1); border-radius: 4px;">
+                    <strong>출처:</strong> 샘웨, 영래기, 지존조세
+                </div>
+            </div>
+
+            <!-- 실패 요인 3: 치명적 비교 실수 -->
+            <div class="priority-card high" style="margin-bottom: 25px;">
+                <div class="priority-header">High Risk Issue #3</div>
+                <div class="priority-title">치명적 비교 실수</div>
+                <ul class="priority-items">
+                    <li><strong>원신 직접 언급:</strong> BM 비교하며 '30% 저렴' 주장 - 경쟁작 언급으로 역효과</li>
+                    <li><strong>중국 커뮤니티 반발:</strong> '미호요의 7살 스토리에 감명받아 스토리 변경' 발언으로 중국 유저 분노 촉발</li>
+                    <li><strong>원신, 기동! 밈:</strong> 중국 인터넷 문화에서 원신 바이럴 조롱 밈, '발작 버튼' 누른 격</li>
+                </ul>
+                <div style="margin-top: 15px; padding: 15px; background-color: rgba(255, 193, 7, 0.1); border-radius: 4px;">
+                    <strong>출처:</strong> 샘웨, 커뮤니티 반응 (중국 갤펌)
+                </div>
+            </div>
+
+            <!-- 실패 요인 4: 책임 전가 -->
+            <div class="priority-card high" style="margin-bottom: 25px;">
+                <div class="priority-header">High Risk Issue #4</div>
+                <div class="priority-title">책임 전가</div>
+                <ul class="priority-items">
+                    <li><strong>조급함 탓:</strong> 스토리 개입 인정하면서도 '조급함' 탓으로 책임 전가</li>
+                    <li><strong>의도 강조:</strong> '의도는 좋았다' 반복 - 결과에 대한 책임 회피</li>
+                    <li><strong>로드맵 부재:</strong> 구체적 개선 로드맵 없이 '고치겠다'만 반복</li>
+                    <li><strong>개발팀 비난 자제 요청:</strong> 디렉터 책임 희석 시도</li>
+                </ul>
+                <div style="margin-top: 15px; padding: 15px; background-color: rgba(255, 193, 7, 0.1); border-radius: 4px;">
+                    <strong>출처:</strong> 지존조세, 이클리피아, 대요리
+                </div>
+            </div>
+
+            <h3>유튜버별 라이브 분석</h3>
+            <div class="chart-container">
+                <table>
+                    <tr>
+                        <th>유튜버</th>
+                        <th>평가 점수</th>
+                        <th>핵심 평가</th>
+                    </tr>
+                    <tr>
+                        <td><strong>영래기</strong> (29만)</td>
+                        <td><span style="color: #dc3545; font-weight: 700;">100점</span></td>
+                        <td>역대급 재앙, 준비 없는 변명 일색</td>
+                    </tr>
+                    <tr>
+                        <td><strong>샘웨</strong> (15.3만)</td>
+                        <td><span style="color: #dc3545; font-weight: 700;">95점</span></td>
+                        <td>실패한 데미지 컨트롤, PR 전문 분석</td>
+                    </tr>
+                    <tr>
+                        <td><strong>지존조세</strong> (30.7만)</td>
+                        <td><span style="color: #dc3545; font-weight: 700;">90점</span></td>
+                        <td>역대급 최악의 방송, 팩트 기반 비판</td>
+                    </tr>
+                    <tr>
+                        <td><strong>이클리피아</strong> (14.6만)</td>
+                        <td><span style="color: #ffc107; font-weight: 700;">70점</span></td>
+                        <td>사과 인정하나 대책 부재, 개선 지연으로 이탈 불가피 (2시간 풀영상)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>대요리</strong> (5만)</td>
+                        <td><span style="color: #ffc107; font-weight: 700;">60점</span></td>
+                        <td>황당, 로드맵 없이 '기다려 달라'만 반복</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="background-color: #f8f9fa; padding: 20px; margin: 25px 0; border-left: 4px solid #dc3545;">
+                <p style="line-height: 1.8; color: #444; margin: 0;">
+                    <strong>📊 통계:</strong> 좋아요 823개, 싫어요 4,200개 (11/3 20:03 기준)<br>
+                    <strong>⚖️ 5개 영상 평균:</strong> 83.0점<br>
+                    <strong>🎯 컨센서스:</strong> <span style="color: #dc3545; font-weight: 700;">라이브 방송으로 신뢰 추가 하락</span>
+                </p>
+            </div>
+
+            <!-- 종합 분석 -->
+            <div style="background-color: #fff3cd; padding: 25px; margin-top: 30px; border-left: 4px solid #ffc107;">
+                <h3 style="margin-top: 0; color: #856404;">⚠️ 11/1 라이브의 치명적 영향</h3>
+                <p style="line-height: 1.8; color: #856404;">
+                    김형석 디렉터의 11/1 라이브 방송은 <strong>논란 해결이 아닌 추가 논란 생성</strong>으로 귀결되었습니다. 
+                    준비 부족, 핵심 논란 회피, 원신 언급으로 인한 중국 커뮤니티 반발, 책임 전가 등 
+                    <strong>4가지 핵심 실패 요인</strong>이 복합적으로 작용하며 유저 신뢰를 완전히 무너뜨렸습니다.
+                </p>
+                <p style="line-height: 1.8; color: #856404; margin-top: 15px;">
+                    특히 <strong>원신을 직접 언급</strong>하며 BM을 비교한 것은 치명적 실수로, 
+                    중국 커뮤니티에서 '원신, 기동!' 밈으로 조롱받으며 
+                    <strong>글로벌 이미지 악화</strong>를 초래했습니다. 
+                    5개 유튜버 영상 모두 강력한 비판(평균 83점)을 가했으며, 
+                    "라이브로 신뢰가 추가 하락했다"는 평가가 지배적입니다.
+                </p>
+            </div>
+        </section>
         <!-- 매출 추이 분석 -->
         <section id="revenue" class="section">
             <h2>💰 매출 추이 분석</h2>
             
-            <h3>10월 글로벌 가챠 게임 매출 순위</h3>
-            <div class="chart-container">
-                <table>
-                    <tr>
-                        <th>항목</th>
-                        <th>내용</th>
-                    </tr>
-                    <tr>
-                        <td><strong>카제나 글로벌 순위</strong></td>
-                        <td>26위</td>
-                    </tr>
-                    <tr>
-                        <td><strong>추정 매출</strong></td>
-                        <td>$6,000,000 (약 84억원)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Top 10 대비</strong></td>
-                        <td>매출 10분의 1 수준</td>
-                    </tr>
-                </table>
-                <p style="font-size: 0.9em; color: #666; margin-top: 10px; text-align: center;">출처: Sensor Tower, 2025년 10월 추정치</p>
+            <div style="background-color: #fff5f5; padding: 25px; border: 2px solid #dc3545; margin: 20px 0; border-radius: 8px;">
+                <h3 style="color: #dc3545; margin: 0 0 20px 0;">🚨 핵심 요약 (11/6 기준)</h3>
+                <div style="line-height: 1.9; color: #444;">
+                    <p style="margin-bottom: 15px;"><strong>📉 구글 플레이 순위 급락:</strong></p>
+                    <ul style="margin: 0 0 20px 20px; padding-left: 0;">
+                        <li style="margin-bottom: 8px;">10월 말: 11위 유지</li>
+                        <li style="margin-bottom: 8px;">11/5 (D+14): 22위 (11위 하락)</li>
+                        <li style="margin-bottom: 8px;"><strong style="color: #dc3545;">11/6 (D+15): 25위 (3위 추가 하락)</strong></li>
+                        <li style="margin-bottom: 0;"><strong>데이터 출처:</strong> 구글 플레이스토어 앱 내 실시간 매출 순위</li>
+                    </ul>
+                    
+                    <p style="margin-bottom: 15px;"><strong>📱 플랫폼별 차이:</strong></p>
+                    <ul style="margin: 0 0 20px 20px; padding-left: 0;">
+                        <li style="margin-bottom: 8px;"><strong>구글 플레이 (안드로이드):</strong> 11위 → 25위 급락</li>
+                        <li style="margin-bottom: 0;"><strong>애플 앱스토어 (iOS):</strong> 2위 (10/22) → 순위권 밖 - 프리미엄 유저 이탈 심각</li>
+                    </ul>
+                    
+                    <p style="margin-bottom: 15px;"><strong>🌍 국가별 상황:</strong></p>
+                    <ul style="margin: 0 0 20px 20px; padding-left: 0;">
+                        <li style="margin-bottom: 8px;"><strong>한국:</strong> 매출 비중 17%, 논란 진원지</li>
+                        <li style="margin-bottom: 8px;"><strong>일본:</strong> 64위 (11/4) - 글로벌 확장 실패</li>
+                        <li style="margin-bottom: 0;"><strong>미국:</strong> 134위 (11/4) - 북미 시장 저조</li>
+                    </ul>
+                    
+                    <p style="margin: 0;"><strong>💡 해석:</strong> 논란 누적 + 신규 논란 발생으로 신규 과금자 감소 + 기존 유저 이탈 가속화. 프리미엄 유저층(iOS)이 먼저 이탈하며 매출 구조 악화 중.</p>
+                </div>
             </div>
-            <ul style="line-height: 1.8; margin: 20px 0; padding-left: 20px;">
-                <li><strong>카제나 글로벌 순위:</strong> 26위 (추정 매출 $6,000,000 / 약 84억원)</li>
-                <li><strong>주의사항:</strong> 환불 미집계, 마켓 수수료 제외 시 순이익 더 낮음</li>
-                <li><strong>비교:</strong> Top 10 게임 대비 매출 10분의 1 수준</li>
-            </ul>
-
-            <h3>출시 초기 6일 국가별 매출 (10/22 ~ 10/27)</h3>
-            <div class="chart-container">
-                <table>
-                    <tr>
-                        <th>국가</th>
-                        <th>매출 비중</th>
-                        <th>매출액 (억원)</th>
-                        <th>특징</th>
-                    </tr>
-                    <tr>
-                        <td>🇺🇸 미국</td>
-                        <td><strong>27%</strong></td>
-                        <td>7.7억원</td>
-                        <td>다운로드 11% vs 매출 27% (고과금 성향)</td>
-                    </tr>
-                    <tr>
-                        <td>🇯🇵 일본</td>
-                        <td><strong>26%</strong></td>
-                        <td>7.4억원</td>
-                        <td>광고 집중 투자 (시부야/아키하바라)</td>
-                    </tr>
-                    <tr>
-                        <td>🇰🇷 한국</td>
-                        <td>17%</td>
-                        <td>4.9억원</td>
-                        <td>다운로드 34% vs 매출 17% (무과금 성향)</td>
-                    </tr>
-                    <tr>
-                        <td>기타</td>
-                        <td>30%</td>
-                        <td>9.5억원</td>
-                        <td>대만 9%, 홍콩 6%, 기타 15%</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><strong>총 매출 (6일간)</strong></td>
-                        <td colspan="2"><strong>31.5억원</strong></td>
-                    </tr>
-                </table>
+            
+            <div style="background-color: #f8f9fa; padding: 25px; border-left: 4px solid #6c757d; margin: 20px 0; border-radius: 4px;">
+                <h3 style="color: #495057; margin: 0 0 15px 0;">📊 출시 초기 6일 국가별 매출 (10/22~10/27)</h3>
+                <div class="chart-container">
+                    <table>
+                        <tr>
+                            <th>국가</th>
+                            <th>매출 비중</th>
+                            <th>특징</th>
+                        </tr>
+                        <tr>
+                            <td>🇺🇸 미국</td>
+                            <td><strong>27%</strong></td>
+                            <td>다운로드 11% vs 매출 27% (고과금 성향)</td>
+                        </tr>
+                        <tr>
+                            <td>🇯🇵 일본</td>
+                            <td><strong>26%</strong></td>
+                            <td>광고 집중 투자 (시부야/아키하바라)</td>
+                        </tr>
+                        <tr>
+                            <td>🇰🇷 한국</td>
+                            <td>17%</td>
+                            <td>다운로드 34% vs 매출 17% (무과금 성향)</td>
+                        </tr>
+                        <tr>
+                            <td>기타</td>
+                            <td>30%</td>
+                            <td>대만 9%, 홍콩 6%, 기타 15%</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>총 매출 (6일간)</strong></td>
+                            <td><strong>약 31.5억원</strong></td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="margin: 15px 0 0 0; font-size: 0.9em; color: #666;">출처: Sensor Tower 추정치 (10/22~10/27)</p>
             </div>
-            <ul style="line-height: 1.8; margin: 20px 0; padding-left: 20px;">
-                <li><strong>총 매출:</strong> 31.5억원 (6일간)</li>
-                <li><strong>미국:</strong> 27% (7.7억원) - 다운로드 11% vs 매출 27% (고과금 성향)</li>
-                <li><strong>일본:</strong> 26% (7.4억원) - 광고 집중 투자 (시부야/아키하바라)</li>
-                <li><strong>한국:</strong> 17% (4.9억원) - 다운로드 34% vs 매출 17% (무과금 성향)</li>
-                <li><strong>기타:</strong> 대만 9%, 홍콩 6%, 기타 15%</li>
-            </ul>
-
-            <h3>국가별 매출 순위 추이 (10/22 ~ 11/4)</h3>
-            <div class="chart-container">
-                <table>
-                    <tr>
-                        <th>기간</th>
-                        <th>한국</th>
-                        <th>일본</th>
-                        <th>미국</th>
-                        <th>주요 이벤트</th>
-                    </tr>
-                    <tr>
-                        <td>10/22 (D+0)</td>
-                        <td>🟢 2위</td>
-                        <td>🟢 4위</td>
-                        <td>🟢 11위</td>
-                        <td>출시</td>
-                    </tr>
-                    <tr>
-                        <td>10/23 (D+1)</td>
-                        <td>🟡 15위</td>
-                        <td>🟢 5위</td>
-                        <td>🟢 11위</td>
-                        <td>계정 삭제 버그</td>
-                    </tr>
-                    <tr>
-                        <td>10/24 (D+2)</td>
-                        <td>🔴 순위권 밖</td>
-                        <td>🟡 8위</td>
-                        <td>🟢 11위</td>
-                        <td>잠수함 패치</td>
-                    </tr>
-                    <tr>
-                        <td>10/28 (D+6)</td>
-                        <td>🔴 순위권 밖</td>
-                        <td>🟡 12위</td>
-                        <td>🟢 11위</td>
-                        <td>가챠 복사 버그</td>
-                    </tr>
-                    <tr>
-                        <td>11/1 (D+10)</td>
-                        <td>🔴 순위권 밖</td>
-                        <td>🟡 15위</td>
-                        <td>🟢 11위</td>
-                        <td>PD 라이브</td>
-                    </tr>
-                    <tr>
-                        <td>11/4 (D+13)</td>
-                        <td>🔴 순위권 밖</td>
-                        <td>🟡 18위</td>
-                        <td>🟢 11위</td>
-                        <td>5단계 세이브 버그</td>
-                    </tr>
-                </table>
-                <p style="font-size: 0.9em; color: #666; margin-top: 10px; text-align: center;">출처: Sensor Tower 추정치, 🟢=안정 🟡=하락 🔴=급락</p>
-            </div>
-            <ul style="line-height: 1.8; margin: 20px 0; padding-left: 20px;">
-                <li><strong>한국 구글플레이:</strong> 5위 (10/22) → 11위 (11/3, 유지)</li>
-                <li><strong>한국 앱스토어:</strong> 3위 (10/22) → 55위 (11/3, 급락)</li>
-                <li><strong>일본:</strong> 15위 (10/22) → 50위 (10/27, 정체)</li>
-                <li><strong>미국:</strong> 50위 (10/22) → 100위+ (10/23, 정체)</li>
-            </ul>
-
-            <h3>앱스토어 순위 변화 (상세)</h3>
-            <div class="chart-container">
-                <table>
-                    <tr>
-                        <th>날짜</th>
-                        <th>구글 플레이 (한국)</th>
-                        <th>애플 앱스토어 (한국)</th>
-                        <th>비고</th>
-                    </tr>
-                    <tr>
-                        <td>10/22 (D+0)</td>
-                        <td>11위</td>
-                        <td><strong style="color: #28a745;">2위</strong></td>
-                        <td>출시 초반 호조</td>
-                    </tr>
-                    <tr>
-                        <td>10/23 (D+1)</td>
-                        <td>11위</td>
-                        <td style="color: #dc3545;">20위 ↓</td>
-                        <td>논란 시작</td>
-                    </tr>
-                    <tr>
-                        <td>10/30 (D+8)</td>
-                        <td>11위</td>
-                        <td style="color: #dc3545;">47위 ↓</td>
-                        <td>가챠 버그 이후</td>
-                    </tr>
-                    <tr>
-                        <td>11/2 (D+11)</td>
-                        <td>11위 유지</td>
-                        <td style="color: #dc3545;">순위권 밖 ↓</td>
-                        <td>급락 지속</td>
-                    </tr>
-                </table>
-            </div>
-
-            <h3>주요 인사이트</h3>
-            <ul style="line-height: 1.8; margin: 20px 0; padding-left: 20px;">
-                <li><strong>구글 플레이:</strong> 11위에서 고정 → 안드로이드 유저 이탈 적음 (대형 시장 특성)</li>
-                <li><strong>애플 앱스토어:</strong> 2위 → 순위권 밖 → iOS 유저 이탈 심각 (프리미엄 유저층)</li>
-                <li><strong>해석:</strong> 논란에 민감한 고과금 유저층이 먼저 이탈</li>
-            </ul>
-
-            <h3>국가별 매출 분포 (추정)</h3>
-            <div class="chart-container">
-                <table>
-                    <tr>
-                        <th>국가</th>
-                        <th>매출 비중</th>
-                        <th>특징</th>
-                    </tr>
-                    <tr>
-                        <td>🇺🇸 미국</td>
-                        <td><strong>28%</strong></td>
-                        <td>최대 시장, 논란 영향 적음</td>
-                    </tr>
-                    <tr>
-                        <td>🇯🇵 일본</td>
-                        <td><strong>24%</strong></td>
-                        <td>안정적 유지</td>
-                    </tr>
-                    <tr>
-                        <td>🇰🇷 한국</td>
-                        <td>17%</td>
-                        <td>논란 진원지, 급락</td>
-                    </tr>
-                    <tr>
-                        <td>기타</td>
-                        <td>31%</td>
-                        <td>글로벌 분산</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div style="background-color: #fff9e6; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0;">
-                <p><strong>⚠️ 매출 구조의 불균형:</strong></p>
-                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8;">
-                    <li>한국 시장 의존도는 17%로 낮지만, <strong>국내 여론이 글로벌 평판에 영향</strong></li>
-                    <li>유튜버, 커뮤니티를 통해 해외로 논란 확산</li>
-                    <li>미국/일본 시장도 서서히 하락 추세</li>
+            
+            <div style="background-color: #fff9e6; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0; border-radius: 4px;">
+                <p style="margin: 0; line-height: 1.8; color: #444;"><strong>⚠️ 주의사항:</strong></p>
+                <ul style="margin: 10px 0 0 20px; padding-left: 0; line-height: 1.8; color: #444;">
+                    <li style="margin-bottom: 8px;">구글 플레이 순위는 1주일 누적 가중평균이므로 실시간 반영이 아님</li>
+                    <li style="margin-bottom: 8px;">환불 미집계, 마켓 수수료 제외 시 실제 순이익은 더 낮음</li>
+                    <li style="margin-bottom: 0;">한국 시장 매출 비중(17%)은 낮지만, 국내 여론이 글로벌 평판에 영향</li>
                 </ul>
             </div>
         </section>
 
+        
+
         <!-- 유저 커뮤니티 동향 -->
         <section id="community" class="section">
-            <h2>👥 유저 커뮤니티 동향</h2>
+            <h2>👥 유저 커뮤니티 동향 (11/6 기준)</h2>
             
             <p style="font-size: 1.05em; line-height: 1.8; margin-bottom: 25px; color: #444;">
-                게임 출시 후 국내외 주요 커뮤니티에서는 극도로 부정적인 반응이 지배적입니다. 
-                특히 <span class="highlight">여론 조작 의혹</span>이 확산되면서 신뢰도가 바닥으로 떨어졌습니다.
+                <strong>2025년 11월 6일 현재</strong>, 국내 주요 커뮤니티에서는 <span class="highlight">논란이 분단위로 터지는</span> 상황이 지속되며 
+                '<strong>무사고 0시간 게임</strong>' 밈이 정착되었습니다. 11월 내 서비스 종료 전망이 지배적이며, 
+                2차 창작 저작권 논란이 새로운 핵심 이슈로 부상했습니다.
             </p>
 
-            <h3>디시인사이드 카제나 갤러리</h3>
+            <div style="background-color: #ffe6e6; padding: 20px; border-left: 4px solid #dc3545; margin-bottom: 30px;">
+                <h4 style="color: #dc3545; margin-bottom: 15px;">🔥 현재 상황 요약</h4>
+                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #444;">
+                    <li><strong>신뢰도:</strong> 완전 붕괴 - 유튜버들도 논란 추적 포기</li>
+                    <li><strong>주요 이슈:</strong> 2차 창작 저작권 논란 (일본 제외 차별), 김형석 디렉터 심리 분석 확산</li>
+                    <li><strong>중국 반응:</strong> '원신, 기동!' 밈으로 조롱, 반감 증폭</li>
+                    <li><strong>유저 반응:</strong> 환불 러시 진행 중, '11월 섭종각' 예측 지배적</li>
+                    <li><strong>AGF 2025:</strong> 스마일게이트 메인 스폰서 이미지 타격 우려</li>
+                </ul>
+            </div>
+
+            <h3>💻 디시인사이드 카제나 갤러리</h3>
             <div class="collapsible-header" onclick="toggleCollapse(this)">
                 <span>상세 내용 보기</span>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="collapsible-content">
                 <div style="background-color: #fff5f5; padding: 20px; border-left: 4px solid #dc3545; margin-bottom: 15px;">
-                    <h4 style="color: #dc3545; margin-bottom: 15px;">🚨 분위기: 극도로 부정적 (환불 러시)</h4>
-                    <p style="line-height: 1.7; color: #555;"><strong>주요 반응:</strong></p>
+                    <h4 style="color: #dc3545; margin-bottom: 15px;">🚨 분위기: 극도로 부정적 - 환불 러시 진행중</h4>
+                    <p style="line-height: 1.7; color: #555;"><strong>11/6 현재 주요 반응:</strong></p>
                     <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
-                        <li><strong>11/1-11/4 최신:</strong> "11월 안에 섭종각" 예측 지배적</li>
-                        <li><strong>5단계 세이브 버그:</strong> "11/4 글로벌서버 가챠 복사 계정 정상 작동중", "또 가챠 버그냐"</li>
-                        <li><strong>분노 극대화:</strong> "불공정 반복", "이번엔 롤백도 안할듯", "신뢰 완전 붕괴"</li>
-                        <li><strong>환불 운동:</strong> 대피소 갤러리 운영자 조작 의혹으로 신뢰도 제로</li>
+                        <li><strong>2차 창작 저작권 논란 확산:</strong> 일본 제외 차별 약관, "도로롱 탈취 의혹"</li>
+                        <li><strong>김형석 디렉터 심리 분석 게시글:</strong> "600억 손해 압박", "호요버스 따라하다 실패한 범부"</li>
+                        <li><strong>중국 커뮤니티 반응:</strong> '원신, 기동!' 밈으로 조롱, 카제나 반감 증폭</li>
+                        <li><strong>환불 운동 가속화:</strong> "11월 섭종각" 예측 지배적</li>
+                        <li><strong>분노 극대화:</strong> "무사고 0시간", "분단위 갱신", "성남시 떴네"(스마일게이트 본사 지역)</li>
                     </ul>
-                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>핵심 키워드:</strong> "5의 저주", "5층런", "섭종각", "가챠 복사 계정 정상 작동"</p>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>대표 게시글:</strong> "카갤 근황: 유나엔진 기반이다 → 코때는 유니티가 없었다 → 코는 유니티를 모른다로 확대"</p>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>핵심 밈:</strong> "무사고 0시간", "11월 섭종각", "AGF 우려", "성남시 떴네", "분단위 갱신"</p>
                 </div>
             </div>
 
-            <h3 style="margin-top: 30px;">아카라이브 (AKA) 덱빌딩 채널</h3>
+            <h3 style="margin-top: 30px;">🎮 루리웹</h3>
+            <div class="collapsible-header" onclick="toggleCollapse(this)">
+                <span>상세 내용 보기</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="collapsible-content">
+                <div style="background-color: #e8f5e9; padding: 20px; border-left: 4px solid #4caf50; margin-bottom: 15px;">
+                    <h4 style="color: #2e7d32; margin-bottom: 15px;">📝 분위기: 비교 분석 및 법적 이슈 집중</h4>
+                    <p style="line-height: 1.7; color: #555;"><strong>11/6 현재 주요 반응:</strong></p>
+                    <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
+                        <li><strong>카제나 vs 니케 2차 창작 대우 비교:</strong> "니케는 저작권 풀로 정당하게 구매, 카제나는 탈취"</li>
+                        <li><strong>2차 창작 저작권 논란 확산:</strong> 일본 서버 제외 차별적 약관 집중 비판</li>
+                        <li><strong>직원 페미질 의혹 재점화:</strong> 루리웹 글 삭제 논란</li>
+                        <li><strong>10/22 출시 게임이 매일 논란 생산:</strong> "신뢰도 10렉 메모리얼 대사 삭제"</li>
+                    </ul>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>대표 게시글:</strong> "카제나 2차 창작물을 취급하는 방법 극과 극 (니케 vs 카제나)"</p>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>핵심 밈:</strong> "2차 창작 탈취", "일본 제외", "크리에이터 푸대접", "도로롱 비교"</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;">🎭 아카라이브 (AKA) 덱빌딩 채널</h3>
             <div class="collapsible-header" onclick="toggleCollapse(this)">
                 <span>상세 내용 보기</span>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="collapsible-content">
                 <div style="background-color: #fff9e6; padding: 20px; border-left: 4px solid #ffc107; margin-bottom: 15px;">
-                    <h4 style="color: #ff8c00; margin-bottom: 15px;">⚠️ 분위기: 실망하되 전투는 인정</h4>
-                    <p style="line-height: 1.7; color: #555;"><strong>주요 반응:</strong></p>
+                    <h4 style="color: #ff8c00; margin-bottom: 15px;">⚠️ 분위기: 논란 폭발, 타임라인 정리 집중</h4>
+                    <p style="line-height: 1.7; color: #555;"><strong>11/6 현재 주요 반응:</strong></p>
                     <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
-                        <li><strong>11/1-11/4 최신:</strong> "논란이 너무 많아서 캡처본에 모든 항목이 담기지도 않네"</li>
-                        <li><strong>실시간 논란 상황:</strong> "크툴루 호러", "AGF 우려" 등 폭발적 표현</li>
-                        <li><strong>5단계 버그:</strong> "5층런" 명칭 정착, "또 가챠 복사냐" 분노</li>
-                        <li><strong>대응:</strong> 공략을 암호문으로 작성 (공략 저격 회피) 지속</li>
+                        <li><strong>블라인드에서 하13(신작) 댐글 공격:</strong> 11/5 사전예약 직전 여론 악화 시도</li>
+                        <li><strong>사건사고 타임라인 정리글:</strong> "무사고 1일 넘긴 적 없음", "최단 22분 간격 논란"</li>
+                        <li><strong>현재 떡밥 파악 불가:</strong> "너무 많아서 3시간만 안 보면 모름"</li>
+                        <li><strong>중국 커뮤니티에 김형석 사과문 번역 퍼짐:</strong> 원신 언급으로 역풍</li>
                     </ul>
-                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>핵심 키워드:</strong> "크툴루 호러", "5층런", "AGF 우려", "논란 캡처본 부족"</p>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>대표 게시글:</strong> "스압주의) 카오스 제로 나이트메어 사건사고 타임라인 정리"</p>
+                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>핵심 밈:</strong> "분단위 갱신", "무사고 n시간", "파묘 계속", "떡밥 뽐임?"</p>
                 </div>
             </div>
 
-            <h3 style="margin-top: 30px;">스토브 (공식 커뮤니티)</h3>
-            <div class="collapsible-header" onclick="toggleCollapse(this)">
-                <span>상세 내용 보기</span>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="collapsible-content">
-                <div style="background-color: #f0f8ff; padding: 20px; border-left: 4px solid #007bff; margin-bottom: 15px;">
-                    <h4 style="color: #007bff; margin-bottom: 15px;">📊 분위기: 통제된 분위기, 건설적 비판 시도</h4>
-                    <p style="line-height: 1.7; color: #555;"><strong>주요 반응:</strong></p>
-                    <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
-                        <li><strong>초기:</strong> 기대감, 긍정적 피드백 우세</li>
-                        <li><strong>중기:</strong> 버그 제보 및 개선 요청 증가</li>
-                        <li><strong>현재:</strong> 실망감 표출, 디시보다는 온건</li>
-                    </ul>
-                    <p style="margin-top: 15px; line-height: 1.7; color: #555;"><strong>특징:</strong> 공식 채널이라 과격한 비판은 적으나, "이대로면 에픽세븐 전철" 우려 지배적</p>
-                </div>
-            </div>
-
-            <div style="background-color: #fff9e6; padding: 25px; border: 2px solid #ffc107; margin-top: 30px;">
-                <h4 style="margin-bottom: 15px; color: #1a1a1a;">⚠️ 커뮤니티 종합</h4>
-                <p style="line-height: 1.8; color: #444; margin-bottom: 15px;"><strong>공통점:</strong> 전투는 인정하되, <strong>운영과 스토리 불신이 압도적</strong></p>
-                <p style="line-height: 1.8; color: #444;"><strong>차별점:</strong></p>
+            <div style="background-color: #f0f4ff; padding: 25px; border: 2px solid #007bff; margin-top: 30px;">
+                <h4 style="margin-bottom: 20px; color: #1a1a1a;">📊 커뮤니티 종합 분석 (11/6 기준)</h4>
+                <p style="line-height: 1.8; color: #444; margin-bottom: 20px;"><strong>핵심 트렌드:</strong></p>
                 <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #444;">
-                    <li><strong>디시:</strong> 극단적 부정, 환불 운동, 여론 조작 의혹</li>
-                    <li><strong>아카:</strong> 실망하되 게임성 인정, 암호문 문화</li>
-                    <li><strong>스토브:</strong> 온건한 비판, 개선 기대</li>
+                    <li><strong>신뢰도 완전 붕괴:</strong> 김형석 라이브 이후 "고칠 테니 기다려 달라"만 반복</li>
+                    <li><strong>2차 창작 저작권 논란:</strong> 11/5 주요 이슈로 부상, 일본 제외 차별 약관 비판 집중</li>
+                    <li><strong>중국 커뮤니티 확산:</strong> '원신, 기동!' 밈으로 조롱, 글로벌 이미지 악화</li>
+                    <li><strong>AGF 2025 우려:</strong> 스마일게이트 메인 스폰서로서 이미지 타격</li>
+                    <li><strong>유저 이탈 가속화:</strong> '11월 안 섭종' 전망 증가, '무사고 0시간' 밈 확산</li>
+                    <li><strong>논란이 분단위로 터짐:</strong> 유튜버들도 추적 포기</li>
                 </ul>
+
+                <p style="line-height: 1.8; color: #444; margin-top: 20px;"><strong>커뮤니티별 특징:</strong></p>
+                <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #444;">
+                    <li><strong>디시:</strong> 환불 러시 진행, 중국 반응 모니터링, 극단적 부정 여론 지배</li>
+                    <li><strong>루리웹:</strong> 법적 이슈 분석, 2차 창작 저작권 논란 집중, 니케와 비교 분석</li>
+                    <li><strong>아카:</strong> 타임라인 정리 집중, 논란 아카이빙, 분단위 갱신 분석</li>
+                </ul>
+
+                <div style="background-color: rgba(220, 53, 69, 0.1); padding: 15px; margin-top: 20px; border-radius: 4px;">
+                    <h5 style="color: #dc3545; margin-bottom: 10px;">🚀 주요 밈 (11/6 기준)</h5>
+                    <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
+                        <li><strong>"무사고 0시간 게임"</strong> - 논란이 분단위로 터짐</li>
+                        <li><strong>"분단위 갱신"</strong> - 논란이 너무 빠르게 갱신됨</li>
+                        <li><strong>"11월 섭종각"</strong> - 11월 안 섭종 예상</li>
+                        <li><strong>"원신, 기동!"</strong> - 중국 밈, 원신 바이럴 조롱</li>
+                        <li><strong>"성남시 떴네"</strong> - 스마일게이트 본사 지역 조롱</li>
+                        <li><strong>"크툴루 호러"</strong> - 논란이 너무 많음</li>
+                        <li><strong>"카제나 이젠 가게나"</strong> - 이탈 선언 밈</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -1634,11 +2029,11 @@
             <h2>💼 업계 커뮤니티 동향 (블라인드)</h2>
             
             <p style="font-size: 1.05em; line-height: 1.8; margin-bottom: 25px; color: #444;">
-                블라인드 게임 라운지에서는 유저 커뮤니티와 달리 <strong>조직 운영 실패</strong>와 <strong>리더십 문제</strong>에 초점을 맞춘 비판이 지배적입니다. 
-                특히 김형석 PD에 대한 "<span class="highlight">코형석</span>" (무능한 PD 의미) 비하 명칭이 정착되었습니다.
+                <strong>2025년 11월 6일 현재</strong>, 블라인드 게임 라운지에서는 유저 커뮤니티와 달리 <strong>조직 운영 실패</strong>와 <strong>리더십 문제</strong>에 초점을 맞춘 비판이 지배적입니다. 
+                "코형석" 명칭이 정착되었으며, 11월 내부 폭로 게시글이 급증하고 있습니다.
             </p>
 
-            <h3>시계열 추이 분석 (2025/10/22 ~ 11/4)</h3>
+            <h3>시계열 추이 분석 (2025/10/22 ~ 11/6)</h3>
             <div class="chart-container">
                 <table>
                     <tr>
@@ -1664,6 +2059,12 @@
                         <td>11/1 ~ 11/4</td>
                         <td>내부 폭로 게시글 급증, 5단계 버그 분노, "섹종각" 예측 지배적</td>
                         <td><span class="temp-badge temp-critical">🔥 98°C</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phase 4</strong></td>
+                        <td>11/5 ~ 11/6</td>
+                        <td>2차 창작 저작권 논란, "하13 여론 조작 의혹", "카제나 때문에 신작 피해" 분노</td>
+                        <td><span class="temp-badge temp-critical">🔥 99°C</span></td>
                     </tr>
                 </table>
             </div>
@@ -1883,148 +2284,153 @@
 
         </section>
 
-        <!-- 결론 및 시사점 -->
+                <!-- 결론 및 시사점 -->
         <section id="conclusion" class="section">
             <h2>📋 결론 및 시사점</h2>
             
-            <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 30px; color: #444;">
-                카오스 제로 나이트메어는 출시 13일 만에 <strong>14개의 주요 논란</strong>을 겪으며 
-                유저 신뢰를 급격히 상실했습니다. 특히 <span class="highlight">여론 조작 시도</span>, 
-                <span class="highlight">계정 삭제 버그</span>, <span class="highlight">잠수함 패치</span> 등은 
-                회복 불가능한 수준의 신뢰 붕괴를 야기했습니다.
-            </p>
+            <div style="background-color: #fff5f5; padding: 35px; border-left: 5px solid #dc3545; margin-bottom: 40px; border-radius: 8px; max-width: 100%; box-sizing: border-box;">
+                <h3 style="margin: 0 0 25px 0; color: #dc3545; font-size: 1.6em;">🎯 핵심 진단</h3>
+                <p style="line-height: 2; color: #444; font-size: 1.1em; margin: 0;">
+                    카오스 제로 나이트메어는 <strong>게임 완성도</strong>가 아닌 <span class="highlight">신뢰 붕괴의 복합 증폭</span>으로 몰락한 케이스입니다. 
+                    단일 실패가 아닌 <strong>16개 논란의 누적 효과</strong>가 회복 불가능한 지점을 만들었으며, 
+                    특히 11/1 라이브 이후 모든 소통 시도가 오히려 역효과를 낳는 악순환에 빠졌습니다.
+                </p>
+            </div>
 
-            <h3>대응 우선순위 매트릭스</h3>
+            <h3 style="margin: 40px 0 30px 0; font-size: 1.7em; color: #1a1a1a;">핵심 교훈</h3>
+            <div style="margin: 30px 0;">
+                <div style="background-color: #ffffff; padding: 35px; border-left: 5px solid #dc3545; margin-bottom: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px; max-width: 100%; box-sizing: border-box;">
+                    <h4 style="color: #dc3545; margin: 0 0 20px 0; font-size: 1.4em;">1. 논란의 복합 증폭 메커니즘</h4>
+                    <p style="line-height: 2; color: #555; margin: 0; font-size: 1.05em;">
+                        개별 논란보다 <strong>논란 간 상호작용과 타이밍</strong>이 치명적이었습니다. 
+                        AI 논란 → NTR 스토리 → 2차 창작 저작권 → 라이브 실패로 이어지며 
+                        각 논란이 다음 논란의 신뢰 기반을 무너뜨리는 <span class="highlight">도미노 붕괴</span>가 발생했습니다. 
+                        출시 15일 만에 '무사고 0시간'이라는 밈이 형성된 것은 개별 이슈의 심각성보다 
+                        <strong>쉼 없는 연쇄 폭발</strong>이 더 큰 원인이었습니다.
+                    </p>
+                </div>
+
+                <div style="background-color: #ffffff; padding: 35px; border-left: 5px solid #ff6b6b; margin-bottom: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px; max-width: 100%; box-sizing: border-box;">
+                    <h4 style="color: #ff6b6b; margin: 0 0 20px 0; font-size: 1.4em;">2. 소통 실패의 비대칭성</h4>
+                    <p style="line-height: 2; color: #555; margin: 0; font-size: 1.05em;">
+                        11/1 라이브는 단순한 '준비 부족'이 아닌 <span class="highlight">신뢰 회복 불가 지점(Point of No Return)</span>을 보여줬습니다. 
+                        유튜버 5명 전원이 강력 비판(평균 83점)한 이유는 핵심 논란 회피, 책임 전가, 원신 비교 실수 등 
+                        <strong>구조적 소통 실패</strong>였습니다. 이후 모든 공지와 보상이 "또 무슨 논란?"이라는 
+                        방어적 수신으로만 해석되는 악순환이 고착화되었습니다.
+                    </p>
+                </div>
+
+                <div style="background-color: #ffffff; padding: 35px; border-left: 5px solid #ffc107; margin-bottom: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px; max-width: 100%; box-sizing: border-box;">
+                    <h4 style="color: #ff8c00; margin: 0 0 20px 0; font-size: 1.4em;">3. 매출 구조와 여론의 비대칭 영향</h4>
+                    <p style="line-height: 2; color: #555; margin: 0; font-size: 1.05em;">
+                        한국 매출 비중(17%)이 낮음에도 국내 여론이 글로벌 평판을 좌우했습니다. 
+                        iOS 유저(프리미엄층)가 먼저 이탈하고 구글 플레이 순위가 2일 만에 3위 급락(22위→25위)한 것은 
+                        <strong>핵심 유저층의 신뢰 이탈</strong>을 의미합니다. 
+                        매출 비중과 여론 영향력의 불일치는 <span class="highlight">작은 시장의 큰 목소리</span>가 
+                        글로벌 평판 시스템에서 얼마나 증폭될 수 있는지를 보여줍니다.
+                    </p>
+                </div>
+
+                <div style="background-color: #ffffff; padding: 35px; border-left: 5px solid #6c757d; box-shadow: 0 3px 10px rgba(0,0,0,0.1); border-radius: 6px; max-width: 100%; box-sizing: border-box;">
+                    <h4 style="color: #495057; margin: 0 0 20px 0; font-size: 1.4em;">4. QA 프로세스의 구조적 한계</h4>
+                    <p style="line-height: 2; color: #555; margin: 0; font-size: 1.05em;">
+                        계정 삭제 버그(P0), 잠수함 패치(공지 프로세스 부재), 가챠 복사 버그(경제 검증 미흡) 등은 
+                        개별 버그가 아닌 <strong>출시 일정 강행의 시스템적 결과</strong>였습니다. 
+                        QA 시간 부족으로 다수 버그가 미발견되었고, 이는 '디렉터 조급함'이라는 개인 책임 전가로 왜곡되며 
+                        <span class="highlight">조직 프로세스 개선</span>이 아닌 개인 희생양 만들기로 귀결되었습니다.
+                    </p>
+                </div>
+            </div>
+
+            
+            <h3 style="margin: 50px 0 30px 0; font-size: 1.7em; color: #1a1a1a;">대응 우선순위 매트릭스 (11/6 기준 최선안)</h3>
+            <p style="line-height: 1.8; margin-bottom: 25px; color: #666;">
+                현재 상황에서 현실적으로 실행 가능한 대응 방안을 단기/중기/장기로 제시합니다.
+            </p>
             <div class="priority-matrix">
                 <div class="priority-card critical">
-                    <div class="priority-header">PRIORITY 1 - CRITICAL</div>
-                    <div class="priority-title">신뢰 회복 (즉시)</div>
+                    <div class="priority-header">단기 (1개월 내)</div>
+                    <div class="priority-title">긴급 신뢰 회복 및 이탈 방지</div>
                     <ul class="priority-items">
-                        <li>여론 조작 공식 사과 및 책임자 징계</li>
-                        <li>모든 패치 사전 공지 의무화</li>
-                        <li>투명한 커뮤니케이션 체계 구축</li>
-                        <li>김형석 PD 추가 사과문 (진정성 필요)</li>
-                    </ul>
-                </div>
-
-                <div class="priority-card critical">
-                    <div class="priority-header">PRIORITY 1 - CRITICAL</div>
-                    <div class="priority-title">스토리 재작업 (중기)</div>
-                    <ul class="priority-items">
-                        <li>NTR 논란 해소 위한 스토리 재구성</li>
-                        <li>캐릭터 이력 재설정 (유저 동의 기반)</li>
-                        <li>원안 작가와 협의 후 수정</li>
-                        <li>기존 유저 보상 제공</li>
-                    </ul>
-                </div>
-
-                <div class="priority-card critical">
-                    <div class="priority-header">PRIORITY 1 - CRITICAL</div>
-                    <div class="priority-title">과금 구조 개선 (즉시)</div>
-                    <ul class="priority-items">
-                        <li>가챠 확률 투명성 강화 (제3자 검증)</li>
-                        <li>무과금 유저 진행도 완화</li>
-                        <li>보상 이벤트 확대 (신뢰 회복용)</li>
-                        <li>과금 압박 완화</li>
+                        <li><strong>2차 창작 저작권 약관 철회:</strong> 일본 제외 차별 조항 즉시 삭제, 공식 사과</li>
+                        <li><strong>치명적 버그 재발 방지:</strong> 계정 삭제/가챠 복사 등 P0 이슈 근본 원인 제거</li>
+                        <li><strong>투명한 패치 공지:</strong> 모든 변경사항 사전 공지 의무화, 잠수함 패치 금지</li>
+                        <li><strong>과금 압박 완화:</strong> 무과금 유저 진행도 개선, 보상 이벤트 확대</li>
+                        <li><strong>김형석 디렉터 진정성 사과:</strong> 구체적 개선안 포함, '기다려 달라' 금지</li>
+                        <li><strong>커뮤니티 신뢰 회복:</strong> 유저 피드백 실시간 반영, 정기 개발 노트 발행</li>
                     </ul>
                 </div>
 
                 <div class="priority-card high">
-                    <div class="priority-header">PRIORITY 2 - HIGH</div>
-                    <div class="priority-title">QA 프로세스 재정비 (단기)</div>
+                    <div class="priority-header">중기 (1~6개월)</div>
+                    <div class="priority-title">구조적 개선 및 시스템 재정비</div>
                     <ul class="priority-items">
-                        <li>계정 삭제 등 치명적 버그 재발 방지</li>
-                        <li>배포 전 다단계 검증 체계 구축</li>
-                        <li>롤백 프로세스 사전 준비</li>
-                        <li>외부 QA 투입 검토</li>
-                    </ul>
-                </div>
-
-                <div class="priority-card high">
-                    <div class="priority-header">PRIORITY 2 - HIGH</div>
-                    <div class="priority-title">커뮤니티 관계 복원 (단기)</div>
-                    <ul class="priority-items">
-                        <li>공식 커뮤니티 투명 운영 선언</li>
-                        <li>유저 피드백 실시간 반영 시스템</li>
-                        <li>정기 개발 노트 발행 (격주)</li>
-                        <li>유저 자문단 운영 고려</li>
+                        <li><strong>스토리 전면 개편:</strong> NTR 논란 해소, 원안 작가 복권 협의, 2025 상반기 완료 목표</li>
+                        <li><strong>QA 프로세스 재정비:</strong> 다단계 검증 체계 구축, 외부 QA 투입, 롤백 매뉴얼 완비</li>
+                        <li><strong>조직 문화 개선:</strong> 직장 내 괴롭힘 근절, 투명한 의사결정 체계, 내부 고발 보호</li>
+                        <li><strong>AI 일러스트 전면 교체:</strong> 전문 아티스트 투입, 품질 검수 강화, 유저 신뢰 회복</li>
+                        <li><strong>글로벌 확장 재도전:</strong> 번역 품질 개선, 국가별 맞춤 마케팅, 일본/미국 재진입</li>
+                        <li><strong>가챠 시스템 개선:</strong> 확률 투명성 강화 (제3자 검증), 천장 시스템 개선</li>
                     </ul>
                 </div>
 
                 <div class="priority-card medium">
-                    <div class="priority-header">PRIORITY 3 - MEDIUM</div>
-                    <div class="priority-title">콘텐츠 확장 (중장기)</div>
+                    <div class="priority-header">장기 (6개월~1년)</div>
+                    <div class="priority-title">콘텐츠 확장 및 IP 강화</div>
                     <ul class="priority-items">
-                        <li>신규 시스템 강화</li>
-                        <li>콘텐츠 로드맵 공개 (투명성)</li>
-                        <li>장기 유저 리텐션 이벤트</li>
-                        <li>IP 확장 (웹툰, 굿즈 등)</li>
+                        <li><strong>신규 콘텐츠 로드맵 공개:</strong> 분기별 대형 업데이트, 투명한 일정 공유</li>
+                        <li><strong>엔드 콘텐츠 강화:</strong> 로그라이크 시스템 확장, 고난이도 도전 콘텐츠</li>
+                        <li><strong>IP 확장:</strong> 공식 웹툰, 애니메이션, 굿즈 등 2차 사업 전개</li>
+                        <li><strong>e스포츠/경쟁 콘텐츠:</strong> PvP 시스템 도입 검토, 정기 대회 개최</li>
+                        <li><strong>유저 크리에이터 지원:</strong> 2차 창작 장려, 공모전 개최, 정당한 저작권 보상</li>
+                        <li><strong>장기 유저 리텐션:</strong> 충성도 보상 시스템, 전용 혜택, VIP 프로그램</li>
                     </ul>
                 </div>
             </div>
 
-            <h3>핵심 교훈</h3>
-            <div style="margin: 30px 0;">
-                <div style="background-color: #ffffff; padding: 25px; border-left: 4px solid #dc3545; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <h4 style="color: #dc3545; margin-bottom: 15px; font-size: 1.2em;">1. 유저 신뢰 파괴의 복합 효과</h4>
-                    <p style="line-height: 1.7; color: #555;">
-                        단일 논란이 아닌 <strong>13개 논란의 누적 효과</strong>가 치명적이었습니다. 
-                        특히 <span class="highlight">여론 조작 시도</span>는 신뢰 회복 불가능 지점을 만들었으며, 
-                        이후 모든 소통 시도가 실패하는 악순환을 야기했습니다.
+            <div style="background-color: #f8f9fa; padding: 40px; border: 3px solid #1a1a1a; margin-top: 40px; border-radius: 12px; max-width: 100%; box-sizing: border-box;">
+                <h4 style="margin: 0 0 30px 0; color: #1a1a1a; font-size: 1.6em; text-align: center;">⚖️ 최종 평가 (11/6 기준)</h4>
+                
+                <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border-left: 4px solid #dc3545;">
+                    <p style="line-height: 2; color: #444; font-size: 1.1em; margin: 0;">
+                        <strong>📊 정량 분석:</strong><br>
+                        • 유튜버 가중 평균 82.92점 (15명/11개 영상) - 부정 평가 67%<br>
+                        • 구글 플레이 순위: 11위(10월 말) → 25위(11/6, 14위 급락)<br>
+                        • 커뮤니티 밈: "무사고 0시간 게임" (논란 16개, D+15 기준)<br>
+                        • 라이브 방송: 좋아요 823 vs 싫어요 4,200 (1:5.1 비율)
                     </p>
                 </div>
 
-                <div style="background-color: #ffffff; padding: 25px; border-left: 4px solid #ffc107; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <h4 style="color: #ff8c00; margin-bottom: 15px; font-size: 1.2em;">2. 매출 구조의 불균형</h4>
-                    <p style="line-height: 1.7; color: #555;">
-                        구글 플레이(안드로이드)는 11위 유지, 애플 앱스토어(iOS)는 순위권 밖 급락. 
-                        <strong>프리미엄 유저층(iOS)이 먼저 이탈</strong>했으며, 
-                        한국 시장 매출 비중(17%)이 낮음에도 불구하고 국내 여론이 글로벌 평판에 영향을 미쳤습니다.
+                <div style="background-color: #fff; padding: 25px; margin-bottom: 25px; border-radius: 8px; border-left: 4px solid #ff6b6b;">
+                    <p style="line-height: 2; color: #444; font-size: 1.1em; margin: 0;">
+                        <strong>🎯 정성 분석:</strong><br>
+                        현재 상태는 <span class="highlight">"신뢰 회복 불가 지점(Point of No Return)"</span>을 넘어섰습니다. 
+                        유튜버 67%가 부정 평가를 내린 것은 개별 이슈가 아닌 <strong>누적된 신뢰 붕괴</strong>를 반영하며, 
+                        대형 채널(김성회 88점)조차 "논란은 자승자박"이라며 구조적 실패를 지적했습니다. 
+                        11/1 라이브 이후 모든 소통이 역효과를 낳는 상황에서, 보상이나 패치만으로는 회복이 불가능합니다.
                     </p>
                 </div>
 
-                <div style="background-color: #ffffff; padding: 25px; border-left: 4px solid #007bff; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <h4 style="color: #007bff; margin-bottom: 15px; font-size: 1.2em;">3. 소통 실패의 교훈</h4>
-                    <p style="line-height: 1.7; color: #555;">
-                        김형석 PD 라이브가 <strong>역효과</strong>를 낳은 원인:
+                <div style="background-color: #ffe6e6; padding: 30px; border-radius: 8px; border: 2px solid #dc3545;">
+                    <p style="line-height: 2; color: #444; font-size: 1.15em; margin: 0; font-weight: 500;">
+                        <strong style="color: #dc3545; font-size: 1.2em;">🔮 향후 전망:</strong><br><br>
+                        현재 궤적이 유지될 경우 <strong>6개월 내 서비스 조기 종료</strong> 시나리오가 현실화될 가능성이 높습니다. 
+                        회복을 위해서는 단순 패치/보상이 아닌 <span class="highlight">경영진 교체, 로드맵 전면 재수립, 
+                        유저 신뢰 재구축을 위한 6개월 이상의 장기 플랜</span>이 필요하나, 
+                        현재까지의 대응 패턴(책임 전가, 핵심 회피, 준비 부족)을 볼 때 이러한 전환 가능성은 극히 낮습니다.<br><br>
+                        본 게임은 다른 게임사들에게 <strong>"하지 말아야 할 것들의 교과서"</strong>로 남을 것이며, 
+                        특히 <span class="highlight">신뢰 자본의 복리 효과(긍정)와 복합 증폭(부정)</span>이 
+                        게임 생존에 얼마나 결정적인지를 보여주는 사례가 될 것입니다.
                     </p>
-                    <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
-                        <li>사과보다 <strong>변명 중심</strong> 발언</li>
-                        <li>구체적 보상안 부재</li>
-                        <li>핵심 논란(NTR, 여론 조작) 회피</li>
-                        <li>유저 감정 미독해</li>
-                    </ul>
                 </div>
-
-                <div style="background-color: #ffffff; padding: 25px; border-left: 4px solid #6c757d; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <h4 style="color: #495057; margin-bottom: 15px; font-size: 1.2em;">4. QA 관점 시사점</h4>
-                    <ul style="margin: 10px 0; padding-left: 20px; line-height: 1.8; color: #555;">
-                        <li><strong>계정 삭제 버그</strong> = Critical P0 이슈를 출시 초기에 허용한 것은 심각한 프로세스 결함</li>
-                        <li><strong>잠수함 패치</strong> = 변경 사항 공지 프로세스 부재</li>
-                        <li><strong>가챠 복사 버그</strong> = 경제 시스템 검증 미흡</li>
-                        <li><strong>출시 일정 강행</strong> = QA 시간 부족으로 다수 버그 미발견</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div style="background-color: #f8f9fa; padding: 25px; border: 2px solid #e0e0e0; margin-top: 30px;">
-                <h4 style="margin-bottom: 15px; color: #1a1a1a; font-size: 1.3em;">최종 평가</h4>
-                <p style="line-height: 1.8; color: #444; font-size: 1.05em;">
-                    카오스 제로 나이트메어는 <strong>게임 자체의 완성도</strong>보다 
-                    <span class="highlight">운영 실패와 소통 부재</span>로 몰락한 케이스입니다. 
-                    유튜버 리뷰의 <strong>67%가 부정 평가</strong>이며, 
-                    가중 평균 점수 <strong>4.0/10점</strong>은 회복이 매우 어려운 수준입니다.
-                </p>
-                <p style="line-height: 1.8; color: #444; font-size: 1.05em; margin-top: 15px;">
-                    향후 6개월 내 대대적인 개선 없이는 <strong>서비스 조기 종료</strong> 가능성이 높으며, 
-                    다른 게임사들에게는 <strong>"하지 말아야 할 것들의 교과서"</strong>로 남을 것입니다.
-                </p>
             </div>
         </section>
 
+
         <footer style="text-align: center; padding: 30px; color: #999; border-top: 1px solid #e0e0e0; margin-top: 40px;">
             <p>본 리포트는 공개된 유튜버 영상, 커뮤니티 게시글, 나무위키 등을 기반으로 작성되었습니다.</p>
-            <p style="margin-top: 10px;">분석 기준일: 2025년 11월 4일</p>
+            <p style="margin-top: 10px;">분석 기준일: 2025년 11월 6일</p>
+            <p style="margin-top: 5px; font-size: 0.9em; color: #999;">버전: v7 | 최종 업데이트: 2025년 11월 6일</p>
         </footer>
     </div>
 
