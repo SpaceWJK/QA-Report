@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epicseven Update Service QA Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chart-container { height: 300px; }
+        .summary-card { transition: transform 0.2s; }
+        .summary-card:hover { transform: translateY(-2px); }
+        .section-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .project-name { color: #ff6b6b; font-weight: bold; }
+         {
+            body { font-size: 12px; }
+            .chart-container { height: 250px; }
+        }
+        .character-image { max-height: 80px; width: auto; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <div class="bg-white shadow-lg mb-6">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/19fe25e62056101b58cb05dd6c2b3f00" alt="Epic Seven 7th" class="character-image">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900"><span class="project-name">Epicseven</span> Update Service QA Report</h1>
+                        <p class="text-gray-600 mt-1">9/25 타겟 서비스 품질 보증 현황</p>
+                    </div>
+                </div>
+                <div class="text-right text-gray-600">
+                    <p class="font-semibold">보고서 생성일</p>
+                    <p>2025년 10월 9일</p>
+                    <p class="text-sm mt-1">데이터 출처: SGP 내부 실측 데이터</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 space-y-6">
+
+        <!-- 0. Summary -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-chart-line mr-2"></i>0. Summary
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="summary-card bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-600 text-sm font-medium">이슈 검출률</p>
+                            <p class="text-2xl font-bold text-green-700">95.8%</p>
+                        </div>
+                        <i class="fas fa-search text-green-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="summary-card bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-yellow-600 text-sm font-medium">총 이슈</p>
+                            <p class="text-2xl font-bold text-yellow-700">212건</p>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-yellow-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="summary-card bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-red-600 text-sm font-medium">긴급 대응</p>
+                            <p class="text-2xl font-bold text-red-700">9건</p>
+                        </div>
+                        <i class="fas fa-fire text-red-500 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="summary-card bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-purple-600 text-sm font-medium">서비스 장애</p>
+                            <p class="text-2xl font-bold text-purple-700">0건</p>
+                        </div>
+                        <i class="fas fa-shield-alt text-purple-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. Target Service QA Status -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-clipboard-check mr-2"></i>1. Target Service QA Status
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">이슈 검출률</span>
+                        <span class="text-green-600 font-bold">95.8%</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">테스트 단계</span>
+                        <span class="text-blue-600 font-bold">5차</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">테스트 처리량</span>
+                        <span class="text-blue-600 font-bold">약 312 Case/H</span>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">테스트 볼륨</span>
+                        <span class="text-blue-600 font-bold">18,100 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">테스트 기간</span>
+                        <span class="text-blue-600 font-bold">WD 8일</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">리소스 가용률</span>
+                        <span class="text-blue-600 font-bold">90.6% (58시간/64시간)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Major Updates -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-rocket mr-2"></i>2. Major Updates
+                </h2>
+            </div>
+            <div class="space-y-6">
+                <!-- 9/25 Updates -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold text-blue-800 mb-3">9/25 업데이트</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-3 rounded">
+                            <h4 class="font-bold text-orange-700 mb-2">콘텐츠</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• 프리렌 콜라보 서브스토리</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <h4 class="font-bold text-purple-700 mb-2">시스템</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• 미믹 펫</li>
+                                <li>• 추천 아티팩트 표시</li>
+                                <li>• 2025 프리렌 콜라보: 전용 테마 로비</li>
+                                <li>• 장비 제작 이벤트 내재화</li>
+                                <li>• 주화상점 구성 개선</li>
+                                <li>• 프리렌 콜라보 앱 아이콘</li>
+                                <li>• 2025 추석 홍보 일러스트 로비 지급</li>
+                                <li>• 밸런스 수정</li>
+                                <li>• 게릴라 던전 개선</li>
+                                <li>• 9차 월광 전용장비</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-3 rounded">
+                            <h4 class="font-bold text-green-700 mb-2">이벤트</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• 콜라보 일일 이벤트</li>
+                                <li>• 콜라보 그룹형 플레이 이벤트</li>
+                                <li>• 콜라보 7일 출석부</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-white p-3 rounded">
+                        <h4 class="font-bold text-blue-700 mb-2">BM</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">
+                            <li>• 장비 패키지(주간)</li>
+                            <li>• 프리렌&아티팩트 콜라보 한정 소환</li>
+                            <li>• 장비 에픽패스</li>
+                            <li>• 폴리티스 성약 소환</li>
+                            <li>• 콜라보 특별 패키지</li>
+                            <li>• 이계 장비 강화 특별 패키지</li>
+                            <li>• 프리렌 테마 로비 패키지</li>
+                            <li>• 신비 소환 라인업 변경(성약 5성 바사르)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Service Status -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-server mr-2"></i>3. Service Status
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="text-center p-4 bg-red-50 rounded-lg">
+                    <div class="text-3xl font-bold text-red-600">9건</div>
+                    <div class="text-red-700 font-medium">긴급 대응 건수</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-3xl font-bold text-green-600">0분</div>
+                    <div class="text-green-700 font-medium">서비스 다운타임</div>
+                    <div class="text-xs text-green-600 mt-1">URL 기입</div>
+                </div>
+                <div class="text-center p-4 bg-purple-50 rounded-lg">
+                    <div class="text-3xl font-bold text-purple-600">0건</div>
+                    <div class="text-purple-700 font-medium">커뮤니티 버그 건수</div>
+                    <div class="text-xs text-purple-600 mt-1">제보: 0건 / 검증: 0건</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-3xl font-bold text-green-600">보통</div>
+                    <div class="text-green-700 font-medium">유저 동향</div>
+                    <div class="text-xs text-green-600 mt-1">긍정: 3,117건 (36.61%)<br>부정: 2,713건 (31.86%)<br>중립: 2,095건 (24.60%)<br>복합: 590건 (6.93%)<br><strong>※ 서브컬쳐 게임 대비 긍정적</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Test Volume -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-tasks mr-2"></i>4. Test Volume
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="chart-container">
+                    <canvas id="testVolumeChart"></canvas>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded">
+                        <span class="font-medium">Update</span>
+                        <span class="text-blue-600 font-bold">14,209 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-green-50 rounded">
+                        <span class="font-medium">Web</span>
+                        <span class="text-green-600 font-bold">1,200 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-purple-50 rounded">
+                        <span class="font-medium">App</span>
+                        <span class="text-purple-600 font-bold">2,691 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-orange-50 rounded">
+                        <span class="font-medium">Effect</span>
+                        <span class="text-orange-600 font-bold">0 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                        <span class="font-medium">Hotfix</span>
+                        <span class="text-red-600 font-bold">31 Case</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-100 rounded border-2 border-gray-300">
+                        <span class="font-bold">총 TestCase</span>
+                        <span class="text-gray-800 font-bold text-lg">18,131 Case</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Overall Issue Status -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-bug mr-2"></i>5. Overall Issue Status
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="chart-container">
+                    <canvas id="issueStatusChart"></canvas>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-blue-50 rounded">
+                        <span class="font-medium">QA</span>
+                        <span class="text-blue-600 font-bold">71건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-red-50 rounded">
+                        <span class="font-medium">DEV</span>
+                        <span class="text-red-600 font-bold">141건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-yellow-50 rounded">
+                        <span class="font-medium">Live 이슈</span>
+                        <span class="text-yellow-600 font-bold">25건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-orange-50 rounded">
+                        <span class="font-medium">테스트 누락</span>
+                        <span class="text-orange-600 font-bold">6건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                        <span class="font-medium">미수정</span>
+                        <span class="text-gray-600 font-bold">0건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-purple-50 rounded">
+                        <span class="font-medium">문의 & 건의</span>
+                        <span class="text-purple-600 font-bold">0건</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-100 rounded border-2 border-gray-300">
+                        <span class="font-bold">전체 이슈</span>
+                        <span class="text-gray-800 font-bold text-lg">212건</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Detailed Issue Status -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-list-alt mr-2"></i>6. Detailed Issue Status
+                </h2>
+            </div>
+            <div class="mb-4">
+                <h3 class="font-bold text-gray-700 mb-2">주요 분류 비율</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-blue-50 p-3 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-blue-600">71건</div>
+                        <div class="text-blue-700 font-medium">QA (33.5%)</div>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-red-600">141건</div>
+                        <div class="text-red-700 font-medium">DEV (66.5%)</div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg text-center">
+                        <div class="text-2xl font-bold text-yellow-600">25건</div>
+                        <div class="text-yellow-700 font-medium">Live (11.8%)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 text-left font-medium text-gray-700">분류</th>
+                            <th class="px-4 py-2 text-center font-medium text-gray-700">건수</th>
+                            <th class="px-4 py-2 text-left font-medium text-gray-700">설명</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-blue-600">QA</td>
+                            <td class="px-4 py-2 text-center">71</td>
+                            <td class="px-4 py-2 text-gray-600">QA 프로세스에서 발견된 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-red-600">DEV</td>
+                            <td class="px-4 py-2 text-center">141</td>
+                            <td class="px-4 py-2 text-gray-600">개발 단계에서 발견된 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-yellow-600">Live 업데이트</td>
+                            <td class="px-4 py-2 text-center">9</td>
+                            <td class="px-4 py-2 text-gray-600">라이브 서비스 중 업데이트 관련 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-orange-600">Live 미검출</td>
+                            <td class="px-4 py-2 text-center">16</td>
+                            <td class="px-4 py-2 text-gray-600">라이브 서비스 중 발견된 미검출 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-purple-600">테스트 누락</td>
+                            <td class="px-4 py-2 text-center">6</td>
+                            <td class="px-4 py-2 text-gray-600">테스트 과정에서 누락된 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-gray-600">미수정</td>
+                            <td class="px-4 py-2 text-center">0</td>
+                            <td class="px-4 py-2 text-gray-600">수정되지 않은 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-purple-600">문의 & 건의</td>
+                            <td class="px-4 py-2 text-center">0</td>
+                            <td class="px-4 py-2 text-gray-600">사용자 문의 및 개선 건의</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-orange-600">Major</td>
+                            <td class="px-4 py-2 text-center">3</td>
+                            <td class="px-4 py-2 text-gray-600">주요 우선순위 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-red-600">Critical</td>
+                            <td class="px-4 py-2 text-center">0</td>
+                            <td class="px-4 py-2 text-gray-600">치명적 우선순위 이슈</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-2 font-medium text-red-600">Service Down</td>
+                            <td class="px-4 py-2 text-center">0</td>
+                            <td class="px-4 py-2 text-gray-600">서비스 다운 관련 이슈</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 7. Deployment Version -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-code-branch mr-2"></i>7. Deployment Version
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3">Client</h3>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-gray-50 rounded text-sm">Google v1.0.912</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">브랜드 페이지 v1.0.912</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">Huawei v1.0.912</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">GPG on PC v1.0.912</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">iOS v1.0.913</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">PC v1.0.910</div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-700 mb-3">Server & Infrastructure</h3>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-gray-50 rounded text-sm">epic7-game: 20250925f</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">epic7-battle: 20250925f</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">CDN: R3515 T3515 M3515 S3515 webpub3515</div>
+                        <div class="p-2 bg-gray-50 rounded text-sm">TSV: 20250925f</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Performance & Special Notes -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-trophy mr-2"></i>8. Performance & Special Notes
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h3 class="font-bold text-green-800 mb-2">KPI 기준 충족 여부</h3>
+                    <ul class="text-sm text-green-700 space-y-1">
+                        <li>✅ 이슈 검출률 95.8% (목표: 95% 초과 달성)</li>
+                        <li>⚠️ 서비스 안정성 88.0% (Live 이슈 25건)</li>
+                        <li>✅ 리소스 가용률 90.6% (효율적 사용)</li>
+                        <li>✅ 프로세스 효율성 156% (목표 200 Case/H 대비 초과 달성)</li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <h3 class="font-bold text-blue-800 mb-2">리젝 및 긴급 대응 여부</h3>
+                    <ul class="text-sm text-blue-700 space-y-1">
+                        <li>✅ 리젝 사항: 없음</li>
+                        <li>⚠️ 긴급 대응 발생: 9건</li>
+                        <li>✅ 서비스 다운타임: 0분 (우수)</li>
+                        <li>✅ 서비스 장애: 0건</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. Service Satisfaction Analysis -->
+        <section class="bg-white rounded-lg shadow-lg p-6">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-heart mr-2"></i>9. 서비스 만족도 분석
+                </h2>
+            </div>
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">주요 주제별 유저 반응 분석 (총 8,515건 데이터 기반)</h3>
+                
+                <div class="mb-6">
+                    <h4 class="font-bold text-purple-700 mb-3">📊 한국 커뮤니티 주요 동향 (1,562건)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-700 mb-2">✅ 공략 (130건)</h5>
+                            <p class="text-sm text-gray-700">긍정: 신규/복귀 유저 대상 월드 아레나, 영웅 세팅, 게임 팁 등 가이드 게시글이 활발히 공유되며 커뮤니티 참여도 증가.</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-red-700 mb-2">⚠️ 카오스 제로 나이트메어 (110건)</h5>
+                            <p class="text-sm text-gray-700">부정: 신작 관련 관심은 지속되나 일러스트 및 스킬 애니메이션 퀄리티에 대한 부정적 평가가 지속됨.</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-700 mb-2">🎉 2025 추석 (100건)</h5>
+                            <p class="text-sm text-gray-700">긍정: 머라고라 30개 보상에 대한 높은 만족도. 시즈널 이벤트로서 성공적 평가.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-red-700 mb-2">🔧 오류 (100건)</h5>
+                            <p class="text-sm text-gray-700">부정: 최근 잦은 오류 현상(로그인 불가, 기사단 전쟁 중단 등)에 대한 불만 다수. 선안내 부족에 대한 아쉬움 표출.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-700 mb-2">📖 장송의 프리렌 (80건)</h5>
+                            <p class="text-sm text-gray-700">긍정: 서브 스토리 퀄리티에 대한 높은 만족도. 훌륭한 스토리 전개와 보상 강화석에 대한 긍정 평가.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-yellow-700 mb-2">📊 특별 신비 소환 (80건)</h5>
+                            <p class="text-sm text-gray-700">복합: 할인 이벤트 환영과 동시에 차기 월광 영웅 성능 오버밸런스 우려 혼재. 효율 논의 활발.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-purple-700 mb-3">🌍 글로벌 커뮤니티 주요 동향 (6,953건)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-700 mb-2">🏆 장송의 프리렌 - 로비 (780건)</h5>
+                            <p class="text-sm text-gray-700">긍정: 실시간에 맞춰 변화하는 로비 배경(낮→해질녘→밤)에 대한 압도적 긍정 동향. 콜라보 완성도 극찬.</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-red-700 mb-2">⚠️ 계승자의 길 (500건)</h5>
+                            <p class="text-sm text-gray-700">부정: 기존 유저 보상 부족 관련 불만 지속. 신규 유저 우대 정책 대비 기존 유저 혜택 불균형 지적.</p>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-yellow-700 mb-2">📈 메타 (470건)</h5>
+                            <p class="text-sm text-gray-700">중립: 현 메타에서 죄악의 안젤리카 및 잿빛 숲의 이세리아가 카운터에 효과적이라는 평가. 전략 토론 활발.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-red-700 mb-2">😔 NPC (440건)</h5>
+                            <p class="text-sm text-gray-700">부정: 각 메뉴 내 존재했던 NPC들이 사라져가는 현상 관련 아쉬움. 게임 세계관 몰입도 저하 우려.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-yellow-700 mb-2">💎 한정 아티팩트 (400건)</h5>
+                            <p class="text-sm text-gray-700">중립: 지식의 가루를 소모해서라도 구매할 가치가 높다는 의견. 투자 효율성 논의 지속.</p>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h5 class="font-bold text-green-700 mb-2">📖 장송의 프리렌 - 스토리 (360건)</h5>
+                            <p class="text-sm text-gray-700">긍정: 에픽세븐과 잘 어울리며 라스와 프리렌의 연결 고리 관련 호평. 세계관 융합 성공 평가.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h4 class="font-bold text-purple-700 mb-2">📈 전체 감성 분포 종합 평가</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600">36.61%</div>
+                            <div class="text-sm text-green-700">긍정 (3,117건)</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-red-600">31.86%</div>
+                            <div class="text-sm text-red-700">부정 (2,713건)</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-600">24.60%</div>
+                            <div class="text-sm text-gray-700">중립 (2,095건)</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-600">6.93%</div>
+                            <div class="text-sm text-purple-700">복합 (590건)</div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-700">
+                        서브컬쳐 게임 업계 기준(부정 55-60%, 긍정 15-20%) 대비 **긍정 비율이 약 2배 높은 우수한 결과**를 보임. 
+                        장송의 프리렌 콜라보의 높은 완성도(로비 배경, 스토리 퀄리티)와 추석 이벤트 보상 만족도가 긍정 지수 상승에 기여.
+                        다만 기술적 안정성(잦은 오류, 기사단 전쟁 중단) 및 기존 유저 보상 형평성 관련 우려사항은 지속적인 모니터링이 필요한 상황.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. Overall Assessment -->
+        <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="section-header text-white p-4 rounded-t-lg mb-6">
+                <h2 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-chart-pie mr-2"></i>10. Overall Assessment
+                </h2>
+            </div>
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">9/25 타겟 서비스 안정성 및 품질 총평</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-green-700 mb-2">🎯 우수 성과</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• <strong>탁월한 이슈 검출력</strong>: 95.8% 검출률로 업계 최고 수준 달성</li>
+                                <li>• <strong>초고효율 테스트 처리</strong>: 312 Case/H로 목표 대비 156% 효율</li>
+                                <li>• <strong>완벽한 서비스 안정성</strong>: 서비스 다운타임 0분, 서비스 장애 0건</li>
+                                <li>• <strong>우수한 유저 만족도</strong>: 긍정 36.61%로 서브컬쳐 게임 기준 대비 2배 수준</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-blue-700 mb-2">📊 품질 지표 분석</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• <strong>효율적인 테스트 관리</strong>: 18,100케이스 312 Case/H 처리</li>
+                                <li>• <strong>리소스 최적화</strong>: 90.6% 가용률로 효율적 운영</li>
+                                <li>• <strong>이슈 분포 균형</strong>: QA 33.5%, DEV 66.5%, Live 11.8%</li>
+                                <li>• <strong>중대 이슈 제로</strong>: Critical 0건, Service Down 0건</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-orange-700 mb-2">🔧 개선 필요 영역</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• <strong>서비스 안정성 강화</strong>: 88.0% (Live 이슈 25건 개선 필요)</li>
+                                <li>• <strong>긴급 대응 최소화</strong>: 9건 발생 (사전 예방 체계 강화)</li>
+                                <li>• <strong>기술적 안정성 개선</strong>: 로그인 오류, 콘텐츠 중단 등 재발 방지</li>
+                                <li>• <strong>기존 유저 소통 강화</strong>: 계승자의 길 보상 형평성 논의 대응</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <h4 class="font-bold text-purple-700 mb-2">🎯 핵심 성과 요소</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• <strong>프리렌 콜라보 완성도</strong>: 로비 배경, 스토리 퀄리티로 780건 긍정 반응</li>
+                                <li>• <strong>2025 추석 이벤트</strong>: 머라고라 30개 보상으로 100건 긍정</li>
+                                <li>• <strong>커뮤니티 참여 활성화</strong>: 공략 게시글 130건으로 신규 유저 진입 장벽 완화</li>
+                                <li>• <strong>프로세스 효율성</strong>: A+ 등급 달성 (156% 효율)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-yellow-100 rounded-lg border-l-4 border-yellow-500">
+                    <p class="text-yellow-800 font-medium">
+                        <strong>종합 평가</strong>: 9/25 타겟 업데이트는 <strong>탁월한 테스트 효율성(156%)과 높은 이슈 검출률(95.8%)</strong>을 달성했습니다. 
+                        특히 프리렌 콜라보의 압도적 긍정 반응(780건)과 유저 만족도 36.61% (서브컬쳐 게임 기준 대비 2배)는 
+                        탁월한 성과입니다. 이슈 검출률 95.8%로 업계 최고 수준을 달성했으며, 서비스 다운타임 0분 유지와 Critical 이슈 0건으로 
+                        <strong>기술적 안전성</strong>을 입증했습니다. 
+                        다만 <strong>서비스 안정성 88.0% (Live 이슈 25건)와 긴급 대응 9건</strong>은 개선이 필요한 부분으로, 
+                        로그인 오류 및 기사단 전쟁 중단 등 기술적 안정성 강화가 요구됩니다.
+                        향후 기존 유저 보상 형평성 논의(계승자의 길 500건 부정)에 대한 지속적인 모니터링과 
+                        <strong>사전 안내 체계 고도화</strong>를 통해 더욱 높은 품질 수준을 달성할 수 있을 것입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 테스트 볼륨 차트
+        const testVolumeCtx = document.getElementById('testVolumeChart').getContext('2d');
+        new Chart(testVolumeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Update', 'Web', 'App', 'Effect', 'Hotfix'],
+                datasets: [{
+                    data: [14209, 1200, 2691, 0, 31],
+                    backgroundColor: [
+                        '#3B82F6',
+                        '#10B981',
+                        '#8B5CF6',
+                        '#F59E0B',
+                        '#EF4444'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '테스트 케이스 분포',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 이슈 현황 차트
+        const issueStatusCtx = document.getElementById('issueStatusChart').getContext('2d');
+        new Chart(issueStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['QA', 'DEV', 'Live 이슈', '테스트 누락', '미수정', '문의 & 건의'],
+                datasets: [{
+                    data: [71, 141, 25, 6, 0, 0],
+                    backgroundColor: [
+                        '#3B82F6',
+                        '#EF4444',
+                        '#F59E0B',
+                        '#FF6B35',
+                        '#6B7280',
+                        '#8B5CF6'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '이슈 분류별 현황',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
