@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Source Knowledge Integration System | 기술 기획서</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --dark-bg: #0f172a;
+            --light-bg: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title .icon {
+            font-size: 2.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin: 2rem 0 1rem 0;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Feature List */
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .feature-item h4 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Folder Structure */
+        .folder-structure {
+            background: var(--dark-bg);
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+
+        .folder-structure .folder {
+            color: #fbbf24;
+        }
+
+        .folder-structure .file {
+            color: #60a5fa;
+        }
+
+        .folder-structure .comment {
+            color: #86efac;
+        }
+
+        /* Chat Example */
+        .chat-container {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .chat-message.user .chat-avatar {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chat-message.ai .chat-avatar {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .chat-bubble {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 80%;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chat-source {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.15);
+        }
+
+        .tech-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* UI Mockup */
+        .mockup {
+            background: var(--dark-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .mockup-header {
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .mockup-dot.red { background: #ef4444; }
+        .mockup-dot.yellow { background: #f59e0b; }
+        .mockup-dot.green { background: #10b981; }
+
+        .mockup-body {
+            background: white;
+            padding: 2rem;
+            border-radius: 0 0 8px 8px;
+            min-height: 300px;
+        }
+
+        .mockup-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .mockup-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        /* Use Case */
+        .use-case {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .use-case-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid var(--warning-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box strong {
+            color: #92400e;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-bg);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .nav-container {
+                gap: 1rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Multi-Source Knowledge Integration System</h1>
+            <p class="subtitle">게임 운영을 위한 AI 기반 통합 지식 베이스 시스템</p>
+            <div class="badge">기술 기획서 v1.0</div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#overview">시스템 개요</a>
+            <a href="#features">기능 요구사항</a>
+            <a href="#tech-stack">기술 스택</a>
+            <a href="#constraints">제약사항 & 리스크</a>
+            <a href="#mockup">완성도 시안</a>
+            <a href="#use-cases">활용 방안</a>
+            <a href="#summary">총평</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Section 1: System Overview -->
+        <section id="overview" class="section">
+            <h2 class="section-title">
+                <span class="icon">🎯</span>
+                1. 시스템 개요
+            </h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">💡</span>
+                        프로젝트 목적
+                    </h3>
+                    <p>게임 운영에 필요한 다양한 데이터 소스(TSV, 기획서, 공지사항 등)를 AI가 학습하여, 자연어 질의를 통해 신속하고 정확한 정보 조회 및 분석을 가능하게 하는 통합 지식 베이스 시스템 구축</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🚀</span>
+                        핵심 가치
+                    </h3>
+                    <p><strong>업무 효율성 향상:</strong> 수백 개의 파일을 수동으로 검색하지 않고 AI를 통한 즉각적인 정보 접근<br><br>
+                    <strong>정확도 향상:</strong> 여러 소스를 크로스 참조하여 맥락 기반 정확한 답변 제공<br><br>
+                    <strong>버전 관리:</strong> 자동 최신 버전 학습 및 변경사항 추적</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">👥</span>
+                        타겟 사용자
+                    </h3>
+                    <p><strong>QA 팀:</strong> 버그 검증, 기획 의도 확인<br><br>
+                    <strong>기획자:</strong> 과거 기획 내용 조회, 버전별 변경 추적<br><br>
+                    <strong>CS 팀:</strong> 유저 문의 대응, 공지 여부 확인<br><br>
+                    <strong>운영자:</strong> 데이터 분석, 의사결정 지원</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">시스템 배경</h3>
+            <p>게임 개발 및 운영 과정에서 생성되는 방대한 데이터(게임 데이터 TSV, 기획 문서, 업데이트 공지 등)는 날짜별로 버전 관리되며, 이를 효과적으로 활용하기 위해서는 통합된 지식 검색 시스템이 필요합니다.</p>
+            
+            <div class="highlight-box">
+                <strong>⚠️ 현재 문제점:</strong> 파일이 분산되어 있어 필요한 정보를 찾기 위해 여러 폴더와 파일을 수동으로 검색해야 하며, 버전별 변경사항 추적이 어려움
+            </div>
+
+            <h3 class="section-subtitle">폴더 구조 예시</h3>
+            <div class="folder-structure">
+📁 Storage/<br>
+├── 📁 <span class="folder">tsv/</span> <span class="comment"># 게임 데이터 테이블</span><br>
+│   ├── 📁 20251110/<br>
+│   │   ├── 📄 <span class="file">card_data.tsv</span><br>
+│   │   ├── 📄 <span class="file">probability.tsv</span><br>
+│   │   └── 📄 <span class="file">save_system.tsv</span><br>
+│   └── 📁 20251112/ <span class="comment"># 최신 버전</span><br>
+│       ├── 📄 <span class="file">card_data.tsv</span> <span class="comment">(업데이트됨)</span><br>
+│       └── 📄 <span class="file">probability.tsv</span><br>
+│<br>
+├── 📁 <span class="folder">buildnote/</span> <span class="comment"># 기획 문서</span><br>
+│   ├── 📁 20251110/<br>
+│   │   ├── 📄 <span class="file">save_system.pptx</span><br>
+│   │   └── 📄 <span class="file">card_design.xlsx</span><br>
+│   └── 📁 20251112/<br>
+│       └── 📄 <span class="file">save_system_v2.xlsx</span><br>
+│<br>
+└── 📁 <span class="folder">notification/</span> <span class="comment"># 유저 공지</span><br>
+    ├── 📁 20251110/<br>
+    │   └── 📄 <span class="file">patch_note.pdf</span><br>
+    └── 📁 20251112/<br>
+        └── 📄 <span class="file">update_log.md</span><br>
+<br>
+<span class="comment"># 폴더는 추가 확장 가능 (예: logs, analytics, reports 등)</span>
+            </div>
+        </section>
+
+        <!-- Section 2: Features -->
+        <section id="features" class="section">
+            <h2 class="section-title">
+                <span class="icon">⚙️</span>
+                2. 기능 요구사항
+            </h2>
+
+            <h3 class="section-subtitle">2.1 Multi-Source Knowledge Integration</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>📂 다중 폴더 지원</h4>
+                    <p><strong>필수 폴더:</strong> tsv, buildnote, notification</p>
+                    <p><strong>확장 가능:</strong> 향후 logs, analytics, reports 등 추가 폴더 지원</p>
+                    <p><strong>구현 요구사항:</strong> 폴더 구조를 동적으로 인식하여 새로운 폴더 추가 시 자동으로 학습 대상에 포함</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📅 날짜별 버전 관리</h4>
+                    <p>각 폴더 아래에는 YYYYMMDD 형식의 하위 폴더로 버전 구분</p>
+                    <p><strong>예시:</strong> 20251110, 20251112, 20251115 등</p>
+                    <p><strong>구현 요구사항:</strong> 폴더명을 날짜로 파싱하여 시간순 정렬, 최신 버전 자동 식별</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📤 사용자 직접 업로드</h4>
+                    <p>사용자(Master)가 클라우드 스토리지에 직접 파일을 업로드할 수 있어야 함</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>웹 기반 파일 업로드 인터페이스 제공</li>
+                        <li>드래그 앤 드롭 지원</li>
+                        <li>업로드 시 자동으로 적절한 폴더/날짜 폴더에 저장</li>
+                        <li>업로드 완료 후 자동 학습 트리거</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🔍 파일 형식 지원</h4>
+                    <p><strong>TSV:</strong> .tsv 파일 파싱 (탭 구분 데이터)</p>
+                    <p><strong>문서:</strong> .pptx, .xlsx, .docx, .pdf, .md</p>
+                    <p><strong>구현 요구사항:</strong> 각 파일 형식에 대한 텍스트 추출 및 구조화 파싱</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">2.2 Version-Aware Automatic Learning</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>🔄 자동 최신 버전 감지</h4>
+                    <p>새로운 날짜 폴더(버전)가 생성되면 자동으로 감지</p>
+                    <p><strong>예시:</strong> 20251112 폴더가 추가되면 자동 인식</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>폴더 모니터링 시스템 (주기적 스캔 또는 이벤트 기반)</li>
+                        <li>신규 폴더 감지 시 자동 학습 파이프라인 실행</li>
+                        <li>수동 트리거 불필요</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📚 자동 학습 파이프라인</h4>
+                    <p>감지된 최신 버전의 파일들을 AI가 자동으로 학습</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>파일 내용 추출 (텍스트, 데이터 테이블)</li>
+                        <li>임베딩 생성 및 벡터 DB 저장</li>
+                        <li>메타데이터 태깅 (폴더명, 버전, 파일명, 생성일)</li>
+                        <li>학습 완료 알림</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🎯 항상 최신 버전 우선</h4>
+                    <p>사용자가 질문할 때 기본적으로 최신 버전의 데이터를 기준으로 답변</p>
+                    <p><strong>예시:</strong> 20251110과 20251112 버전이 있을 때, 별도 지정 없이 질문하면 20251112 기준으로 답변</p>
+                    <p><strong>구현 요구사항:</strong> 검색 쿼리 시 버전 필터 자동 적용 (최신 버전 우선)</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">2.3 Cross-Folder Reasoning</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>🔗 여러 폴더 연계 추론</h4>
+                    <p>하나의 질문에 대해 여러 폴더의 데이터를 종합하여 답변</p>
+                    <p><strong>워크플로우 예시:</strong></p>
+                    <div class="flow-diagram">
+                        <div class="flow-box">사용자 질문</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-box">buildnote 조회</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-box">tsv 조회</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-box">notification 조회</div>
+                        <span class="flow-arrow">→</span>
+                        <div class="flow-box">통합 답변</div>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <h4>💬 대화형 연속 질문</h4>
+                    <p>이전 답변의 맥락을 유지하며 추가 질문 가능</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>대화 히스토리 유지 (세션 관리)</li>
+                        <li>이전 답변에서 언급된 엔티티 추적</li>
+                        <li>문맥 기반 다음 질문 이해</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📌 출처 명시</h4>
+                    <p>답변 시 어떤 폴더의 어떤 파일에서 정보를 가져왔는지 명시</p>
+                    <p><strong>예시:</strong> "buildnote/20251112/save_system_v2.xlsx에 따르면..."</p>
+                    <p><strong>구현 요구사항:</strong> 답변 생성 시 소스 파일 메타데이터 포함</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">2.4 Version Delta Tracking</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>🔍 버전 간 변경사항 추적</h4>
+                    <p>사용자가 "20251112에서 새롭게 변한 내용이 뭐야?" 질문 시 이전 버전과 비교하여 차이점 분석</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>버전 간 파일 Diff 계산</li>
+                        <li>추가된 파일, 수정된 파일, 삭제된 파일 식별</li>
+                        <li>파일 내용의 세부 변경사항 추출 (데이터 값 변화, 문구 변경 등)</li>
+                        <li>변경사항 요약 및 하이라이트</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📊 변경 유형별 분류</h4>
+                    <p><strong>신규 추가:</strong> 새롭게 추가된 데이터/기획/공지</p>
+                    <p><strong>수정:</strong> 기존 내용에서 변경된 부분</p>
+                    <p><strong>삭제:</strong> 제거된 데이터/기획</p>
+                    <p><strong>구현 요구사항:</strong> 변경 타입별로 시각적으로 구분하여 표시</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🕐 과거 버전 조회</h4>
+                    <p>특정 날짜의 버전을 지정하여 해당 시점의 데이터 조회 가능</p>
+                    <p><strong>예시:</strong> "20251110 버전에서는 저장 확률이 얼마였어?"</p>
+                    <p><strong>구현 요구사항:</strong> 버전 지정 쿼리 파라미터 지원</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">2.5 학습 진행 상태 가시성</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>📊 실시간 학습 진행률 표시</h4>
+                    <p>새 버전 업로드 시 학습 진행 상태를 사용자에게 실시간으로 표시</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>진행률 바 (0% → 100%)</li>
+                        <li>현재 처리 중인 파일명 표시</li>
+                        <li>예상 완료 시간 표시</li>
+                        <li>학습 완료 알림 (푸시 알림 또는 이메일)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📅 마지막 학습 완료 시간</h4>
+                    <p>메인 화면에 마지막 학습 완료 시간 및 현재 학습 버전 표시</p>
+                    <p><strong>예시:</strong> "마지막 학습: 2025-11-14 09:30 | 현재 버전: 20251114"</p>
+                    <p><strong>구현 요구사항:</strong> 메타데이터 DB에 학습 이력 저장</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🔄 자동 학습 알림</h4>
+                    <p>새 버전 폴더 감지 시 자동 학습 시작 알림</p>
+                    <p><strong>예시:</strong> "🔔 새 버전 감지: 20251115 폴더, 학습을 시작합니다..."</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>배경 작업으로 학습 진행 (UI 블로킹 없음)</li>
+                        <li>학습 중에도 이전 버전으로 질의 가능</li>
+                        <li>학습 완료 시 자동으로 최신 버전으로 전환</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>⚠️ 학습 실패 처리</h4>
+                    <p>파일 파싱 실패, 용량 초과 등 학습 중 오류 발생 시 명확한 에러 메시지 제공</p>
+                    <p><strong>예시:</strong> "❌ 파일 card_data.tsv 파싱 실패: 잘못된 형식"</p>
+                    <p><strong>구현 요구사항:</strong> 오류 로그 저장 및 관리자 알림</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">2.6 고급 필터/검색 기능</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>📅 날짜 범위 검색</h4>
+                    <p>특정 기간 내의 데이터만 검색</p>
+                    <p><strong>예시:</strong> "20251110부터 20251112까지 변경된 카드 스탯 알려줘"</p>
+                    <p><strong>구현 요구사항:</strong> 날짜 파싱 및 버전 필터링 로직</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📂 폴더 선택/제외 검색</h4>
+                    <p>특정 폴더만 포함하거나 제외하고 검색</p>
+                    <p><strong>예시:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>"tsv 폴더에서만 검색해줘"</li>
+                        <li>"notification 폴더 제외하고 검색"</li>
+                    </ul>
+                    <p><strong>구현 요구사항:</strong> 메타데이터 기반 폴더 필터링</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📄 파일 타입 필터</h4>
+                    <p>특정 파일 형식만 검색</p>
+                    <p><strong>예시:</strong> "PPTX 파일에서만 세이브 시스템 설명 찾아줘"</p>
+                    <p><strong>구현 요구사항:</strong> 파일 확장자 메타데이터 태깅</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🔍 정확도 기반 검색</h4>
+                    <p>답변 신뢰도 점수 표시 및 임계값 설정</p>
+                    <p><strong>예시:</strong> "신뢰도 80% 이상인 답변만 보여줘"</p>
+                    <p><strong>구현 요구사항:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>벡터 유사도 점수를 신뢰도로 변환</li>
+                        <li>답변마다 신뢰도 퍼센트 표시</li>
+                        <li>낮은 신뢰도 시 "관련 정보가 부족합니다" 경고</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🎯 키워드 하이라이트</h4>
+                    <p>검색어와 관련된 키워드를 답변에서 하이라이트</p>
+                    <p><strong>구현 요구사항:</strong> 원본 텍스트에서 매칭된 부분 시각적 강조</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🔄 유사 질문 추천</h4>
+                    <p>사용자 질문 기반 유사 질문 자동 제안</p>
+                    <p><strong>예시:</strong> "다음 질문도 궁금하신가요? '저장 확률은?', '공지 여부는?'"</p>
+                    <p><strong>구현 요구사항:</strong> 대화 히스토리 기반 추천 알고리즘</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">실제 사용 시나리오 (상세)</h3>
+            <div class="chat-container">
+                <div class="chat-message user">
+                    <div class="chat-avatar">Q1</div>
+                    <div class="chat-bubble">
+                        베릴의 신 번뜩임 카드가 세이브 데이터로 저장이 안된다는 제보가 있던데 기획서 상 세이브 데이터의 용량이 충분해도 저장이 안될 수 있나?
+                    </div>
+                </div>
+
+                <div class="chat-message ai">
+                    <div class="chat-avatar">AI</div>
+                    <div class="chat-bubble">
+                        네, 저장이 안될 수 있습니다. <strong>buildnote/20251112/save_system_v2.xlsx</strong>에 따르면 세이브 데이터는 확률 기반으로 저장되며, 세이브 데이터의 용량과 무관하게 특정 카드 종류는 저장 실패할 수 있습니다. "신 번뜩임" 카드는 저장 실패 가능 항목에 포함되어 있습니다.
+                        <div class="chat-source">출처: buildnote/20251112/save_system_v2.xlsx</div>
+                    </div>
+                </div>
+
+                <div class="chat-message user">
+                    <div class="chat-avatar">Q2</div>
+                    <div class="chat-bubble">
+                        아 그럼 저장이 안될 수 있는게 정상적인 상황이구나. 그럼 저장이 될 확률은 얼마나 되지?
+                    </div>
+                </div>
+
+                <div class="chat-message ai">
+                    <div class="chat-avatar">AI</div>
+                    <div class="chat-bubble">
+                        <strong>tsv/20251112/probability.tsv</strong>의 내용에 따르면 "베릴의 신 번뜩임" 카드의 세이브 데이터 저장 확률은 <strong>5%</strong>입니다.
+                        <div class="chat-source">출처: tsv/20251112/probability.tsv</div>
+                    </div>
+                </div>
+
+                <div class="chat-message user">
+                    <div class="chat-avatar">Q3</div>
+                    <div class="chat-bubble">
+                        이런 내용이 업데이트 노트나 개발자 노트를 통해서 유저들에게 안내된 적이 있나?
+                    </div>
+                </div>
+
+                <div class="chat-message ai">
+                    <div class="chat-avatar">AI</div>
+                    <div class="chat-bubble">
+                        <strong>notification</strong> 폴더의 모든 버전을 검색한 결과, 세이브 데이터의 저장 규칙이나 확률에 대한 공지는 <strong>없습니다</strong>. 유저들에게 안내된 이력이 확인되지 않습니다.
+                        <div class="chat-source">출처: notification 폴더 전체 검색</div>
+                    </div>
+                </div>
+
+                <div class="chat-message user">
+                    <div class="chat-avatar">Q4</div>
+                    <div class="chat-bubble">
+                        20251112에서 새롭게 변한 내용이 뭐야?
+                    </div>
+                </div>
+
+                <div class="chat-message ai">
+                    <div class="chat-avatar">AI</div>
+                    <div class="chat-bubble">
+                        <strong>20251110 → 20251112 변경사항:</strong><br><br>
+                        <strong>📂 tsv 폴더:</strong><br>
+                        - card_data.tsv: "베릴의 신 번뜩임" 카드 스탯 수정 (공격력 100→120)<br>
+                        - probability.tsv: 저장 확률 3%→5%로 상향<br><br>
+                        <strong>📂 buildnote 폴더:</strong><br>
+                        - save_system_v2.xlsx 신규 추가: 확률 저장 메커니즘 상세 설명<br><br>
+                        <strong>📂 notification 폴더:</strong><br>
+                        - update_log.md 추가: 일반 패치 노트 (세이브 데이터 관련 내용 없음)
+                        <div class="chat-source">출처: 버전 비교 분석</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Tech Stack -->
+        <section id="tech-stack" class="section">
+        <section id="tech-stack" class="section">
+            <h2 class="section-title">
+                <span class="icon">🛠️</span>
+                3. 기술 스택 제안
+            </h2>
+
+            <p style="margin-bottom: 2rem;">다음은 시스템 구현을 위한 기술 방향성 제안입니다. 개발팀에서 프로젝트 상황에 맞게 선택 및 조정 가능합니다.</p>
+
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="icon">☁️</div>
+                    <h4>클라우드 스토리지</h4>
+                    <p>AWS S3, Google Cloud Storage, Azure Blob Storage 등</p>
+                    <small style="color: var(--text-light);">파일 저장 및 버전 관리</small>
+                </div>
+
+                <div class="tech-item">
+                    <div class="icon">🤖</div>
+                    <h4>LLM / AI</h4>
+                    <p>GPT-4, Claude, Gemini 등</p>
+                    <small style="color: var(--text-light);">자연어 이해 및 답변 생성</small>
+                </div>
+
+                <div class="tech-item">
+                    <div class="icon">🗄️</div>
+                    <h4>벡터 데이터베이스</h4>
+                    <p>Pinecone, Qdrant, Weaviate, Chroma 등</p>
+                    <small style="color: var(--text-light);">임베딩 저장 및 시맨틱 검색</small>
+                </div>
+
+                <div class="tech-item">
+                    <div class="icon">🔌</div>
+                    <h4>MCP (Model Context Protocol)</h4>
+                    <p>AI와 데이터 소스 연결</p>
+                    <small style="color: var(--text-light);">실시간 데이터 동기화</small>
+                </div>
+
+                <div class="tech-item">
+                    <div class="icon">📄</div>
+                    <h4>문서 파싱</h4>
+                    <p>Apache POI, python-pptx, pandas 등</p>
+                    <small style="color: var(--text-light);">TSV, Excel, PPTX 파일 처리</small>
+                </div>
+
+                <div class="tech-item">
+                    <div class="icon">🌐</div>
+                    <h4>웹 프레임워크</h4>
+                    <p>React, Vue.js, Next.js 등</p>
+                    <small style="color: var(--text-light);">프론트엔드 UI/UX</small>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">시스템 아키텍처 개념도</h3>
+            <div style="background: #f8fafc; padding: 3rem 2rem; border-radius: 12px; margin: 2rem 0;">
+                <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+                    
+                    <!-- Layer 1: User -->
+                    <div class="flow-box" style="width: 100%; max-width: 600px; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">👤 사용자 (웹 인터페이스)<br><small style="font-size: 0.85rem; opacity: 0.9;">자연어 질문 입력 / 파일 업로드</small></div>
+                    
+                    <div style="font-size: 2rem; color: var(--primary-color);">↓</div>
+                    
+                    <!-- Layer 2: AI -->
+                    <div class="flow-box" style="width: 100%; max-width: 600px;">🤖 AI 챗봇 (LLM)<br><small style="font-size: 0.85rem; opacity: 0.9;">GPT-4 / Claude / Gemini</small></div>
+                    
+                    <div style="font-size: 2rem; color: var(--primary-color);">↓</div>
+                    
+                    <!-- Layer 3: MCP -->
+                    <div class="flow-box" style="width: 100%; max-width: 600px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">🔌 MCP 레이어<br><small style="font-size: 0.85rem; opacity: 0.9;">AI와 데이터 소스 연결 브리지</small></div>
+                    
+                    <div style="font-size: 2rem; color: var(--primary-color);">↓</div>
+                    
+                    <!-- Layer 4: Storage & DB -->
+                    <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; width: 100%;">
+                        <div class="flow-box" style="flex: 1; min-width: 250px; background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">🗄️ 벡터 DB<br><small style="font-size: 0.85rem; opacity: 0.9;">임베딩 저장 및 시맨틱 검색</small></div>
+                        <div class="flow-box" style="flex: 1; min-width: 250px; background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">☁️ 클라우드 스토리지<br><small style="font-size: 0.85rem; opacity: 0.9;">원본 파일 저장</small></div>
+                    </div>
+                    
+                    <div style="font-size: 2rem; color: var(--primary-color);">↓</div>
+                    
+                    <!-- Layer 5: Folders -->
+                    <div style="background: white; border: 3px solid var(--primary-color); border-radius: 12px; padding: 2rem; width: 100%; max-width: 700px;">
+                        <h4 style="color: var(--primary-color); text-align: center; margin-bottom: 1.5rem; font-size: 1.2rem;">📁 Storage 폴더 구조</h4>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; font-weight: 600; text-align: center;">📄 tsv/<br><small style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">게임 데이터</small></div>
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; font-weight: 600; text-align: center;">📋 buildnote/<br><small style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">기획 문서</small></div>
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; font-weight: 600; text-align: center;">📢 notification/<br><small style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">유저 공지</small></div>
+                            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 1rem 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; font-weight: 600; text-align: center;">➕ ...<br><small style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">확장 가능</small></div>
+                        </div>
+                        <div style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">각 폴더 아래 날짜별 버전 관리 (20251110, 20251112...)</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Constraints & Risks -->
+        <section id="constraints" class="section">
+            <h2 class="section-title">
+                <span class="icon">⚠️</span>
+                4. 제약사항 & 리스크
+            </h2>
+
+            <p style="margin-bottom: 2rem;">시스템 구현 및 운영 시 고려해야 할 기술적 제약사항과 리스크 요소입니다. 개발팀은 이를 기반으로 아키텍처를 설계하고 대응 방안을 마련해야 합니다.</p>
+
+            <h3 class="section-subtitle">4.1 기술적 제약사항</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>📦 대용량 파일 처리 한계</h4>
+                    <p><strong>제약:</strong> 단일 TSV 파일 크기 및 전체 데이터 볼륨 제한</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>단일 파일 최대 크기: <strong>권장 500MB 이하</strong> (LLM Context Window 고려)</li>
+                        <li>폴더당 파일 개수: <strong>권장 1,000개 이하</strong></li>
+                        <li>전체 Storage 크기: <strong>클라우드 스토리지 용량 기준</strong> (확장 가능하지만 비용 증가)</li>
+                        <li>대용량 파일 시 청킹(Chunking) 전략 필요</li>
+                    </ul>
+                    <p><strong>권장 사항:</strong> 파일 업로드 시 크기 검증, 대용량 파일은 분할 또는 압축 안내</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>👥 동시 사용자 수 제한</h4>
+                    <p><strong>제약:</strong> LLM API 호출 속도 제한 및 서버 리소스</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>동시 접속: <strong>초기 10~20명 내외</strong> (LLM API Rate Limit 고려)</li>
+                        <li>질의당 응답 시간: <strong>5~15초</strong> (복잡도에 따라 변동)</li>
+                        <li>트래픽 증가 시 큐잉(Queueing) 시스템 필요</li>
+                        <li>프리미엄 LLM API 플랜 시 동시 사용자 수 증가 가능</li>
+                    </ul>
+                    <p><strong>권장 사항:</strong> 초기 파일럿 운영 후 사용 패턴 분석하여 인프라 확장</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>⏱️ 학습 소요 시간</h4>
+                    <p><strong>제약:</strong> 새 버전 업로드 후 학습 완료까지 소요 시간</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>파일 100개 기준: <strong>약 5~10분</strong> (파일 크기 및 복잡도에 따라 변동)</li>
+                        <li>대량 데이터(1,000+ 파일): <strong>30분~1시간</strong></li>
+                        <li>임베딩 생성 시간 + 벡터 DB 인덱싱 시간 포함</li>
+                        <li>학습 중에도 이전 버전으로 서비스 가능하도록 설계 필요</li>
+                    </ul>
+                    <p><strong>권장 사항:</strong> 새벽 시간대 자동 학습 스케줄링, 증분 학습(Incremental Learning) 고려</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>💰 비용 구조</h4>
+                    <p><strong>제약:</strong> LLM API 호출 비용 및 클라우드 인프라 비용</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>LLM API 비용:</strong> 질의당 토큰 사용량에 따라 과금
+                            <ul style="margin-left: 1rem; margin-top: 0.3rem;">
+                                <li>GPT-4: 질의당 $0.01~0.05 (평균)</li>
+                                <li>Claude/Gemini: 유사한 가격대</li>
+                                <li>월 1,000 질의 기준: <strong>약 $10~50</strong></li>
+                            </ul>
+                        </li>
+                        <li><strong>벡터 DB 비용:</strong> 데이터 저장량 및 쿼리 횟수
+                            <ul style="margin-left: 1rem; margin-top: 0.3rem;">
+                                <li>Pinecone/Qdrant 등: 월 $20~100</li>
+                            </ul>
+                        </li>
+                        <li><strong>클라우드 스토리지:</strong> 파일 저장 용량 (월 $5~20)</li>
+                        <li><strong>총 예상 비용:</strong> <strong>월 $50~200</strong> (초기 소규모 운영 기준)</li>
+                    </ul>
+                    <p><strong>권장 사항:</strong> 캐싱 전략으로 중복 질의 비용 절감, 월별 예산 알림 설정</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">4.2 보안 & 접근 권한</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>🔐 파일 업로드 권한 관리</h4>
+                    <p><strong>리스크:</strong> 무분별한 파일 업로드로 인한 데이터 오염 또는 민감 정보 유출</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>파일 업로드 권한: <strong>QA Manager, 기획팀 리더 등 특정 역할로 제한</strong></li>
+                        <li>업로드 이력 로깅: 누가, 언제, 어떤 파일을 업로드했는지 추적</li>
+                        <li>파일 검증: 악성 파일 스캔, 파일 형식 검증</li>
+                        <li>승인 워크플로우 고려: 중요 파일은 승인 후 학습</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🛡️ 데이터 암호화</h4>
+                    <p><strong>리스크:</strong> 민감한 기획 정보 유출 (미공개 콘텐츠, 내부 설계 문서 등)</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>저장 시 암호화(Encryption at Rest):</strong> 클라우드 스토리지 암호화 활성화</li>
+                        <li><strong>전송 시 암호화(Encryption in Transit):</strong> HTTPS/TLS 필수</li>
+                        <li>민감 정보 마스킹: 특정 키워드(예: 미공개 캐릭터명) 자동 필터링 옵션</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>👤 사용자 인증 & 접근 제어</h4>
+                    <p><strong>리스크:</strong> 권한 없는 사용자의 민감 정보 조회</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>인증:</strong> SSO(Single Sign-On) 또는 회사 계정 연동</li>
+                        <li><strong>역할 기반 접근 제어(RBAC):</strong>
+                            <ul style="margin-left: 1rem; margin-top: 0.3rem;">
+                                <li>QA 팀: 모든 폴더 조회 가능</li>
+                                <li>CS 팀: notification 폴더만 조회</li>
+                                <li>외부 협력사: 접근 불가 또는 제한적 조회</li>
+                            </ul>
+                        </li>
+                        <li>조회 이력 로깅: 누가 어떤 질문을 했는지 감사(Audit) 추적</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>📜 버전별 접근 권한</h4>
+                    <p><strong>리스크:</strong> 구버전 데이터 참조로 인한 잘못된 의사결정</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>기본적으로 <strong>최신 버전만 조회</strong> 권한 부여</li>
+                        <li>과거 버전 조회는 <strong>특정 권한 보유자만</strong> 가능</li>
+                        <li>구버전 조회 시 경고 메시지: "⚠️ 이 데이터는 20251110 버전입니다. 현재 최신은 20251114입니다."</li>
+                    </ul>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🚨 데이터 유출 방지</h4>
+                    <p><strong>리스크:</strong> LLM API를 통한 학습 데이터 유출 우려</p>
+                    <p><strong>체크 포인트:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Zero Data Retention 정책:</strong> LLM 제공자가 데이터를 학습에 사용하지 않도록 계약 확인
+                            <ul style="margin-left: 1rem; margin-top: 0.3rem;">
+                                <li>OpenAI API: Enterprise 플랜에서 보장</li>
+                                <li>Claude: 기본적으로 데이터 학습 안 함</li>
+                            </ul>
+                        </li>
+                        <li>온프레미스 LLM 고려: 초고보안이 필요한 경우 자체 호스팅 LLM 사용</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-left-color: #dc2626; margin-top: 2rem;">
+                <h4 style="color: #7f1d1d; font-size: 1.2rem; margin-bottom: 1rem;">⚠️ <strong>중요 권장사항</strong></h4>
+                <p style="color: #7f1d1d; line-height: 1.8;">
+                    위 제약사항과 리스크는 <strong>프로젝트 초기 단계에서 반드시 검토</strong>해야 하며, 아키텍처 설계 시 우선적으로 고려되어야 합니다. 
+                    특히 <strong>보안 관련 항목</strong>은 법적 리스크와 직결되므로, 정보보안팀과의 사전 협의를 권장합니다. 
+                    비용 구조는 사용 패턴에 따라 크게 변동될 수 있으므로, <strong>파일럿 운영 후 재평가</strong>가 필요합니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: Mockup -->
+        <section id="mockup" class="section">
+            <h2 class="section-title">
+                <span class="icon">🎨</span>
+                5. 완성도 시안 (UI/UX)
+            </h2>
+
+            <p style="margin-bottom: 2rem;">웹 기반 인터페이스로 구현되며, 사용자가 직관적으로 AI와 대화하고 파일을 업로드할 수 있습니다.</p>
+
+            <h3 class="section-subtitle">메인 인터페이스 예상 화면</h3>
+            <div class="mockup">
+                <div class="mockup-header">
+                    <div class="mockup-dot red"></div>
+                    <div class="mockup-dot yellow"></div>
+                    <div class="mockup-dot green"></div>
+                    <span style="color: #94a3b8; margin-left: 1rem; font-size: 0.9rem;">Multi-Source Knowledge AI | localhost:3000</span>
+                </div>
+                <div class="mockup-body">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">💬 AI 지식 베이스 챗봇</h3>
+                    
+                    <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>AI:</strong> 안녕하세요! 게임 데이터에 대해 무엇이든 물어보세요. TSV, 기획서, 공지사항 등 모든 데이터를 학습했습니다.
+                    </div>
+
+                    <input type="text" class="mockup-input" placeholder="예: 베릴의 신 번뜩임 카드 저장 확률이 얼마야?" />
+                    <button class="mockup-button">질문하기</button>
+
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border-color);">
+                        <h4 style="margin-bottom: 1.5rem;">📂 폴더별 파일 업로드</h4>
+                        
+                        <!-- Folder Selection -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">업로드할 폴더 선택:</label>
+                            <select class="mockup-input" style="margin-top: 0;">
+                                <option>📄 tsv (게임 데이터)</option>
+                                <option>📋 buildnote (기획 문서)</option>
+                                <option>📢 notification (유저 공지)</option>
+                                <option>➕ 새 폴더 생성...</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Date Folder -->
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">날짜 폴더:</label>
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="text" class="mockup-input" style="flex: 1; margin-top: 0;" placeholder="예: 20251114 (자동 생성)" />
+                                <button class="mockup-button" style="margin-top: 0; white-space: nowrap;">폴더 생성</button>
+                            </div>
+                        </div>
+                        
+                        <!-- File Upload Area -->
+                        <div style="border: 2px dashed var(--border-color); padding: 2rem; text-align: center; border-radius: 8px; background: #f8fafc;">
+                            <p style="color: var(--text-light); margin-bottom: 1rem;">📁 파일을 드래그 앤 드롭하거나 클릭하여 업로드</p>
+                            <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 1rem;">지원 형식: TSV, XLSX, PPTX, DOCX, PDF, MD</p>
+                            <button class="mockup-button">파일 선택</button>
+                        </div>
+                        
+                        <!-- Current Path -->
+                        <div style="margin-top: 1rem; padding: 0.75rem; background: #e0f2fe; border-radius: 6px; font-family: monospace; font-size: 0.9rem; color: #0c4a6e;">
+                            📍 업로드 경로: Storage/tsv/20251114/
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">주요 UI 구성 요소</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">💬</span>
+                        채팅 인터페이스
+                    </h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>실시간 대화형 UI</li>
+                        <li>출처 표시 (파일명 링크)</li>
+                        <li>대화 히스토리 저장</li>
+                        <li>마크다운 렌더링 지원</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">📤</span>
+                        파일 업로드
+                    </h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>드래그 앤 드롭</li>
+                        <li>폴더 선택 (tsv, buildnote 등)</li>
+                        <li>날짜 자동 인식 또는 수동 선택</li>
+                        <li>업로드 진행률 표시</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">📊</span>
+                        버전 관리
+                    </h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>버전 타임라인 뷰</li>
+                        <li>버전 간 Diff 시각화</li>
+                        <li>특정 버전으로 질문</li>
+                        <li>변경사항 하이라이트</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🔍</span>
+                        검색 필터
+                    </h3>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>폴더별 필터링</li>
+                        <li>날짜 범위 선택</li>
+                        <li>파일 타입 필터</li>
+                        <li>고급 검색 옵션</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Use Cases -->
+        <section id="use-cases" class="section">
+            <h2 class="section-title">
+                <span class="icon">💼</span>
+                6. 활용 방안
+            </h2>
+
+            <p style="margin-bottom: 2rem;">실제 게임 운영 업무에서 다음과 같이 활용할 수 있습니다.</p>
+
+            <div class="use-case">
+                <h3 class="use-case-title">
+                    <span>🐛</span>
+                    Use Case 1: QA 이슈 검증
+                </h3>
+                <p><strong>상황:</strong> 유저가 "카드 저장이 안 된다"는 버그 리포트 제출</p>
+                <p><strong>활용:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>AI에게 "해당 카드의 저장 로직이 기획서에 어떻게 정의되어 있나?" 질문</li>
+                    <li>AI가 buildnote 폴더의 기획서를 조회하여 설계 의도 확인</li>
+                    <li>AI에게 "실제 저장 확률은?" 질문하여 TSV 데이터 확인</li>
+                    <li>기획 의도대로 동작하는지 즉시 판단</li>
+                </ol>
+                <p style="margin-top: 1rem;"><strong>효과:</strong> 여러 파일을 수동으로 찾아보지 않고 30초 내 검증 완료</p>
+            </div>
+
+            <div class="use-case">
+                <h3 class="use-case-title">
+                    <span>📝</span>
+                    Use Case 2: 버전 변경 추적
+                </h3>
+                <p><strong>상황:</strong> 새로운 패치 배포 후 변경사항 확인 필요</p>
+                <p><strong>활용:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>AI에게 "20251112 버전에서 뭐가 바뀌었어?" 질문</li>
+                    <li>AI가 이전 버전(20251110)과 비교하여 변경사항 요약</li>
+                    <li>추가/수정/삭제된 데이터 리스트 확인</li>
+                    <li>예상치 못한 변경사항 발견 시 즉시 대응</li>
+                </ol>
+                <p style="margin-top: 1rem;"><strong>효과:</strong> 수동 Diff 작업 없이 변경사항 전체 파악</p>
+            </div>
+
+            <div class="use-case">
+                <h3 class="use-case-title">
+                    <span>💬</span>
+                    Use Case 3: CS 대응
+                </h3>
+                <p><strong>상황:</strong> 유저가 "이 기능이 의도된 거냐"고 문의</p>
+                <p><strong>활용:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>AI에게 "이 기능이 공지된 적 있나?" 질문</li>
+                    <li>AI가 notification 폴더 전체 검색</li>
+                    <li>공지 여부 및 공지 내용 확인</li>
+                    <li>유저에게 정확한 답변 제공</li>
+                </ol>
+                <p style="margin-top: 1rem;"><strong>효과:</strong> CS 대응 시간 단축 및 정확도 향상</p>
+            </div>
+
+            <div class="use-case">
+                <h3 class="use-case-title">
+                    <span>📊</span>
+                    Use Case 4: 게임 밸런스 분석
+                </h3>
+                <p><strong>상황:</strong> 특정 카드가 너무 강하다는 피드백</p>
+                <p><strong>활용:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>AI에게 "해당 카드의 스탯이 다른 카드들과 비교해서 어때?" 질문</li>
+                    <li>AI가 TSV 데이터 분석하여 통계 제공</li>
+                    <li>"과거 버전에서는 어땠어?" 질문으로 변경 이력 확인</li>
+                    <li>밸런스 조정 의사결정 지원</li>
+                </ol>
+                <p style="margin-top: 1rem;"><strong>효과:</strong> 데이터 기반 의사결정 가속화</p>
+            </div>
+
+            <div class="use-case">
+                <h3 class="use-case-title">
+                    <span>🔍</span>
+                    Use Case 5: 기획 의도 확인
+                </h3>
+                <p><strong>상황:</strong> 신규 기획자가 과거 설계 의도 파악 필요</p>
+                <p><strong>활용:</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>AI에게 "이 시스템이 왜 이렇게 설계되었어?" 질문</li>
+                    <li>AI가 과거 기획서 문서 조회</li>
+                    <li>설계 의도, 배경, 제약사항 등 확인</li>
+                    <li>신규 기획 시 일관성 유지</li>
+                </ol>
+                <p style="margin-top: 1rem;"><strong>효과:</strong> 온보딩 시간 단축, 기획 일관성 유지</p>
+            </div>
+
+            <h3 class="section-subtitle">기대 효과 요약</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">⚡</span>
+                        업무 효율성
+                    </h3>
+                    <p>정보 검색 시간 <strong>90% 단축</strong><br>
+                    수동 파일 검색 → AI 자연어 질의</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🎯</span>
+                        정확도 향상
+                    </h3>
+                    <p>크로스 레퍼런스로 <strong>정확한 답변</strong><br>
+                    사람의 누락/오류 방지</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">📈</span>
+                        지식 축적
+                    </h3>
+                    <p>모든 데이터가 <strong>검색 가능한 지식 베이스</strong>로 전환<br>
+                    버전별 이력 추적 가능</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🤝</span>
+                        협업 강화
+                    </h3>
+                    <p>팀 간 정보 공유 <strong>장벽 제거</strong><br>
+                    일관된 정보 접근</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">💬</span>
+                        CS 대응 향상
+                    </h3>
+                    <p>유저 CS 대응 속도 <strong>대폭 향상</strong><br>
+                    공지 이력 즉시 확인 가능</p>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="card-icon">🐛</span>
+                        이슈 판별
+                    </h3>
+                    <p><strong>버그 vs 기획의도</strong> 빠른 판별<br>
+                    기획서 크로스 체크로 즉시 검증</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Summary -->
+        <section id="summary" class="section">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                7. 총평: QA실 업무 혁신 예측
+            </h2>
+
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 3rem; border-radius: 12px; border-left: 6px solid var(--primary-color); margin: 2rem 0;">
+                <h3 style="color: var(--primary-color); font-size: 1.5rem; margin-bottom: 1.5rem;">🎯 실무 업무 변화 예측</h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">⏱️ <strong>시간 효율성</strong></h4>
+                        <p style="line-height: 1.8;">현재 QA 팀이 버그 검증을 위해 <strong>평균 30분~1시간</strong> 소요하던 작업(기획서 찾기 → TSV 데이터 확인 → 공지 이력 검색)이 <strong>AI 질의 1~2분으로 단축</strong>됩니다. 하루 평균 10건의 이슈 처리 시 <strong>일 5~8시간의 업무 시간 절감</strong> 효과가 예상됩니다.</p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">🎯 <strong>정확도 및 품질 향상</strong></h4>
+                        <p style="line-height: 1.8;">수동 검색 시 발생하는 <strong>휴먼 에러(파일 누락, 버전 혼동, 오래된 정보 참조 등)를 완전히 제거</strong>합니다. AI가 항상 최신 버전을 기준으로 답변하며, 여러 소스를 크로스 참조하여 <strong>검증 정확도 95% 이상</strong> 유지가 가능합니다.</p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">🚀 <strong>신속한 의사결정</strong></h4>
+                        <p style="line-height: 1.8;">버그 제보 접수 즉시 "이게 버그인가, 기획 의도인가?"를 <strong>실시간으로 판별</strong>할 수 있어, 불필요한 버그 티켓 생성을 방지하고 실제 버그에 리소스를 집중할 수 있습니다. 긴급 핫픽스 판단 시간도 <strong>수십 분 → 수 분으로 단축</strong>됩니다.</p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">💬 <strong>CS 대응 품질 향상</strong></h4>
+                        <p style="line-height: 1.8;">유저 문의 시 "이게 공지된 내용인가?"를 즉시 확인할 수 있어, <strong>CS 응답 시간 단축 및 정확도 향상</strong>을 동시에 달성합니다. 유저에게 정확한 정보를 빠르게 전달하여 <strong>유저 신뢰도 상승</strong>에 기여합니다.</p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">📚 <strong>지식 자산화</strong></h4>
+                        <p style="line-height: 1.8;">과거 데이터가 <strong>검색 가능한 지식 베이스로 전환</strong>되어, 신규 팀원 온보딩 시간이 단축되고 베테랑 팀원의 암묵지가 시스템에 축적됩니다. "예전에 이런 이슈 있었는데..."라는 불확실한 기억이 <strong>AI를 통해 정확한 데이터로 검증</strong>됩니다.</p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 0.75rem;">🔄 <strong>버전 관리 혁신</strong></h4>
+                        <p style="line-height: 1.8;">패치마다 "무엇이 바뀌었는지" 수동으로 정리하던 작업이 <strong>AI 자동 비교</strong>로 대체됩니다. 버전 간 델타 추적으로 회귀 버그 방지 및 <strong>변경사항 영향 분석</strong>이 즉각적으로 가능해집니다.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="highlight-box" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: var(--success-color); margin-top: 2rem;">
+                <h4 style="color: #065f46; font-size: 1.2rem; margin-bottom: 1rem;">✨ <strong>최종 결론</strong></h4>
+                <p style="color: #065f46; line-height: 1.8; font-size: 1.05rem;">
+                    본 시스템은 단순한 "검색 도구"를 넘어, <strong>QA실의 업무 방식 자체를 혁신</strong>하는 플랫폼입니다. 
+                    수동적인 파일 검색에서 <strong>능동적인 AI 협업</strong>으로 패러다임이 전환되며, 
+                    팀 전체의 생산성이 <strong>최소 300% 이상 향상</strong>될 것으로 예상됩니다. 
+                    특히 긴급 상황 대응력과 의사결정 품질이 획기적으로 개선되어, 
+                    <strong>게임 운영의 안정성과 유저 만족도 향상</strong>에 직접적으로 기여할 것입니다.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>Multi-Source Knowledge Integration System</strong></p>
+        <p>기술 기획서 v1.0</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">본 문서는 개발팀과의 협업을 위한 기능 요구사항 정의서입니다.</p>
+    </footer>
+
+</body>
+</html>
