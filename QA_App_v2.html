@@ -2013,6 +2013,13 @@
             });
         }
 
+        // Download Handler
+        function handleDownload(url) {
+            if (url) {
+                window.location.href = url;
+            }
+        }
+
         // Run App
         document.addEventListener('DOMContentLoaded', init);
     </script>
