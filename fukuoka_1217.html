@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>후쿠오카 + 쿠로가와 온센 여행 가이드 | 2024.12.17-21</title>
+    <title>후쿠오카 + 쿠로가와 온센 여행 가이드 | 2025.12.17-21</title>
     <style>
         * {
             margin: 0;
@@ -347,6 +347,169 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* 모바일 반응형 (768px 이하) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            .container {
+                width: 100%;
+                margin: 0;
+                box-shadow: none;
+            }
+            
+            .nav-container {
+                width: 100%;
+                padding: 8px 10px;
+            }
+            
+            .nav-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+                margin: 2px;
+            }
+            
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+            
+            .header .subtitle {
+                font-size: 16px;
+            }
+            
+            .header .trip-info {
+                font-size: 14px;
+                padding: 12px 20px;
+            }
+            
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                margin: 20px 0 12px 0;
+            }
+            
+            /* 테이블 가로 스크롤 */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+            
+            /* 맛집 카드 */
+            .restaurant-card {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .restaurant-name {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+            
+            .restaurant-rating {
+                font-size: 14px;
+            }
+            
+            /* 박스들 */
+            .info-box, .warning-box, .success-box, .checklist {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .info-box strong, .warning-box strong, .success-box strong {
+                font-size: 14px;
+            }
+            
+            .checklist-item {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+            
+            /* 지도 링크 터치 최적화 */
+            .map-link {
+                padding: 8px 14px;
+                font-size: 12px;
+                margin-left: 5px;
+                display: inline-block;
+                margin-top: 5px;
+            }
+            
+            /* 가격/시간/장소 */
+            .price, .time, .location {
+                font-size: 14px;
+            }
+            
+            /* Footer */
+            .footer {
+                padding: 25px 20px;
+                font-size: 13px;
+            }
+            
+            /* 텍스트 읽기 편하게 */
+            p {
+                line-height: 1.7;
+                font-size: 15px;
+            }
+            
+            li {
+                font-size: 15px;
+                line-height: 1.7;
+            }
+        }
+        
+        /* 작은 모바일 (480px 이하) */
+        @media screen and (max-width: 480px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .header .subtitle {
+                font-size: 14px;
+            }
+            
+            .section {
+                padding: 25px 15px;
+            }
+            
+            .section-title {
+                font-size: 22px;
+            }
+            
+            .section-subtitle {
+                font-size: 17px;
+            }
+            
+            .nav-btn {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+            
+            th, td {
+                font-size: 12px;
+                padding: 10px 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -377,7 +540,7 @@
             <h1>🇯🇵 후쿠오카 + 쿠로가와 온센 여행 가이드</h1>
             <div class="subtitle">식도락과 힐링의 완벽한 조화</div>
             <div class="trip-info">
-                <strong>2024년 12월 17일(화) ~ 21일(토)</strong> | 4박 5일
+                <strong>2025년 12월 17일(수) ~ 21일(일)</strong> | 4박 5일
             </div>
         </div>
     </div>
@@ -416,12 +579,12 @@
                 <th>위치</th>
             </tr>
             <tr>
-                <td>12/17-20 (3박)</td>
-                <td>하카타역 근처 호텔</td>
+                <td>12/17-18 (2박)</td>
+                <td>더 베이직 후쿠오카 (The Basics Fukuoka)</td>
                 <td>하카타역 도보 5분</td>
             </tr>
             <tr>
-                <td>12/20-21 (1박)</td>
+                <td>12/19-20 (2박)</td>
                 <td>오야도 하나보우 (お宿 花坊)</td>
                 <td>쿠로가와 온센</td>
             </tr>
@@ -434,11 +597,21 @@
             • 가격: <span class="price">¥640</span><br>
             • 구매처: 지하철역 자동발매기<br>
             • 범위: 후쿠오카 시영지하철 전 노선 무제한<br>
-            • 추천: Day 2 (오호리공원+텐진+하카타 이동 시)
+            • 추천: 하루 5회 이상 이용 시 경제적
+        </div>
+
+        <div class="info-box">
+            <strong>모나카 교통카드 (MONACA)</strong><br>
+            • 가격: 카드 발급 무료 (충전식)<br>
+            • 구매처: 후쿠오카 공항, 주요 지하철역 발매기<br>
+            • 충전방법: 발매기에서 현금 충전 (¥1,000 단위)<br>
+            • 사용범위: 지하철, 버스, 편의점<br>
+            • 혜택: 교통비 약간 할인, 편의점 결제 가능<br>
+            • 환불: 후쿠오카 공항 등 주요역에서 가능
         </div>
 
         <div class="success-box">
-            <strong>입탕 수형 패스 (入湯手形)</strong><br>
+            <strong>온센 메구리 (温泉めぐり)</strong><br>
             • 가격: <span class="price">¥1,300</span><br>
             • 구매처: 쿠로가와 온센 풍의사(風の舎) 또는 각 료칸 프론트<br>
             • 유효기간: 구매일로부터 6개월<br>
@@ -497,22 +670,42 @@
         </div>
 
         <h3 class="section-subtitle">📦 짐 체크리스트</h3>
-        <div class="checklist">
-            <div class="checklist-item"><strong>크롬캐스트</strong> - 숙소에서 스트리밍용</div>
-            <div class="checklist-item">여권 + 여권 사본 2부 (분실 대비)</div>
-            <div class="checklist-item">항공권 모바일 티켓 (스크린샷 저장)</div>
-            <div class="checklist-item">숙소 예약 확인서 (영문 또는 일문)</div>
-            <div class="checklist-item">신용카드 2장 이상 (VISA/Master 권장)</div>
-            <div class="checklist-item">현금 ¥50,000 ~ ¥80,000 (환전)</div>
-            <div class="checklist-item">eSIM 또는 포켓 와이파이</div>
-            <div class="checklist-item">보조배터리 (10,000mAh 이상)</div>
-            <div class="checklist-item">멀티어댑터 (일본은 A형, 110V)</div>
-            <div class="checklist-item">세면도구 (온천 료칸 제외 - 제공됨)</div>
-            <div class="checklist-item">상비약 (소화제, 진통제, 감기약)</div>
-            <div class="checklist-item">우산 또는 방수 재킷</div>
-            <div class="checklist-item">편한 운동화 (많이 걸어야 함)</div>
-            <div class="checklist-item">보온 레이어 (쿠로가와는 영하)</div>
+        <div class="checklist" id="packingList">
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;"><strong>크롬캐스트</strong> - 숙소에서 스트리밍용</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">여권 + 여권 사본 2부 (분실 대비)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">항공권 모바일 티켓 (스크린샷 저장)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">숙소 예약 확인서 (영문 또는 일문)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">신용카드 2장 이상 (VISA/Master 권장)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">현금 ¥50,000 ~ ¥80,000 (환전)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">eSIM 또는 포켓 와이파이</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">보조배터리 (10,000mAh 이상)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">멀티어댑터 (일본은 A형, 110V)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">세면도구 (온천 료칸 제외 - 제공됨)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">상비약 (소화제, 진통제, 감기약)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">우산 또는 방수 재킷</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">편한 운동화 (많이 걸어야 함)</div>
+            <div class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox" style="margin-right:8px;pointer-events:none;">보온 레이어 (쿠로가와는 영하)</div>
         </div>
+
+        <script>
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            if (checkbox.checked) {
+                element.style.opacity = '0.5';
+                element.style.textDecoration = 'line-through';
+            } else {
+                element.style.opacity = '1';
+                element.style.textDecoration = 'none';
+            }
+        }
+        </script>
+        <style>
+        .checklist-item {
+            cursor: pointer;
+            user-select: none;
+        }
+        </style>
     </div>
 
     <!-- 2. 날씨 & 복장 가이드 -->
@@ -606,39 +799,6 @@
             • 입술 보습제 (건조함 주의)
         </div>
 
-        <h3 class="section-subtitle">🎒 날짜별 복장 추천</h3>
-        <table>
-            <tr>
-                <th>날짜</th>
-                <th>활동</th>
-                <th>복장</th>
-            </tr>
-            <tr>
-                <td>Day 1 (12/17)</td>
-                <td>도착 + 하카타 야경</td>
-                <td>경량 패딩 + 니트 + 청바지</td>
-            </tr>
-            <tr>
-                <td>Day 2 (12/18)</td>
-                <td>오호리공원 + 시내 탐방</td>
-                <td>후리스 + 방풍 재킷 + 편한 바지</td>
-            </tr>
-            <tr>
-                <td>Day 3 (12/19)</td>
-                <td>맛집 투어 + 쇼핑</td>
-                <td>캐주얼 레이어드 + 백팩</td>
-            </tr>
-            <tr>
-                <td>Day 4 (12/20)</td>
-                <td>쿠로가와 이동 + 온천</td>
-                <td><strong>두꺼운 다운 + 방한용품 풀세트</strong></td>
-            </tr>
-            <tr>
-                <td>Day 5 (12/21)</td>
-                <td>귀국</td>
-                <td>편한 복장 (짐 정리 고려)</td>
-            </tr>
-        </table>
     </div>
 
     <!-- 3. 공항 프리패스 -->
@@ -1285,7 +1445,7 @@
             </tr>
             <tr>
                 <td class="time">12:30-13:00</td>
-                <td>풍의사에서 입탕 수형 구매 + 짐 보관 문의</td>
+                <td>풍의사에서 온센 메구리 구매 + 짐 보관 문의</td>
                 <td>료칸 체크인 전 시간 활용</td>
             </tr>
             <tr>
@@ -1295,7 +1455,7 @@
             </tr>
             <tr>
                 <td class="time">14:00-15:00</td>
-                <td>첫 번째 온천 (입탕 수형 #1)</td>
+                <td>첫 번째 온천 (온센 메구리 #1)</td>
                 <td>산아이 추천</td>
             </tr>
             <tr>
@@ -1340,7 +1500,7 @@
             </tr>
             <tr>
                 <td class="time">10:00-12:00</td>
-                <td>추가 온천 2곳 (입탕 수형 #2, #3)</td>
+                <td>추가 온천 2곳 (온센 메구리 #2, #3)</td>
                 <td>신메이칸, 이코이료칸</td>
             </tr>
             <tr>
@@ -1439,7 +1599,7 @@
             • 시차 없어 적응 용이 (한국과 동일 시간대)
         </div>
 
-        <h3 class="section-subtitle">🗓️ Day 2 - 12월 18일 (수) | 오호리공원 + 시내 탐방</h3>
+        <h3 class="section-subtitle">🗓️ Day 2 - 12월 18일 (목) | 캐널시티 + 나카스 맛집 투어</h3>
         <table>
             <tr>
                 <th>시간</th>
@@ -1450,144 +1610,68 @@
             <tr>
                 <td class="time">08:00-09:00</td>
                 <td>호텔 조식 또는 편의점 간편식</td>
-                <td>호텔</td>
+                <td>더 베이직 후쿠오카 (하카타역 근처)</td>
                 <td class="price">¥500</td>
             </tr>
             <tr>
-                <td class="time">09:30</td>
-                <td>하카타역 → 오호리공원역</td>
-                <td>지하철 공항선 5분</td>
-                <td class="price">¥260</td>
-            </tr>
-            <tr>
-                <td class="time">09:40-11:30</td>
-                <td>오호리 공원 산책 (호수 둘레길 2km)</td>
-                <td>도보</td>
+                <td class="time">10:00-12:00</td>
+                <td>호텔 주변 산책 또는 휴식</td>
+                <td>하카타역 일대</td>
                 <td>-</td>
             </tr>
             <tr>
-                <td class="time">11:30-12:30</td>
-                <td>후쿠오카 성 탐방</td>
-                <td>오호리공원에서 도보 10분</td>
+                <td class="time">12:00-12:15</td>
+                <td>하카타역 → 캐널시티</td>
+                <td>도보 15분</td>
                 <td>-</td>
-            </tr>
-            <tr>
-                <td class="time">12:30-13:00</td>
-                <td>후쿠오카성 → 텐진</td>
-                <td>지하철 7분</td>
-                <td class="price">¥210</td>
             </tr>
             <tr>
                 <td class="time">14:00-15:00</td>
-                <td>점심 식사 (Shin Shin 또는 Ganso Mentaiju)</td>
-                <td>텐진역 도보 5분</td>
+                <td>점심 식사 (캐널시티 라멘 스타디움)</td>
+                <td>캐널시티 내부</td>
                 <td class="price">¥1,200</td>
             </tr>
             <tr>
-                <td class="time">15:00-17:00</td>
-                <td>텐진 지하상가 쇼핑</td>
-                <td>텐진역 직결</td>
+                <td class="time">15:00-17:30</td>
+                <td>캐널시티 쇼핑 및 분수쇼 관람</td>
+                <td>캐널시티 내부 (18:00 분수쇼)</td>
                 <td class="price">¥5,000</td>
             </tr>
             <tr>
                 <td class="time">17:30-18:00</td>
-                <td>구시다 신사 방문</td>
-                <td>텐진 → 지하철 5분</td>
-                <td class="price">¥210</td>
+                <td>캐널시티 → 나카스 이동</td>
+                <td>도보 10분</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td class="time">18:00-19:00</td>
-                <td>캐널시티로 이동 + 분수쇼 관람</td>
-                <td>구시다 → 도보 15분</td>
+                <td>나카스 번화가 탐방 + 포장마차 구경</td>
+                <td>나카스 강변</td>
                 <td>-</td>
-            </tr>
-            <tr>
-                <td class="time">20:00-21:30</td>
-                <td>저녁 식사 (캐널시티 라멘 스타디움)</td>
-                <td>캐널시티 내부</td>
-                <td class="price">¥1,000</td>
-            </tr>
-            <tr>
-                <td class="time">22:00</td>
-                <td>하카타역 복귀</td>
-                <td>버스 또는 도보 20분</td>
-                <td class="price">¥100</td>
-            </tr>
-        </table>
-
-        <div class="success-box">
-            <strong>Day 2 동선 효율성</strong><br>
-            • 지하철 1일권 (¥640) 구매 추천 → <span class="price">¥200 절약</span><br>
-            • 오호리공원 → 후쿠오카성 → 텐진 → 구시다 → 캐널시티 순환 동선<br>
-            • 총 이동거리: 약 8km (도보 4km + 지하철 4km)
-        </div>
-
-        <h3 class="section-subtitle">🗓️ Day 3 - 12월 19일 (목) | 맛집 투어 + 쇼핑</h3>
-        <table>
-            <tr>
-                <th>시간</th>
-                <th>활동</th>
-                <th>교통/위치</th>
-                <th>비용</th>
-            </tr>
-            <tr>
-                <td class="time">09:00-10:00</td>
-                <td>호텔 조식</td>
-                <td>호텔</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td class="time">10:00-12:00</td>
-                <td>여유 시간 (호텔 휴식 or 근처 산책)</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td class="time">14:00-15:30</td>
-                <td>점심 식사 (Tempura Hirao 또는 Yamanaka)</td>
-                <td>하카타역 도보 10분</td>
-                <td class="price">¥1,500</td>
-            </tr>
-            <tr>
-                <td class="time">15:30-18:00</td>
-                <td>하카타역 AMU Plaza + 마루이 쇼핑</td>
-                <td>하카타역 직결</td>
-                <td class="price">¥10,000</td>
-            </tr>
-            <tr>
-                <td class="time">18:00-19:00</td>
-                <td>나카스 이동 + 포장마차 구경</td>
-                <td>지하철 7분</td>
-                <td class="price">¥210</td>
             </tr>
             <tr>
                 <td class="time">20:00-22:00</td>
-                <td>저녁 식사 (모츠나베 Kawashou 또는 야타이)</td>
+                <td>저녁 식사 (나카스 맛집 - Kawashou 모츠나베 또는 포장마차)</td>
                 <td>나카스 번화가</td>
                 <td class="price">¥4,000</td>
             </tr>
             <tr>
                 <td class="time">22:30</td>
-                <td>하카타역 복귀</td>
-                <td>지하철 7분</td>
+                <td>하카타역 복귀 (더 베이직 후쿠오카 숙소)</td>
+                <td>도보 또는 지하철 10분</td>
                 <td class="price">¥210</td>
-            </tr>
-            <tr>
-                <td class="time">23:00</td>
-                <td>호텔 / 내일 쿠로가와 준비</td>
-                <td>-</td>
-                <td>-</td>
             </tr>
         </table>
 
-        <div class="info-box">
-            <strong>Day 3 동선 효율성</strong><br>
-            • 하카타역 중심 + 나카스 야경 코스<br>
-            • 쇼핑과 식도락 집중 일정<br>
-            • 내일 쿠로가와 이동 대비 체력 관리
+        <div class="success-box">
+            <strong>Day 2 동선 효율성</strong><br>
+            • 하카타역 중심 반경 1km 내 활동 (도보 중심)<br>
+            • 캐널시티 + 나카스 먹거리 볼거리 집중 투어<br>
+            • 도보 이동으로 교통비 최소화<br>
+            • 지하철 1일권 불필요 (도보 중심 일정)
         </div>
 
-        <h3 class="section-subtitle">🗓️ Day 4 - 12월 20일 (금) | 쿠로가와 온센 이동</h3>
+        <h3 class="section-subtitle">🗓️ Day 3 - 12월 19일 (금) | 쿠로가와 온센 이동</h3>
         <table>
             <tr>
                 <th>시간</th>
@@ -1598,13 +1682,13 @@
             <tr>
                 <td class="time">07:00-08:00</td>
                 <td>호텔 조식 + 체크아웃 준비</td>
-                <td>호텔</td>
+                <td>더 베이직 후쿠오카</td>
                 <td>-</td>
             </tr>
             <tr>
                 <td class="time">08:00-08:30</td>
                 <td>호텔 체크아웃 + 짐 정리</td>
-                <td>큰 짐은 호텔 보관 또는 모두 챙기기</td>
+                <td>큰 짐은 캐리어로 쿠로가와까지 이동</td>
                 <td>-</td>
             </tr>
             <tr>
@@ -1616,7 +1700,7 @@
             <tr>
                 <td class="time">09:00-09:38</td>
                 <td>버스터미널 대기</td>
-                <td>박타 버스터미널 3층</td>
+                <td>하카타 버스터미널 3층</td>
                 <td>-</td>
             </tr>
             <tr>
@@ -1635,6 +1719,62 @@
                 <td colspan="4"><em>(이후 일정은 섹션 6 "쿠로가와 온센 가이드" 참고)</em></td>
             </tr>
         </table>
+
+        <div class="info-box">
+            <strong>Day 3 동선 효율성</strong><br>
+            • 오전 일찍 쿠로가와로 이동 → 당일 온천 충분히 즐기기<br>
+            • 버스터미널까지 도보 이동 (5분 거리)<br>
+            • 쿠로가와 도착 후 풍의사에서 온센 메구리 구매 후 온천 투어
+        </div>
+
+        <h3 class="section-subtitle">🗓️ Day 4 - 12월 20일 (토) | 쿠로가와 온센 만끽</h3>
+        <table>
+            <tr>
+                <th>시간</th>
+                <th>활동</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td class="time">06:30-07:30</td>
+                <td>료칸 아침 대욕장 (일출 온천)</td>
+                <td>오야도 하나보우</td>
+            </tr>
+            <tr>
+                <td class="time">08:00-09:00</td>
+                <td>일식 조식</td>
+                <td>료칸 식당</td>
+            </tr>
+            <tr>
+                <td class="time">10:00-12:00</td>
+                <td>온천 메구리 추가 온천 투어</td>
+                <td>나머지 스티커 활용</td>
+            </tr>
+            <tr>
+                <td class="time">14:00-17:00</td>
+                <td>료칸 대욕장 또는 개인탕</td>
+                <td>프론트 예약</td>
+            </tr>
+            <tr>
+                <td class="time">18:00-19:30</td>
+                <td>가이세키 저녁 식사</td>
+                <td>방 또는 식당</td>
+            </tr>
+            <tr>
+                <td class="time">20:00-21:00</td>
+                <td>료칸 대욕장 (저녁)</td>
+                <td>21:30 마감</td>
+            </tr>
+            <tr>
+                <td colspan="3"><em>※ 상세 타임라인은 섹션 6 "쿠로가와 온센 가이드" 참고</em></td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>Day 4 동선 효율성</strong><br>
+            • 쿠로가와 온천에서 하루 종일 힐링<br>
+            • 오야도 하나보우 2박째<br>
+            • 온센 메구리로 여러 온천 체험 가능
+        </div>
 
         <div class="warning-box">
             <strong>⚠️ 큐슈산코 버스 예약 방법</strong><br><br>
@@ -1656,7 +1796,7 @@
             • 좌석 지정제 (예약 시 좌석 선택)
         </div>
 
-        <h3 class="section-subtitle">🗓️ Day 5 - 12월 21일 (토) | 쿠로가와 → 귀국</h3>
+        <h3 class="section-subtitle">🗓️ Day 5 - 12월 21일 (일) | 쿠로가와 → 귀국</h3>
         <table>
             <tr>
                 <th>시간</th>
@@ -1932,20 +2072,20 @@
                 <td>제주항공+에어부산</td>
             </tr>
             <tr>
-                <td><strong>하카타 숙소 (3박)</strong></td>
+                <td><strong>하카타 숙소 (2박)</strong></td>
                 <td class="price">533,131원</td>
                 <td>-</td>
-                <td>하카타역 근처 호텔</td>
+                <td>더 베이직스 후쿠오카</td>
             </tr>
             <tr>
-                <td><strong>쿠로가와 숙소 (1박)</strong></td>
-                <td class="price">351,880원</td>
+                <td><strong>쿠로가와 숙소 (2박)</strong></td>
+                <td class="price">620,965원</td>
                 <td>-</td>
-                <td>오야도 하나보우 (1박 2식)</td>
+                <td>오야도 하나보우 (351,880원 + 269,085원)</td>
             </tr>
             <tr>
                 <td colspan="3"><strong>확정 경비 합계</strong></td>
-                <td class="price">1,722,361원</td>
+                <td class="price">1,991,446원</td>
             </tr>
         </table>
 
@@ -2009,9 +2149,9 @@
         <h3 class="section-subtitle">💵 총 여행 경비 요약</h3>
         <div class="success-box">
             <strong>💰 총 예상 경비</strong><br><br>
-            <strong>확정 경비:</strong> <span class="price">1,722,361원</span><br>
+            <strong>확정 경비:</strong> <span class="price">1,991,446원</span><br>
             <strong>예상 추가 비용:</strong> <span class="price">약 780,000원</span> (¥78,240)<br>
-            <strong>총 합계:</strong> <span class="price" style="font-size:20px;">약 2,500,000원</span><br><br>
+            <strong>총 합계:</strong> <span class="price" style="font-size:20px;">약 2,770,000원</span><br><br>
             <em>* 환율 변동 및 개인 소비 패턴에 따라 차이 발생 가능</em>
         </div>
 
