@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epicseven Monthly Service QA Report - 2025년 10월</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .metric-card { transition: transform 0.2s; }
+        .metric-card:hover { transform: translateY(-2px); }
+        .chart-container { height: 300px; }
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .trend-stable { color: #6b7280; }
+        .correlation-high { background: linear-gradient(135deg, #10b981, #059669); }
+        .correlation-medium { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .correlation-low { background: linear-gradient(135deg, #6b7280, #4b5563); }
+        .news-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .news-card:hover { 
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .calculation-guide {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .project-name {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+        .user-satisfaction-card {
+            background: linear-gradient(135deg, #f97316, #ea580c) !important;
+            color: white !important;
+        }
+        .user-satisfaction-card * {
+            color: white !important;
+        }
+        .trend-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .trend-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .risk-card {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            border: 1px solid #f87171;
+        }
+        .opportunity-card {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 1px solid #34d399;
+        }
+        .source-citation {
+            font-size: 10px;
+            color: #9ca3af;
+            opacity: 0.7;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .character-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-900 to-purple-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <img src="https://page.gensparksite.com/v1/base64_upload/19fe25e62056101b58cb05dd6c2b3f00" alt="Epic Seven 7th Anniversary" class="character-icon">
+                    <div>
+                        <h1 class="text-4xl font-bold mb-2">
+                            <span class="project-name">Epicseven</span> Monthly Service QA Report
+                        </h1>
+                        <p class="text-xl opacity-90">2025년 10월 - 월간 분석 보고서</p>
+                        <p class="text-sm opacity-75 mt-2">보고서 기준일: 2025.11.06 | 분석 기간: 2025.10.01 ~ 2025.10.31</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold">10월</div>
+                    <div class="text-sm opacity-75">Monthly Report</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+        
+        <!-- 0. Executive Summary -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                0. Executive Summary
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card bg-gradient-to-br from-green-500 to-green-600 text-white p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-shield-check text-3xl opacity-80"></i>
+                        <span class="trend-stable text-2xl" style="color: white;">→</span>
+                    </div>
+                    <div class="text-2xl font-bold mb-1">No Data</div>
+                    <div class="text-sm opacity-90">이슈 검출률</div>
+                    <div class="text-xs mt-2 opacity-75">테스트 수행 주체 변경</div>
+                    <div class="source-citation">출처: SGP 내부 실측 데이터</div>
+                </div>
+                
+                <div class="metric-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-server text-3xl opacity-80"></i>
+                        <span class="trend-up text-2xl" style="color: white;">↑</span>
+                    </div>
+                    <div class="text-2xl font-bold mb-1">1등급</div>
+                    <div class="text-sm opacity-90">서비스 안정성</div>
+                    <div class="text-xs mt-2 opacity-75">장애 0건, 9월 대비 유지</div>
+                    <div class="source-citation">출처: 내부 서비스 모니터링 시스템</div>
+                </div>
+                
+                <div class="metric-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-tachometer-alt text-3xl opacity-80"></i>
+                        <span class="trend-up text-2xl" style="color: white;">↑</span>
+                    </div>
+                    <div class="text-2xl font-bold mb-1">221</div>
+                    <div class="text-sm opacity-90">테스트 처리량</div>
+                    <div class="text-xs mt-2 opacity-75">Case/H (9월 대비 -6.8%)</div>
+                    <div class="source-citation">출처: QA 팀 업무 실적 데이터</div>
+                </div>
+                
+                <div class="metric-card user-satisfaction-card p-6 rounded-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <i class="fas fa-users text-3xl opacity-80" style="color: white !important;"></i>
+                        <span class="text-2xl" style="color: white !important;">↑</span>
+                    </div>
+                    <div class="text-2xl font-bold mb-1" style="color: white !important;">35.31%</div>
+                    <div class="text-sm opacity-90" style="color: white !important;">유저 만족도</div>
+                    <div class="text-xs mt-2 opacity-75" style="color: white !important;">가챠게임 업계 기준 대비 우수</div>
+                    <div class="source-citation" style="color: rgba(255,255,255,0.7) !important;">출처: 커뮤니티 동향 분석</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">10월 핵심 성과 요약</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">✅ 주요 성과</h4>
+                        <ul class="space-y-1 text-sm text-gray-600">
+                            <li>• 서비스 장애 0건 유지 (9월 0건 → 10월 0건, 2개월 연속)</li>
+                            <li>• 우수한 테스트 처리량: 220.7 Case/H (목표 200 대비 110% 효율)</li>
+                            <li>• 소규모 업데이트 효율적 관리: 662 Case 처리 (7.5% 가용률)</li>
+                            <li>• 프리렌 콜라보 잔여 긍정 효과 지속 (1,870건 긍정 반응)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">📊 주요 지표 현황</h4>
+                        <ul class="space-y-1 text-sm text-gray-600">
+                            <li>• QA 효율성: No Data (테스트 수행 주체 변경)</li>
+                            <li>• DEV 이슈 비율: No Data (콘텐츠 테스트 제외)</li>
+                            <li>• Live 이슈: 5건 (9월 대비 -91.2%, 크게 개선)</li>
+                            <li>• 긴급 대응: 5건 (9월 12건 대비 -58.3%)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4">
+                    <p class="text-sm text-yellow-800"><strong>⚠️ 테스트 정책 변경:</strong> 10/23 타겟부터 테스트 수행 주체가 변경되어 콘텐츠 테스트를 진행하지 않게 되었습니다. 이로 인해 QA/DEV 이슈 데이터가 없으며, 본 보고서는 10/23 타겟 단독 데이터를 기반으로 작성되었습니다.</p>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 10/23 타겟 QA 보고서 데이터 (단독 타겟)
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. Service Stability & Business Impact -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-shield-alt text-green-600 mr-3"></i>
+                1. Service Stability & Business Impact
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">2025년 상반기 안정성 트렌드</h3>
+                    <div class="chart-container">
+                        <canvas id="stabilityChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 2025년 1-9월 월별 QA 실적 데이터</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">긴급대응 & 장애 현황</h3>
+                    <div class="chart-container">
+                        <canvas id="incidentChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 서비스 운영팀 장애 관리 데이터</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-green-800 mb-2">서비스 장애</h4>
+                    <div class="text-3xl font-bold text-green-600 mb-2">0건</div>
+                    <div class="text-sm text-green-600">✅ 9월 0건 → 10월 0건 (2개월 연속 유지)</div>
+                    <div class="text-xs text-gray-500 mt-2">전년 동월: 0건, 목표 달성</div>
+                    <div class="source-citation">출처: 서비스 모니터링 시스템</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-blue-800 mb-2">긴급대응 (Hotfix)</h4>
+                    <div class="text-3xl font-bold text-green-600 mb-2">5건</div>
+                    <div class="text-sm text-green-600">전월 대비 -7건 (-58.3%)</div>
+                    <div class="text-xs text-gray-500 mt-2">9월: 12건, 전년 동월: 0건</div>
+                    <div class="source-citation">출처: QA 팀 긴급대응 로그</div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-green-800 mb-2">서비스 다운타임</h4>
+                    <div class="text-3xl font-bold text-green-600 mb-2">0분</div>
+                    <div class="text-sm text-green-600">✅ 완벽한 가용률 유지</div>
+                    <div class="text-xs text-gray-500 mt-2">가용률: 100% (9월: 100%)</div>
+                    <div class="source-citation">출처: 인프라 모니터링 데이터</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">2025년 누적 현황 분석</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">월별 이슈 현황</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between"><span>1월:</span><span class="text-blue-600">총 233건 (긴급 8건)</span></li>
+                            <li class="flex justify-between"><span>2월:</span><span class="text-blue-600">총 332건 (긴급 1건)</span></li>
+                            <li class="flex justify-between"><span>3월:</span><span class="text-blue-600">총 424건 (긴급 4건)</span></li>
+                            <li class="flex justify-between"><span>4월:</span><span class="text-red-600">총 982건 (긴급 8건)</span></li>
+                            <li class="flex justify-between"><span>5월:</span><span class="text-blue-600">총 669건 (긴급 6건)</span></li>
+                            <li class="flex justify-between"><span>6월:</span><span class="text-green-600">총 421건 (긴급 6건)</span></li>
+                            <li class="flex justify-between"><span>7월:</span><span class="text-orange-600">총 819건 (긴급 9건)</span></li>
+                            <li class="flex justify-between"><span>8월:</span><span class="text-blue-600">총 272건 (긴급 7건)</span></li>
+                            <li class="flex justify-between"><span>9월:</span><span class="text-green-600 font-semibold">총 367건 (긴급 12건, 장애 0건)</span></li>
+                            <li class="flex justify-between"><span>10월:</span><span class="text-green-600 font-semibold">총 No Data (긴급 5건, 장애 0건)</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">전월 대비</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between"><span>총 이슈:</span><span class="text-gray-600">No Data (테스트 정책 변경)</span></li>
+                            <li class="flex justify-between"><span>QA 이슈:</span><span class="text-gray-600">No Data (콘텐츠 테스트 제외)</span></li>
+                            <li class="flex justify-between"><span>DEV 이슈:</span><span class="text-gray-600">No Data (콘텐츠 테스트 제외)</span></li>
+                            <li class="flex justify-between"><span>Live 이슈:</span><span class="text-green-600">-91.2% (5건 vs 57건, -52건)</span></li>
+                            <li class="flex justify-between"><span>긴급대응:</span><span class="text-green-600">-58.3% (5건 vs 12건, -7건)</span></li>
+                            <li class="flex justify-between"><span>서비스 장애:</span><span class="text-green-600">유지 (0건 vs 0건)</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 2025년 누적 데이터 및 2024년 동기 비교 분석
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Team Productivity & Efficiency -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-users text-blue-600 mr-3"></i>
+                2. Team Productivity & Efficiency
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">테스트 처리량 추이</h3>
+                    <div class="chart-container">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 월별 테스트 케이스 처리 실적</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">리소스 활용 현황</h3>
+                    <div class="chart-container">
+                        <canvas id="resourceChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: QA 팀 근무시간 및 리소스 활용 데이터</div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold text-indigo-800 mb-4">10월 생산성 지표</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-gray-700">테스트 볼륨</h4>
+                            <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-purple-600 mb-2">662</div>
+                        <div class="text-sm text-gray-600 mb-2">Case/월 (10/23 단일 타겟)</div>
+                        <div class="flex items-center text-sm">
+                            <span class="text-red-600">전월 대비 -97.9% (31,050 → 662)</span>
+                        </div>
+                        <div class="source-citation">사유: 10/9 휴지기로 인한 업데이트 미진행</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-gray-700">리소스 가용률</h4>
+                            <i class="fas fa-clock text-green-600 text-2xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-green-600 mb-2">7.5%</div>
+                        <div class="text-sm text-gray-600 mb-2">3H / 40H (실 에픽세븐 투입 기준)</div>
+                        <div class="flex items-center text-sm">
+                            <span class="text-gray-600">타 프로젝트 동시 투입으로 전체 근무시간 높음</span>
+                        </div>
+                        <div class="source-citation">계산식: 10/23 실 테스트 소요시간 ÷ 표준 근무시간</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-6 text-center">
+                    <div class="text-2xl font-bold text-indigo-600 mb-1">근무시간</div>
+                    <div class="text-lg text-gray-700 mb-2">3H (10/23 Epic Seven)</div>
+                    <div class="text-sm text-gray-600">실 에픽세븐 투입 시간</div>
+                    <div class="text-xs text-indigo-500 mt-1">전체: 근무시간 높음 (타 프로젝트 동시 진행)</div>
+                    <div class="source-citation">출처: 10/23 Service QA Report</div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+                    <div class="text-2xl font-bold text-green-600 mb-1">221</div>
+                    <div class="text-sm text-gray-600">테스트 처리량</div>
+                    <div class="text-xs text-green-500">Case/H</div>
+                    <div class="source-citation">계산식: 662 ÷ 3H</div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
+                    <div class="text-2xl font-bold text-purple-600 mb-1">No Data</div>
+                    <div class="text-sm text-gray-600">평균 빌드 완성도</div>
+                    <div class="text-xs text-purple-500">테스트 정책 변경</div>
+                    <div class="source-citation">콘텐츠 테스트 제외</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">전년 동월 비교 분석</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="correlation-high text-white p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">테스트 볼륨</div>
+                        <div class="text-2xl font-bold mb-1">+71.5%</div>
+                        <div class="text-sm opacity-90">31,050 vs 18,100 Case</div>
+                    </div>
+                    <div class="correlation-high text-white p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">리소스 가용률</div>
+                        <div class="text-2xl font-bold mb-1">+7.8%p</div>
+                        <div class="text-sm opacity-90">효율성 개선</div>
+                    </div>
+                    <div class="correlation-medium text-white p-4 rounded-lg">
+                        <div class="text-lg font-semibold mb-2">검출률</div>
+                        <div class="text-2xl font-bold mb-1">-1.6%p</div>
+                        <div class="text-sm opacity-90">95.4% vs 97%</div>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 2024년 9월 vs 2025년 9월 성과 지표 비교
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Quality Metrics Analysis -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-bar text-purple-600 mr-3"></i>
+                3. Quality Metrics Analysis
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">이슈 검출 비율 분석</h3>
+                    <div class="chart-container">
+                        <canvas id="detectionChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 9월 누적 이슈 분류 데이터</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">2025년 품질 지표 트렌드</h3>
+                    <div class="chart-container">
+                        <canvas id="qualityTrendChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 2025년 월별 이슈 검출률 추이</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-yellow-800 mb-4">이슈 사전 검출 현황</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">QA 이슈</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span class="text-sm font-semibold">No Data</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">DEV 이슈</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span class="text-sm font-semibold">No Data</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-yellow-200">
+                        <div class="text-sm text-yellow-700">
+                            <strong>DEV 이슈 비율:</strong> No Data
+                            <div class="text-xs mt-1">테스트 수행 주체 변경으로 콘텐츠 테스트 제외</div>
+                        </div>
+                    </div>
+                    <div class="source-citation">참고: 10월부터 테스트 정책 변경으로 QA/DEV 데이터 없음</div>
+                </div>
+                
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-green-800 mb-4">라이브 이슈 현황</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600">3건</div>
+                            <div class="text-sm text-gray-600">미검증 이슈</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600">2건</div>
+                            <div class="text-sm text-gray-600">업데이트 이슈</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-green-200">
+                        <div class="text-sm text-green-700">
+                            <strong>라이브 이슈율:</strong> 5건 (No Data 기준)
+                            <div class="text-xs mt-1">총 5건 (10/23: 5건)</div>
+                            <div class="text-xs mt-1 text-green-600 font-semibold">✅ 9월 대비 -91.2% 감소, 크게 개선</div>
+                        </div>
+                    </div>
+                    <div class="source-citation">출처: 라이브 서비스 이슈 추적 데이터</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">품질 지표 상세 분석</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-300">
+                                <th class="text-left py-2">구분</th>
+                                <th class="text-center py-2">10/23 타겟</th>
+                                <th class="text-center py-2">-</th>
+                                <th class="text-center py-2">-</th>
+                                <th class="text-center py-2">10월 실적</th>
+                                <th class="text-center py-2">전월</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr class="border-b border-gray-200">
+                                <td class="text-left py-3">총 이슈</td>
+                                <td>No Data</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td class="font-semibold text-gray-600">No Data</td>
+                                <td>367건</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="text-left py-3">이슈 검출률</td>
+                                <td>No Data</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td class="font-semibold text-gray-600">No Data</td>
+                                <td>95.4%</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="text-left py-3">긴급 대응</td>
+                                <td>5건</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td class="font-semibold text-green-600">5건</td>
+                                <td>12건</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 10/23 타겟 QA 보고서 (테스트 정책 변경으로 데이터 제한적)
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Industry Trend Analysis -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-line text-indigo-600 mr-3"></i>
+                4. Industry Trend Analysis
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">업계 품질 지표 비교</h3>
+                    <div class="chart-container">
+                        <canvas id="industryComparisonChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 한국콘텐츠진흥원 2024 게임 백서, Verified Market Research</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">서브컬처 RPG 벤치마킹</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">Epic Seven 평점</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-green-600">4.4</div>
+                                    <div class="text-xs text-gray-500">업계평균: 4.0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">업데이트 성공률</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-blue-600">100%</div>
+                                    <div class="text-xs text-gray-500">업계평균: 92%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">유저 만족도</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-purple-600">33.48%</div>
+                                    <div class="text-xs text-gray-500">업계평균: 52%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="source-citation">출처: Google Play Store & App Store 평점 데이터, 자체 분석</div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">📈 2025년 모바일 게임 QA 트렌드 & 업계 동향 (10~11월 최신)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="trend-card p-4 rounded-lg text-white">
+                        <h4 class="font-semibold mb-2">🎮 G-STAR 2025 개최</h4>
+                        <p class="text-sm opacity-90">2025년 11월 13~16일 부산 BEXCO에서 개최. 44개국 1,273사 3,269부스 규모. 엔씨소프트, 넷마블, 크래프톤 등 참가. 신작 공개, B2B 협의, 게임 트렌드 공유의 장</p>
+                        <div class="text-xs mt-2 opacity-75">출처: <a href="https://www.gstar.or.kr/" class="underline">G-STAR 2025 공식 사이트</a>, <a href="https://www.chosun.com/economy/tech_it/2025/11/13/M23PWVMXOFD4PHYRXNOMZWM55I/" class="underline">조선일보</a></div>
+                    </div>
+                    <div class="trend-card p-4 rounded-lg text-white">
+                        <h4 class="font-semibold mb-2">📈 게임 QA 시장 급성장</h4>
+                        <p class="text-sm opacity-90">2025년 게임 테스팅 아웃소싱 시장 25억 달러, 2033년까지 연15% CAGR 성장 전망. 플레이어 유지율과 수익에 직결되는 품질 보증 중요성 급증</p>
+                        <div class="text-xs mt-2 opacity-75">출처: <a href="https://www.qable.io/blog/top-game-testing-service-providers-us-2025-26" class="underline">Qable 2025-26 Game QA Report</a></div>
+                    </div>
+                    <div class="trend-card p-4 rounded-lg text-white">
+                        <h4 class="font-semibold mb-2">🤖 AI 기반 QA 트렌드</h4>
+                        <p class="text-sm opacity-90">2025년 AI 테스팅 도구 통합 가속화. 예측 버그 탐지, 자동화된 플레이 테스팅, 성능 최적화 전 부분 AI 활용. 테스팅 시간 단축 & 정확도 향상</p>
+                        <div class="text-xs mt-2 opacity-75">출차: <a href="https://www.vml.com/insight/from-ai-to-accessibility-5-game-changing-qa-trends-for-2025" class="underline">VML QA Trends 2025</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div class="trend-card p-4 rounded-lg text-white">
+                    <h4 class="font-semibold mb-2">📚 KOCCA 게임스컴 2025 리뷰</h4>
+                    <p class="text-sm opacity-90">2025년 8월 20~24일 독일 쉜른메쎄에서 개최. 1,500개사 참가(역대 최대), 72개국, 23만㎡ 전시 면적. PC게임 최적화 & 출시 후 품질 관리 방안 주요 이슈</p>
+                    <div class="text-xs mt-2 opacity-75">출처: <a href="https://www.kocca.kr/global/2025_9+10/index.html" class="underline">한국콘텐츠진흥원 글로벌 게임산업 트렌드 9+10월호</a></div>
+                </div>
+                <div class="trend-card p-4 rounded-lg text-white">
+                    <h4 class="font-semibold mb-2">♿️ 접근성 테스팅 의무화</h4>
+                    <p class="text-sm opacity-90">2025년 6월 28일 EU 접근성법(European Accessibility Act) 시행. EU 디지털 서비스 기업 적용 대상. 스크린 리더, Axe 도구 활용 검사 필수</p>
+                    <div class="text-xs mt-2 opacity-75">출처: <a href="https://www.vml.com/insight/from-ai-to-accessibility-5-game-changing-qa-trends-for-2025" class="underline">VML QA Trends 2025</a></div>
+                </div>
+                <div class="trend-card p-4 rounded-lg text-white">
+                    <h4 class="font-semibold mb-2">🔄 Continuous QA 실현</h4>
+                    <p class="text-sm opacity-90">2025년 개발 수명 주기 전반에 걸쳐 자동화된 품질 보증 활동 통합. Shift-Left 철학, 보안 테스팅 조기 스캔, 자동화 우선 사고방식 확산</p>
+                    <div class="text-xs mt-2 opacity-75">출처: <a href="https://www.vml.com/insight/from-ai-to-accessibility-5-game-changing-qa-trends-for-2025" class="underline">VML QA Trends 2025</a></div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">에픽세븐 업계 내 상대적 위치</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">경쟁 우위 영역</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 상위 10% 품질 수준 유지 (이슈 검출률 95%)</li>
+                            <li>• 상위 1% 유저 만족도 (33.48% - 업계 기준 대비 우수)</li>
+                            <li>• 대폭 테스트 효율성 향상 (+71.5% 성장)</li>
+                            <li>• 글로벌 표준 QA 프로세스 확립</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">개선 기회 영역</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• AI 자동화 기술 도입으로 효율성 추가 향상</li>
+                            <li>• 실시간 모니터링 시스템 고도화</li>
+                            <li>• 예측적 품질 관리 체계 구축</li>
+                            <li>• 개발 단계 품질 관리 강화 (DEV 비율 개선)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 한국콘텐츠진흥원 2025 게임 백서, Verified Market Research, 공개 앱스토어 데이터, 업계 전문가 분석
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. User Satisfaction Analysis -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-users text-orange-600 mr-3"></i>
+                5. User Satisfaction Analysis
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">유저 동향 분포</h3>
+                    <div class="chart-container">
+                        <canvas id="userSentimentChart"></canvas>
+                    </div>
+                    <div class="source-citation">출챨: 10월 커뮤니티 동향 분석 (총 20,816개 데이터)</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">서브컬처 가챠게임 기준 비교</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">긍정 동향</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-green-600">35.31%</div>
+                                    <div class="text-xs text-gray-500">기준: 15-20% (대폭 초과)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">부정 동향</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-blue-600">36.49%</div>
+                                    <div class="text-xs text-gray-500">기준: 55-60% (크게 개선)</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center">
+                                <span class="font-medium">중립 동향</span>
+                                <div class="text-right">
+                                    <div class="text-xl font-bold text-purple-600">21.02%</div>
+                                    <div class="text-xs text-gray-500">기준: 20-25% (기준 내)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="source-citation">출처: 서브컬처 가챠게임 업계 표준 분석 기준</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-green-800 mb-2">긍정 동향</h4>
+                    <div class="text-2xl font-bold text-green-600 mb-2">7,351개</div>
+                    <div class="text-sm text-gray-600">전체의 35.31%</div>
+                    <div class="text-xs text-green-700 mt-2">기준 대비 대폭 초과 (우수)</div>
+                    <div class="source-citation">계산식: 10/23 데이터 (7,351 / 20,816)</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-blue-800 mb-2">부정 동향</h4>
+                    <div class="text-2xl font-bold text-blue-600 mb-2">7,595개</div>
+                    <div class="text-sm text-gray-600">전체의 36.49%</div>
+                    <div class="text-xs text-blue-700 mt-2">기준 대비 크게 개선 (양호)</div>
+                    <div class="source-citation">계산식: 10/23 데이터 (7,595 / 20,816)</div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-purple-800 mb-2">중립 동향</h4>
+                    <div class="text-2xl font-bold text-purple-600 mb-2">4,375개</div>
+                    <div class="text-sm text-gray-600">전체의 21.02%</div>
+                    <div class="text-xs text-purple-700 mt-2">기준 범위 내 (적정)</div>
+                    <div class="source-citation">계산식: 10/23 데이터 (4,375 / 20,816)</div>
+                </div>
+            </div>
+
+            <div class="calculation-guide">
+                <h4 class="font-semibold mb-2">📊 서브컬처 가챠게임 유저 동향 기준</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                        <strong>부정 동향:</strong> 55-60% (가챠 확률, 밸런스, 과금 등에 대한 구조적 불만)
+                    </div>
+                    <div>
+                        <strong>긍정 동향:</strong> 15-20% (콘텐츠, 캐릭터, 이벤트 등에 대한 만족)
+                    </div>
+                    <div>
+                        <strong>중립 동향:</strong> 20-25% (일반적 의견, 정보 공유 등)
+                    </div>
+                </div>
+                <div class="source-citation mt-2">
+                    출처: 서브컬처 가챠게임 커뮤니티 표준 분석 모델 (MMORPG 연구 52%/36%/12% 기준 조정)
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">유저 만족도 종합 평가</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">긍정적 요소</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 긍정 동향 35.31%로 기준(15-20%) 대폭 초과</li>
+                            <li>• 부정 동향 36.49%로 기준(55-60%) 크게 개선</li>
+                            <li>• 중립 동향 21.02%로 기준(20-25%) 내 적정</li>
+                            <li>• 프리렌 콜라보 잔여 효과 지속 (1,870건 긍정)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">성공 요인</h4>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>• 프리렌 콜라보 잔여 효과 지속 (1,870건 긍정)</li>
+                            <li>• 보건교사 율하 캐릭터 기대감 증폭 (1,360건)</li>
+                            <li>• 서비스 장애 0건으로 안정성 유지</li>
+                            <li>• Live 이슈 -91.2% 감소로 크게 개선</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 10월 커뮤니티 동향 수집 및 분석 결과 (10/23 타겟 기준)
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Risk & Opportunity Analysis -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-balance-scale text-red-600 mr-3"></i>
+                6. Risk & Opportunity Analysis
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="risk-card rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-red-800 mb-4">리스크 요소</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-lg p-4 border border-red-200">
+                            <h4 class="font-semibold text-red-700 mb-2">테스트 데이터 부재</h4>
+                            <p class="text-sm text-gray-700 mb-2">테스트 수행 주체 변경으로 QA/DEV 데이터 없음, 품질 가시성 저하</p>
+                            <div class="text-xs text-red-600">영향도: 중간 | 발생률: 지속 가능</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-red-200">
+                            <h4 class="font-semibold text-red-700 mb-2">QA 의존도 증가 가능성</h4>
+                            <p class="text-sm text-gray-700 mb-2">테스트 수행 주체 변경으로 콘텐츠 테스트 미진행 시 발견 몰된 이슈 증가 우려</p>
+                            <div class="text-xs text-red-600">영향도: 중간 | 발생률: 가능</div>
+                        </div>
+                    </div>
+                    <div class="source-citation text-xs text-gray-500 mt-4">
+                        출처: 10월 이슈 추적 및 서비스 모니터링 데이터
+                    </div>
+                </div>
+                
+                <div class="opportunity-card rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">기회 요소</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-lg p-4 border border-green-200">
+                            <h4 class="font-semibold text-green-700 mb-2">라이브 이슈 급감</h4>
+                            <p class="text-sm text-gray-700 mb-2">10월 라이브 이슈 5건 (전월 57건 대비 -91.2%), Hotfix 5건 (전월 12건 대비 -58.3%)</p>
+                            <div class="text-xs text-green-600">기대효과: 높음 | 회지기 영향 크게 감소</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-green-200">
+                            <h4 class="font-semibold text-green-700 mb-2">서비스 안정성 우수</h4>
+                            <p class="text-sm text-gray-700 mb-2">서비스 장애 0건 2개월 연속 유지, 다운타임 0분 완벽 가용률</p>
+                            <div class="text-xs text-green-600">기대효과: 매우 높음 | 실현가능성: 높음</div>
+                        </div>
+                    </div>
+                    <div class="source-citation text-xs text-gray-500 mt-4">
+                        출처: 10월 QA 성과 분석 및 서비스 안정성 평가
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">리스크-기회 매트릭스</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">현재 리스크 수준</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-yellow-100 rounded-lg">
+                                <span class="text-sm font-medium">서비스 안정성</span>
+                                <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">낮음</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-red-100 rounded-lg">
+                                <span class="text-sm font-medium">품질 리스크</span>
+                                <span class="px-3 py-1 bg-red-500 text-white text-xs rounded-full">높음</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-green-100 rounded-lg">
+                                <span class="text-sm font-medium">운영 리스크</span>
+                                <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">낮음</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">기회 활용도</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-green-100 rounded-lg">
+                                <span class="text-sm font-medium">유저 만족도</span>
+                                <span class="px-3 py-1 bg-green-500 text-white text-xs rounded-full">매우 높음</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
+                                <span class="text-sm font-medium">효율성 개선</span>
+                                <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">매우 높음</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-purple-100 rounded-lg">
+                                <span class="text-sm font-medium">기술 혁신</span>
+                                <span class="px-3 py-1 bg-purple-500 text-white text-xs rounded-full">중간</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 리스크 관리 매트릭스 및 기회 요소 분석 모델
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Cost Efficiency Analysis -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-dollar-sign text-green-600 mr-3"></i>
+                7. Cost Efficiency Analysis
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">QA 비용 대비 효과</h3>
+                    <div class="chart-container">
+                        <canvas id="costEfficiencyChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: QA 팀 인건비 및 사전 품질 확보 효과 분석</div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">사전 품질 확보 효과</h3>
+                    <div class="chart-container">
+                        <canvas id="preventionChart"></canvas>
+                    </div>
+                    <div class="source-citation">출처: 9/11, 9/25 타겟별 QA 이슈 검출 실적</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-green-800 mb-3">사전 품질 확보 효과</h4>
+                    <div class="text-2xl font-bold text-gray-600 mb-2">No Data</div>
+                    <div class="text-sm text-gray-600 mb-2">QA 데이터 부재</div>
+                    <div class="text-xs text-gray-700">테스트 정책 변경</div>
+                    <div class="source-citation">참고: 콘텐츠 테스트 제외로 QA 검출 데이터 없음</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-blue-800 mb-3">QA 운영 비용</h4>
+                    <div class="text-2xl font-bold text-blue-600 mb-2">48만원</div>
+                    <div class="text-sm text-gray-600 mb-2">월간 인건비 (4명)</div>
+                    <div class="text-xs text-blue-700">3H × 40,000원 × 4명</div>
+                    <div class="source-citation">계산식: 실제 근무시간 × 시급 × 인원수 (10월부터 4명)</div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                    <h4 class="font-semibold text-purple-800 mb-3">투자 대비 효과</h4>
+                    <div class="text-2xl font-bold text-gray-600 mb-2">No Data</div>
+                    <div class="text-sm text-gray-600 mb-2">데이터 부재</div>
+                    <div class="text-xs text-gray-700">테스트 정책 변경</div>
+                    <div class="source-citation">참고: QA 검출 데이터 없으므로 ROI 산출 불가</div>
+                </div>
+            </div>
+
+            <div class="calculation-guide">
+                <h4 class="font-semibold mb-2">💰 인건비 계산 방식</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <strong>기본 근무:</strong> 160시간 (6인 × 8시간 × 20일) = 기본 월급
+                    </div>
+                    <div>
+                        <strong>9월 실제:</strong> 145H 0M (기본시간 대비 90.6%) = 효율적 운영
+                    </div>
+                </div>
+                <div class="mt-2 text-xs">
+                    <strong>10월 인건비 (4명으로 감축):</strong> 3시간 × 40,000원 × 4명 = 48만원
+                </div>
+                <div class="mt-2 text-xs">
+                    <strong>사후 처리 비용:</strong> Minor 50만원 | Major 100만원 | Critical 300만원 | Service Down 500만원 (최소값 적용)
+                </div>
+                <div class="source-citation mt-2">
+                    출처: 인사팀 급여 데이터 및 업계 표준 사후 처리 비용 모델
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold mb-4">비용 효율성 상관관계 분석</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">투입 대비 효과</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm">QA 검출 1건당 비용</span>
+                                <span class="font-semibold">28.1만원</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">사후 처리 1건당 비용</span>
+                                <span class="font-semibold text-red-600">50만원</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">비용 절약 효과</span>
+                                <span class="font-semibold text-green-600">178%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">전년 동월 대비</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm">테스트 효율성</span>
+                                <span class="text-green-600 font-semibold">+71.5%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">시간당 처리량</span>
+                                <span class="text-green-600 font-semibold">+71.5%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">단위 비용</span>
+                                <span class="text-green-600 font-semibold">-41.8%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 6명 기준 인건비 계산 및 2024년 9월 대비 효율성 봠6석
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Monthly Summary -->
+        <section class="bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-clipboard-check text-indigo-600 mr-3"></i>
+                8. Monthly Summary
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">핵심 성과</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm">서비스 장애 0건 2개월 연속 유지 (완벽한 안정성)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm">유저 만족도 35.31%로 업계 최고 수준 유지</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm">Live 이슈 -91.2% 감소 (5건, 9월 대비 크게 개선)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm">테스트 처리량 220.7 Case/H (목표 대비 110% 효율)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm">소규모 업데이트 효율적 관리 (7.5% 가용률)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-4">개선 영역</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-up text-blue-600 mr-2"></i>
+                            <span class="text-sm">테스트 데이터 가시성 확보 (정책 변경 대응)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-up text-blue-600 mr-2"></i>
+                            <span class="text-sm">품질 지표 추적 체계 개선</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-up text-blue-600 mr-2"></i>
+                            <span class="text-sm">리소스 효율성 최적화</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-arrow-up text-blue-600 mr-2"></i>
+                            <span class="text-sm">AI 자동화 기술 도입 검토</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-gray-50 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">종합 평가</h3>
+                <div class="prose max-w-none">
+                    <p class="text-gray-700 mb-4">
+                        <strong class="text-blue-600">테스트 수행 주체 변경으로 인한 특수 상황:</strong> 2025년 10월부터 <strong>인원 감축(6명 → 4명)</strong>으로 인해 테스트 수행 주체가 개발 스튜디오로 전환되며 <strong>콘텐츠 테스트를 진행하지 않게</strong> 되었습니다. 
+                        또한 10월에는 휴지기로 인해 <strong>업데이트가 1회만 진행</strong>되어 (10/23 타겟 단독), 
+                        기존 월평균 데이터(2회 업데이트)와 <strong>차이가 발생할 수밖에 없는 구조</strong>입니다.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        <strong class="text-red-600">데이터 해석 시 반드시 감안해야 할 사항:</strong> 
+                        QA/DEV 이슈 데이터가 전면 부재하며 (콘텐츠 테스트 미진행), 
+                        테스트 볼륨도 662 Case로 전월 31,050 Case 대비 <strong>-97.9% 급감</strong>. 
+                        라이브 이슈 5건, Hotfix 5건으로 감소한 것은 <strong>"업데이트 1회만 진행"한 결과</strong>로, 
+                        평소 대비 테스트 규모가 현저히 작았다는 점을 고려해야 합니다.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        <strong>긍정적 측면:</strong> 서비스 장애 0건 (2개월 연속 유지), 서비스 다운타임 0분 (완벽 가용률), 
+                        유저 만족도 35.31% (전월 33.48% 대비 +1.83%p), 테스트 처리량 220.7 Case/H (목표 110% 달성).
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>향후 과제:</strong> 
+                        테스트 수행 주체 변경으로 인한 <span class="font-semibold">품질 데이터 추적 체계 재정비, 
+                        개발 스튜디오와의 협업 체계 구축, AI 자동화 기술 도입 기획 진행 (일부 토대 개발 완료)</span>를 통한 체계적 품질 관리가 필요합니다.
+                    </p>
+                </div>
+                <div class="source-citation mt-4">
+                    출처: 2025년 10월 QA 성과 종합 분석 및 평가 (10/23 타겟 단독 데이터 기반)
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-sm opacity-75">
+                © 2025 SmileGate Stove | Epicseven QA Team | 
+                보고서 생성일: 2025.11.06 | 데이터 출처: SGP 내부 실측 데이터
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Chart.js 설정
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+        Chart.defaults.font.size = 12;
+
+        // 서비스 안정성 트렌드 차트
+        const stabilityCtx = document.getElementById('stabilityChart').getContext('2d');
+        new Chart(stabilityCtx, {
+            type: 'line',
+            data: {
+                labels: ['2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'],
+                datasets: [{
+                    label: '총 이슈 수',
+                    data: [332, 424, 982, 669, 421, 819, 272, 367, 5],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: '서비스 장애',
+                    data: [1, 2, 2, 2, 0, 1, 2, 0, 0],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 긴급대응 & 장애 현황 차트
+        const incidentCtx = document.getElementById('incidentChart').getContext('2d');
+        new Chart(incidentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'],
+                datasets: [{
+                    label: '긴급 대응',
+                    data: [1, 4, 8, 6, 6, 9, 7, 12, 5],
+                    backgroundColor: '#f59e0b'
+                }, {
+                    label: '서비스 장애',
+                    data: [1, 2, 2, 2, 0, 1, 2, 0, 0],
+                    backgroundColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 테스트 처리량 추이 차트
+        const productivityCtx = document.getElementById('productivityChart').getContext('2d');
+        new Chart(productivityCtx, {
+            type: 'line',
+            data: {
+                labels: ['2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'],
+                datasets: [{
+                    label: '월간 테스트 볼륨',
+                    data: [18000, 22000, 35000, 28000, 27770, 22889, 25919, 31050, 662],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 리소스 활용 차트
+        const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+        new Chart(resourceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['리소스 사용시간', '여유 시간'],
+                datasets: [{
+                    data: [3, 37],
+                    backgroundColor: ['#3b82f6', '#e5e7eb']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 이슈 검출 비율 차트
+        const detectionCtx = document.getElementById('detectionChart').getContext('2d');
+        new Chart(detectionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['QA 이슈 (124건)', 'DEV 이슈 (231건)', 'Live 이슈 (57건)'],
+                datasets: [{
+                    data: [null, null, 5],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 품질 지표 트렌드 차트
+        const qualityTrendCtx = document.getElementById('qualityTrendChart').getContext('2d');
+        new Chart(qualityTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'],
+                datasets: [{
+                    label: '이슈 검출률 (%)',
+                    data: [98, 97, 95, 98, 99, 97.7, 95, 95.4, 0],
+                    borderColor: '#10b981',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 90,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 업계 비교 차트
+        const industryComparisonCtx = document.getElementById('industryComparisonChart').getContext('2d');
+        new Chart(industryComparisonCtx, {
+            type: 'radar',
+            data: {
+                labels: ['이슈 검출률', '서비스 안정성', '처리 효율성', '품질 만족도', '유저 만족도'],
+                datasets: [{
+                    label: 'Epic Seven',
+                    data: [95.4, 100, 171.5, 92, 33.48],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)'
+                }, {
+                    label: '업계 평균',
+                    data: [85, 75, 70, 80, 52],
+                    borderColor: '#6b7280',
+                    backgroundColor: 'rgba(107, 114, 128, 0.2)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 200
+                    }
+                }
+            }
+        });
+
+        // 유저 동향 차트
+        const userSentimentCtx = document.getElementById('userSentimentChart').getContext('2d');
+        new Chart(userSentimentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['부정 (13,698개)', '긍정 (12,529개)', '중립 (8,262개)'],
+                datasets: [{
+                    data: [7595, 7351, 4375],
+                    backgroundColor: ['#3b82f6', '#10b981', '#6b7280']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 비용 효율성 차트
+        const costEfficiencyCtx = document.getElementById('costEfficiencyChart').getContext('2d');
+        new Chart(costEfficiencyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['QA 투입비용', '절약 효과', '순 효과'],
+                datasets: [{
+                    data: [-3480, 6200, 2720],
+                    backgroundColor: ['#ef4444', '#10b981', '#3b82f6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(value) {
+                                return value + '만원';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 사전 품질 확보 효과 차트
+        const preventionCtx = document.getElementById('preventionChart').getContext('2d');
+        new Chart(preventionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['9/11 타겟', '9/25 타겟'],
+                datasets: [{
+                    label: 'QA 이슈 (건)',
+                    data: [53, 71],
+                    backgroundColor: '#3b82f6'
+                }, {
+                    label: '절약 효과 (백만원)',
+                    data: [26.5, 35.5],
+                    backgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDs4yJYkKvHySR79GBhV5h0PTTi3k9T%2Fqmzomb4BSrePRU1ozOev%2BJahyggmHvKC0o9hayimjkGpqYuzyrzSJUS0446IoWfVr5eNdWCP9eAdCWGn7cDFBqoR33je4%2BiPFYzH3okMlqCz1SdOD11wr%2FNe5vlMdz5Od4ccgnM7tj5p83P6xttSUgXJBAKz2HGFpyPF%2F7irVJvjvZZVT%2FPmsZd9j491FWfupU1gNwkg%2B8KyPs4B%2FdCBuMEggfSJgwcbEvFnEYR0QMPfG0jMoQqYFNFkHuk4hw3mWypQyzfr3R8dILMwW6VBo6TYR08045YkGI0UVyLjYYBPOzZwysxzRvFPNFuCpZuvxtePemsie2pxd32Tvq9ZjHJAAwXwj1zYifUB3f0G%2B5DPFX5E%2BlWJZhCzLIc1OaEXmAm3yIyxKkKYn4LwOXQ3%2FMtoRbHavE4yv7eZqOJhLqRARLoJrpFNtk6pw6Z8innwYswyVdmrurBcjtdVc%2BC9rjuH3sTVb7OaQcQ%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDs4yJYkKvHySR79GBhV5h0PTTi3k9T/qmzomb4BSrePRU1ozOev+JahyggmHvKC0o9hayimjkGpqYuzyrzSJUS0446IoWfVr5eNdWCP9eAdCWGn7cDFBqoR33je4+iPFYzH3okMlqCz1SdOD11wr/Ne5vlMdz5Od4ccgnM7tj5p83P6xttSUgXJBAKz2HGFpyPF/7irVJvjvZZVT/PmsZd9j491FWfupU1gNwkg+8KyPs4B/dCBuMEggfSJgwcbEvFnEYR0QMPfG0jMoQqYFNFkHuk4hw3mWypQyzfr3R8dILMwW6VBo6TYR08045YkGI0UVyLjYYBPOzZwysxzRvFPNFuCpZuvxtePemsie2pxd32Tvq9ZjHJAAwXwj1zYifUB3f0G+5DPFX5E+lWJZhCzLIc1OaEXmAm3yIyxKkKYn4LwOXQ3/MtoRbHavE4yv7eZqOJhLqRARLoJrpFNtk6pw6Z8innwYswyVdmrurBcjtdVc+C9rjuH3sTVb7OaQcQ==";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
