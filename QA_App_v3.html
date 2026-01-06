@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA App Download Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Mode - Soft & Eye-Friendly (Sepia inspired) */
+            --primary-green: #36a868;
+            --secondary-gray: #6b7785;
+            --disabled-gray: #d8dce0;
+            --bg-light: #faf9f6;
+            --bg-white: #ffffff;
+            --bg-card: #ffffff;
+            --text-dark: #37352f;
+            --text-medium: #6b7785;
+            --text-light: #9ba3ab;
+            --border-color: #e8e8e7;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+            --error-red: #d97066;
+            --success-green: #36a868;
+            --accent-blue: #5b9dd9;
+            --warning-orange: #f59e0b;
+            --admin-purple: #9333ea;
+        }
+
+        body.dark-mode {
+            /* Dark Mode - Warm Dark (Easy on eyes) */
+            --primary-green: #5fc88f;
+            --secondary-gray: #9ba3ab;
+            --disabled-gray: #3e4450;
+            --bg-light: #1a1d23;
+            --bg-white: #24272e;
+            --bg-card: #2d3139;
+            --text-dark: #e3e5e8;
+            --text-medium: #b8bfc7;
+            --text-light: #7d8794;
+            --border-color: #3e4450;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --error-red: #f08c82;
+            --success-green: #5fc88f;
+            --accent-blue: #74ade3;
+            --warning-orange: #fbbf24;
+            --admin-purple: #a855f7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* Admin Mode Banner */
+        .admin-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--admin-purple) 0%, #7c3aed 100%);
+            color: white;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        .admin-banner.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .admin-banner-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-exit-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .admin-exit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background-color: transparent;
+            color: var(--text-dark);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--bg-light);
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .auth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background-color: var(--success-green);
+            color: white;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 0.25rem;
+            transition: transform 0.2s;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .admin-btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--admin-purple) 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(147, 51, 234, 0.2);
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(147, 51, 234, 0.3);
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            width: 250px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--admin-purple);
+            margin-bottom: 2rem;
+        }
+
+        .admin-panel h2 {
+            color: var(--admin-purple);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-section {
+            background-color: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-section h3 {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .admin-input-group {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .admin-label {
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .admin-input {
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: var(--bg-card);
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .admin-input:focus {
+            outline: none;
+            border-color: var(--admin-purple);
+        }
+
+        .admin-save-btn {
+            background: linear-gradient(135deg, var(--success-green) 0%, #2d8d56 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .admin-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .link-editor-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .link-editor-item {
+            display: grid;
+            grid-template-columns: 150px 1fr 80px;
+            gap: 0.75rem;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .link-editor-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .link-editor-input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .link-editor-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .link-editor-input.empty {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: var(--warning-orange);
+        }
+
+        .link-status {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .link-status.ready {
+            color: var(--success-green);
+        }
+
+        .link-status.empty {
+            color: var(--warning-orange);
+        }
+
+        .backup-section {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 2px dashed var(--warning-orange);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .backup-btn {
+            background-color: var(--warning-orange);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .backup-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .last-modified {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Home Page */
+        .home-hero {
+            background-color: var(--bg-card);
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .home-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .home-hero p {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            line-height: 1.6;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .info-card p {
+            color: var(--text-medium);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .guide-section {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .guide-section h2 {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .guide-section ol {
+            padding-left: 1.5rem;
+            color: var(--text-medium);
+            line-height: 1.8;
+        }
+
+        /* Project Page */
+        .project-container {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .env-section {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .env-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .env-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .env-title h3 {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--text-light);
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-dark);
+            color: var(--bg-card);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--text-dark);
+        }
+
+        .info-icon:hover .tooltip {
+            opacity: 1;
+        }
+
+        .env-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+
+        .date-display {
+            padding: 0.3rem 0.6rem;
+            background-color: var(--bg-light);
+            border-radius: 4px;
+            min-width: 140px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .date-display.empty {
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--accent-blue);
+            transition: transform 0.2s ease;
+        }
+
+        .edit-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .builds-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .builds-grid.android-only {
+            grid-template-columns: 1fr;
+        }
+
+        .build-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .build-btn.new {
+            background-color: var(--success-green);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .build-btn.old {
+            background-color: var(--secondary-gray);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .build-btn.disabled {
+            background-color: var(--disabled-gray);
+            cursor: not-allowed;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .build-btn.disabled::after {
+            content: '준비 중';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #f59e0b;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .build-btn:not(.disabled):active {
+            transform: scale(0.98);
+            box-shadow: var(--shadow);
+        }
+
+        .build-btn:not(.disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .build-btn.new:hover {
+            background-color: #2d8d56;
+        }
+
+        .build-btn.old:hover {
+            background-color: #5a6470;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn.primary {
+            background-color: var(--success-green);
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background-color: #2d8d56;
+        }
+
+        .modal-btn.secondary {
+            background-color: var(--secondary-gray);
+            color: white;
+        }
+
+        .modal-btn.secondary:hover {
+            background-color: #5a6470;
+        }
+
+        .error-message {
+            background-color: rgba(217, 112, 102, 0.15);
+            border: 1px solid var(--error-red);
+            color: var(--error-red);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        body.dark-mode .error-message {
+            background-color: rgba(240, 140, 130, 0.15);
+        }
+
+        /* iOS Note */
+        .ios-note {
+            background-color: rgba(245, 158, 11, 0.12);
+            border-left: 4px solid #f59e0b;
+            padding: 0.75rem 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .ios-note strong {
+            color: var(--text-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .header-nav {
+                justify-content: center;
+            }
+
+            .header-actions {
+                justify-content: center;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .search-input:focus {
+                width: 100%;
+            }
+
+            .home-hero h1 {
+                font-size: 2rem;
+            }
+
+            .builds-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .env-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .admin-input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .link-editor-item {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+
+            .nav-btn {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .home-hero {
+                padding: 2rem 1rem;
+            }
+
+            .home-hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .builds-grid {
+                gap: 0.75rem;
+            }
+
+            .build-btn {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .auth-badge {
+                font-size: 0.8rem;
+                padding: 0.3rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Mode Banner -->
+    <div class="admin-banner" id="adminBanner">
+        <div class="admin-banner-content">
+            <span>🔧 관리자 모드 활성화됨</span>
+            <button class="admin-exit-btn" onclick="exitAdminMode()">관리자 모드 종료</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-title">📱 QA App Hub</div>
+            <nav class="header-nav" id="navContainer"></nav>
+            <div class="header-actions">
+                <button class="admin-btn" id="adminBtn" onclick="openAdminModal()">🔑 관리자</button>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="프로젝트 검색...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="dark-mode-toggle" id="darkModeToggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container" id="mainContainer"></main>
+
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <h3>🔐 비밀번호 입력</h3>
+            <div class="error-message" id="passwordError">
+                비밀번호가 틀렸습니다.<br>퍼블리싱 QA1팀에 문의하세요.
+            </div>
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요" />
+            <div class="modal-actions">
+                <button class="modal-btn secondary" id="passwordCancel">취소</button>
+                <button class="modal-btn primary" id="passwordSubmit">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Auth Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <h3>🔑 관리자 인증</h3>
+            <div class="error-message" id="adminError">
+                관리자 비밀번호가 틀렸습니다.
+            </div>
+            <input type="password" id="adminPasswordInput" placeholder="관리자 비밀번호를 입력하세요" />
+            <div class="modal-actions">
+                <button class="modal-btn secondary" id="adminCancel">취소</button>
+                <button class="modal-btn primary" id="adminSubmit">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Edit Modal -->
+    <div class="modal" id="dateModal">
+        <div class="modal-content">
+            <h3>날짜 수정</h3>
+            <input type="date" id="dateInput" />
+            <div class="modal-actions">
+                <button class="modal-btn secondary" id="modalCancel">취소</button>
+                <button class="modal-btn primary" id="modalSave">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // ENCRYPTION & SECURITY LAYER
+        // ============================================================
+        
+        // Admin password hash (SHA-256 of "qateam2025@")
+        const ADMIN_PASSWORD_HASH = '86f0a7e4d26f5f08ae80340c87a63dccd0f76ab44792c86b6b49fda714fb312c';
+        
+        // XOR encryption key generator (dynamic)
+        function generateEncryptionKey() {
+            const timestamp = Math.floor(Date.now() / 3600000);
+            const userAgent = navigator.userAgent.slice(0, 10);
+            return btoa(timestamp + userAgent).slice(0, 16);
+        }
+
+        // XOR encryption
+        function xorEncrypt(text, key) {
+            return text.split('').map((char, i) => {
+                return String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length));
+            }).join('');
+        }
+
+        // XOR decryption (same as encryption)
+        function xorDecrypt(encrypted, key) {
+            return xorEncrypt(encrypted, key);
+        }
+
+        // SHA-256 hash function
+        async function sha256(text) {
+            const buffer = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        // Encrypt configuration
+        function encryptConfig(config) {
+            const json = JSON.stringify(config);
+            const base64 = btoa(json);
+            const key = generateEncryptionKey();
+            return xorEncrypt(base64, key);
+        }
+
+        // Decrypt configuration
+        function decryptConfig(encrypted) {
+            try {
+                const key = generateEncryptionKey();
+                const base64 = xorDecrypt(encrypted, key);
+                const json = atob(base64);
+                return JSON.parse(json);
+            } catch (e) {
+                console.error('Decryption failed:', e);
+                return null;
+            }
+        }
+
+        // ============================================================
+        // ENCRYPTED DATA CONFIGURATION
+        // ============================================================
+        
+        // This is the encrypted configuration - unreadable without decryption
+        const ENCRYPTED_CONFIG = "eJyrVipOTEksSjVQsorzTSwtyEmsVLICSgDZxflFJal5JZn5ecVKtQDKRQ1Q";
+        
+        // Default configuration (will be encrypted on first save)
+        const DEFAULT_CONFIG = {
+            passwords: {
+                'epic7': 'EP7',
+                'chaos': 'CZN',
+                'lordnine': 'LD9'
+            },
+            builds: {
+                epic7: {
+                    live: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Live_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Live_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Live/Epic7_Live_Old.ipa'
+                    },
+                    qa1: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA1_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA1_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA1_Old.ipa'
+                    },
+                    qa2: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA2_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA2_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA2_Old.ipa'
+                    },
+                    qa3: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA3_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_QA3_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_QA3_Old.ipa'
+                    },
+                    test: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test1.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test2.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Test1.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test1.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Epic7/Epic7_Test2.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/QA/Epic7_Test2.ipa'
+                    },
+                    'huawei-live': {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_Live_New_Huawei.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_Live_Old_Huawei.apk'
+                    },
+                    'huawei-qa2': {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_QA2_New_Huawei.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_Huawei/Epic7_QA2_Old_Huawei.apk'
+                    },
+                    'gpg-live': {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_Live_New_GPG.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_Live_Old_GPG.apk'
+                    },
+                    'gpg-qa2': {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_QA2_New_GPG.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Epic7/Client/Th_GPG/Epic7_QA2_Old_GPG.apk'
+                    }
+                },
+                chaos: {
+                    live: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Old_New.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Live_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Live_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/Live/Chaos_Live_Old.ipa'
+                    },
+                    qa1: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA1_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA1_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA1_Old.ipa'
+                    },
+                    qa2: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA2_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA2_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA2_Old.ipa'
+                    },
+                    qa3: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_New.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_Old.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA3_New.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_New.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_QA3_Old.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_QA3_Old.ipa'
+                    },
+                    test: {
+                        android_new: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test1.apk',
+                        android_old: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test2.apk',
+                        ios_new_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Test1.plist',
+                        ios_new_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test1.ipa',
+                        ios_old_plist: 'itms-services://?action=download-manifest&url=https://downsec.game.playstove.com/GLO_Chaos/Chaos_Test2.plist',
+                        ios_old_direct: 'http://down-game.palmple.co.kr/build_dist/GLO_Chaos/Client/QA/Chaos_Test2.ipa'
+                    }
+                },
+                lordnine: {
+                    qa1: {},
+                    qa2: {},
+                    qa3: {},
+                    test: {}
+                }
+            },
+            lastModified: Date.now()
+        };
+
+        // ============================================================
+        // APPLICATION DATA & STATE
+        // ============================================================
+        
+        const APP_DATA = {
+            projects: [
+                {
+                    id: 'epic7',
+                    name: 'Epic Seven',
+                    environments: [
+                        { id: 'live', name: 'Live', description: '서비스 환경 (운영 서버)', hasIOS: true },
+                        { id: 'qa1', name: 'QA1', description: '로컬라이제이션 환경 (번역/지역화 테스트)', hasIOS: true },
+                        { id: 'qa2', name: 'QA2', description: '업데이트 타겟 환경 (다음 버전 테스트)', hasIOS: true },
+                        { id: 'qa3', name: 'QA3', description: '서비스와 동일한 환경 (프로덕션 미러링)', hasIOS: true },
+                        { id: 'test', name: 'Test App', description: '기타 테스트 환경 (특수 테스트용)', hasIOS: true },
+                        { id: 'huawei-live', name: 'Huawei - Live', description: 'Huawei AppGallery 마켓 전용 빌드 (Live 환경)', hasIOS: false },
+                        { id: 'huawei-qa2', name: 'Huawei - QA2', description: 'Huawei AppGallery 마켓 전용 빌드 (QA2 환경)', hasIOS: false },
+                        { id: 'gpg-live', name: 'GPG - Live', description: 'GPG 마켓 전용 빌드 (Live 환경)', hasIOS: false },
+                        { id: 'gpg-qa2', name: 'GPG - QA2', description: 'GPG 마켓 전용 빌드 (QA2 환경)', hasIOS: false }
+                    ]
+                },
+                {
+                    id: 'chaos',
+                    name: 'ChaosZero',
+                    environments: [
+                        { id: 'live', name: 'Live', description: '서비스 환경 (운영 서버)', hasIOS: true },
+                        { id: 'qa1', name: 'QA1', description: '서비스와 동일한 환경 (프로덕션 미러링)', hasIOS: true },
+                        { id: 'qa2', name: 'QA2', description: '업데이트 타겟 환경 (다음 버전 테스트)', hasIOS: true },
+                        { id: 'qa3', name: 'QA3', description: '로컬라이제이션 환경 (번역/지역화 테스트)', hasIOS: true },
+                        { id: 'test', name: 'Test App', description: '기타 테스트 환경 (특수 테스트용)', hasIOS: true }
+                    ]
+                },
+                {
+                    id: 'lordnine',
+                    name: 'LordNine',
+                    environments: [
+                        { id: 'qa1', name: 'QA1', description: '서비스와 동일한 환경 (프로덕션 미러링)', hasIOS: true },
+                        { id: 'qa2', name: 'QA2', description: '업데이트 타겟 환경 (다음 버전 테스트)', hasIOS: true },
+                        { id: 'qa3', name: 'QA3', description: '로컬라이제이션 환경 (번역/지역화 테스트)', hasIOS: true },
+                        { id: 'test', name: 'Test App', description: '기타 테스트 환경 (특수 테스트용)', hasIOS: true }
+                    ]
+                }
+            ]
+        };
+
+        // State Management
+        let currentPage = 'home';
+        let currentEditTarget = null;
+        let pendingProjectId = null;
+        let isAdminMode = false;
+        let currentConfig = null;
+        let sessionTimeouts = {}; // { projectId: timeoutId, admin: timeoutId }
+
+        // ============================================================
+        // SESSION TIMEOUT MANAGEMENT (30 minutes)
+        // ============================================================
+        
+        const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
+        function startProjectSessionTimeout(projectId) {
+            // Clear existing timeout
+            if (sessionTimeouts[projectId]) {
+                clearTimeout(sessionTimeouts[projectId]);
+            }
+
+            // Set new timeout
+            sessionTimeouts[projectId] = setTimeout(() => {
+                alert(`${getProjectName(projectId)} 프로젝트: 30분 동안 활동이 없어 자동 로그아웃됩니다.`);
+                logout(projectId);
+            }, SESSION_TIMEOUT_MS);
+        }
+
+        function resetProjectSessionTimeout(projectId) {
+            if (checkAuth(projectId)) {
+                startProjectSessionTimeout(projectId);
+            }
+        }
+
+        function startAdminSessionTimeout() {
+            if (sessionTimeouts.admin) {
+                clearTimeout(sessionTimeouts.admin);
+            }
+
+            sessionTimeouts.admin = setTimeout(() => {
+                alert('관리자 모드: 30분 동안 활동이 없어 자동 로그아웃됩니다.');
+                exitAdminMode();
+            }, SESSION_TIMEOUT_MS);
+        }
+
+        function resetAdminSessionTimeout() {
+            if (isAdminMode) {
+                startAdminSessionTimeout();
+            }
+        }
+
+        function resetAllSessionTimeouts() {
+            // Reset admin timeout
+            resetAdminSessionTimeout();
+
+            // Reset all authenticated project timeouts
+            APP_DATA.projects.forEach(project => {
+                if (checkAuth(project.id)) {
+                    resetProjectSessionTimeout(project.id);
+                }
+            });
+        }
+
+        function getProjectName(projectId) {
+            const project = APP_DATA.projects.find(p => p.id === projectId);
+            return project ? project.name : projectId;
+        }
+
+        // ============================================================
+        // CONFIGURATION MANAGEMENT
+        // ============================================================
+        
+        function loadConfig() {
+            const stored = localStorage.getItem('qa_app_encrypted_config');
+            if (stored) {
+                const decrypted = decryptConfig(stored);
+                if (decrypted) {
+                    currentConfig = decrypted;
+                    return;
+                }
+            }
+            // Fallback to default
+            currentConfig = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+        }
+
+        function saveConfig() {
+            currentConfig.lastModified = Date.now();
+            const encrypted = encryptConfig(currentConfig);
+            localStorage.setItem('qa_app_encrypted_config', encrypted);
+        }
+
+        function getProjectPassword(projectId) {
+            return currentConfig.passwords[projectId] || '';
+        }
+
+        function getBuildUrl(projectId, envId, buildType) {
+            const projectBuilds = currentConfig.builds[projectId];
+            if (!projectBuilds) return '';
+            const envBuilds = projectBuilds[envId];
+            if (!envBuilds) return '';
+            return envBuilds[buildType] || '';
+        }
+
+        // ============================================================
+        // ADMIN MODE
+        // ============================================================
+        
+        function openAdminModal() {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminError').classList.remove('show');
+            document.getElementById('adminModal').classList.add('active');
+            setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+
+        async function submitAdminPassword() {
+            const password = document.getElementById('adminPasswordInput').value;
+            const hash = await sha256(password);
+            
+            if (hash === ADMIN_PASSWORD_HASH) {
+                isAdminMode = true;
+                closeAdminModal();
+                document.getElementById('adminBanner').classList.add('active');
+                switchPage('admin');
+                startAdminSessionTimeout();
+            } else {
+                const errorEl = document.getElementById('adminError');
+                errorEl.classList.remove('show');
+                setTimeout(() => errorEl.classList.add('show'), 10);
+            }
+        }
+
+        function exitAdminMode() {
+            if (confirm('관리자 모드를 종료하시겠습니까?')) {
+                isAdminMode = false;
+                document.getElementById('adminBanner').classList.remove('active');
+                if (sessionTimeouts.admin) {
+                    clearTimeout(sessionTimeouts.admin);
+                    delete sessionTimeouts.admin;
+                }
+                switchPage('home');
+            }
+        }
+
+        function renderAdminPage() {
+            const lastModified = new Date(currentConfig.lastModified).toLocaleString('ko-KR');
+            
+            return `
+                <div class="page ${currentPage === 'admin' ? 'active' : ''}" id="page-admin">
+                    <div class="admin-panel">
+                        <h2>🔧 관리자 패널</h2>
+                        
+                        <!-- Project Passwords -->
+                        <div class="admin-section">
+                            <h3>🔑 프로젝트 비밀번호 관리</h3>
+                            ${APP_DATA.projects.map(project => `
+                                <div class="admin-input-group">
+                                    <label class="admin-label">${project.name}</label>
+                                    <input type="text" 
+                                           class="admin-input" 
+                                           value="${getProjectPassword(project.id)}"
+                                           data-project="${project.id}"
+                                           data-type="password"
+                                           onchange="updateProjectPassword(this)">
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Download Links -->
+                        ${APP_DATA.projects.map(project => `
+                            <div class="admin-section">
+                                <h3>🔗 ${project.name} 다운로드 링크 관리</h3>
+                                ${project.environments.map(env => `
+                                    <div style="margin-bottom: 2rem;">
+                                        <h4 style="color: var(--text-medium); margin-bottom: 0.75rem; font-size: 1rem;">${env.name}</h4>
+                                        <div class="link-editor-grid">
+                                            ${renderLinkEditors(project.id, env.id, env.hasIOS)}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `).join('')}
+
+                        <!-- Save & Backup -->
+                        <button class="admin-save-btn" onclick="saveAdminChanges()">💾 변경사항 저장 및 다운로드</button>
+                        
+                        <div class="backup-section" style="margin-top: 2rem;">
+                            <h3 style="color: var(--warning-orange); margin-bottom: 0.5rem;">💼 백업 다운로드</h3>
+                            <p style="color: var(--text-medium); font-size: 0.9rem; margin-bottom: 1rem;">
+                                현재 설정을 백업용 HTML 파일로 다운로드합니다. (변경사항 포함)
+                            </p>
+                            <button class="backup-btn" onclick="downloadBackup()">📥 백업 다운로드</button>
+                        </div>
+
+                        <div class="last-modified">
+                            마지막 수정: ${lastModified}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLinkEditors(projectId, envId, hasIOS) {
+            const buildTypes = hasIOS 
+                ? ['android_new', 'android_old', 'ios_new_plist', 'ios_new_direct', 'ios_old_plist', 'ios_old_direct']
+                : ['android_new', 'android_old'];
+            
+            const labels = {
+                'android_new': 'Android New',
+                'android_old': 'Android Old',
+                'ios_new_plist': 'iOS New (plist)',
+                'ios_new_direct': 'iOS New (direct)',
+                'ios_old_plist': 'iOS Old (plist)',
+                'ios_old_direct': 'iOS Old (direct)'
+            };
+
+            return buildTypes.map(buildType => {
+                const url = getBuildUrl(projectId, envId, buildType);
+                const isEmpty = !url || url === '';
+                
+                return `
+                    <div class="link-editor-item">
+                        <span class="link-editor-label">${labels[buildType]}</span>
+                        <input type="text" 
+                               class="link-editor-input ${isEmpty ? 'empty' : ''}"
+                               value="${url}"
+                               placeholder="URL을 입력하세요..."
+                               data-project="${projectId}"
+                               data-env="${envId}"
+                               data-build="${buildType}"
+                               onchange="updateBuildUrl(this)">
+                        <span class="link-status ${isEmpty ? 'empty' : 'ready'}">
+                            ${isEmpty ? '준비중' : '✓'}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateProjectPassword(input) {
+            const projectId = input.dataset.project;
+            const newPassword = input.value;
+            currentConfig.passwords[projectId] = newPassword;
+            resetAdminSessionTimeout();
+        }
+
+        function updateBuildUrl(input) {
+            const projectId = input.dataset.project;
+            const envId = input.dataset.env;
+            const buildType = input.dataset.build;
+            const newUrl = input.value;
+            
+            if (!currentConfig.builds[projectId]) {
+                currentConfig.builds[projectId] = {};
+            }
+            if (!currentConfig.builds[projectId][envId]) {
+                currentConfig.builds[projectId][envId] = {};
+            }
+            
+            currentConfig.builds[projectId][envId][buildType] = newUrl;
+            
+            // Update visual status
+            const isEmpty = !newUrl || newUrl === '';
+            input.classList.toggle('empty', isEmpty);
+            const statusEl = input.parentElement.querySelector('.link-status');
+            if (statusEl) {
+                statusEl.textContent = isEmpty ? '준비중' : '✓';
+                statusEl.classList.toggle('empty', isEmpty);
+                statusEl.classList.toggle('ready', !isEmpty);
+            }
+            
+            resetAdminSessionTimeout();
+        }
+
+        function saveAdminChanges() {
+            if (confirm('변경사항을 저장하고 새로운 HTML 파일을 다운로드하시겠습니까?\n\n저장 후 기존 파일을 새 파일로 교체해야 합니다.')) {
+                saveConfig();
+                downloadUpdatedHTML();
+                alert('✅ 저장 완료!\n\n새 HTML 파일이 다운로드되었습니다.\n기존 파일을 새 파일로 교체하세요.');
+            }
+        }
+
+        function downloadUpdatedHTML() {
+            const currentHTML = document.documentElement.outerHTML;
+            const encrypted = encryptConfig(currentConfig);
+            
+            // Replace encrypted config in HTML
+            const updatedHTML = currentHTML.replace(
+                /const ENCRYPTED_CONFIG = ".*?";/,
+                `const ENCRYPTED_CONFIG = "${encrypted}";`
+            );
+            
+            const blob = new Blob([updatedHTML], { type: 'text/html; charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `QA_App_Updated_${Date.now()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadBackup() {
+            if (confirm('현재 설정을 백업 파일로 다운로드하시겠습니까?')) {
+                downloadUpdatedHTML();
+                alert('✅ 백업 완료!\n\n백업 파일이 다운로드되었습니다.');
+            }
+        }
+
+        // ============================================================
+        // INITIALIZE APP
+        // ============================================================
+        
+        function init() {
+            loadConfig();
+            loadDarkMode();
+            renderNav();
+            renderPages();
+            attachEventListeners();
+            loadLastTab();
+            setupIOSDoubleClick();
+            
+            // Start session timeouts for already authenticated projects
+            APP_DATA.projects.forEach(project => {
+                if (checkAuth(project.id)) {
+                    startProjectSessionTimeout(project.id);
+                }
+            });
+        }
+
+        // Dark Mode
+        function loadDarkMode() {
+            const darkMode = localStorage.getItem('qa_app_dark_mode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').textContent = '☀️';
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('qa_app_dark_mode', isDark);
+            document.getElementById('darkModeToggle').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        // Authentication
+        function checkAuth(projectId) {
+            const authKey = `qa_app_auth_${projectId}`;
+            const authTime = localStorage.getItem(`${authKey}_time`);
+            
+            if (!authTime) return false;
+            
+            // Check if auth has expired (30 minutes)
+            const elapsedTime = Date.now() - parseInt(authTime);
+            if (elapsedTime > SESSION_TIMEOUT_MS) {
+                // Auth expired
+                localStorage.removeItem(authKey);
+                localStorage.removeItem(`${authKey}_time`);
+                return false;
+            }
+            
+            return localStorage.getItem(authKey) === 'true';
+        }
+
+        function authenticate(projectId, password) {
+            const correctPassword = getProjectPassword(projectId);
+            if (correctPassword && correctPassword === password) {
+                localStorage.setItem(`qa_app_auth_${projectId}`, 'true');
+                localStorage.setItem(`qa_app_auth_${projectId}_time`, Date.now().toString());
+                startProjectSessionTimeout(projectId);
+                return true;
+            }
+            return false;
+        }
+
+        function logout(projectId) {
+            localStorage.removeItem(`qa_app_auth_${projectId}`);
+            localStorage.removeItem(`qa_app_auth_${projectId}_time`);
+            if (sessionTimeouts[projectId]) {
+                clearTimeout(sessionTimeouts[projectId]);
+                delete sessionTimeouts[projectId];
+            }
+            switchPage('home');
+            renderNav();
+        }
+
+        function getAuthenticatedProjects() {
+            return APP_DATA.projects.filter(p => checkAuth(p.id));
+        }
+
+        function openPasswordModal(projectId) {
+            pendingProjectId = projectId;
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').classList.remove('show');
+            document.getElementById('passwordModal').classList.add('active');
+            setTimeout(() => document.getElementById('passwordInput').focus(), 100);
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').classList.remove('active');
+            pendingProjectId = null;
+        }
+
+        function submitPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (authenticate(pendingProjectId, password)) {
+                const projectId = pendingProjectId;
+                closePasswordModal();
+                renderNav();
+                switchPage(projectId);
+            } else {
+                const errorEl = document.getElementById('passwordError');
+                errorEl.classList.remove('show');
+                setTimeout(() => errorEl.classList.add('show'), 10);
+            }
+        }
+
+        // Navigation
+        function renderNav() {
+            const navContainer = document.getElementById('navContainer');
+            const navItems = [{ id: 'home', label: 'Home' }];
+            
+            APP_DATA.projects.forEach(p => {
+                navItems.push({ id: p.id, label: p.name });
+            });
+
+            const authProjects = getAuthenticatedProjects();
+            
+            navContainer.innerHTML = navItems.map(item => 
+                `<button class="nav-btn ${item.id === currentPage ? 'active' : ''}" 
+                         data-page="${item.id}">${item.label}</button>`
+            ).join('');
+
+            if (authProjects.length > 0) {
+                const badgesHtml = authProjects.map(p => `
+                    <span class="auth-badge">
+                        🔓 ${p.name}
+                        <button class="logout-btn" data-project="${p.id}" title="로그아웃">×</button>
+                    </span>
+                `).join('');
+                navContainer.innerHTML += badgesHtml;
+            }
+        }
+
+        // Render Pages
+        function renderPages() {
+            const mainContainer = document.getElementById('mainContainer');
+            mainContainer.innerHTML = `
+                ${renderHomePage()}
+                ${APP_DATA.projects.map(project => renderProjectPage(project)).join('')}
+                ${isAdminMode ? renderAdminPage() : ''}
+            `;
+        }
+
+        function renderHomePage() {
+            return `
+                <div class="page ${currentPage === 'home' ? 'active' : ''}" id="page-home">
+                    <div class="home-hero">
+                        <h1>🎮 QA App Download Hub</h1>
+                        <p>내부 테스트를 위한 게임 빌드 다운로드 센터입니다.</p>
+                        <p>각 프로젝트별 환경에 맞는 빌드를 빠르게 다운로드할 수 있습니다.</p>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <h3>🟢 Live</h3>
+                            <p>서비스 환경 (운영 서버) - 실제 유저가 사용하는 환경과 동일한 빌드</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔵 QA1</h3>
+                            <p>Epic Seven: 로컬라이제이션 환경 | 다른 프로젝트: 프로덕션 미러링</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🟣 QA2</h3>
+                            <p>업데이트 타겟 환경 (다음 버전 테스트) - 다음 업데이트 버전 QA</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🟡 QA3</h3>
+                            <p>Epic Seven: 프로덕션 미러링 | 다른 프로젝트: 로컬라이제이션 환경</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>🔴 Test App</h3>
+                            <p>기타 테스트 환경 (특수 테스트용) - 특정 기능 테스트 전용</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-section">
+                        <h2>📖 사용 가이드</h2>
+                        <ol>
+                            <li>상단 내비게이션에서 원하는 프로젝트를 선택하세요.</li>
+                            <li>프로젝트 접근 시 비밀번호를 입력해야 합니다.</li>
+                            <li><strong>30분 동안 활동이 없으면 자동으로 로그아웃됩니다.</strong></li>
+                            <li>테스트하려는 환경(Live, QA1~3, Test App)을 찾으세요.</li>
+                            <li><strong>New</strong>는 최신 마켓 버전, <strong>Old</strong>는 이전 마켓 버전입니다.</li>
+                            <li><strong>iOS 앱 다운로드</strong>: 버튼을 더블클릭하면 .ipa 파일을 직접 다운로드할 수 있습니다.</li>
+                            <li>날짜 옆 ✏️ 아이콘을 클릭하면 빌드 업데이트 날짜를 기록할 수 있습니다.</li>
+                        </ol>
+                        <div class="ios-note">
+                            <strong>📱 iOS 사용자 안내:</strong> iOS 앱 설치는 기기에서 진행해야 합니다. 
+                            버튼 클릭 시 OTA 설치가 시작되며, 더블클릭하면 .ipa 파일을 직접 다운로드할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProjectPage(project) {
+            return `
+                <div class="page ${currentPage === project.id ? 'active' : ''}" id="page-${project.id}">
+                    <div class="project-container">
+                        ${project.environments.map(env => renderEnvironment(project.id, env)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEnvironment(projectId, env) {
+            const dateKey = `qa_app_dates_${projectId}_${env.id}`;
+            const savedDate = localStorage.getItem(dateKey) || '';
+            const formattedDate = savedDate ? formatDate(savedDate) : '';
+            
+            const projectBuilds = currentConfig.builds[projectId];
+            const envBuilds = projectBuilds ? projectBuilds[env.id] : null;
+            const hasBuilds = envBuilds && Object.keys(envBuilds).length > 0;
+
+            return `
+                <div class="env-section">
+                    <div class="env-header">
+                        <div class="env-title">
+                            <h3>${env.name}</h3>
+                            <span class="info-icon">ℹ️
+                                <span class="tooltip">${env.description}</span>
+                            </span>
+                        </div>
+                        <div class="env-date">
+                            <span class="date-display ${!savedDate ? 'empty' : ''}" id="date-${projectId}-${env.id}">
+                                ${formattedDate || '날짜 없음'}
+                            </span>
+                            <span class="edit-icon" data-project="${projectId}" data-env="${env.id}">✏️</span>
+                        </div>
+                    </div>
+                    ${hasBuilds ? renderBuilds(projectId, env.id, envBuilds, env.hasIOS) : '<p style="color: var(--text-light); text-align: center; padding: 2rem;">준비 중입니다.</p>'}
+                </div>
+            `;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}.${month}.${day} 업데이트`;
+        }
+
+        function renderBuilds(projectId, envId, builds, hasIOS) {
+            const buildOrder = hasIOS 
+                ? ['android_new', 'android_old', 'ios_new', 'ios_old']
+                : ['android_new', 'android_old'];
+            
+            const buildLabels = {
+                android_new: 'New Google',
+                android_old: 'Old Google',
+                ios_new: 'New iOS',
+                ios_old: 'Old iOS'
+            };
+
+            const gridClass = hasIOS ? 'builds-grid' : 'builds-grid android-only';
+
+            return `
+                <div class="${gridClass}">
+                    ${buildOrder.map(key => {
+                        const label = buildLabels[key];
+                        const isNew = key.includes('new');
+                        const isIOS = key.includes('ios');
+                        const btnClass = isNew ? 'new' : 'old';
+
+                        if (isIOS) {
+                            const plistUrl = builds[`${key}_plist`] || '';
+                            const directUrl = builds[`${key}_direct`] || '';
+                            
+                            if (!plistUrl && !directUrl) {
+                                return `<button class="build-btn disabled">${label}</button>`;
+                            }
+
+                            return `
+                                <button class="build-btn ${btnClass} ios-btn" 
+                                        data-plist="${plistUrl}"
+                                        data-direct="${directUrl}">
+                                    ${label}
+                                </button>
+                            `;
+                        } else {
+                            const url = builds[key] || '';
+                            
+                            if (!url) {
+                                return `<button class="build-btn disabled">${label}</button>`;
+                            }
+
+                            return `<button class="build-btn ${btnClass}" data-url="${url}">${label}</button>`;
+                        }
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Download Handler
+        function handleDownload(url) {
+            window.location.href = url;
+        }
+
+        // Event Listeners
+        function attachEventListeners() {
+            // Navigation with Auth Check
+            document.getElementById('navContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-btn')) {
+                    const pageId = e.target.dataset.page;
+                    
+                    if (pageId === 'home') {
+                        switchPage('home');
+                    } else {
+                        if (checkAuth(pageId)) {
+                            switchPage(pageId);
+                        } else {
+                            openPasswordModal(pageId);
+                        }
+                    }
+                } else if (e.target.classList.contains('logout-btn')) {
+                    e.stopPropagation();
+                    const projectId = e.target.dataset.project;
+                    logout(projectId);
+                }
+            });
+
+            // Dark Mode Toggle
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+            // Password Modal
+            document.getElementById('passwordSubmit').addEventListener('click', submitPassword);
+            document.getElementById('passwordCancel').addEventListener('click', closePasswordModal);
+            document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') submitPassword();
+            });
+            document.getElementById('passwordModal').addEventListener('click', (e) => {
+                if (e.target.id === 'passwordModal') closePasswordModal();
+            });
+
+            // Admin Modal
+            document.getElementById('adminSubmit').addEventListener('click', submitAdminPassword);
+            document.getElementById('adminCancel').addEventListener('click', closeAdminModal);
+            document.getElementById('adminPasswordInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') submitAdminPassword();
+            });
+            document.getElementById('adminModal').addEventListener('click', (e) => {
+                if (e.target.id === 'adminModal') closeAdminModal();
+            });
+
+            // Download Buttons - Android
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('build-btn') && !e.target.classList.contains('disabled')) {
+                    const url = e.target.dataset.url;
+                    if (url) {
+                        handleDownload(url);
+                    }
+                }
+            });
+
+            // Date Edit
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('edit-icon')) {
+                    openDateModal(e.target.dataset.project, e.target.dataset.env);
+                }
+            });
+
+            // Date Modal
+            document.getElementById('modalCancel').addEventListener('click', closeDateModal);
+            document.getElementById('modalSave').addEventListener('click', saveDate);
+            document.getElementById('dateModal').addEventListener('click', (e) => {
+                if (e.target.id === 'dateModal') closeDateModal();
+            });
+
+            // Search
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+
+            // Activity tracking for session timeout
+            document.addEventListener('click', resetAllSessionTimeouts);
+            document.addEventListener('keypress', resetAllSessionTimeouts);
+            document.addEventListener('scroll', resetAllSessionTimeouts);
+        }
+
+        function switchPage(pageId) {
+            currentPage = pageId;
+            
+            // Re-render if switching to admin page
+            if (pageId === 'admin' && isAdminMode) {
+                const mainContainer = document.getElementById('mainContainer');
+                const existingAdmin = document.getElementById('page-admin');
+                if (existingAdmin) {
+                    existingAdmin.remove();
+                }
+                mainContainer.innerHTML += renderAdminPage();
+            }
+            
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const targetPage = document.getElementById(`page-${pageId}`);
+            const targetBtn = document.querySelector(`[data-page="${pageId}"]`);
+            
+            if (targetPage) targetPage.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (pageId !== 'home' && pageId !== 'admin') {
+                localStorage.setItem('qa_app_last_tab', pageId);
+            }
+        }
+
+        function loadLastTab() {
+            const lastTab = localStorage.getItem('qa_app_last_tab');
+            if (lastTab && lastTab !== 'home' && checkAuth(lastTab)) {
+                switchPage(lastTab);
+            }
+        }
+
+        // Date Management
+        function openDateModal(projectId, envId) {
+            currentEditTarget = { projectId, envId };
+            const dateKey = `qa_app_dates_${projectId}_${envId}`;
+            const savedDate = localStorage.getItem(dateKey) || '';
+            
+            document.getElementById('dateInput').value = savedDate;
+            document.getElementById('dateModal').classList.add('active');
+        }
+
+        function closeDateModal() {
+            document.getElementById('dateModal').classList.remove('active');
+            currentEditTarget = null;
+        }
+
+        function saveDate() {
+            if (!currentEditTarget) return;
+            
+            const { projectId, envId } = currentEditTarget;
+            const dateValue = document.getElementById('dateInput').value;
+            const dateKey = `qa_app_dates_${projectId}_${envId}`;
+            
+            localStorage.setItem(dateKey, dateValue);
+            
+            const dateDisplay = document.getElementById(`date-${projectId}-${envId}`);
+            if (dateDisplay) {
+                const formattedDate = formatDate(dateValue);
+                dateDisplay.textContent = formattedDate || '날짜 없음';
+                dateDisplay.classList.toggle('empty', !dateValue);
+            }
+            
+            closeDateModal();
+        }
+
+        // Search
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            const navButtons = document.querySelectorAll('.nav-btn');
+            
+            navButtons.forEach(btn => {
+                const label = btn.textContent.toLowerCase();
+                if (label.includes(query) || query === '') {
+                    btn.style.display = '';
+                } else {
+                    btn.style.display = 'none';
+                }
+            });
+        }
+
+        // iOS Double Click for Direct Download
+        function setupIOSDoubleClick() {
+            let lastClickTime = 0;
+            const threshold = 300;
+
+            document.getElementById('mainContainer').addEventListener('click', (e) => {
+                if (e.target.classList.contains('ios-btn')) {
+                    const currentTime = new Date().getTime();
+                    const plistUrl = e.target.dataset.plist;
+                    const directUrl = e.target.dataset.direct;
+                    
+                    if (currentTime - lastClickTime < threshold) {
+                        // Double click - download .ipa directly
+                        if (directUrl) {
+                            window.location.href = directUrl;
+                        }
+                    } else {
+                        // Single click - OTA install
+                        if (plistUrl) {
+                            window.location.href = plistUrl;
+                        }
+                    }
+                    
+                    lastClickTime = currentTime;
+                }
+            });
+        }
+
+        // Download Handler
+        function handleDownload(url) {
+            if (url) {
+                window.location.href = url;
+            }
+        }
+
+        // Android Download Click Handler (Event Delegation)
+        document.getElementById('mainContainer').addEventListener('click', (e) => {
+            if (e.target.classList.contains('build-btn') && 
+                !e.target.classList.contains('disabled') && 
+                !e.target.classList.contains('ios-btn')) {
+                const url = e.target.dataset.url;
+                if (url) {
+                    handleDownload(url);
+                }
+            }
+        });
+
+        // Run App
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
