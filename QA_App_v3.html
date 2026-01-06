@@ -2061,23 +2061,9 @@
             });
         }
 
-        // Download Handler (Global Scope - HTTPS Mixed Content Bypass)
+        // Download Handler (Global Scope)
         function handleDownload(url) {
-            if (!url) return;
-            
-            // iframe 다운로드 (HTTPS → HTTP 우회)
-            try {
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = url;
-                document.body.appendChild(iframe);
-                
-                // 5초 후 정리
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 5000);
-            } catch (e) {
-                // Fallback: 직접 이동
+            if (url) {
                 window.location.href = url;
             }
         }
