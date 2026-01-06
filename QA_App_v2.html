@@ -2020,6 +2020,18 @@
             }
         }
 
+        // Android Download Click Handler (Event Delegation)
+        document.getElementById('mainContainer').addEventListener('click', (e) => {
+            if (e.target.classList.contains('build-btn') && 
+                !e.target.classList.contains('disabled') && 
+                !e.target.classList.contains('ios-btn')) {
+                const url = e.target.dataset.url;
+                if (url) {
+                    handleDownload(url);
+                }
+            }
+        });
+
         // Run App
         document.addEventListener('DOMContentLoaded', init);
     </script>
