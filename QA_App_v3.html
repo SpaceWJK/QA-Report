@@ -910,6 +910,9 @@
             }
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 <body>
     <!-- Admin Mode Banner -->
@@ -973,7 +976,7 @@
     <div class="modal" id="dateModal">
         <div class="modal-content">
             <h3>날짜 수정</h3>
-            <input type="date" id="dateInput" />
+            <input type="date" id="dateInput" onfocus="this.showPicker?.()" onclick="this.showPicker?.()" />
             <div class="modal-actions">
                 <button class="modal-btn secondary" id="modalCancel">취소</button>
                 <button class="modal-btn primary" id="modalSave">저장</button>
@@ -982,6 +985,25 @@
     </div>
 
     <script>
+        // ============================================================
+        // FIREBASE CONFIGURATION
+        // ============================================================
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_lhGtgFZezhvevVdr6OAfI1InJ21_Aec",
+            authDomain: "qa-app-hub.firebaseapp.com",
+            databaseURL: "https://qa-app-hub-default-rtdb.firebaseio.com",
+            projectId: "qa-app-hub",
+            storageBucket: "qa-app-hub.firebasestorage.app",
+            messagingSenderId: "411521275396",
+            appId: "1:411521275396:web:d5f91b617323ecf0550751"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+
         // ============================================================
         // ENCRYPTION & SECURITY LAYER
         // ============================================================
@@ -1718,6 +1740,23 @@
             `;
         }
 
+
+        // Firebase에서 날짜 실시간 로드 및 동기화
+        function loadDateFromFirebase(projectId, envId) {
+            const dateKey = `dates/${projectId}/${envId}`;
+            
+            database.ref(dateKey).on('value', (snapshot) => {
+                const dateValue = snapshot.val() || '';
+                const dateDisplay = document.getElementById(`date-${projectId}-${envId}`);
+                
+                if (dateDisplay) {
+                    const formattedDate = formatDate(dateValue);
+                    dateDisplay.textContent = formattedDate || '날짜 없음';
+                    dateDisplay.classList.toggle('empty', !dateValue);
+                }
+            });
+        }
+
         function renderProjectPage(project) {
             return `
                 <div class="page ${currentPage === project.id ? 'active' : ''}" id="page-${project.id}">
@@ -1939,11 +1978,18 @@
         // Date Management
         function openDateModal(projectId, envId) {
             currentEditTarget = { projectId, envId };
-            const dateKey = `qa_app_dates_${projectId}_${envId}`;
-            const savedDate = localStorage.getItem(dateKey) || '';
+            const dateKey = `dates/${projectId}/${envId}`;
             
-            document.getElementById('dateInput').value = savedDate;
-            document.getElementById('dateModal').classList.add('active');
+            // Firebase에서 읽기
+            database.ref(dateKey).once('value').then((snapshot) => {
+                const savedDate = snapshot.val() || '';
+                document.getElementById('dateInput').value = savedDate;
+                document.getElementById('dateModal').classList.add('active');
+            }).catch((error) => {
+                console.error('Firebase read error:', error);
+                document.getElementById('dateInput').value = '';
+                document.getElementById('dateModal').classList.add('active');
+            });
         }
 
         function closeDateModal() {
@@ -1956,10 +2002,17 @@
             
             const { projectId, envId } = currentEditTarget;
             const dateValue = document.getElementById('dateInput').value;
-            const dateKey = `qa_app_dates_${projectId}_${envId}`;
+            const dateKey = `dates/${projectId}/${envId}`;
             
-            localStorage.setItem(dateKey, dateValue);
+            // Firebase에 저장 (실시간 동기화)
+            database.ref(dateKey).set(dateValue).then(() => {
+                console.log('Date saved to Firebase:', dateKey, dateValue);
+            }).catch((error) => {
+                console.error('Firebase save error:', error);
+                alert('날짜 저장 실패. 인터넷 연결을 확인하세요.');
+            });
             
+            // UI 즉시 업데이트
             const dateDisplay = document.getElementById(`date-${projectId}-${envId}`);
             if (dateDisplay) {
                 const formattedDate = formatDate(dateValue);
