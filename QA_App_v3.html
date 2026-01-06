@@ -1856,12 +1856,7 @@
                 </div>
             `;
         }
-
-        // Download Handler
-        function handleDownload(url) {
-            window.location.href = url;
-        }
-
+        
         // Event Listeners
         function attachEventListeners() {
             // Navigation with Auth Check
@@ -2066,7 +2061,7 @@
             });
         }
 
-        // Download Handler
+        // Download Handler (Global Scope)
         function handleDownload(url) {
             if (url) {
                 window.location.href = url;
