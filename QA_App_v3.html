@@ -2061,17 +2061,24 @@
             });
         }
 
-        // Download Handler (Global Scope - Mixed Content Fix)
+        // Download Handler (Global Scope - HTTPS Mixed Content Bypass)
         function handleDownload(url) {
-            if (url) {
-                // HTTPS mixed content 우회: <a> 태그 사용
-                const a = document.createElement('a');
-                a.href = url;
-                a.target = '_blank';
-                a.rel = 'noopener noreferrer';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+            if (!url) return;
+            
+            // iframe 다운로드 (HTTPS → HTTP 우회)
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                
+                // 5초 후 정리
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 5000);
+            } catch (e) {
+                // Fallback: 직접 이동
+                window.location.href = url;
             }
         }
 
