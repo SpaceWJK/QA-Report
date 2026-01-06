@@ -2061,10 +2061,17 @@
             });
         }
 
-        // Download Handler (Global Scope)
+        // Download Handler (Global Scope - Mixed Content Fix)
         function handleDownload(url) {
             if (url) {
-                window.location.href = url;
+                // HTTPS mixed content 우회: <a> 태그 사용
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
         }
 
