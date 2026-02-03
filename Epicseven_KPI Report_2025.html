@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epic Seven 2025 연간 서비스 품질 보고서</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: #fafafa; color: #1a202c; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 40px; border-radius: 16px; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); }
+        .header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; }
+        .header p { font-size: 1.1rem; opacity: 0.95; }
+        .section { background: white; border-radius: 12px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-title { font-size: 1.8rem; font-weight: 700; color: #1a202c; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 3px solid #667eea; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric-card { background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 24px; border-radius: 10px; border-left: 4px solid #667eea; transition: all 0.3s ease; }
+        .metric-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .metric-label { font-size: 0.9rem; color: #64748b; font-weight: 500; margin-bottom: 8px; }
+        .metric-value { font-size: 2rem; font-weight: 700; color: #1a202c; }
+        .metric-sub { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+        .chart-container { position: relative; height: 400px; margin: 30px 0; }
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0; }
+        .insight-box { background: #f1f5f9; border-left: 4px solid #10b981; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .insight-title { font-weight: 600; color: #059669; margin-bottom: 8px; }
+        .warning-box { background: #fef2f2; border-left: 4px solid #ef4444; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .warning-title { font-weight: 600; color: #dc2626; margin-bottom: 8px; }
+        .table-wrapper { overflow-x: auto; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th { background: #f1f5f9; padding: 12px; text-align: left; font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+        tr:hover { background: #f8fafc; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 500; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        
+        /* 인터랙티브 아코디언 */
+        .accordion-item { margin-bottom: 15px; }
+        .accordion-header { background: #fef2f2; padding: 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; border-left: 4px solid #ef4444; }
+        .accordion-header:hover { background: #fee2e2; transform: translateX(5px); }
+        .accordion-header h4 { color: #dc2626; font-weight: 600; margin: 0; display: flex; justify-content: space-between; align-items: center; }
+        .accordion-header .arrow { font-size: 1.2rem; transition: transform 0.3s ease; }
+        .accordion-header.active .arrow { transform: rotate(90deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; }
+        .accordion-content.active { max-height: 600px; padding: 20px; background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 0 0 8px 8px; margin-top: -8px; }
+        
+        /* JSON 인사이트 스타일 */
+        .insight-json { background: #f8fafc; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #334155; border: 1px solid #e2e8f0; margin: 8px 0; }
+        .insight-json .key { color: #0369a1; font-weight: 600; display: block; margin-bottom: 5px; }
+        .insight-json ul { margin: 5px 0 10px 20px; padding: 0; list-style: disc; }
+        .insight-json li { margin: 3px 0; color: #475569; }
+        
+        @media print { body { background: white; } .section { box-shadow: none; page-break-inside: avoid; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Epic Seven 2025 연간 서비스 품질 보고서</h1>
+            <p>2025년 1월 ~ 12월 | QA 활동 분석 및 성과 평가</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">1. Executive Summary</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">총 업데이트</div>
+                    <div class="metric-value">25<span style="font-size:1.2rem;">회</span></div>
+                    <div class="metric-sub">331차 ~ 381차</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">QA 이슈 검출</div>
+                    <div class="metric-value">4,736<span style="font-size:1.2rem;">건</span></div>
+                    <div class="metric-sub">Live 229건</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">연간 검출률</div>
+                    <div class="metric-value">96.1<span style="font-size:1.2rem;">%</span></div>
+                    <div class="metric-sub">업계 평균 대비 +4.1%p</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">연간 ROI</div>
+                    <div class="metric-value">355.3<span style="font-size:1.2rem;">%</span></div>
+                    <div class="metric-sub">손실방지 14.2억원</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">2. 월별 품질 지표 추이</h2>
+            <div class="chart-container">
+                <canvas id="monthlyIssuesChart"></canvas>
+            </div>
+            <div class="chart-row">
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="detectionRateChart"></canvas>
+                </div>
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="roiChart"></canvas>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>월</th>
+                            <th>업데이트</th>
+                            <th>QA 이슈</th>
+                            <th>Live 이슈</th>
+                            <th>검출률</th>
+                            <th>ROI</th>
+                            <th>초과근무</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><strong>1월</strong></td>
+                            <td>3회</td>
+                            <td>233건</td>
+                            <td>11건</td>
+                            <td><span class="badge badge-success">95.5%</span></td>
+                            <td><span class="badge badge-warning">279.5%</span></td>
+                            <td>0H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>2월</strong></td>
+                            <td>2회</td>
+                            <td>332건</td>
+                            <td>9건</td>
+                            <td><span class="badge badge-success">97.4%</span></td>
+                            <td><span class="badge badge-success">325.8%</span></td>
+                            <td>16H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>3월</strong></td>
+                            <td>2회</td>
+                            <td>424건</td>
+                            <td>13건</td>
+                            <td><span class="badge badge-success">97.0%</span></td>
+                            <td><span class="badge badge-success">387.9%</span></td>
+                            <td>37H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>4월</strong></td>
+                            <td>2회</td>
+                            <td>982건</td>
+                            <td>34건</td>
+                            <td><span class="badge badge-success">96.7%</span></td>
+                            <td><span class="badge badge-success">798.6%</span></td>
+                            <td>40H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>5월</strong></td>
+                            <td>2회</td>
+                            <td>669건</td>
+                            <td>19건</td>
+                            <td><span class="badge badge-success">97.2%</span></td>
+                            <td><span class="badge badge-success">602.2%</span></td>
+                            <td>34H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>6월</strong></td>
+                            <td>2회</td>
+                            <td>421건</td>
+                            <td>16건</td>
+                            <td><span class="badge badge-success">96.3%</span></td>
+                            <td><span class="badge badge-success">421.6%</span></td>
+                            <td>16H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>7월</strong></td>
+                            <td>3회</td>
+                            <td>819건</td>
+                            <td>26건</td>
+                            <td><span class="badge badge-success">96.9%</span></td>
+                            <td><span class="badge badge-success">706.6%</span></td>
+                            <td>21H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>8월</strong></td>
+                            <td>2회</td>
+                            <td>272건</td>
+                            <td>24건</td>
+                            <td><span class="badge badge-warning">91.9%</span></td>
+                            <td><span class="badge badge-warning">267.8%</span></td>
+                            <td>23H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>9월</strong></td>
+                            <td>2회</td>
+                            <td>367건</td>
+                            <td>37건</td>
+                            <td><span class="badge badge-warning">90.8%</span></td>
+                            <td><span class="badge badge-warning">282.8%</span></td>
+                            <td>50H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>10월</strong></td>
+                            <td>1회</td>
+                            <td>7건</td>
+                            <td>6건</td>
+                            <td><span class="badge badge-danger">53.8%</span></td>
+                            <td><span class="badge badge-info">7.6%</span></td>
+                            <td>53H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>11월</strong></td>
+                            <td>2회</td>
+                            <td>8건</td>
+                            <td>7건</td>
+                            <td><span class="badge badge-danger">53.3%</span></td>
+                            <td><span class="badge badge-info">6.9%</span></td>
+                            <td>32H</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>12월</strong></td>
+                            <td>2회</td>
+                            <td>202건</td>
+                            <td>27건</td>
+                            <td><span class="badge badge-warning">88.2%</span></td>
+                            <td><span class="badge badge-warning">156.7%</span></td>
+                            <td>41H</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">3. 이슈 등급별 분석</h2>
+            <div class="chart-row">
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="severityDistChart"></canvas>
+                </div>
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="severityCostChart"></canvas>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>등급</th>
+                            <th>건수</th>
+                            <th>단가</th>
+                            <th>손실방지 비용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-danger">즉시</span></td>
+                            <td>2건</td>
+                            <td>180만원</td>
+                            <td><strong>3,600,000원</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-warning">긴급</span></td>
+                            <td>7건</td>
+                            <td>150만원</td>
+                            <td><strong>10,500,000원</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-info">높음</span></td>
+                            <td>87건</td>
+                            <td>60만원</td>
+                            <td><strong>52,200,000원</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-success">보통</span></td>
+                            <td>4458건</td>
+                            <td>30만원</td>
+                            <td><strong>1,337,400,000원</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge" style="background: #f3f4f6; color: #6b7280;">낮음</span></td>
+                            <td>182건</td>
+                            <td>10만원</td>
+                            <td><strong>18,200,000원</strong></td>
+                        </tr>
+                        <tr style="background: #f1f5f9; font-weight: 700;">
+                            <td>합계</td>
+                            <td>4736건</td>
+                            <td>-</td>
+                            <td><strong style="color: #059669;">1,421,900,000원</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">4. 비용 효율성 분석 (ROI)</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">연간 운영 비용</div>
+                    <div class="metric-value">5.5<span style="font-size:1.2rem;">억원</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">손실 방지 비용</div>
+                    <div class="metric-value">14.2<span style="font-size:1.2rem;">억원</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">연간 ROI</div>
+                    <div class="metric-value">355.3<span style="font-size:1.2rem;">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">순이익</div>
+                    <div class="metric-value">8.7<span style="font-size:1.2rem;">억원</span></div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="monthlyRoiChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">5. 리소스 효율성 분석</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">연간 테스트 볼륨</div>
+                    <div class="metric-value">303,534<span style="font-size:1.2rem;">Case</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">표준 근무시간</div>
+                    <div class="metric-value">1,927<span style="font-size:1.2rem;">H</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">실제 근무시간</div>
+                    <div class="metric-value">2,290<span style="font-size:1.2rem;">H</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">초과 근무</div>
+                    <div class="metric-value">363<span style="font-size:1.2rem;">H</span></div>
+                    <div class="metric-sub">가용률 110.2%</div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="workHoursChart"></canvas>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">6. 유저 만족도 분석 (6월 ~ 12월)</h2>
+            <div class="chart-container" style="height: 350px;">
+                <canvas id="satisfactionChart"></canvas>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>월</th>
+                            <th>긍정</th>
+                            <th>부정</th>
+                            <th>중립</th>
+                            <th>핵심 인사이트</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td><strong>6월</strong></td>
+                            <td><span class="badge badge-success">23.9%</span></td>
+                            <td><span class="badge badge-danger">56.8%</span></td>
+                            <td><span class="badge badge-info">19.5%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>이슈 검출률 99% 달성</li><li>서비스 장애 0건 달성</li><li>사전 품질 확보 효과 4,700만원 절약</li><li>ROI 122% 달성</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>부정 동향 56.8%로 높은 수준</li><li>긍정 동향 23.9%로 업계 기준은 상회하나 개선 필요</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>유저 만족도 긍정 23.9%는 업계 평균 초과</li><li>2025년 상반기 안정성 양호</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>7월</strong></td>
+                            <td><span class="badge badge-success">33.7%</span></td>
+                            <td><span class="badge badge-danger">40.7%</span></td>
+                            <td><span class="badge badge-info">25.6%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>7주년 업데이트로 유저 만족도 급상승</li><li>이슈 검출률 97.7% 달성 (목표 95%)</li><li>테스트 볼륨 56,411 Case/월로 대폭 증가</li><li>생산성 194.7% 증가</li><li>사전 품질 확보로 11,850만원 절약</li><li>ROI 180% 달성</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>DEV 이슈 비율 67.0% (목표 70-90% 미달)</li><li>라이브 이슈 33건 (4.0%) 발생</li><li>서비스 장애 1건 (7분 다운타임)</li><li>긴급대응 9건 증가</li><li>개발 단계 품질 관리 강화 필요</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>7주년 업데이트가 만족도 상승의 주요 요인</li><li>AI 자동화/실시간 모니터링 도입 필요</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>8월</strong></td>
+                            <td><span class="badge badge-success">20.0%</span></td>
+                            <td><span class="badge badge-danger">60.0%</span></td>
+                            <td><span class="badge badge-info">25.0%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>이슈 검출률 유지</li><li>ROI 달성</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>부정 동향 60%로 높은 수준</li><li>유저 만족도 개선 필요</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>(없음)</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>9월</strong></td>
+                            <td><span class="badge badge-success">33.5%</span></td>
+                            <td><span class="badge badge-danger">36.6%</span></td>
+                            <td><span class="badge badge-info">22.1%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>긍정 동향 33.48% (업계 기준 15-20% 대폭 초과)</li><li>장송의 프리렌 콜라보 성공적 출시</li><li>가챠게임 업계 기준 대비 우수</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>부정 동향 36.60%로 여전히 높은 수준</li><li>구조적 불만 지속</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>부정 동향 크게 개선 (기준 55-60% 대비 36.60%)</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>10월</strong></td>
+                            <td><span class="badge badge-success">35.3%</span></td>
+                            <td><span class="badge badge-danger">36.5%</span></td>
+                            <td><span class="badge badge-info">21.0%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>(없음)</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>(없음)</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>(없음)</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>11월</strong></td>
+                            <td><span class="badge badge-success">25.1%</span></td>
+                            <td><span class="badge badge-danger">37.1%</span></td>
+                            <td><span class="badge badge-info">21.8%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>(없음)</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>(없음)</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>(없음)</li></ul>
+</div></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>12월</strong></td>
+                            <td><span class="badge badge-success">24.2%</span></td>
+                            <td><span class="badge badge-danger">42.7%</span></td>
+                            <td><span class="badge badge-info">25.0%</span></td>
+                            <td><div class="insight-json">
+<span class="key">'positive_drivers':</span>
+<ul><li>테스트 처리량 190.4 Case/H 달성 (목표 대비 121.8%)</li><li>업데이트 2회 정상 운영 복귀</li></ul>
+<span class="key">'negative_drivers':</span>
+<ul><li>서비스 장애 1건 재발 (4개월 만)</li><li>Live 이슈 33건 (+312.5% vs 11월)</li><li>Hotfix 9건 (+350% vs 11월)</li><li>부정 동향 42.69% (11월 대비 +5.57%p 악화)</li><li>이슈 검출률 90.1% (11월 대비 -5.3%p 하락)</li><li>12/18 대규모 업데이트 이후 품질 이슈 급증</li></ul>
+<span class="key">'neutral_insights':</span>
+<ul><li>대규모 업데이트 품질 관리 강화 필요</li><li>AI 자동화 도입 필요 (Agentic AI 테스트)</li><li>유저 만족도 회복 전략 최우선 과제</li></ul>
+</div></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">7. 주요 이슈 및 개선 방향</h2>
+            <h3 style="color: #dc2626; margin: 30px 0 15px 0;">문제점</h3>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h4>1. QA 활동 감소 및 서비스 안정성 악화 <span class="arrow">▶</span></h4>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>원인:</strong> 10-11월 인원 감축 및 테스트 수행 중단으로 QA 활동이 급격히 감소</p>
+                    <p><strong>영향:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>QA 이슈 검출 7-8건/월로 급감 (정상 월 평균 대비 97% 감소)</li>
+                        <li>12월 Live 이슈 27건 발생 — 테스트 공백 기간의 직접적 후유증</li>
+                        <li>검출률 53% 수준으로 하락 (정상 월 95% 대비 -42%p)</li>
+                    </ul>
+                    <p style="margin-top: 12px;"><strong>개선 방향:</strong> 최소 QA 리소스 유지 정책 수립 (2인 이상 상시 배치) 및 테스트 중단 금지 원칙 확립</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h4>2. 지속적 초과근무 (363H/년) <span class="arrow">▶</span></h4>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>원인:</strong> 4월 대규모 7주년 업데이트(982건 검출) + 연간 리소스 부족 지속</p>
+                    <p><strong>영향:</strong> 연간 가용률 110.2% — 표준 근무시간 대비 18.8% 초과, 팀 번아웃 리스크 증가</p>
+                    <p><strong>개선 방향:</strong> 리소스 증원 또는 업데이트 일정 재조정, 피크 시즌 임시 인력 지원 체계 구축</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <h4>3. 유저 만족도 변동성 <span class="arrow">▶</span></h4>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>원인:</strong> 서비스 품질 불균형 — 8월 부정 60.0% ↔ 10월 긍정 35.3% (변동폭 15.3%p)</p>
+                    <p><strong>영향:</strong> 브랜드 신뢰도 하락 가능성 및 사용자 이탈 리스크 증가</p>
+                    <p><strong>개선 방향:</strong> QA 커버리지 안정화 + 사용자 피드백 실시간 모니터링 시스템 구축 + 주요 불만 요소 사전 대응</p>
+                </div>
+            </div>
+            
+            <h3 style="color: #059669; margin: 30px 0 15px 0;">개선 방향</h3>
+            <div class="insight-box">
+                <div class="insight-title">✓ 2026년 전략</div>
+                <ol style="margin-left: 20px;">
+                    <li><strong>리소스 안정화:</strong> 최소 QA 인력 확보 (2인 이상 상시 배치)</li>
+                    <li><strong>데이터 기반 의사결정:</strong> 월별 KPI 모니터링 및 조기 경보 시스템 구축</li>
+                    <li><strong>예방적 접근:</strong> Live 이슈 발생 전 사전 검증 강화</li>
+                    <li><strong>자동화 투자:</strong> 반복 테스트 자동화로 리소스 효율 개선</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">8. 연간 종합 요약</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h3 style="color: #059669; margin-bottom: 15px;">성과</h3>
+                    <div class="insight-box">
+                        <ul style="margin-left: 20px;">
+                            <li>QA 이슈 검출 4,736건</li>
+                            <li>검출률 96.1% 유지</li>
+                            <li>ROI 355.3%</li>
+                            <li>손실방지 14.2억원 실현</li>
+                            <li>4월 982건 검출로 대형 장애 예방</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 15px;">과제</h3>
+                    <div class="warning-box">
+                        <ul style="margin-left: 20px;">
+                            <li>10-11월 활동 급감 (인원 감축 영향)</li>
+                            <li>초과근무 363H — 리소스 부족</li>
+                            <li>유저 만족도 변동폭 15.3%p</li>
+                            <li>12월 Live 이슈 증가</li>
+                            <li>안정적 품질 유지 구조 부재</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px;">
+                <h3 style="margin-bottom: 15px;">2026년 목표</h3>
+                <ul style="margin-left: 20px; line-height: 1.8;">
+                    <li>검출률 95% 이상 유지</li>
+                    <li>초과근무 200H 이하로 감축</li>
+                    <li>Live 이슈 월평균 10건 이하 유지</li>
+                    <li>유저 만족도 긍정 비율 35% 이상 안정화</li>
+                    <li>자동화 도입으로 테스트 효율 30% 향상</li>
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            function toggleAccordion(header) {
+                const content = header.nextElementSibling;
+                const isActive = content.classList.contains('active');
+                document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.accordion-header').forEach(el => el.classList.remove('active'));
+                if (!isActive) {
+                    content.classList.add('active');
+                    header.classList.add('active');
+                }
+            }
+            
+            Chart.defaults.font.family = 'Pretendard';
+            new Chart(document.getElementById('monthlyIssuesChart'), {
+                type: 'bar',
+                data: { labels: ["1\uc6d4", "2\uc6d4", "3\uc6d4", "4\uc6d4", "5\uc6d4", "6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [
+                    { label: 'QA 이슈', data: [233, 332, 424, 982, 669, 421, 819, 272, 367, 7, 8, 202], backgroundColor: 'rgba(102, 126, 234, 0.8)', borderWidth: 2 },
+                    { label: 'Live 이슈', data: [11, 9, 13, 34, 19, 16, 26, 24, 37, 6, 7, 27], backgroundColor: 'rgba(239, 68, 68, 0.8)', borderWidth: 2 }
+                ] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '월별 QA/Live 이슈 추이', font: { size: 16, weight: 'bold' } } }, scales: { y: { beginAtZero: true } } }
+            });
+            new Chart(document.getElementById('detectionRateChart'), {
+                type: 'line',
+                data: { labels: ["1\uc6d4", "2\uc6d4", "3\uc6d4", "4\uc6d4", "5\uc6d4", "6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [{ label: '검출률 (%)', data: [95.49180327868852, 97.36070381231671, 97.02517162471396, 96.65354330708661, 97.23837209302324, 96.33867276887872, 96.92307692307692, 91.8918918918919, 90.84158415841584, 53.84615384615385, 53.333333333333336, 88.20960698689956], borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderWidth: 3, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '월별 검출률', font: { size: 14, weight: 'bold' } } }, scales: { y: { min: 0, max: 100 } } }
+            });
+            new Chart(document.getElementById('roiChart'), {
+                type: 'line',
+                data: { labels: ["1\uc6d4", "2\uc6d4", "3\uc6d4", "4\uc6d4", "5\uc6d4", "6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [{ label: 'ROI (%)', data: [279.5, 325.8, 387.9, 798.6, 602.2, 421.6, 706.6, 267.8, 282.8, 7.6, 6.9, 156.7], borderColor: 'rgba(168, 85, 247, 1)', backgroundColor: 'rgba(168, 85, 247, 0.1)', borderWidth: 3, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '월별 ROI', font: { size: 14, weight: 'bold' } } }, scales: { y: { beginAtZero: true } } }
+            });
+            new Chart(document.getElementById('severityDistChart'), {
+                type: 'doughnut',
+                data: { labels: ['즉시', '긴급', '높음', '보통', '낮음'], datasets: [{ data: [2, 7, 87, 4458, 182], backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(156, 163, 175, 0.8)'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '이슈 등급별 분포', font: { size: 14, weight: 'bold' } }, legend: { position: 'right' } } }
+            });
+            new Chart(document.getElementById('severityCostChart'), {
+                type: 'bar',
+                data: { labels: ['즉시', '긴급', '높음', '보통', '낮음'], datasets: [{ label: '손실방지 비용 (원)', data: [3600000, 10500000, 52200000, 1337400000, 18200000], backgroundColor: ['rgba(239, 68, 68, 0.8)', 'rgba(245, 158, 11, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(16, 185, 129, 0.8)', 'rgba(156, 163, 175, 0.8)'] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '등급별 손실방지 비용', font: { size: 14, weight: 'bold' } }, legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+            new Chart(document.getElementById('monthlyRoiChart'), {
+                type: 'bar',
+                data: { labels: ["1\uc6d4", "2\uc6d4", "3\uc6d4", "4\uc6d4", "5\uc6d4", "6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [{ label: 'ROI (%)', data: [279.5, 325.8, 387.9, 798.6, 602.2, 421.6, 706.6, 267.8, 282.8, 7.6, 6.9, 156.7], backgroundColor: ["rgba(245, 158, 11, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(245, 158, 11, 0.8)", "rgba(245, 158, 11, 0.8)", "rgba(239, 68, 68, 0.8)", "rgba(239, 68, 68, 0.8)", "rgba(245, 158, 11, 0.8)"] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '월별 ROI 상세', font: { size: 14, weight: 'bold' } }, legend: { display: false } } }
+            });
+            new Chart(document.getElementById('workHoursChart'), {
+                type: 'bar',
+                data: { labels: ["1\uc6d4", "2\uc6d4", "3\uc6d4", "4\uc6d4", "5\uc6d4", "6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [
+                    { label: '표준 근무', data: [144, 160, 160, 171, 152, 152, 177, 160, 171, 144, 160, 176], backgroundColor: 'rgba(59, 130, 246, 0.6)' },
+                    { label: '초과 근무', data: [0, 16, 37, 40, 34, 16, 21, 23, 50, 53, 32, 41], backgroundColor: 'rgba(239, 68, 68, 0.6)' }
+                ] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '월별 근무시간', font: { size: 14, weight: 'bold' } } }, scales: { x: { stacked: true }, y: { stacked: true } } }
+            });
+            new Chart(document.getElementById('satisfactionChart'), {
+                type: 'line',
+                data: { labels: ["6\uc6d4", "7\uc6d4", "8\uc6d4", "9\uc6d4", "10\uc6d4", "11\uc6d4", "12\uc6d4"], datasets: [
+                    { label: '긍정 (%)', data: [23.9, 33.7, 20.0, 33.48, 35.31, 25.15, 24.16], borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4 },
+                    { label: '부정 (%)', data: [56.8, 40.7, 60.0, 36.6, 36.49, 37.12, 42.69], borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.4 },
+                    { label: '중립 (%)', data: [19.5, 25.6, 25.0, 22.07, 21.02, 21.84, 25.01], borderColor: 'rgba(59, 130, 246, 1)', backgroundColor: 'rgba(59, 130, 246, 0.1)', fill: true, tension: 0.4 }
+                ] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '유저 만족도 추이 (6-12월)', font: { size: 14, weight: 'bold' } } }, scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        </script>
+    </div>
+</body>
+</html>
