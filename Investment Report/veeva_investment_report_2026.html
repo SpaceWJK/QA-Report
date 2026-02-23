@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veeva Systems Inc (VEEV) 정밀 투자 전략 보고서 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .text-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .chart-container { position: relative; height: 400px; width: 100%; }
+        .metric-card { transition: transform 0.2s, box-shadow 0.2s; }
+        .metric-card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.15); }
+        .status-positive { color: #10b981; background-color: #d1fae5; }
+        .status-negative { color: #ef4444; background-color: #fee2e2; }
+        .status-neutral { color: #f59e0b; background-color: #fef3c7; }
+        .progress-bar { background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%); }
+        .veeva-orange { color: #FF6900; }
+        .veeva-bg { background-color: #FF6900; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div class="gradient-bg text-white py-8">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Veeva Systems Inc. (VEEV)</h1>
+                    <p class="text-xl opacity-90">정밀 투자 전략 보고서</p>
+                    <p class="text-sm opacity-75 mt-1">분석 기준일: 2026년 2월 23일</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold mb-1">$180.31</div>
+                    <div class="flex items-center justify-end">
+                        <i class="fas fa-arrow-down mr-1"></i>
+                        <span class="text-lg text-red-300">-$2.09 (-1.15%)</span>
+                    </div>
+                    <div class="text-sm opacity-75 mt-1">NYSE | 2026.2.20</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        <!-- Executive Summary -->
+        <div class="bg-white rounded-xl card-shadow p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gradient mb-6 flex items-center">
+                <i class="fas fa-chart-line mr-3"></i>Executive Summary
+            </h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="metric-card bg-green-50 p-6 rounded-lg border border-green-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">투자 등급</h3>
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600 mb-2">BUY</div>
+                    <p class="text-sm text-gray-600">목표가: $240-270 (+33-50%)</p>
+                </div>
+                <div class="metric-card bg-orange-50 p-6 rounded-lg border border-orange-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">리스크 등급</h3>
+                        <i class="fas fa-shield-alt text-orange-600 text-xl"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-orange-600 mb-2">MEDIUM</div>
+                    <p class="text-sm text-gray-600">경쟁 심화, 성장 둔화</p>
+                </div>
+                <div class="metric-card bg-purple-50 p-6 rounded-lg border border-purple-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">투자 기간</h3>
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-purple-600 mb-2">12-18개월</div>
+                    <p class="text-sm text-gray-600">중장기 관점</p>
+                </div>
+            </div>
+            <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+                <h4 class="font-semibold mb-3 text-gray-800">핵심 투자 논리</h4>
+                <ul class="space-y-2 text-sm text-gray-700">
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>Life Sciences 클라우드 독점적 지위: Vault 플랫폼 R&D·Commercial 통합, 전환 장벽 극히 높음</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>구조적 성장 지속: FY2025 매출 $2.75B (+16% YoY), FY2026 가이던스 $3.09-3.10B (+11~12%)</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>Vault CRM 전환 가속: 50+ 고객 라이브, 8개 마이그레이션 완료 (Salesforce 대체)</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>초우량 재무: 현금 $5.15B, 부채 $0, FCF 마진 44.2%, ROA 10.6% (업계 상위 2.9%)</li>
+                    <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>밸류에이션 매력: P/E 35.1× (12개월 평균 대비 -32%), Forward P/E 21.4×, 경쟁사 대비 9% 저평가</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Smith 정밀 분석 -->
+        <div class="bg-white rounded-xl card-shadow p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gradient mb-6 flex items-center">
+                <i class="fas fa-microscope mr-3"></i>Smith 정밀 분석
+            </h2>
+            
+            <!-- 1. 밸류에이션 비교 -->
+            <div class="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="text-lg font-semibold mb-4 text-blue-800 flex items-center">
+                    <span class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">1</span>
+                    동종업계 밸류에이션 비교
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <h4 class="font-semibold mb-3 text-gray-800">Veeva (VEEV)</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm">P/E 비율:</span>
+                                <span class="font-bold text-blue-600">35.1×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">Forward P/E:</span>
+                                <span class="font-bold text-green-600">21.4×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">P/S 비율:</span>
+                                <span class="font-bold text-blue-600">11.5×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">PEG 비율:</span>
+                                <span class="font-bold text-green-600">1.6×</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <h4 class="font-semibold mb-3 text-gray-800">Healthcare IT 평균</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm">P/E 비율:</span>
+                                <span class="font-bold text-gray-600">38.6×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">Forward P/E:</span>
+                                <span class="font-bold text-gray-600">22.7×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">P/S 비율:</span>
+                                <span class="font-bold text-gray-600">5.5×</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm">매출 성장률:</span>
+                                <span class="font-bold text-gray-600">+7.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <h4 class="font-semibold mb-3 text-gray-800">밸류에이션 평가</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="status-positive px-2 py-1 rounded text-center">P/E 9% 할인</div>
+                            <div class="status-positive px-2 py-1 rounded text-center">성장률 2배 우위</div>
+                            <div class="status-positive px-2 py-1 rounded text-center">PEG 1.6× 합리적</div>
+                            <div class="status-neutral px-2 py-1 rounded text-center">P/S 프리미엄</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 분석:</strong> P/E 기준 경쟁사 대비 9% 할인, 성장률(+16%) 2배 우위 감안 시 15~20% 추가 상승 여력. 단, P/S 11.5×는 프리미엄 영역 — 성장 가이던스 미달 시 10~15% 하방 리스크. 현재가 $180.31은 Base Case 하단 ~ Fair Value 수준.</p>
+                </div>
+            </div>
+
+            <!-- 2. 애널리스트 컨센서스 -->
+            <div class="mb-8 p-6 bg-green-50 rounded-lg border border-green-200">
+                <h3 class="text-lg font-semibold mb-4 text-green-800 flex items-center">
+                    <span class="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">2</span>
+                    애널리스트 컨센서스
+                </h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold mb-3 text-gray-800">투자의견 분포 (28명)</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded-lg flex justify-between items-center">
+                                <span class="text-sm">Strong Buy</span>
+                                <span class="font-bold text-green-600">8명 (29%)</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg flex justify-between items-center">
+                                <span class="text-sm">Buy</span>
+                                <span class="font-bold text-green-600">12명 (43%)</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg flex justify-between items-center">
+                                <span class="text-sm">Hold</span>
+                                <span class="font-bold text-yellow-600">7명 (25%)</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg flex justify-between items-center">
+                                <span class="text-sm">Sell</span>
+                                <span class="font-bold text-red-600">1명 (4%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-3 text-gray-800">목표가 분석</h4>
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">평균 목표가</span>
+                                    <span class="font-bold text-gray-800">$310.00</span>
+                                </div>
+                                <div class="text-xs text-green-600">현재가 대비 +71.9% 상승 여력</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">최고 목표가</span>
+                                    <span class="font-bold text-green-600">$380</span>
+                                </div>
+                                <div class="text-xs text-gray-600">Needham, Piper Sandler</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">최저 목표가</span>
+                                    <span class="font-bold text-red-600">$200</span>
+                                </div>
+                                <div class="text-xs text-gray-600">UBS (밸류에이션 부담)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 분석:</strong> 컨센서스 강한 매수(Buy 72%), 평균 목표가 $310 (+72%). 단, UBS·Morgan Stanley 다운그레이드로 하단 $200~205 형성 — 단기 조정 압력. 목표가 밴드 $200~380 (변동폭 90%)은 높은 불확실성 반영. Smith 현실적 목표가 $240~270 (Forward P/E 27~30× 적용).</p>
+                </div>
+            </div>
+
+            <!-- 3. 재무 건전성 -->
+            <div class="mb-8 p-6 bg-purple-50 rounded-lg border border-purple-200">
+                <h3 class="text-lg font-semibold mb-4 text-purple-800 flex items-center">
+                    <span class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">3</span>
+                    재무 건전성 하이라이트
+                </h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">총 현금 (2025.1.31)</div>
+                        <div class="text-2xl font-bold text-green-600">$5.15B</div>
+                        <div class="text-xs text-gray-600 mt-1">시가총액의 17%</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">부채 (Total Debt)</div>
+                        <div class="text-2xl font-bold text-green-600">$0</div>
+                        <div class="text-xs text-gray-600 mt-1">무차입 경영</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">FCF 마진 (FY2025)</div>
+                        <div class="text-2xl font-bold text-green-600">44.2%</div>
+                        <div class="text-xs text-gray-600 mt-1">업계 평균 0.1%</div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-4 mt-4">
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">ROA (자산이익률)</div>
+                        <div class="text-2xl font-bold text-blue-600">10.6%</div>
+                        <div class="text-xs text-green-600 mt-1">업계 상위 2.9%</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">영업마진 (Non-GAAP)</div>
+                        <div class="text-2xl font-bold text-blue-600">42.0%</div>
+                        <div class="text-xs text-gray-600 mt-1">vs 업계 평균 26.5%</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg card-shadow">
+                        <div class="text-xs text-gray-600 mb-1">순이익률 (GAAP)</div>
+                        <div class="text-2xl font-bold text-blue-600">27.9%</div>
+                        <div class="text-xs text-gray-600 mt-1">vs 업계 평균 12.3%</div>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 평가:</strong> 재무 건전성 AAA — 현금 $5.15B (시총 17%), 부채 $0, FCF 마진 44.2% (업계 평균 442배), ROA 10.6% (상위 2.9%). M&A·경기침체 대응력 최상급. Non-GAAP 영업마진 42.0% (SaaS 평균 ~25%), 자본 효율 극대화.</p>
+                </div>
+            </div>
+
+            <!-- 4. 성장 동인 -->
+            <div class="mb-8 p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                <h3 class="text-lg font-semibold mb-4 text-yellow-800 flex items-center">
+                    <span class="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">4</span>
+                    핵심 성장 동인 (Top 5)
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                        <h4 class="font-semibold text-gray-800 mb-1">① 생명과학 R&D 지출 구조적 증가</h4>
+                        <p class="text-sm text-gray-700">글로벌 R&D 지출 2025년 $2,100억 → 2030년 $2,800억 (CAGR +5.9%). 임상시험 건수 2025년 ~8,000건 (+12% YoY) — Vault Clinical 수요 폭발.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="font-semibold text-gray-800 mb-1">② 규제 강화 & 컴플라이언스 수요</h4>
+                        <p class="text-sm text-gray-700">FDA Warning Letter 2025년 ~350건 (+25% vs 2020) — 품질관리 시스템 강제 업그레이드. EU MDR/IVDR 2027년 전면 시행 → Vault Quality 도입 필수.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                        <h4 class="font-semibold text-gray-800 mb-1">③ Vault CRM 전환 가속 (Salesforce 대체)</h4>
+                        <p class="text-sm text-gray-700">Salesforce 협력 종료(2025) → 50+ 고객 라이브, 8개 완전 마이그레이션 완료. Life Sciences CRM 시장 $20억 → Veeva 단독 장악 가능 (현재 점유율 ~35%).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-500">
+                        <h4 class="font-semibold text-gray-800 mb-1">④ 플랫폼 통합 효과 (Cross-sell & Upsell)</h4>
+                        <p class="text-sm text-gray-700">고객당 평균 제품 수 2025년 3.2개 → 2027년 4.5개 목표. Land & Expand 전략 — 초기 Vault Clinical 도입 → Quality, RIM, CRM 순차 확장 (확장율 >85%).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-red-500">
+                        <h4 class="font-semibold text-gray-800 mb-1">⑤ 글로벌 확장 (신흥시장 진출)</h4>
+                        <p class="text-sm text-gray-700">아시아·태평양 2025년 매출 기여 15% → 2028년 25% 목표. 중국·인도 제약사 Vault 도입 가속, 50+ 국가 규제 대응 (경쟁사는 미국·유럽 중심).</p>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 종합:</strong> 5대 성장 동인 중 3개 가시화 진행 중 — ① R&D 지출 증가(구조적), ② 규제 강화(확정), ③ Vault CRM 전환(진행 중, 2026~2027년 본격화). 2026~2027년 성장률 +12~15% 유지 가능 판단. Vault CRM 전환이 핵심 변수 — 분기별 마이그레이션 건수 모니터링 필수.</p>
+                </div>
+            </div>
+
+            <!-- 5. 리스크 요인 -->
+            <div class="mb-8 p-6 bg-red-50 rounded-lg border border-red-200">
+                <h3 class="text-lg font-semibold mb-4 text-red-800 flex items-center">
+                    <span class="bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">5</span>
+                    핵심 리스크 요인
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-red-600">
+                        <h4 class="font-semibold text-red-800 mb-1">🔴 경쟁 심화 (HIGH RISK)</h4>
+                        <p class="text-sm text-gray-700">IQVIA 16.3% 점유율, Salesforce·Oracle 공세 — CRM 마이그레이션 비용·기간 부담. 가격 압박 → ARPU 감소 가능성. 완화: 전환 비용 $5~15M, 12~24개월 — 단기 이탈 낮음.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-orange-600">
+                        <h4 class="font-semibold text-orange-800 mb-1">🟠 성장률 둔화 (MEDIUM-HIGH RISK)</h4>
+                        <p class="text-sm text-gray-700">FY2023 +18% → FY2024 +17% → FY2025 +16% → FY2026 가이던스 +11~12% — 지속 감속. 침투율 포화 (상위 50대 제약사 채택률 >80%). 멀티플 압박: 성장률 10% 미만 시 P/E 25~28×로 디레이팅 → -20~25% 하락.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-600">
+                        <h4 class="font-semibold text-yellow-800 mb-1">🟡 제약 산업 침체 (MEDIUM RISK)</h4>
+                        <p class="text-sm text-gray-700">경기침체 시 R&D 지출 감소 → 신규 임상시험 연기. Biosimilar 경쟁 → 제약사 수익성 악화 → IT 예산 삭감. 완화: 생명과학 R&D 경기 방어적 (COVID 중에도 +12% 성장).</p>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 리스크 종합:</strong> 핵심 리스크 = 경쟁 심화 + 성장 둔화. IQVIA·Salesforce 공세 실재하나, 전환 장벽·규제 대응력은 Veeva 압도적 — 3년 내 시장점유율 방어 가능. 성장률 둔화는 구조적 (침투율 포화) — Vault CRM 전환 가속이 유일한 해법. 종합 리스크 등급: MEDIUM.</p>
+                </div>
+            </div>
+
+            <!-- 6. 투자 전략 -->
+            <div class="mb-8 p-6 bg-indigo-50 rounded-lg border border-indigo-200">
+                <h3 class="text-lg font-semibold mb-4 text-indigo-800 flex items-center">
+                    <span class="bg-indigo-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">6</span>
+                    3단계 분할 매수 전략
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-gray-800">1차 매수 (비중 40%)</h4>
+                            <span class="font-bold text-green-600">$175~185</span>
+                        </div>
+                        <p class="text-sm text-gray-700">현재가 수준, 기술적 지지 확인. Forward P/E 21~22×, 애널리스트 목표가 하단 — Base Case 포지션.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-gray-800">2차 매수 (비중 35%)</h4>
+                            <span class="font-bold text-yellow-600">$160~170</span>
+                        </div>
+                        <p class="text-sm text-gray-700">시장 조정 시 (-10~15%), Q1 실적 발표 전. Forward P/E 19~20×, 밸류에이션 매력 증가 — 저점 매수.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-gray-800">3차 매수 (비중 25%)</h4>
+                            <span class="font-bold text-blue-600">$145~155</span>
+                        </div>
+                        <p class="text-sm text-gray-700">급락 시 (-20%+), 52주 최저가 근접. Forward P/E 17~18×, PEG <1.5× — 극단적 저평가, 공격적 매수.</p>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <p class="text-sm text-gray-700"><strong class="veeva-orange">💡 Smith 전략:</strong> 3단계 분할 매수로 평균 단가 $165~175 구축 목표 — Base Case $240~270 달성 시 +42~58% 수익. 핵심 변수는 Vault CRM 전환 속도 (분기 15+건 유지 시 Bull Case $300+ 가능). 포지션 크기 포트폴리오 5~8% 제한, Stop Loss $140 설정.</p>
+                </div>
+            </div>
+
+            <!-- 7. 시나리오 분석 -->
+            <div class="p-6 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800 flex items-center">
+                    <span class="bg-gray-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-3">7</span>
+                    시나리오 분석 (12~18개월)
+                </h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-lg border-2 border-green-500">
+                        <h4 class="font-bold text-green-600 mb-2">Bull Case (25%)</h4>
+                        <div class="text-2xl font-bold text-green-600 mb-2">$300~320</div>
+                        <div class="text-sm text-green-700 mb-3">+66~77% 수익</div>
+                        <p class="text-xs text-gray-700">CRM 전환 가속 (분기 20+건), FY2027 가이던스 +15%+, P/E 32×+ 회복</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-2 border-blue-500">
+                        <h4 class="font-bold text-blue-600 mb-2">Base Case (50%)</h4>
+                        <div class="text-2xl font-bold text-blue-600 mb-2">$240~270</div>
+                        <div class="text-sm text-blue-700 mb-3">+33~50% 수익</div>
+                        <p class="text-xs text-gray-700">FY2026~2027 성장률 +11~13% 유지, CRM 정상 전환, Forward P/E 27~30×</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border-2 border-orange-500">
+                        <h4 class="font-bold text-orange-600 mb-2">Bear Case (25%)</h4>
+                        <div class="text-2xl font-bold text-orange-600 mb-2">$155~175</div>
+                        <div class="text-sm text-red-700 mb-3">-14~-3% 손실</div>
+                        <p class="text-xs text-gray-700">성장률 <10% 하락, 경쟁 심화로 ARPU 감소, P/E 20~22× 디레이팅</p>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-white rounded-lg">
+                    <div class="mb-2">
+                        <span class="font-bold text-gray-800">기대수익률 (확률 가중):</span>
+                        <span class="text-2xl font-bold text-green-600 ml-2">+36.6%</span>
+                    </div>
+                    <p class="text-sm text-gray-700">Bull +71.5% × 0.25 = +17.9% | Base +41.5% × 0.50 = +20.8% | Bear -8.5% × 0.25 = -2.1%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="mt-8 p-6 bg-gray-100 rounded-lg border-t-4 border-purple-500">
+            <h3 class="text-lg font-bold text-gray-800 mb-3"><i class="fas fa-exclamation-circle mr-2"></i>Disclaimer (면책 조항)</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+                본 보고서는 투자 판단을 위한 참고 자료로 제공되며, 특정 종목의 매수·매도를 권유하지 않습니다. 
+                보고서에 포함된 정보는 공개된 자료 및 추정치를 기반으로 작성되었으며, 정확성 및 완전성을 보장하지 않습니다. 
+                투자 결정은 본인의 판단과 책임 하에 이루어져야 하며, 투자 손실에 대한 책임은 전적으로 투자자 본인에게 있습니다. 
+                과거 실적은 미래 수익을 보장하지 않습니다. 본 보고서는 2026년 2월 23일 기준으로 작성되었으며, 
+                이후 시장 상황 변화에 따라 내용이 유효하지 않을 수 있습니다.
+            </p>
+            <div class="mt-4 text-center text-sm text-gray-500">
+                <p><strong>보고서 생성:</strong> Smith Investment Research System</p>
+                <p><strong>버전:</strong> MASTER INVESTMENT REPORT PROTOCOL v2.1</p>
+                <p><strong>작성일:</strong> 2026년 2월 23일</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
