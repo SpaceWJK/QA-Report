@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Report Hub</title>
+  <style>
+    :root {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: #e0ddd8;
+      --text: #2c2c2c;
+      --text-muted: #6b7280;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --green: #10b981;
+      --orange: #f59e0b;
+      --purple: #8b5cf6;
+      --pink: #ec4899;
+      --teal: #14b8a6;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { font-size: 20px; font-weight: 700; }
+    header span { font-size: 13px; color: var(--text-muted); }
+    main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    .section { margin-bottom: 40px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-header .icon { font-size: 20px; }
+    .section-header h2 { font-size: 16px; font-weight: 700; }
+    .section-header .count {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2px 8px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: #c0bdb8;
+    }
+    .card-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .card-meta { font-size: 12px; color: var(--text-muted); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .tag-green  { background: #d1fae5; color: #065f46; }
+    .tag-blue   { background: #dbeafe; color: #1e40af; }
+    .tag-orange { background: #fef3c7; color: #92400e; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-pink   { background: #fce7f3; color: #9d174d; }
+    .tag-teal   { background: #ccfbf1; color: #0f766e; }
+    .tag-gray   { background: #f3f4f6; color: #374151; }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📋 QA Report Hub</h1>
+    <span>Epic Seven QA 보고서 및 관련 문서 모음</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- Monthly QA Reports -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📊</span>
+      <h2>Monthly QA Report</h2>
+      <span class="count">5</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Monthly QA Report/monthly_qa_report_202512.html">
+        <span class="tag tag-green">2025년 12월</span>
+        <div class="card-title">Epicseven Monthly Service QA Report</div>
+        <div class="card-meta">2025.12 · 월별 종합 QA 리포트</div>
+      </a>
+      <a class="card" href="Monthly QA Report/monthly_qa_report_202511.html">
+        <span class="tag tag-green">2025년 11월</span>
+        <div class="card-title">Epicseven Monthly Service QA Report</div>
+        <div class="card-meta">2025.11 · 월별 종합 QA 리포트</div>
+      </a>
+      <a class="card" href="Monthly QA Report/monthly_qa_report_202510.html">
+        <span class="tag tag-green">2025년 10월</span>
+        <div class="card-title">Epicseven Monthly Service QA Report</div>
+        <div class="card-meta">2025.10 · 월별 종합 QA 리포트</div>
+      </a>
+      <a class="card" href="Monthly QA Report/monthly_qa_report_202509.html">
+        <span class="tag tag-green">2025년 9월</span>
+        <div class="card-title">Epicseven Monthly Service QA Report</div>
+        <div class="card-meta">2025.09 · 월별 종합 QA 리포트</div>
+      </a>
+      <a class="card" href="Monthly QA Report/monthly_qa_report_202508 final.html">
+        <span class="tag tag-green">2025년 8월</span>
+        <div class="card-title">Epicseven Monthly Service QA Report</div>
+        <div class="card-meta">2025.08 · 월별 종합 QA 리포트 (최종)</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Service QA Reports -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🔧</span>
+      <h2>Service QA Report</h2>
+      <span class="count">7</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Service QA Report/service_qa_report_251218.html">
+        <span class="tag tag-blue">2025.12.18</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_251204.html">
+        <span class="tag tag-blue">2025.12.04</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_251120.html">
+        <span class="tag tag-blue">2025.11.20</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_251106.html">
+        <span class="tag tag-blue">2025.11.06</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_251023.html">
+        <span class="tag tag-blue">2025.10.23</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_250925.html">
+        <span class="tag tag-blue">2025.09.25</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+      <a class="card" href="Service QA Report/service_qa_report_250911.html">
+        <span class="tag tag-blue">2025.09.11</span>
+        <div class="card-title">Epicseven Update Service QA Report</div>
+        <div class="card-meta">업데이트 배포 서비스 품질 점검</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI & Performance -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📈</span>
+      <h2>KPI &amp; Performance</h2>
+      <span class="count">2</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Epicseven_KPI Report_2025.html">
+        <span class="tag tag-orange">연간 KPI</span>
+        <div class="card-title">Epic Seven 2025 연간 서비스 품질 보고서</div>
+        <div class="card-meta">2025 전체 서비스 품질 KPI 종합</div>
+      </a>
+      <a class="card" href="performance_qa_report.html">
+        <span class="tag tag-orange">성능 테스트</span>
+        <div class="card-title">Performance QA Report</div>
+        <div class="card-meta">크로스플랫폼 테스트 성능 분석</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- QA Tools -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🛠️</span>
+      <h2>QA 도구</h2>
+      <span class="count">2</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="QA_App_v3.html">
+        <span class="tag tag-purple">v3 최신</span>
+        <div class="card-title">QA App Download Hub</div>
+        <div class="card-meta">QA 앱 다운로드 링크 관리 허브 (최신)</div>
+      </a>
+      <a class="card" href="QA_App_v2.html">
+        <span class="tag tag-gray">v2</span>
+        <div class="card-title">QA App Download Hub</div>
+        <div class="card-meta">QA 앱 다운로드 링크 관리 허브</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Game Analysis -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">🎮</span>
+      <h2>게임 분석</h2>
+      <span class="count">2</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="CZN_Review.html">
+        <span class="tag tag-pink">리뷰 분석</span>
+        <div class="card-title">카오스 제로 나이트메어 유튜버 리뷰 동향 분석</div>
+        <div class="card-meta">CZN 유튜버 리뷰 동향 리포트</div>
+      </a>
+      <a class="card" href="CZN_Story.html">
+        <span class="tag tag-pink">스토리</span>
+        <div class="card-title">Zero Story Archive</div>
+        <div class="card-meta">CZN 스토리 아카이브</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Investment Reports -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">💰</span>
+      <h2>Investment Report</h2>
+      <span class="count">1</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Investment Report/veeva_investment_report_2026.html">
+        <span class="tag tag-teal">2026</span>
+        <div class="card-title">Veeva Systems Inc (VEEV) 정밀 투자 전략 보고서</div>
+        <div class="card-meta">2026 · 투자 전략 분석</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Systems & Tech -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">⚙️</span>
+      <h2>시스템 &amp; 기술 기획</h2>
+      <span class="count">1</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Multi_Source_Knowledge_Integration_System.html">
+        <span class="tag tag-gray">기술 기획</span>
+        <div class="card-title">Multi-Source Knowledge Integration System</div>
+        <div class="card-meta">멀티소스 지식통합 시스템 기술 기획서</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Travel -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">✈️</span>
+      <h2>Travel</h2>
+      <span class="count">4</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="Travel/Osaka_2025Guide.html">
+        <span class="tag tag-gray">오사카 · 교토</span>
+        <div class="card-title">오사카 + 교토 여행 가이드</div>
+        <div class="card-meta">2025.10.28-31</div>
+      </a>
+      <a class="card" href="Travel/fukuoka_1217.html">
+        <span class="tag tag-gray">후쿠오카</span>
+        <div class="card-title">후쿠오카 + 쿠로가와 온센 여행 가이드</div>
+        <div class="card-meta">2025.12.17-21</div>
+      </a>
+      <a class="card" href="Travel/sky_fukuoka_1217.html">
+        <span class="tag tag-gray">후쿠오카</span>
+        <div class="card-title">Fukuoka &amp; Kurokawa: A 5-Day Journey</div>
+        <div class="card-meta">2025.12.17-21 · English</div>
+      </a>
+      <a class="card" href="Travel/travel_fukuoka_20251217.html">
+        <span class="tag tag-gray">후쿠오카</span>
+        <div class="card-title">후쿠오카 + 쿠로가와 온센 상세 가이드</div>
+        <div class="card-meta">2025.12.17-21 · 상세 일정</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>
