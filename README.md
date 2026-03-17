@@ -9,15 +9,17 @@ QA-Report/
 ├── EP7/                            # Epic Seven 관련 QA 리포트
 │   ├── Monthly QA Report/          # 월별 종합 QA 리포트
 │   └── Service QA Report/          # 서비스 업데이트 QA 리포트
+├── CZN/                            # 카오스 제로 나이트메어 관련 문서
+├── Etc/                            # 기타 리포트 및 도구
+│   ├── QA_App_v2.html                  # QA App 다운로드 허브 v2
+│   ├── QA_App_v3.html                  # QA App 다운로드 허브 v3
+│   ├── Epicseven_KPI Report_2025.html  # 2025 연간 서비스 품질 보고서
+│   ├── performance_qa_report.html      # 크로스플랫폼 성능 QA 리포트
+│   ├── CZN_Review.html                 # 카오스 제로 나이트메어 유튜버 리뷰 분석
+│   ├── CZN_Story.html                  # Zero Story Archive
+│   └── Multi_Source_Knowledge_Integration_System.html  # 멀티소스 지식통합 시스템 기획서
 ├── Investment Report/              # 투자 분석 리포트
 ├── Travel/                         # 여행 가이드
-├── QA_App_v2.html                  # QA App 다운로드 허브 v2
-├── QA_App_v3.html                  # QA App 다운로드 허브 v3
-├── Epicseven_KPI Report_2025.html  # 2025 연간 서비스 품질 보고서
-├── performance_qa_report.html      # 크로스플랫폼 성능 QA 리포트
-├── CZN_Review.html                 # 카오스 제로 나이트메어 유튜버 리뷰 분석
-├── CZN_Story.html                  # Zero Story Archive
-├── Multi_Source_Knowledge_Integration_System.html  # 멀티소스 지식통합 시스템 기획서
 └── index.html                      # 전체 리포트 네비게이션 허브
 ```
 
@@ -66,14 +68,14 @@ Epicseven 서비스 월별 종합 품질 보고서입니다.
 | [sky_fukuoka_1217.html](Travel/sky_fukuoka_1217.html) | Fukuoka & Kurokawa: A 5-Day Journey |
 | [travel_fukuoka_20251217.html](Travel/travel_fukuoka_20251217.html) | 후쿠오카 + 쿠로가와 온센 상세 여행 가이드 |
 
-### 🛠️ QA 도구 및 기타 리포트
+### 🛠️ Etc (기타 리포트 및 도구)
 
 | 파일 | 내용 |
 |------|------|
-| [QA_App_v3.html](QA_App_v3.html) | QA App 다운로드 허브 v3 (최신) |
-| [QA_App_v2.html](QA_App_v2.html) | QA App 다운로드 허브 v2 |
-| [Epicseven_KPI Report_2025.html](Epicseven_KPI%20Report_2025.html) | Epic Seven 2025 연간 서비스 품질 보고서 |
-| [performance_qa_report.html](performance_qa_report.html) | 크로스플랫폼 성능 QA 리포트 |
-| [CZN_Review.html](CZN_Review.html) | 카오스 제로 나이트메어 유튜버 리뷰 동향 분석 |
-| [CZN_Story.html](CZN_Story.html) | Zero Story Archive |
-| [Multi_Source_Knowledge_Integration_System.html](Multi_Source_Knowledge_Integration_System.html) | 멀티소스 지식통합 시스템 기술 기획서 |
+| [QA_App_v3.html](Etc/QA_App_v3.html) | QA App 다운로드 허브 v3 (최신) |
+| [QA_App_v2.html](Etc/QA_App_v2.html) | QA App 다운로드 허브 v2 |
+| [Epicseven_KPI Report_2025.html](Etc/Epicseven_KPI%20Report_2025.html) | Epic Seven 2025 연간 서비스 품질 보고서 |
+| [performance_qa_report.html](Etc/performance_qa_report.html) | 크로스플랫폼 성능 QA 리포트 |
+| [CZN_Review.html](Etc/CZN_Review.html) | 카오스 제로 나이트메어 유튜버 리뷰 동향 분석 |
+| [CZN_Story.html](Etc/CZN_Story.html) | Zero Story Archive |
+| [Multi_Source_Knowledge_Integration_System.html](Etc/Multi_Source_Knowledge_Integration_System.html) | 멀티소스 지식통합 시스템 기술 기획서 |
