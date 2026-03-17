@@ -10,6 +10,8 @@ QA-Report/
 │   ├── Monthly QA Report/          # 월별 종합 QA 리포트
 │   └── Service QA Report/          # 서비스 업데이트 QA 리포트
 ├── CZN/                            # 카오스 제로 나이트메어 관련 문서
+│   ├── Monthly QA Report/          # 월별 종합 QA 리포트
+│   └── Service QA Report/          # 서비스 업데이트 QA 리포트
 ├── Etc/                            # 기타 리포트 및 도구
 │   ├── QA_App_v2.html                  # QA App 다운로드 허브 v2
 │   ├── QA_App_v3.html                  # QA App 다운로드 허브 v3
