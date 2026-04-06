@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Epicseven Monthly Service QA Report - 2026년 1월</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .metric-card { transition: transform 0.2s; }
+        .metric-card:hover { transform: translateY(-2px); }
+        .chart-container { height: 300px; }
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .trend-stable { color: #6b7280; }
+        .correlation-high { background: linear-gradient(135deg, #10b981, #059669); }
+        .correlation-medium { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .correlation-low { background: linear-gradient(135deg, #6b7280, #4b5563); }
+        .news-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .news-card:hover { 
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .calculation-guide {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 16px 0;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .project-name {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+        .user-satisfaction-card {
+            background: linear-gradient(135deg, #f97316, #ea580c) !important;
+            color: white !important;
+        }
+        .user-satisfaction-card * {
+            color: white !important;
+        }
+        .trend-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .trend-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .risk-card {
+            background: linear-gradient(135deg, #fecaca, #fca5a5);
+            border: 1px solid #f87171;
+        }
+        .opportunity-card {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border: 1px solid #34d399;
+        }
+        .source-citation {
+            font-size: 10px;
+            color: #9ca3af;
+            opacity: 0.7;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .character-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            border: 3px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<!-- Header -->
+<div class="bg-gradient-to-r from-blue-900 to-purple-900 text-white py-8">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-6">
+<img alt="Epic Seven 7th Anniversary" class="character-icon" src="https://page.gensparksite.com/v1/base64_upload/19fe25e62056101b58cb05dd6c2b3f00"/>
+<div>
+<h1 class="text-4xl font-bold mb-2"><span class="project-name">Epicseven</span> Monthly Service QA Report</h1>
+<p class="text-xl opacity-90">2026년 1월 - 월간 분석 보고서</p>
+<p class="text-sm opacity-75 mt-2">보고서 기준일: 2026.02.02 | 분석 기간: 2026.01.01 ~ 2026.01.31</p>
+</div>
+</div>
+<div class="text-right">
+<div class="text-3xl font-bold">1월</div>
+<div class="text-sm opacity-75">Monthly Report</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-6 py-8 space-y-12">
+<!-- 0. Executive Summary -->
+<section class="bg-gray-100 border border-gray-300 rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                0. Executive Summary
+            </h2>
+<div class="grid grid-cols-4 gap-6 mb-8" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+<div class="metric-card p-6 rounded-xl" style="background: linear-gradient(135deg, #10b981, #059669); color: white !important;">
+<div class="flex items-center justify-between mb-4">
+<i class="fas fa-shield-check text-3xl opacity-80"></i>
+<span class="trend-down text-2xl" style="color: white;">↓</span>
+</div>
+<div class="text-2xl font-bold mb-1">23.1%</div>
+<div class="text-sm opacity-90">이슈 검출률</div>
+<div class="text-xs mt-2 opacity-75">전년 동월 93.0% → 23.1% (-69.9%p)</div>
+<div class="source-citation">출처: 1월 상태 이미지 기반 내부 집계</div>
+</div>
+<div class="metric-card p-6 rounded-xl" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white !important;">
+<div class="flex items-center justify-between mb-4">
+<i class="fas fa-server text-3xl opacity-80"></i>
+<span class="trend-up text-2xl" style="color: white;">↑</span>
+</div>
+<div class="text-2xl font-bold mb-1">1등급</div>
+<div class="text-sm opacity-90">서비스 안정성</div>
+<div class="text-xs mt-2 opacity-75">서비스 장애 0건, 다운타임 0분</div>
+<div class="source-citation">출처: 내부 서비스 모니터링 시스템</div>
+</div>
+<div class="metric-card p-6 rounded-xl" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white !important;">
+<div class="flex items-center justify-between mb-4">
+<i class="fas fa-tachometer-alt text-3xl opacity-80"></i>
+<span class="trend-down text-2xl" style="color: white;">↓</span>
+</div>
+<div class="text-2xl font-bold mb-1">86.8</div>
+<div class="text-sm opacity-90">테스트 처리량</div>
+<div class="text-xs mt-2 opacity-75">전년 동월 180.54 → 86.83 (-51.9%)</div>
+<div class="source-citation">출처: QA 팀 업무 실적 데이터</div>
+</div>
+<div class="metric-card p-6 rounded-xl" style="background: linear-gradient(135deg, #f97316, #ea580c); color: white !important;">
+<div class="flex items-center justify-between mb-4">
+<i class="fas fa-users text-3xl opacity-80" style="color: white !important;"></i>
+<span class="text-2xl" style="color: white !important;">↓</span>
+</div>
+<div class="text-2xl font-bold mb-1" style="color: white !important;">16.57%</div>
+<div class="text-sm opacity-90" style="color: white !important;">유저 만족도</div>
+<div class="text-xs mt-2 opacity-75" style="color: white !important;">부정 57.91% (1~5주 VOC 20,004건)</div>
+<div class="source-citation" style="color: rgba(255,255,255,0.7) !important;">출처: VOC Excel 1~5주 통합</div>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg p-6 border border-gray-300">
+<h3 class="text-xl font-semibold mb-4 text-gray-800">1월 핵심 성과 요약</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h4 class="font-semibold text-red-700 mb-2">⚠️ 주요 문제</h4>
+<ul class="space-y-1 text-sm text-red-600">
+<li>• 총 이슈 26건 중 Live 이슈 20건으로 라이브 유입 비중 76.9%</li>
+<li>• Hotfix 6건, 긴급 대응 6건으로 운영 부담 지속</li>
+<li>• 테스트 처리량 86.83 Case/H로 전년 동월 대비 -51.9%</li>
+<li>• 부정 VOC 11,585건(57.91%)으로 커뮤니티 피로도 확대</li>
+<li>• 부정 상위 이슈: 아키, 게임 관련, 아레나, 운영/소통</li>
+</ul>
+</div>
+<div>
+<h4 class="font-semibold text-gray-700 mb-2">📊 주요 지표 현황</h4>
+<ul class="space-y-1 text-sm text-gray-600">
+<li>• QA 이슈 4건 / DEV 이슈 2건 / Live 이슈 20건</li>
+<li>• 서비스 장애 0건, 다운타임 0분으로 1등급 운영 달성</li>
+<li>• 근무시간 144H, MM 4 기준 리소스 가용률 90.0%</li>
+<li>• VOC 총 20,004건: 긍정 16.57% / 중립 16.87% / 복합 8.25%</li>
+<li>• App Store 평점 4.6/5.0으로 경쟁작 평균(4.35) 상회</li>
+</ul>
+</div>
+</div>
+<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4">
+<p class="text-sm text-yellow-800"><strong>⚠️ 보고서 기반:</strong> 1월 상태 이미지 + VOC 주차 데이터(1~5주) + 공개 앱스토어 데이터 통합 기준.</p>
+</div>
+<div class="source-citation mt-4">출처: 1월 상태 이미지, VOC Excel 1~5주, App Store 공개 데이터</div>
+</div>
+</section>
+<!-- 1. Service Stability & Business Impact -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-shield-alt text-green-600 mr-3"></i>
+                1. Service Stability &amp; Business Impact
+            </h2>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<div>
+<h3 class="text-xl font-semibold mb-4">2026년 안정성 트렌드</h3>
+<div class="chart-container">
+<canvas id="stabilityChart"></canvas>
+</div>
+<div class="source-citation">출처: 2026년 월별 QA 실적 데이터 (1월 기준)</div>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">긴급대응 &amp; 장애 현황</h3>
+<div class="chart-container">
+<canvas id="incidentChart"></canvas>
+</div>
+<div class="source-citation">출처: 서비스 운영팀 장애 관리 데이터</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="bg-red-50 border border-red-200 rounded-lg p-6">
+<h4 class="font-semibold text-red-800 mb-2">서비스 장애</h4>
+<div class="text-3xl font-bold text-red-600 mb-2">0건</div>
+<div class="text-sm text-red-600">1월 무장애 운영 달성</div>
+<div class="text-xs text-gray-500 mt-2">전년 동월 비교: 데이터 미제공</div>
+<div class="source-citation">출처: 서비스 모니터링 시스템</div>
+</div>
+<div class="bg-orange-50 border border-orange-200 rounded-lg p-6">
+<h4 class="font-semibold text-orange-800 mb-2">긴급대응 (Hotfix)</h4>
+<div class="text-3xl font-bold text-orange-600 mb-2">6건</div>
+<div class="text-sm text-red-600">긴급 대응 총 6건, Hotfix 6건</div>
+<div class="text-xs text-gray-500 mt-2">전년 동월 비교: 긴급대응 8건 대비 -25.0%</div>
+<div class="source-citation">출처: QA 팀 긴급대응 로그</div>
+</div>
+<div class="bg-red-50 border border-red-200 rounded-lg p-6">
+<h4 class="font-semibold text-red-800 mb-2">서비스 다운타임</h4>
+<div class="text-3xl font-bold text-red-600 mb-2">0분</div>
+<div class="text-sm text-red-600">가용률 100.00%</div>
+<div class="text-xs text-gray-500 mt-2">전년 동월 비교: 데이터 미제공</div>
+<div class="source-citation">출처: 인프라 모니터링 데이터</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<h3 class="text-lg font-semibold mb-4">2026년 누적 현황 분석</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h4 class="font-medium text-gray-700 mb-2">월별 이슈 현황</h4>
+<ul class="space-y-2 text-sm">
+<li class="flex justify-between"><span>1월:</span><span class="text-blue-600 font-semibold">총 26건 (긴급 6건, Hotfix 6건, 장애 0건)</span></li>
+</ul>
+</div>
+<div>
+<h4 class="font-medium text-gray-700 mb-2">전년 동월 대비</h4>
+<ul class="space-y-2 text-sm">
+<li class="flex justify-between"><span>총 이슈:</span><span class="text-green-600">-88.8% (26건 vs 233건)</span></li>
+<li class="flex justify-between"><span>긴급대응:</span><span class="text-gray-600">-25.0% (6건 vs 8건)</span></li>
+<li class="flex justify-between"><span>서비스 장애:</span><span class="text-gray-600">비교 데이터 미제공</span></li>
+<li class="flex justify-between"><span>다운타임:</span><span class="text-gray-600">비교 데이터 미제공</span></li>
+</ul>
+</div>
+</div>
+<div class="source-citation mt-4">출처: 2026년 1월 상태 이미지 및 2025년 1월 월별 누적 데이터</div>
+</div>
+</section>
+<!-- 2. Team Productivity & Efficiency -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-users text-blue-600 mr-3"></i>
+                2. Team Productivity &amp; Efficiency
+            </h2>
+<div class="grid grid-cols-2 gap-8 mb-8" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div>
+<h3 class="text-xl font-semibold mb-4">테스트 처리량 추이</h3>
+<div class="chart-container">
+<canvas id="productivityChart"></canvas>
+</div>
+<div class="source-citation">출처: 월별 테스트 케이스 처리 실적</div>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">리소스 활용 현황</h3>
+<div class="chart-container">
+<canvas id="resourceChart"></canvas>
+</div>
+<div class="source-citation">출처: QA 팀 근무시간 및 리소스 활용 데이터</div>
+</div>
+</div>
+<div class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 mb-8">
+<h3 class="text-xl font-semibold text-indigo-800 mb-4">1월 생산성 지표</h3>
+<div class="grid grid-cols-2 gap-6" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="bg-white rounded-lg p-6 shadow-md">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-semibold text-gray-700">테스트 볼륨</h4>
+<i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+</div>
+<div class="text-3xl font-bold text-purple-600 mb-2">12,503</div>
+<div class="text-sm text-gray-600 mb-2">Case/월</div>
+<div class="flex items-center text-sm">
+<span class="text-red-600">전년 동월 25,998 Case 대비 -51.9%</span>
+</div>
+<div class="source-citation">출처: 1월 상태 이미지 기준 집계</div>
+</div>
+<div class="bg-white rounded-lg p-6 shadow-md">
+<div class="flex items-center justify-between mb-4">
+<h4 class="font-semibold text-gray-700">리소스 가용률</h4>
+<i class="fas fa-clock text-green-600 text-2xl"></i>
+</div>
+<div class="text-3xl font-bold text-green-600 mb-2">90.0%</div>
+<div class="text-sm text-gray-600 mb-2">144H / 160H (MM 4 기준)</div>
+<div class="flex items-center text-sm">
+<span class="text-gray-600">실 에픽세븐 투입 기준</span>
+</div>
+<div class="source-citation">계산식: 실 투입시간 ÷ 표준 근무시간</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6 mb-6" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="bg-indigo-50 border border-indigo-200 rounded-lg p-6 text-center">
+<div class="text-2xl font-bold text-indigo-600 mb-1">근무시간</div>
+<div class="text-lg text-gray-700 mb-2">144H</div>
+<div class="text-sm text-gray-600">1월 실 투입 시간</div>
+<div class="text-xs text-indigo-500 mt-1">MM 4 기준 90.0% 활용</div>
+<div class="source-citation">출처: 1월 상태 이미지</div>
+</div>
+<div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+<div class="text-2xl font-bold text-green-600 mb-1">86.83</div>
+<div class="text-sm text-gray-600">일일 평균 처리량</div>
+<div class="text-xs text-green-500">Case/H</div>
+<div class="source-citation">계산식: 12,503 ÷ 144H</div>
+</div>
+<div class="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
+<div class="text-2xl font-bold text-purple-600 mb-1">-</div>
+<div class="text-sm text-gray-600">평균 빌드 완성도</div>
+<div class="text-xs text-purple-500">해당 월 데이터 없음</div>
+<div class="source-citation">제공 데이터 기준 미집계</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<h3 class="text-lg font-semibold mb-4">전년 동월 비교 분석</h3>
+<div class="grid grid-cols-3 gap-4" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+<div class="correlation-high text-white p-4 rounded-lg">
+<div class="text-lg font-semibold mb-2">테스트 볼륨</div>
+<div class="text-2xl font-bold mb-1">-51.9%</div>
+<div class="text-sm opacity-90">12,503 vs 25,998 Case</div>
+</div>
+<div class="correlation-high text-white p-4 rounded-lg">
+<div class="text-lg font-semibold mb-2">처리량</div>
+<div class="text-2xl font-bold mb-1">-51.9%</div>
+<div class="text-sm opacity-90">86.83 vs 180.54 Case/H</div>
+</div>
+<div class="correlation-medium text-white p-4 rounded-lg">
+<div class="text-lg font-semibold mb-2">평균 빌드 완성도</div>
+<div class="text-2xl font-bold mb-1">-</div>
+<div class="text-sm opacity-90">비교 데이터 없음</div>
+</div>
+</div>
+<div class="source-citation mt-4">출처: 1월 상태 이미지 기반 전년 동월 비교 계산</div>
+</div>
+</section>
+<!-- 3. Quality Metrics Analysis -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-chart-bar text-purple-600 mr-3"></i>
+                3. Quality Metrics Analysis
+            </h2>
+<div class="grid grid-cols-2 gap-8 mb-8" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div>
+<h3 class="text-xl font-semibold mb-4">이슈 검출 비율 분석</h3>
+<div class="chart-container">
+<canvas id="detectionChart"></canvas>
+</div>
+<div class="source-citation">출처: 1월 상태 이미지 기반 이슈 분류 데이터</div>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">2026년 품질 지표 트렌드</h3>
+<div class="chart-container">
+<canvas id="qualityTrendChart"></canvas>
+</div>
+<div class="source-citation">출처: 2026년 월별 이슈 검출률 추이 (1월 기준)</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8 mb-6" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+<h4 class="text-lg font-semibold text-yellow-800 mb-4">이슈 사전 검출 현황</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-sm">QA 이슈</span>
+<div class="flex items-center">
+<div class="w-32 bg-gray-200 rounded-full h-2 mr-3"><div class="bg-blue-500 h-2 rounded-full" style="width: 15.4%"></div></div>
+<span class="text-sm font-semibold">4건</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">DEV 이슈</span>
+<div class="flex items-center">
+<div class="w-32 bg-gray-200 rounded-full h-2 mr-3"><div class="bg-green-500 h-2 rounded-full" style="width: 7.7%"></div></div>
+<span class="text-sm font-semibold">2건</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-yellow-200">
+<div class="text-sm text-yellow-700">
+<strong>이슈 검출률:</strong> 23.1%
+                <div class="text-xs mt-1">총 26건 중 QA/DEV 단계 검출 6건</div>
+</div>
+</div>
+<div class="source-citation">출처: 1월 상태 이미지 기반 집계</div>
+</div>
+<div class="bg-green-50 border border-green-200 rounded-lg p-6">
+<h4 class="text-lg font-semibold text-green-800 mb-4">라이브 이슈 현황</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center">
+<div class="text-2xl font-bold text-green-600">20건</div>
+<div class="text-sm text-gray-600">Live 이슈</div>
+</div>
+<div class="text-center">
+<div class="text-2xl font-bold text-blue-600">6건</div>
+<div class="text-sm text-gray-600">Hotfix</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-green-200">
+<div class="text-sm text-green-700">
+<strong>라이브 이슈율:</strong> 76.9%
+                <div class="text-xs mt-1">총 이슈 26건 중 Live 이슈 20건</div>
+<div class="text-xs mt-1 text-red-600 font-semibold">⚠️ 사후 대응 비중이 높아 개선 필요</div>
+</div>
+</div>
+<div class="source-citation">출처: 라이브 서비스 이슈 추적 데이터</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<h3 class="text-lg font-semibold mb-4">품질 지표 상세 분석</h3>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead>
+<tr class="border-b border-gray-300">
+<th class="text-left py-2">구분</th>
+<th class="text-center py-2">1/8 타겟</th>
+<th class="text-center py-2">1/29 타겟</th>
+<th class="text-center py-2">-</th>
+<th class="text-center py-2">1월 실적</th>
+<th class="text-center py-2">전년 동월</th>
+</tr>
+</thead>
+<tbody class="text-center">
+<tr class="border-b border-gray-200">
+<td class="text-left py-3">총 이슈</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td class="font-semibold text-blue-600">26건</td>
+<td>233건</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="text-left py-3">이슈 검출률</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td class="font-semibold text-red-600">23.1%</td>
+<td>93.0%</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="text-left py-3">긴급 대응</td>
+<td>이미지 세부값 필요</td>
+<td>이미지 세부값 필요</td>
+<td>-</td>
+<td class="font-semibold text-green-600">6건</td>
+<td>8건</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="source-citation mt-4">출처: 1월 상태 이미지, 2025년 1월 누적 데이터. ※ 1/8·1/29 타겟 긴급대응 세부값은 제공 이미지 재확인 필요</div>
+</div>
+</section>
+<!-- 4. Industry Trend Analysis -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+        <i class="fas fa-chart-line text-indigo-600 mr-3"></i>
+        4. Industry Trend Analysis
+    </h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div>
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">업계 품질 지표 비교</h3>
+            <div class="chart-container">
+                <canvas id="industryComparisonChart"></canvas>
+            </div>
+            <div class="source-citation">출처: Epic Seven, Genshin Impact, Honkai: Star Rail App Store 공개 평점 및 2026 모바일 게임 QA 트렌드 자료 기반 내부 환산</div>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold mb-4">서브컬처 RPG 벤치마킹</h3>
+            <div class="space-y-4">
+                <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">Epic Seven 스토어 평점</span>
+                        <div class="text-right">
+                            <div class="text-xl font-bold text-green-600">4.6</div>
+                            <div class="text-xs text-gray-500">경쟁작 평균: 4.35</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">서비스 안정성</span>
+                        <div class="text-right">
+                            <div class="text-xl font-bold text-blue-600">100%</div>
+                            <div class="text-xs text-gray-500">1월 장애 0건 · 가동률 100%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">유저 체감 만족도</span>
+                        <div class="text-right">
+                            <div class="text-xl font-bold text-purple-600">16.57%</div>
+                            <div class="text-xs text-gray-500">부정 VOC 57.91%로 개선 필요</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="source-citation">출처: Epic Seven 4.6/5 (48K), Genshin Impact 4.3/5 (563K), Honkai: Star Rail 4.4/5 (51K), BrownDust2 4.5/5 (5.6K), Summoners War 4.2/5 (43K)</div>
+        </div>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-4">📈 2026년 모바일 게임 QA 트렌드 & 업계 동향</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="trend-card p-4 rounded-lg text-white">
+                <h4 class="font-semibold mb-2">🤖 AI/ML 테스트 오케스트레이션</h4>
+                <p class="text-sm opacity-90">회귀 테스트 추천, 이상 징후 감지, 테스트 우선순위 자동화가 2026년 핵심 표준으로 자리잡는 중.</p>
+            </div>
+            <div class="trend-card p-4 rounded-lg text-white">
+                <h4 class="font-semibold mb-2">⚡ 성능 테스트 → 성능 엔지니어링</h4>
+                <p class="text-sm opacity-90">업데이트 이후 프레임 저하·로딩·크래시를 사전 설계 단계부터 관리하는 흐름이 확대.</p>
+            </div>
+            <div class="trend-card p-4 rounded-lg text-white">
+                <h4 class="font-semibold mb-2">☁️ 클라우드 디바이스랩 & 5G 검증</h4>
+                <p class="text-sm opacity-90">다양한 단말·네트워크에서 실제 체감 품질을 빠르게 재현하는 검증 체계가 중요해짐.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div class="trend-card p-4 rounded-lg text-white">
+            <h4 class="font-semibold mb-2">📉 리텐션 중심 LiveOps QA</h4>
+            <p class="text-sm opacity-90">Day-1 리텐션은 iOS 35.7%, Android 27.5% 수준으로 첫 주차 품질 관리가 매출과 유지율에 직접 연결.</p>
+            <div class="text-xs mt-2 opacity-75">출처: Business of Apps Mobile Game Retention Rates</div>
+        </div>
+        <div class="trend-card p-4 rounded-lg text-white">
+            <h4 class="font-semibold mb-2">🎮 서브컬처 RPG 경쟁 심화</h4>
+            <p class="text-sm opacity-90">Epic Seven은 4.6점으로 평판 경쟁력은 높지만, 경쟁작 대비 실제 운영 체감 품질 관리가 더 중요해진 구간.</p>
+            <div class="text-xs mt-2 opacity-75">출처: App Store 공개 평점 데이터</div>
+        </div>
+        <div class="trend-card p-4 rounded-lg text-white">
+            <h4 class="font-semibold mb-2">🛠️ 운영 데이터 연계 QA 확대</h4>
+            <p class="text-sm opacity-90">VOC·리뷰·운영 로그를 QA 릴리즈 게이트와 연결해 핫픽스와 긴급 대응을 줄이는 전략이 확산.</p>
+            <div class="text-xs mt-2 opacity-75">출처: TestingXperts Mobile App Testing Trends, Sensor Tower State of Mobile 2026</div>
+        </div>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-6">
+        <h3 class="text-lg font-semibold mb-4">에픽세븐 업계 내 상대적 위치 (1월 현황)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h4 class="font-medium text-gray-700 mb-3">1월 주요 지표</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• <strong class="text-green-600">스토어 평판 우위:</strong> 공개 평점 4.6으로 주요 경쟁작 평균 4.35 상회</li>
+                    <li>• <strong class="text-blue-600">운영 안정성 회복:</strong> 서비스 장애 0건, 다운타임 0분, 가동률 100%</li>
+                    <li>• <strong class="text-red-600">QA 선제 대응 약화:</strong> 이슈 검출률 23.1%, Live 이슈 20건으로 사전 차단력 부족</li>
+                    <li>• <strong class="text-red-600">체감 만족도 저하:</strong> 긍정 16.57%, 부정 57.91%로 라이브 경험 개선 필요</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-medium text-gray-700 mb-3">긴급 개선 필요 영역</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• <strong>이벤트/신규 캐릭터 회귀 자동화</strong>로 사전 검출률 정상화</li>
+                    <li>• <strong>VOC-버그 연계 분석</strong>으로 아키·아레나·운영/소통 불만 선제 대응</li>
+                    <li>• <strong>릴리즈 게이트 강화</strong>로 핫픽스 유발 구간 사전 차단</li>
+                    <li>• <strong>첫 주차 리텐션 품질 대시보드</strong> 구축으로 체감 품질과 평판 간 괴리 축소</li>
+                </ul>
+            </div>
+        </div>
+        <div class="source-citation mt-4">출처: Epic Seven, Genshin Impact, Honkai: Star Rail App Store 공개 정보 / TestingXperts / Business of Apps / Sensor Tower State of Mobile 2026</div>
+    </div>
+</section>
+<!-- 5. User Satisfaction Analysis -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-smile text-yellow-500 mr-3"></i>
+                5. User Satisfaction Analysis
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+<div>
+<h3 class="text-xl font-semibold mb-4 text-gray-800">유저 동향 분포</h3>
+<div class="chart-container"><canvas id="userSentimentChart"></canvas></div>
+<div class="source-citation">출처: VOC Excel 1월 1~5주 통합 (총 20,004건)</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<h3 class="text-xl font-semibold mb-4 text-gray-800">서브컬처 가챠게임 기준 비교</h3>
+<ul class="space-y-3 text-sm text-gray-700">
+<li><span class="font-semibold text-green-700">긍정 동향 16.57%</span> — 업계 기준 15~20% 하단에 위치</li>
+<li><span class="font-semibold text-red-700">부정 동향 57.91%</span> — 업계 기준 55~60% 상단권으로 관리 필요</li>
+<li><span class="font-semibold text-gray-700">중립 동향 16.87%</span> — 일반 기준 20~25%보다 낮아 양극화 경향</li>
+<li><span class="font-semibold text-purple-700">복합 동향 8.25%</span> — 긍·부정이 섞인 반응으로 업데이트 피로 반영</li>
+</ul>
+<div class="source-citation mt-3">출처: 서브컬처 가챠게임 커뮤니티 분석 기준 + 1월 VOC 집계</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="bg-green-50 border border-green-200 rounded-lg p-5">
+<h4 class="font-semibold text-green-700 mb-2">긍정 동향</h4>
+<div class="text-4xl font-bold text-green-600 mb-2">3,314</div>
+<p class="text-sm text-green-700">전체의 16.57%, 호평 키워드: 아키 / 이세리아 / 디에네</p>
+</div>
+<div class="bg-red-50 border border-red-200 rounded-lg p-5">
+<h4 class="font-semibold text-red-700 mb-2">부정 동향</h4>
+<div class="text-4xl font-bold text-red-600 mb-2">11,585</div>
+<p class="text-sm text-red-700">전체의 57.91%, 아키·게임 관련·아레나·운영 불만 집중</p>
+</div>
+<div class="bg-gray-100 border border-gray-300 rounded-lg p-5">
+<h4 class="font-semibold text-gray-700 mb-2">중립 동향</h4>
+<div class="text-4xl font-bold text-gray-600 mb-2">3,375</div>
+<p class="text-sm text-gray-700">전체의 16.87%, 복합 반응 1,650건은 별도 추적 필요</p>
+</div>
+</div>
+<div class="calculation-guide">
+<h4 class="font-semibold text-gray-800 mb-2">📊 VOC 해석 가이드</h4>
+<ul class="space-y-1 text-sm text-gray-700">
+<li>• 총 분석량: 20,004건 (1월 1~5주 커뮤니티/리뷰/CS/디스코드 통합)</li>
+<li>• 복합 동향: 1,650건(8.25%) — 긍정·부정 혼재 이슈로 별도 모니터링 필요</li>
+<li>• 부정 상위 주제: 아키(1,550), 게임 관련(1,063), 아레나(580), 운영(502), 품질 관리(410)</li>
+<li>• 긍정 상위 주제: 아키(490), 보검의 군주 이세리아(360), 어둠의 목자 디에네(200), 월드 아레나(200)</li>
+<li>• 시사점: 캐릭터/콘텐츠 선호는 유지되나 운영·품질·경쟁 콘텐츠 불만이 만족도를 상쇄</li>
+</ul>
+</div>
+</section>
+<!-- 6. Risk & Opportunity Analysis -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+        <i class="fas fa-balance-scale text-red-600 mr-3"></i>
+        6. Risk &amp; Opportunity Analysis
+    </h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="risk-card rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-red-800 mb-4">🚨 주요 리스크 요소</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4 border border-red-300">
+                    <h4 class="font-semibold text-red-700 mb-2">사전 검출률 급락</h4>
+                    <p class="text-sm text-gray-700 mb-2">총 이슈 26건 중 QA/DEV 단계 검출은 6건뿐으로, 이슈 검출률이 23.1%까지 하락해 사전 품질 확보 기능이 크게 약화되었다.</p>
+                    <div class="text-xs text-red-600">영향도: <strong>매우 높음</strong> | 발생률: <strong>실제 발생</strong> (12월 90.1% → 1월 23.1%)</div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-red-300">
+                    <h4 class="font-semibold text-red-700 mb-2">Live 이슈 비중 과다</h4>
+                    <p class="text-sm text-gray-700 mb-2">총 이슈 26건 중 20건이 Live에서 발견되어, 릴리즈 이후 운영 단계에서 문제를 해결하는 비중이 76.9%에 달했다.</p>
+                    <div class="text-xs text-red-600">영향도: <strong>매우 높음</strong> | 발생률: <strong>실제 발생</strong></div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-red-300">
+                    <h4 class="font-semibold text-red-700 mb-2">긴급 대응 부담 지속</h4>
+                    <p class="text-sm text-gray-700 mb-2">서비스 장애는 0건으로 회복했지만, Hotfix 6건과 긴급 대응 6건이 발생해 운영 리소스 부담이 여전히 높다.</p>
+                    <div class="text-xs text-red-600">영향도: <strong>높음</strong> | 발생률: <strong>실제 발생</strong></div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-red-300">
+                    <h4 class="font-semibold text-red-700 mb-2">유저 만족도 리스크 확대</h4>
+                    <p class="text-sm text-gray-700 mb-2">부정 VOC가 57.91%까지 상승했고 긍정 반응은 16.57%에 그쳐, 스토어 평판 대비 실제 체감 품질 괴리가 확대되고 있다.</p>
+                    <div class="text-xs text-red-600">영향도: <strong>높음</strong> | 발생률: <strong>지속적 악화 중</strong></div>
+                </div>
+            </div>
+            <div class="source-citation text-xs text-gray-500 mt-4">
+                출처: 1월 상태 이미지, VOC Excel 1~5주, 12월 대비 분석
+            </div>
+        </div>
+        
+        <div class="opportunity-card rounded-lg p-6" style="background-color: #E0F2FE;">
+            <h3 class="text-xl font-semibold text-green-800 mb-4">💡 개선 기회 요소</h3>
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">AI 자동화 기술 도입</h4>
+                    <p class="text-sm text-gray-700 mb-2">이벤트·신규 캐릭터·전투 시나리오를 중심으로 회귀 테스트 자동화를 적용하면 사전 검출률 회복에 직접 기여할 수 있다.</p>
+                    <div class="text-xs text-blue-600">기대효과: <strong>매우 높음</strong> | 실현가능성: <strong>높음</strong></div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">VOC-버그 연계 분석 체계</h4>
+                    <p class="text-sm text-gray-700 mb-2">아키, 아레나, 운영/소통 관련 VOC를 QA 이슈와 연결하면 우선순위 선정과 재발 방지 속도를 높일 수 있다.</p>
+                    <div class="text-xs text-blue-600">기대효과: <strong>높음</strong> | 실현가능성: <strong>매우 높음</strong></div>
+                </div>
+                <div class="bg-white rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-blue-700 mb-2">릴리즈 게이트 및 사전 검증 강화</h4>
+                    <p class="text-sm text-gray-700 mb-2">클라우드 단말·네트워크 검증과 첫 주차 리텐션 중심 QA 체계를 결합하면 Live 유입과 Hotfix를 선제적으로 줄일 수 있다.</p>
+                    <div class="text-xs text-blue-600">기대효과: <strong>매우 높음</strong> | 실현가능성: <strong>중간</strong></div>
+                </div>
+            </div>
+            <div class="source-citation text-xs text-gray-500 mt-4">
+                출처: 2026 모바일 게임 QA 트렌드 자료, 1월 VOC 분석, 1월 운영 이슈 리뷰
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-50 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">리스크-기회 매트릭스 (1월 실제 상황)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h4 class="font-medium text-gray-700 mb-3">현재 리스크 수준 (12월 대비)</h4>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 rounded-lg" style="background-color: #fed7aa !important; border: 1px solid #fb923c;">
+                        <span class="text-sm font-medium" style="color: #7c2d12 !important;">서비스 안정성</span>
+                        <span class="px-3 py-1 bg-orange-500 text-white text-xs rounded-full">중간 (장애 0건)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-red-100 rounded-lg">
+                        <span class="text-sm font-medium">품질 리스크</span>
+                        <span class="px-3 py-1 bg-red-500 text-white text-xs rounded-full">매우 높음 (검출률 23.1%)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-red-100 rounded-lg">
+                        <span class="text-sm font-medium">운영 리스크</span>
+                        <span class="px-3 py-1 bg-red-500 text-white text-xs rounded-full">높음 (긴급 대응 6건)</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-red-100 rounded-lg">
+                        <span class="text-sm font-medium">유저 만족도 리스크</span>
+                        <span class="px-3 py-1 bg-red-500 text-white text-xs rounded-full">높음 (부정 57.91%)</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium text-gray-700 mb-3">개선 기회 활용도</h4>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
+                        <span class="text-sm font-medium">AI 자동화 도입</span>
+                        <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">매우 높음</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
+                        <span class="text-sm font-medium">VOC 기반 QA 우선순위화</span>
+                        <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">높음</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
+                        <span class="text-sm font-medium">클라우드 디바이스 테스트</span>
+                        <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">높음</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-blue-100 rounded-lg">
+                        <span class="text-sm font-medium">릴리즈 게이트 강화</span>
+                        <span class="px-3 py-1 bg-blue-500 text-white text-xs rounded-full">매우 높음</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="source-citation mt-4">
+            출처: 1월 리스크 관리 매트릭스 및 12월 대비 분석
+        </div>
+    </div>
+</section>
+<!-- 7. Cost Efficiency Analysis -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+<h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+<i class="fas fa-dollar-sign text-green-600 mr-3"></i>
+                7. Cost Efficiency Analysis
+            </h2>
+
+
+
+
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<div>
+<h3 class="text-xl font-semibold mb-4">QA 비용 대비 효과</h3>
+<div class="chart-container">
+<canvas id="costEfficiencyChart"></canvas>
+</div>
+<div class="source-citation">출처: QA 팀 인건비 및 1월 상태 이미지 기반 비용 추정</div>
+</div>
+<div>
+<h3 class="text-xl font-semibold mb-4">사전 품질 확보 효과</h3>
+<div class="chart-container">
+<canvas id="preventionChart"></canvas>
+</div>
+<div class="source-citation">출처: 1월 업데이트 QA 이관으로 타겟별 QA 데이터 부재</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+<div class="bg-green-50 border border-green-200 rounded-lg p-6">
+<h4 class="font-semibold text-green-800 mb-3">사전 품질 확보 효과</h4>
+<div class="text-2xl font-bold text-gray-600 mb-2">No Data</div>
+<div class="text-sm text-gray-600 mb-2">QA 데이터 부재</div>
+<div class="text-xs text-gray-700">1월 업데이트 QA 이관</div>
+<div class="source-citation">참고: 1월 업데이트 QA 이관으로 사전 품질 확보 효과 산출 불가</div>
+</div>
+<div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+<h4 class="font-semibold text-blue-800 mb-3">QA 운영 비용</h4>
+<div class="text-2xl font-bold text-blue-600 mb-2">1,152만원</div>
+<div class="text-sm text-gray-600 mb-2">월간 인건비 (MM 4 기준)</div>
+<div class="text-xs text-blue-700">72H × 40,000원 × MM 4</div>
+<div class="source-citation">계산식: 실제 근무시간 × 시급 × MM</div>
+</div>
+<div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+<h4 class="font-semibold text-purple-800 mb-3">투자 대비 효과</h4>
+<div class="text-2xl font-bold text-gray-600 mb-2">No Data</div>
+<div class="text-sm text-gray-600 mb-2">데이터 부재</div>
+<div class="text-xs text-gray-700">1월 업데이트 QA 이관</div>
+<div class="source-citation">참고: 타겟별 QA 검출 데이터가 없어 ROI 산출 불가</div>
+</div>
+</div>
+<div class="calculation-guide">
+<h4 class="font-semibold mb-2">💰 인건비 계산 방식</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+<div>
+<strong>QA 인건비:</strong> 실제 작업시간 × 시간당 단가 (40,000원) × MM
+        </div>
+<div>
+<strong>사후 처리 비용:</strong> Minor 50만원 | Major 100만원 | Critical 300만원 | Service Down 500만원
+        </div>
+</div>
+<div class="source-citation mt-2">
+        출처: 인사팀 급여 기준 및 업계 표준 사후 처리 비용 모델
+    </div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<h3 class="text-lg font-semibold mb-4">비용 효율성 상관관계 분석</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<h4 class="font-medium text-gray-700 mb-3">투입 대비 효과</h4>
+<div class="space-y-3">
+<div class="flex justify-between">
+<span class="text-sm">QA 검출 1건당 비용</span>
+<span class="font-semibold text-gray-500">No Data</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm">테스트 1Case당 비용</span>
+<span class="font-semibold text-blue-600">921원</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm">추정 절감 효과</span>
+<span class="font-semibold text-gray-500">No Data</span>
+</div>
+</div>
+</div>
+<div>
+<h4 class="font-medium text-gray-700 mb-3">전년 동월 대비</h4>
+<div class="space-y-3">
+<div class="flex justify-between">
+<span class="text-sm">테스트 효율성</span>
+<span class="text-red-600 font-semibold">-51.9%</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm">시간당 처리량</span>
+<span class="text-red-600 font-semibold">-51.9%</span>
+</div>
+<div class="flex justify-between">
+<span class="text-sm">단위 비용</span>
+<span class="text-red-600 font-semibold">+3.9%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="source-citation mt-4">
+        출처: 1월 상태 이미지 기반 운영비 계산 및 전년 동월 비교. 사전 품질 확보 효과/ROI는 QA 데이터 부재로 제외
+    </div>
+</div>
+</section>
+<!-- 8. Monthly Summary -->
+<section class="bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
+        <i class="fas fa-clipboard-check text-indigo-600 mr-3"></i>
+        8. Monthly Summary
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-300 rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-green-800 mb-4">✅ 핵심 성과</h3>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm"><strong>서비스 장애 0건 유지</strong> (다운타임 0분, 가동률 100%)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm"><strong>테스트 볼륨 유지</strong> (12,503 Case, 12월 대비 +1.1%)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm"><strong>스토어 평판 경쟁력 확보</strong> (App Store 4.6 / 5.0, 48K Ratings)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm"><strong>운영 안정성 회복</strong> (Hotfix 6건으로 12월 9건 대비 감소)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-sm"><strong>무장애 운영 달성</strong> 속에서도 4MM 체계로 월간 운영 지속</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-300 rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-red-800 mb-4">🔧 개선 영역</h3>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                    <span class="text-sm"><strong>이슈 검출률 급락</strong> (90.1% → 23.1%, -67.0%p)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                    <span class="text-sm"><strong>테스트 처리량 저하</strong> (190.4 → 86.83 Case/H, -54.4%)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                    <span class="text-sm"><strong>부정 VOC 확대</strong> (42.69% → 57.91%, +15.22%p)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                    <span class="text-sm"><strong>Live 유입 비중 과다</strong> (총 이슈 26건 중 20건, 76.9%)</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                    <span class="text-sm"><strong>긴급 대응 부담 지속</strong> (Hotfix 6건, 긴급 대응 6건)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-8 bg-gray-50 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">종합 평가</h3>
+        <div class="prose max-w-none">
+            <p class="text-gray-700 mb-4">
+                <strong class="text-green-600">1월 핵심 성과:</strong>
+                서비스 장애 0건, 다운타임 0분으로 운영 안정성은 뚜렷하게 회복되었다. 테스트 볼륨도 12,503 Case로 유지되었고, 공개 App Store 평점 4.6은 Epic Seven의 외부 평판 경쟁력이 여전히 강하다는 점을 보여준다.
+            </p>
+            <p class="text-gray-700 mb-4">
+                <strong class="text-orange-600">운영 관점 시사점:</strong>
+                Hotfix는 12월 9건에서 1월 6건으로 감소했고, 긴급 대응도 6건으로 축소됐지만 릴리즈 직후의 불안정 구간이 완전히 해소되었다고 보긴 어렵다. 무장애 운영과 내부 QA 선제 대응력 회복을 동시에 달성하는 구조 개선이 필요하다.
+            </p>
+            <p class="text-gray-700 mb-4">
+                <strong class="text-red-600">개선 영역:</strong>
+                이슈 검출률은 23.1%로 크게 낮아졌고, 총 26건 중 20건이 Live에서 발견되었다. 테스트 처리량도 86.83 Case/H까지 하락했으며, VOC 20,004건 중 부정 반응 57.91%가 누적되어 체감 품질 저하가 수치로 확인된다.
+            </p>
+            <p class="text-gray-700">
+                <strong class="text-blue-600">2월 우선 과제:</strong>
+                AI 기반 회귀 자동화, VOC-버그 연결 분석, 클라우드 단말·네트워크 검증 확대, 첫 주차 리텐션 중심 QA KPI 도입을 통해 스토어 평판과 실제 운영 경험 간의 격차를 줄이는 것이 핵심이다.
+            </p>
+        </div>
+        <div class="source-citation mt-4">출처: 1월 상태 이미지, VOC Excel 1~5주, Epic Seven App Store 공개 평점, 2026 모바일 게임 QA 트렌드 자료</div>
+    </div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="bg-gray-800 text-white py-6 mt-12">
+<div class="max-w-7xl mx-auto px-6 text-center">
+<p class="text-sm opacity-75">
+                © 2025 SmileGate Stove | Epicseven QA Team | 
+                보고서 생성일: 2025.12.12 | 데이터 출처: SGP 내부 실측 데이터
+            </p>
+</div>
+</footer>
+<script>
+        // Chart.js 설정
+        Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+        Chart.defaults.font.size = 12;
+
+        // 서비스 안정성 트렌드 차트
+        const stabilityCtx = document.getElementById('stabilityChart').getContext('2d');
+        new Chart(stabilityCtx, {
+            type: 'line',
+            data: {
+                labels: ['1월'],
+                datasets: [{
+                    label: '총 이슈 수',
+                    data: [26],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: '서비스 장애',
+                    data: [0],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 긴급대응 & 장애 현황 차트
+        const incidentCtx = document.getElementById('incidentChart').getContext('2d');
+        new Chart(incidentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1월'],
+                datasets: [{
+                    label: '긴급 대응',
+                    data: [6],
+                    backgroundColor: '#f59e0b'
+                }, {
+                    label: '서비스 장애',
+                    data: [0],
+                    backgroundColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 테스트 처리량 추이 차트
+        const productivityCtx = document.getElementById('productivityChart').getContext('2d');
+        new Chart(productivityCtx, {
+            type: 'line',
+            data: {
+                labels: ['1월'],
+                datasets: [{
+                    label: '월간 테스트 볼륨',
+                    data: [12503],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 리소스 활용 차트
+        const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+        new Chart(resourceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['리소스 사용시간', '여유 시간'],
+                datasets: [{
+                    data: [144, 16],
+                    backgroundColor: ['#3b82f6', '#e5e7eb']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 이슈 검출 비율 차트
+        const detectionCtx = document.getElementById('detectionChart').getContext('2d');
+        new Chart(detectionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['QA 이슈 (4건)', 'DEV 이슈 (2건)', 'Live 이슈 (20건)'],
+                datasets: [{
+                    data: [4, 2, 20],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 품질 지표 트렌드 차트
+        const qualityTrendCtx = document.getElementById('qualityTrendChart').getContext('2d');
+        new Chart(qualityTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['1월'],
+                datasets: [{
+                    label: '이슈 검출률 (%)',
+                    data: [23.1],
+                    borderColor: '#10b981',
+                    tension: 0.4,
+                    segment: {
+                        borderDash: ctx => {
+                            const index = ctx.p0DataIndex;
+                            return [5, 5];
+                        }
+                    }
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.parsed.y === null) {
+                                    return '데이터 없음 (콘텐츠 테스트 미진행)';
+                                }
+                                return context.dataset.label + ': ' + context.parsed.y + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 업계 비교 차트
+        const industryComparisonCtx = document.getElementById('industryComparisonChart').getContext('2d');
+        new Chart(industryComparisonCtx, {
+            type: 'radar',
+            data: {
+                labels: ['이슈 검출률', '서비스 안정성', '처리 효율성', '품질 만족도', '유저 만족도'],
+                datasets: [{
+                    label: 'Epic Seven',
+                    data: [23.1, 100, 43.4, 76.9, 16.57],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)'
+                }, {
+                    label: '업계 평균',
+                    data: [85, 92, 70, 80, 45],
+                    borderColor: '#6b7280',
+                    backgroundColor: 'rgba(107, 114, 128, 0.2)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 유저 동향 차트
+        const userSentimentCtx = document.getElementById('userSentimentChart').getContext('2d');
+        new Chart(userSentimentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['부정 (11,585건)', '중립 (3,375건)', '긍정 (3,314건)', '복합 (1,650건)'],
+                datasets: [{
+                    data: [11585, 3375, 3314, 1650],
+                    backgroundColor: ['#ef4444', '#6b7280', '#10b981', '#8b5cf6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // 비용 효율성 차트
+        const costEfficiencyCtx = document.getElementById('costEfficiencyChart').getContext('2d');
+        new Chart(costEfficiencyCtx, {
+            type: 'bar',
+            data: {
+                labels: ['QA 투입비용', '절약 효과', '순 효과'],
+                datasets: [{
+                    data: [-1152, 0, 0],
+                    backgroundColor: ['#ef4444', '#10b981', '#3b82f6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '만원';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 사전 품질 확보 효과 차트
+        const preventionCtx = document.getElementById('preventionChart').getContext('2d');
+        new Chart(preventionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1/8 타겟', '1/29 타겟'],
+                datasets: [{
+                    label: 'QA 이슈 (건)',
+                    data: [null, null],
+                    backgroundColor: '#3b82f6'
+                }, {
+                    label: '절약 효과 (백만원)',
+                    data: [null, null],
+                    backgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    title: {
+                        display: true,
+                        text: 'No Data (1월 업데이트 QA 이관)'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function() {
+                                return 'No Data';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+<script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDs4yJYkKvHySR79GBhV5h0PTTi3k9T%2Fqmzomb4BSrePRU1ozOev%2BJahyggmHvKC0o9hayimjkGpqYuzyrzSJUS0446IoWfVr5eNdWCP9eAdCWGn7cDFBqoR33je4%2BiPFYzH3okMlqCz1SdOD11wr%2FNe5vlMdz5Od4ccgnM7tj5p83P6xttSUgXJBAKz2HGFpyPF%2F7irVJvjvZZVT%2FPmsZd9j491FWfupU1gNwkg%2B8KyPs4B%2FdCBuMEggfSJgwcbEvFnEYR0QMPfG0jMoQqYFNFkHuk4hw3mWypQyzfr3R8dILMwW6VBo6TYR08045YkGI0UVyLjYYBPOzZwysxzRvFPNFuCpZuvxtePemsie2pxd32Tvq9ZjHJAAwXwj1zYifUB3f0G%2B5DPFX5E%2BlWJZhCzLIc1OaEXmAm3yIyxKkKYn4LwOXQ3%2FMtoRbHavE4yv7eZqOJhLqRARLoJrpFNtk6pw6Z8innwYswyVdmrurBcjtdVc%2BC9rjuH3sTVb7OaQcQ%3D%3D";
+        window.__genspark_locale = "ko-KR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDs4yJYkKvHySR79GBhV5h0PTTi3k9T/qmzomb4BSrePRU1ozOev+JahyggmHvKC0o9hayimjkGpqYuzyrzSJUS0446IoWfVr5eNdWCP9eAdCWGn7cDFBqoR33je4+iPFYzH3okMlqCz1SdOD11wr/Ne5vlMdz5Od4ccgnM7tj5p83P6xttSUgXJBAKz2HGFpyPF/7irVJvjvZZVT/PmsZd9j491FWfupU1gNwkg+8KyPs4B/dCBuMEggfSJgwcbEvFnEYR0QMPfG0jMoQqYFNFkHuk4hw3mWypQyzfr3R8dILMwW6VBo6TYR08045YkGI0UVyLjYYBPOzZwysxzRvFPNFuCpZuvxtePemsie2pxd32Tvq9ZjHJAAwXwj1zYifUB3f0G+5DPFX5E+lWJZhCzLIc1OaEXmAm3yIyxKkKYn4LwOXQ3/MtoRbHavE4yv7eZqOJhLqRARLoJrpFNtk6pw6Z8innwYswyVdmrurBcjtdVc+C9rjuH3sTVb7OaQcQ==";
+    </script>
+<script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
