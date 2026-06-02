@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Voice — 통합 QA-Dashboard USER 탭 설계 기술서 (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#ffffff; --ink:#1a1a1a; --mute:#888888; --line:#e8e6e0; --surface:#f7f6f2;
+  --accent:#c8483a; --accent-t:rgba(200,72,58,0.08);
+  --green:#2d7a4f; --green-t:rgba(45,122,79,0.08);
+  --amber:#b45309; --amber-t:rgba(180,83,9,0.08);
+  --blue:#2563eb; --blue-t:rgba(37,99,235,0.08);
+  --font:'Noto Sans KR',sans-serif; --mono:'Noto Sans Mono',monospace; --serif:'Noto Serif JP',serif;
+  --max:1120px;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+nav { position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); display:flex; align-items:center; height:52px; padding:0 40px; gap:32px; }
+.nav-brand { font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); white-space:nowrap; margin-right:8px; }
+.nav-links { display:flex; gap:24px; list-style:none; }
+.nav-links a { font-size:13px; color:var(--mute); text-decoration:none; transition:color 0.15s; }
+.nav-links a:hover { color:var(--ink); }
+.nav-meta { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--mute); }
+.wrap { max-width:var(--max); margin:0 auto; padding:0 40px; }
+section { padding:72px 0; border-bottom:1px solid var(--line); }
+section:last-of-type { border-bottom:none; }
+.sec-head { margin-bottom:52px; }
+.sec-eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+.sec-title { font-size:32px; font-weight:700; letter-spacing:-0.02em; line-height:1.15; margin-bottom:14px; }
+.sec-desc { font-size:15px; color:var(--mute); max-width:660px; line-height:1.75; }
+.hero { padding:80px 0 72px; border-bottom:1px solid var(--line); }
+.hero-kicker { display:flex; align-items:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+.chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border:1px solid var(--line); font-family:var(--mono); font-size:11px; letter-spacing:0.06em; color:var(--mute); }
+.chip.red { border-color:var(--accent); color:var(--accent); background:var(--accent-t); }
+.chip .dot { width:5px; height:5px; border-radius:50%; background:currentColor; animation:blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-title { font-size:56px; font-weight:700; letter-spacing:-0.03em; line-height:1.05; margin-bottom:6px; }
+.hero-title em { font-style:normal; color:var(--accent); }
+.hero-sub { font-family:var(--serif); font-size:20px; color:var(--mute); margin-bottom:36px; }
+.hero-desc { font-size:15px; color:#555; max-width:680px; line-height:1.85; margin-bottom:44px; }
+.hero-stats { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); }
+.hero-stat { padding:20px 24px; border-right:1px solid var(--line); }
+.hero-stat:last-child { border-right:none; }
+.hs-label { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); margin-bottom:6px; }
+.hs-value { font-size:18px; font-weight:700; }
+.hs-sub { font-size:12px; color:var(--mute); margin-top:2px; }
+/* KPI cards (스크린샷 재현) */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:40px; }
+.kpi { background:var(--bg); padding:22px 24px; }
+.kpi-label { font-size:13px; color:var(--mute); margin-bottom:10px; }
+.kpi-num { font-size:30px; font-weight:700; letter-spacing:-0.02em; }
+.kpi-num span { font-size:14px; font-weight:500; color:var(--mute); }
+.kpi-delta { font-family:var(--mono); font-size:12px; margin-top:8px; }
+.kpi-delta.up { color:var(--accent); }
+.kpi-delta.down { color:var(--blue); }
+.kpi-delta.neu { color:var(--mute); }
+.tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+.tech-card { background:var(--bg); padding:28px 28px 24px; }
+.tc-label { font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.tc-title { font-size:18px; font-weight:700; margin-bottom:8px; }
+.tc-desc { font-size:13px; color:var(--mute); line-height:1.65; }
+.pills { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
+.pill { font-family:var(--mono); font-size:11px; padding:2px 7px; border:1px solid var(--line); color:var(--mute); }
+.flow-wrap { display:grid; grid-template-columns:repeat(5,1fr); gap:0; border:1px solid var(--line); margin-bottom:32px; overflow:hidden; }
+.flow-col { border-right:1px solid var(--line); }
+.flow-col:last-child { border-right:none; }
+.flow-head { padding:12px 16px; background:var(--surface); border-bottom:1px solid var(--line); font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+.flow-items { padding:4px 0; }
+.flow-item { padding:8px 16px; font-size:13px; color:#555; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:7px; }
+.flow-item:last-child { border-bottom:none; }
+.flow-item::before { content:'·'; color:var(--line); font-size:18px; line-height:1; }
+.flow-item.hi { color:var(--ink); font-weight:500; }
+.flow-item.hi::before { color:var(--accent); }
+.compare-table { width:100%; border-collapse:collapse; border:1px solid var(--line); }
+.compare-table th { padding:13px 18px; background:var(--surface); border-bottom:1px solid var(--line); border-right:1px solid var(--line); text-align:left; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); font-weight:600; }
+.compare-table th.col-acc { color:var(--accent); }
+.compare-table th:last-child { border-right:none; }
+.compare-table td { padding:13px 18px; font-size:13px; color:#555; border-bottom:1px solid var(--line); border-right:1px solid var(--line); vertical-align:top; }
+.compare-table td:first-child { color:var(--ink); font-weight:500; }
+.compare-table td:last-child { border-right:none; }
+.compare-table tr:last-child td { border-bottom:none; }
+.compare-table tr:hover td { background:var(--surface); }
+.compare-table .ctr { text-align:center; }
+.callout { padding:14px 18px; border-left:3px solid var(--accent); background:var(--accent-t); margin:20px 0; font-size:13px; color:#555; line-height:1.65; }
+.callout strong { color:var(--ink); }
+.rec-box { margin-top:20px; padding:20px 24px; border-left:3px solid var(--accent); background:var(--accent-t); font-size:14px; color:#555; line-height:1.75; }
+.rec-box strong { color:var(--ink); }
+/* topic + summary mock (스크린샷 재현) */
+.uv-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.uv-panel { border:1px solid var(--line); }
+.uv-panel-head { padding:14px 18px; border-bottom:1px solid var(--line); background:var(--surface); font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--mute); }
+.uv-topic { padding:14px 18px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
+.uv-topic:last-child { border-bottom:none; }
+.uv-topic.sel { border-left:3px solid var(--accent); background:var(--accent-t); }
+.uv-topic-name { font-size:14px; font-weight:600; }
+.uv-topic-meta { font-family:var(--mono); font-size:11px; color:var(--mute); margin-top:3px; }
+.uv-body { padding:18px; }
+.uv-kw { display:flex; gap:6px; margin-bottom:14px; }
+.uv-kw span { font-family:var(--mono); font-size:11px; padding:3px 9px; border:1px solid var(--line); color:var(--mute); }
+.uv-bullet { font-size:13px; color:#555; padding:7px 0; border-bottom:1px dashed var(--line); display:flex; gap:8px; }
+.uv-bullet:last-child { border-bottom:none; }
+.uv-bullet::before { content:'•'; color:var(--accent); }
+.uv-cite { font-family:var(--mono); font-size:10px; color:var(--blue); }
+footer { padding:40px 0; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--line); flex-wrap:wrap; gap:12px; }
+.footer-l { font-size:13px; color:var(--mute); }
+.footer-r { font-family:var(--mono); font-size:11px; color:#ccc; }
+@media (max-width:860px) {
+  .wrap { padding:0 20px; } nav { padding:0 20px; } .nav-links { display:none; }
+  .hero-title { font-size:36px; } .hero-stats,.kpi-grid { grid-template-columns:1fr 1fr; }
+  .flow-wrap,.tech-grid,.uv-grid { grid-template-columns:1fr; }
+  .flow-col { border-right:none; border-bottom:1px solid var(--line); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">QA Dashboard · USER</div>
+  <ul class="nav-links">
+    <li><a href="#overview">개요</a></li>
+    <li><a href="#value">목적 · 가치</a></li>
+    <li><a href="#features">핵심 기능</a></li>
+    <li><a href="#screen">화면 구성</a></li>
+    <li><a href="#pipeline">데이터 파이프라인</a></li>
+    <li><a href="#glossary">용어</a></li>
+  </ul>
+  <div class="nav-meta">USER Tab · 2026.06</div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+<div class="hero" id="overview">
+  <div class="hero-kicker">
+    <div class="chip red"><span class="dot"></span>LIVE</div>
+    <div class="chip">통합 QA-Dashboard · USER 탭</div>
+    <div class="chip">NLP 감성 분석</div>
+    <div class="chip">커뮤니티 VOC</div>
+  </div>
+  <h1 class="hero-title">User<br><em>Voice</em></h1>
+  <p class="hero-sub">유저 반응 동향 — 통합 QA-Dashboard의 USER 탭</p>
+  <p class="hero-desc">
+    "유저 동향 분석 시스템"(비전 문서 시스템 2)을 실제 운영 기능으로 구현해 통합 QA-Dashboard에
+    <strong>USER 탭</strong>으로 착지시킨 것. 게임 커뮤니티 게시글을 24/7 수집 → NLP 감성·버그 분석 → 토픽 클러스터링하여,
+    <strong>유저가 지금 무엇에 반응하는지</strong>를 긍정/부정/중립 비율 · 버그 의심 · TOP 토픽 · 인용 기반 요약으로 보여준다.
+    JIRA·QA·REPORT·OPS·DEVICE·QUEST와 동일한 단일 인터페이스의 한 탭.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-label">착지 경로</div>
+      <div class="hs-value" style="color:var(--accent)">비전 → 실물</div>
+      <div class="hs-sub">시스템 2의 운영 구현</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">분석 엔진</div>
+      <div class="hs-value">NLP 감성·버그</div>
+      <div class="hs-sub">감성 3분류 + 버그 키워드</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">집계 단위</div>
+      <div class="hs-value">토픽 클러스터</div>
+      <div class="hs-sub">TOP5 + bullet 요약 + 인용</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">주기</div>
+      <div class="hs-value">일 · 주 · 월</div>
+      <div class="hs-sub">게임·권역·커뮤니티 필터</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 01 VALUE -->
+<div class="wrap">
+<section id="value">
+  <div class="sec-head">
+    <div class="sec-eyebrow">01 · Purpose & Value</div>
+    <h2 class="sec-title">목적과 가치</h2>
+    <p class="sec-desc">"버그 검출 사후 대응"에서 "유저 반응 예측적 파악"으로. 흩어진 커뮤니티 여론을 운영 가능한 지표로 변환한다.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">Why · 문제</div>
+      <div class="tc-title">여론은 흩어져 있다</div>
+      <div class="tc-desc">유저 반응이 다수 커뮤니티에 분산. 수동으로는 "지금 무엇이 문제인지" 적시 포착 불가. 버그 신호도 게시글 속에 묻힌다.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">How · 방식</div>
+      <div class="tc-title">수집 → NLP → 토픽화</div>
+      <div class="tc-desc">24/7 크롤링 → 감성 3분류 + 버그 키워드 추출 → 토픽 클러스터링 → bullet 요약 + 원문 인용. 사람이 읽기 전에 구조화한다.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Value · 가치</div>
+      <div class="tc-title">예측적 VOC 관리</div>
+      <div class="tc-desc">감성 추세·버그 의심 조기 탐지로 대응 시간 단축. 밸런스/신캐/메타 논쟁을 데이터로 포착해 운영·기획 의사결정 지원.</div>
+    </div>
+  </div>
+  <div class="rec-box">
+    <strong>전략적 의미:</strong> 비전 문서의 4대 시스템 중 <strong>시스템 2(유저 동향 분석)</strong>를 가장 먼저 실물로 구현한 사례. 추상적 비전이 통합 대시보드의 동작하는 탭으로 착지했음을 증명한다.
+  </div>
+</section>
+</div>
+
+<!-- 02 FEATURES -->
+<div class="wrap">
+<section id="features">
+  <div class="sec-head">
+    <div class="sec-eyebrow">02 · Core Features</div>
+    <h2 class="sec-title">핵심 기능</h2>
+    <p class="sec-desc">좌측 USER VOICE 4개 서브 메뉴 + 상단 필터 + 감성 KPI + 토픽 분석으로 구성된다.</p>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">USER VOICE 서브 메뉴</div>
+  <table class="compare-table" style="margin-bottom:40px;">
+    <thead><tr><th>메뉴</th><th class="col-acc">기능</th></tr></thead>
+    <tbody>
+      <tr><td>유저 동향</td><td>감성 KPI(긍정/부정/중립) + 버그 의심 + 토픽 List + 요약·인용</td></tr>
+      <tr><td>버그 제보</td><td>NLP가 버그 키워드로 추출한 의심 게시글을 별도 큐로 정리 (버그 의심 N건)</td></tr>
+      <tr><td>트렌드 지표</td><td>감성·토픽 시계열 추이 (전주/전월 대비 델타)</td></tr>
+      <tr><td>요약 목록</td><td>토픽별 bullet 요약 아카이브 — 회고·리포트용</td></tr>
+    </tbody>
+  </table>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">필터 축</div>
+  <div class="pills" style="margin-bottom:40px;">
+    <div class="pill">게임 (EP7 / CZN / LDN…)</div>
+    <div class="pill">시작일 ~ 종료일</div>
+    <div class="pill">주기 (일 · 주 · 월)</div>
+    <div class="pill">권역 (전체 / 국가)</div>
+    <div class="pill">커뮤니티 (전체 / 개별)</div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">감성 KPI — 운영 스냅샷 예시 (EP7 · 2026-05-26~06-02 · 주간)</div>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">긍정 비율</div>
+      <div class="kpi-num">6.3<span> % · 171건</span></div>
+      <div class="kpi-delta down">▼ 5.8%p</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">부정 비율</div>
+      <div class="kpi-num">39.3<span> % · 1,074건</span></div>
+      <div class="kpi-delta up">▲ 3.0%p</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">중립 비율</div>
+      <div class="kpi-num">54.4<span> % · 1,486건</span></div>
+      <div class="kpi-delta neu">▲ 2.8%p</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">버그 의심</div>
+      <div class="kpi-num">46<span> 건</span></div>
+      <div class="kpi-delta down">▼ 24건</div>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>NLP Worker 헬스 모니터:</strong> 분석 지연 시 상단에 "NLP 분석 지연 N분 — 표시된 데이터가 최신이 아닙니다" 경고 배너 노출. worker 이상을 사용자가 즉시 인지하도록 한다.
+  </div>
+</section>
+</div>
+
+<!-- 03 SCREEN -->
+<div class="wrap">
+<section id="screen">
+  <div class="sec-head">
+    <div class="sec-eyebrow">03 · Topic Analysis</div>
+    <h2 class="sec-title">토픽 분석 — 화면 구성</h2>
+    <p class="sec-desc">좌측 토픽 List(TOP5, 게시글 수)에서 토픽 선택 → 우측에 키워드 칩 + bullet 요약 + 원문 인용 번호. "요약 / 게시글 탐색" 2탭.</p>
+  </div>
+  <div class="uv-grid">
+    <div class="uv-panel">
+      <div class="uv-panel-head">토픽 List · 총 5</div>
+      <div class="uv-topic sel">
+        <div><div class="uv-topic-name">리루 신캐 출시 및 스펙 정보</div><div class="uv-topic-meta">게시글 155 · 26.05.28</div></div>
+        <div style="color:var(--accent)">›</div>
+      </div>
+      <div class="uv-topic">
+        <div><div class="uv-topic-name">리안나 루시엘라 밸런스 논란</div><div class="uv-topic-meta">게시글 113 · 26.05.28</div></div>
+        <div style="color:var(--mute)">›</div>
+      </div>
+      <div class="uv-topic">
+        <div><div class="uv-topic-name">헤카테 너프 및 메타 변화</div><div class="uv-topic-meta">게시글 27 · 26.05.28</div></div>
+        <div style="color:var(--mute)">›</div>
+      </div>
+      <div class="uv-topic">
+        <div><div class="uv-topic-name">토라미 캐릭터 삭제 요구</div><div class="uv-topic-meta">게시글 24 · 26.05.28</div></div>
+        <div style="color:var(--mute)">›</div>
+      </div>
+    </div>
+    <div class="uv-panel">
+      <div class="uv-panel-head">요약 · 리루 신캐 출시 및 스펙 정보 (게시글 155)</div>
+      <div class="uv-body">
+        <div class="uv-kw"><span>리루</span><span>신캐</span><span>스킬</span></div>
+        <div class="uv-bullet">리루 속도 스펙(129→132)에 대한 논쟁 및 밸런스 우려 <span class="uv-cite">[2][7][9][17]</span></div>
+        <div class="uv-bullet">리루 프리밴 확률 및 픽업 가치 판단 <span class="uv-cite">[1][32][33]</span></div>
+        <div class="uv-bullet">리루 아티팩트·세트·신발 등 장비 구성 및 빌드 논의 <span class="uv-cite">[3][5][8][20][25][45]</span></div>
+        <div class="uv-bullet">리루 출시로 인한 속도 덱 메타 붕괴 우려 <span class="uv-cite">[4][9][17][23][24][26]</span></div>
+        <div class="uv-bullet">리루 뽑기 비용 및 신비소환 자원 배분 전략 <span class="uv-cite">[6][21][30][36][42][46][50]</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>bullet 5 + 인용 원칙:</strong> 각 토픽은 핵심 쟁점 5개로 요약하고, 모든 bullet에 근거 원문 게시글 번호를 부착한다. "게시글 탐색" 탭에서 인용 원문 직결 — AI 요약을 신뢰하되 검증 가능하게.
+  </div>
+</section>
+</div>
+
+<!-- 04 PIPELINE -->
+<div class="wrap">
+<section id="pipeline">
+  <div class="sec-head">
+    <div class="sec-eyebrow">04 · Data Pipeline</div>
+    <h2 class="sec-title">데이터 파이프라인</h2>
+    <p class="sec-desc">커뮤니티 원문에서 시작해 5단계를 거쳐 USER 탭 지표에 도달. voice-worker가 주기적으로 수집·분석한다.</p>
+  </div>
+  <div class="flow-wrap">
+    <div class="flow-col">
+      <div class="flow-head">Stage 01 · 수집</div>
+      <div class="flow-items">
+        <div class="flow-item hi">커뮤니티 크롤링 24/7</div>
+        <div class="flow-item">게임·권역·커뮤니티별</div>
+        <div class="flow-item">게시글 원문 적재</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">Stage 02 · NLP</div>
+      <div class="flow-items">
+        <div class="flow-item hi">감성 3분류</div>
+        <div class="flow-item hi">버그 키워드 추출</div>
+        <div class="flow-item">노이즈/스팸 필터</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">Stage 03 · 토픽화</div>
+      <div class="flow-items">
+        <div class="flow-item hi">토픽 클러스터링</div>
+        <div class="flow-item">TOP5 선별</div>
+        <div class="flow-item">bullet 요약 + 인용 매핑</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">Stage 04 · 집계</div>
+      <div class="flow-items">
+        <div class="flow-item hi">긍정/부정/중립 비율</div>
+        <div class="flow-item">전주·전월 델타</div>
+        <div class="flow-item">버그 의심 카운트</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">Stage 05 · 표출</div>
+      <div class="flow-items">
+        <div class="flow-item hi">USER 탭 KPI·토픽</div>
+        <div class="flow-item">버그 제보 큐</div>
+        <div class="flow-item">트렌드·요약 목록</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>voice-worker + 헬스 모니터:</strong> 수집·분석은 주기 워커가 수행하고, 지연이 임계 초과하면 USER 탭에 "분석 지연 N분" 경고 배너로 데이터 신선도를 사용자에게 고지한다.
+  </div>
+</section>
+</div>
+
+<!-- 05 GLOSSARY -->
+<div class="wrap">
+<section id="glossary">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Appendix · Glossary</div>
+    <h2 class="sec-title">용어 사전</h2>
+    <p class="sec-desc">USER 탭 핵심 용어.</p>
+  </div>
+  <table class="compare-table">
+    <thead><tr><th>용어</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>User Voice (USER 탭)</td><td>통합 QA-Dashboard에서 유저 커뮤니티 반응을 NLP로 분석·표출하는 탭.</td></tr>
+      <tr><td>감성 3분류</td><td>게시글을 긍정/부정/중립으로 분류해 비율·건수로 집계.</td></tr>
+      <tr><td>버그 의심</td><td>NLP가 버그 관련 키워드로 분류한 게시글 수. 버그 제보 큐로 연결.</td></tr>
+      <tr><td>토픽 클러스터</td><td>유사 게시글을 묶은 주제 단위. TOP5를 게시글 수 기준으로 노출.</td></tr>
+      <tr><td>bullet 요약 + 인용</td><td>토픽별 핵심 쟁점 5개 + 각 항목 근거 게시글 번호([n]).</td></tr>
+      <tr><td>전주/전월 델타</td><td>주기 기준 직전 구간 대비 증감(%p / 건). 추세 파악용.</td></tr>
+      <tr><td>voice-worker</td><td>커뮤니티 수집·NLP 분석을 주기 실행하는 백그라운드 워커.</td></tr>
+      <tr><td>NLP 지연 경고</td><td>분석 지연이 임계 초과 시 데이터 비최신 상태를 알리는 상단 배너.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>출처:</strong> 비전 문서 "Service QA Command Center · 시스템 2 유저 동향 분석"의 운영 구현 = 통합 QA-Dashboard USER 탭. 본 문서는 해당 탭의 목적·가치·기능을 정리한다.
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<div class="wrap">
+<footer>
+  <div class="footer-l">User Voice · 통합 QA-Dashboard USER 탭 · 2026.06 · 저작: 김우주 (Woozi) · QA Ops Team</div>
+  <div class="footer-r">© 2026 QA Ops Team · Internal</div>
+</footer>
+</div>
+
+</body>
+</html>
