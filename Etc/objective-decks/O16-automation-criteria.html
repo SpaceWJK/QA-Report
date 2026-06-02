@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA 자동화 적용 기준(선정/제외) 표준화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:46px 7vw 60px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:28px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--wine);}
+.s-band .sec{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,42px);line-height:1.12;margin-bottom:18px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:17px;line-height:1.7;color:#3a342e;max-width:62ch;border-left:3px solid var(--wine);padding-left:18px;margin-bottom:24px;}
+p{margin-bottom:11px;color:#3a342e;max-width:74ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:16px 0 8px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:8px;}
+ul{list-style:none;margin:6px 0 14px;} li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+ol{margin:6px 0 14px 20px;} ol li{padding-left:4px;} ol li::before{content:none;}
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:13px;}
+th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:9px 11px;}
+th.acc{color:var(--wine);}
+td{padding:9px 11px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;}
+.card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;margin:12px 0;}
+.flow{display:flex;gap:0;border:1px solid var(--line);margin:14px 0;flex-wrap:wrap;overflow:hidden;}
+.flow .step{flex:1;min-width:110px;padding:11px 13px;border-right:1px solid var(--line);}
+.flow .step:last-child{border-right:none;}
+.flow .step .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;}
+.flow .step .t{font-size:13px;font-weight:600;margin-top:2px;}
+.flow .step .d{font-size:11px;color:var(--mute);margin-top:2px;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);margin-bottom:22px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,6vw,72px);line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:18px;color:var(--mute);max-width:54ch;margin-bottom:36px;}
+.cover .meta{display:flex;gap:36px;border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap;}
+.cover .meta .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:15px;font-weight:600;}
+.controls{height:60px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 22px;gap:16px;color:#cfc7bd;}
+.controls .ttl{font-size:12px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:15px;color:#efece6;min-width:62px;text-align:right;}
+.controls button{width:36px;height:36px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:16px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:70px;right:16px;font-size:11px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+
+add("Cover",`<div class="slide cover">
+  <div class="kick">SGP 퍼블리싱QA · AI 기반 QA 자동화</div>
+  <h1>QA 자동화<br><span class="it">적용 기준 표준화</span></h1>
+  <div class="sub">무엇을 자동화하고 무엇을 제외할지 기준을 표준화해, 팀 간 해석 차이와 대상 선정 리드타임을 줄인다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">AI 기반 통합 품질 자동화</div></div>
+    <div><div class="l">상세과제</div><div class="v">AI 기반 QA 자동화 공통 기반 구축</div></div>
+  </div>
+</div>`);
+
+add("과제 정의",`<div class="slide">
+  <div class="s-band"><span class="brand">AI 기반 QA 자동화</span><span class="sec">Definition</span></div>
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">무엇을 <em>자동화</em>할 것인가</h2>
+  <div class="lead">자동화 대상 판단이 팀·프로젝트마다 다르면 해석 충돌과 선정 지연이 생긴다. 적용/제외 기준을 표준화해 누구나 같은 결론에 도달하게 한다.</div>
+  <div class="cols">
+    <div><h3><span class="num">·</span>Key Result</h3>
+      <ul><li>자동화 적용 대상 선정 기준 문서화</li><li>프로젝트별 자동화 적용 기준 불일치 감소</li><li>자동화 대상 선정 리드타임 단축</li></ul></div>
+    <div><h3><span class="num">·</span>Initiative</h3>
+      <ul><li>자동화 적용 대상 선정 기준 및 우선순위 체계 정의</li></ul></div>
+  </div>
+</div>`);
+
+add("적용/제외",`<div class="slide">
+  <div class="s-band"><span class="brand">AI 기반 QA 자동화</span><span class="sec">In / Out</span></div>
+  <span class="eyebrow">자동화 적용 / 제외 기준</span>
+  <h2 class="title">선정과 <em>제외</em></h2>
+  <table>
+    <tr><th>적용 (자동화 대상)</th><th class="acc">제외 (자동화 부적합)</th></tr>
+    <tr><td>반복성 높음</td><td>UI·연출 변동 잦음</td></tr>
+    <tr><td>안정적 (결과 일관)</td><td>테스트 오라클 불명확</td></tr>
+    <tr><td>기대 효과 큼</td><td>데이터셋 고정 불가</td></tr>
+    <tr><td>실패 영향도 큼</td><td>탐색형·판단형 영역</td></tr>
+  </table>
+  <div class="card"><div class="k">EP7 PoC 실증 — 제외 사례</div>실제 결제 발생 필요 · 전투 승패 조작 불가(일관 결과 보장 불가) · 외부 연동 필요(설치/로그인 채널) · 특수 조건 세팅+게임 승리 요구 케이스.</div>
+  <div class="note">반복·정형(BVT 수준)은 자동화, 탐색·판단형은 QA 인력 집중. EP7 PoC에서 적용/제외 경계를 실증했다.</div>
+</div>`);
+
+add("우선순위",`<div class="slide">
+  <div class="s-band"><span class="brand">AI 기반 QA 자동화</span><span class="sec">Priority</span></div>
+  <span class="eyebrow">자동화 우선순위 판단 기준</span>
+  <h2 class="title">무엇부터 <em>자동화</em>하나</h2>
+  <table>
+    <tr><th>판단 축</th><th class="acc">의미</th></tr>
+    <tr><td>빈도</td><td>얼마나 자주 수행되는가 (반복 빈도 높을수록 우선)</td></tr>
+    <tr><td>리스크</td><td>실패 시 영향도 (클수록 우선)</td></tr>
+    <tr><td>안정성</td><td>스크립트 유지보수 가능성 (높을수록 우선)</td></tr>
+    <tr><td>비용</td><td>구현·운영 공수 (낮을수록 우선)</td></tr>
+  </table>
+  <div class="note">4개 축으로 후보를 평가해 우선순위를 정한다. 반복 BAT(로그인·상점 진입 등 고빈도) + 고리스크 + 안정 + 저비용 영역이 1순위.</div>
+</div>`);
+
+add("후보군 관리",`<div class="slide">
+  <div class="s-band"><span class="brand">AI 기반 QA 자동화</span><span class="sec">Lifecycle</span></div>
+  <span class="eyebrow">자동화 후보군 관리 방식</span>
+  <h2 class="title">후보에서 <em>운영</em>까지</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t">후보</div><div class="d">적용 기준 충족 영역 식별</div></div>
+    <div class="step"><div class="n">2</div><div class="t">PoC</div><div class="d">기술 검증·정확도 측정</div></div>
+    <div class="step"><div class="n">3</div><div class="t">운영 적용</div><div class="d">QA Gate 편입·정기 실행</div></div>
+    <div class="step"><div class="n">4</div><div class="t">유지 / 폐기</div><div class="d">효과·유지비 평가 후 결정</div></div>
+  </div>
+  <p>자동화 자산을 <strong>후보 → PoC → 운영 적용 → 유지/폐기</strong> 단계로 관리한다. 유지비 &gt; 효과이거나 UI·플로우 변동 과다 시 폐기 판단.</p>
+  <div class="note">EP7는 현재 PoC 단계(반복 실행 안정화·QA Gate 기준 정의)에서 운영 적용으로 이행 중.</div>
+</div>`);
+
+add("최소 셋",`<div class="slide">
+  <div class="s-band"><span class="brand">AI 기반 QA 자동화</span><span class="sec">Minimum Set</span></div>
+  <span class="eyebrow">신규 프로젝트 자동화 적용 최소 셋</span>
+  <h2 class="title">신규 프로젝트 <em>기본</em> 자동화</h2>
+  <table>
+    <tr><th>공통 필수 플로우</th><th class="acc">자동화 이유</th></tr>
+    <tr><td>로그인</td><td>모든 세션 진입 관문 · 고빈도 · 실패 영향도 큼</td></tr>
+    <tr><td>튜토리얼 / 초반 진행</td><td>신규 빌드마다 반복 검증 필요</td></tr>
+    <tr><td>상점 / 구매 진입</td><td>결제 핵심 플로우 진입 검증 (실결제 제외)</td></tr>
+  </table>
+  <div class="note">신규 프로젝트는 위 공통 필수 플로우를 자동화 최소 셋으로 우선 적용한다. 게임 무관 반복·고영향 영역이라 표준 진입점이 된다.</div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
