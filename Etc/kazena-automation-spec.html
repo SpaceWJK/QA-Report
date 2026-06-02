@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카제나 게임 테스트 자동화 시스템 — 설계 기획서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #ffffff;
+  --ink:      #1a1a1a;
+  --mute:     #888888;
+  --line:     #e8e6e0;
+  --surface:  #f7f6f2;
+  --accent:   #c8483a;
+  --accent-t: rgba(200,72,58,0.08);
+  --green:    #2d7a4f;
+  --green-t:  rgba(45,122,79,0.08);
+  --amber:    #b45309;
+  --amber-t:  rgba(180,83,9,0.08);
+  --blue:     #2563eb;
+  --blue-t:   rgba(37,99,235,0.08);
+
+  --font: 'Noto Sans KR', sans-serif;
+  --mono: 'Noto Sans Mono', monospace;
+  --serif: 'Noto Serif JP', serif;
+
+  --max: 1120px;
+  --gap: 48px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 40px;
+  gap: 32px;
+}
+.nav-brand {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  margin-right: 8px;
+}
+.nav-links { display: flex; gap: 24px; list-style: none; }
+.nav-links a {
+  font-size: 13px;
+  color: var(--mute);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-meta {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--mute);
+}
+
+/* ── LAYOUT ── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: none; }
+
+/* ── SECTION HEADER ── */
+.sec-head { margin-bottom: 52px; }
+.sec-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.sec-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.sec-desc {
+  font-size: 15px;
+  color: var(--mute);
+  max-width: 620px;
+  line-height: 1.75;
+}
+
+/* ── HERO ── */
+.hero { padding: 80px 0 72px; border-bottom: 1px solid var(--line); }
+.hero-kicker {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 28px;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+}
+.chip.red { border-color: var(--accent); color: var(--accent); background: var(--accent-t); }
+.chip .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+.hero-title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.hero-title em { font-style: normal; color: var(--accent); }
+.hero-sub {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--mute);
+  margin-bottom: 36px;
+  letter-spacing: 0.01em;
+}
+.hero-desc {
+  font-size: 15px;
+  color: #555;
+  max-width: 680px;
+  line-height: 1.85;
+  margin-bottom: 44px;
+}
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+}
+.hero-stat {
+  padding: 20px 24px;
+  border-right: 1px solid var(--line);
+}
+.hero-stat:last-child { border-right: none; }
+.hs-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+.hs-value { font-size: 18px; font-weight: 700; color: var(--ink); }
+.hs-sub { font-size: 12px; color: var(--mute); margin-top: 2px; }
+
+/* ── FLOW DIAGRAM ── */
+.flow-wrap {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+.flow-col { border-right: 1px solid var(--line); }
+.flow-col:last-child { border-right: none; }
+.flow-head {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.flow-items { padding: 4px 0; }
+.flow-item {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #555;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 7px;
+}
+.flow-item:last-child { border-bottom: none; }
+.flow-item::before { content: '·'; color: var(--line); font-size: 18px; line-height: 1; }
+.flow-item.hi { color: var(--ink); font-weight: 500; }
+.flow-item.hi::before { color: var(--accent); }
+
+/* ── TECH GRID ── */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.tech-card {
+  background: var(--bg);
+  padding: 28px 28px 24px;
+}
+.tc-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.tc-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.tc-desc { font-size: 13px; color: var(--mute); line-height: 1.65; }
+.pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.pill {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  color: var(--mute);
+}
+
+/* ── HYBRID BLOCK ── */
+.hybrid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  border: 1px solid var(--line);
+  margin-top: 40px;
+}
+.h-side { padding: 28px 28px 24px; }
+.h-center {
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 6px; background: var(--surface);
+}
+.h-arrow { font-size: 14px; color: var(--accent); font-weight: 700; }
+.h-proto {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--mute);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.h-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.h-title { font-size: 17px; font-weight: 700; margin-bottom: 14px; }
+.h-items { display: flex; flex-direction: column; gap: 5px; }
+.h-item { font-size: 13px; color: #555; display: flex; gap: 8px; }
+.h-item::before { content: '—'; color: var(--line); flex-shrink: 0; }
+
+/* ── TIMELINE ── */
+.timeline { padding-left: 44px; position: relative; }
+.timeline::before {
+  content: '';
+  position: absolute; left: 14px; top: 8px; bottom: 0;
+  width: 1px; background: var(--line);
+}
+.tl-step { position: relative; padding-bottom: 48px; }
+.tl-step:last-child { padding-bottom: 0; }
+.tl-step::before {
+  content: '';
+  position: absolute; left: -38px; top: 7px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--line); border: 2px solid var(--bg);
+}
+.tl-step.now::before { background: var(--accent); }
+.tl-step.done::before { background: var(--green); }
+.tl-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.tl-num {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 600;
+  color: var(--mute); letter-spacing: 0.1em;
+}
+.tl-title {
+  font-size: 20px; font-weight: 700;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+.tl-step.now .tl-title { color: var(--accent); }
+.tl-step.done .tl-title { color: var(--green); }
+.tl-body { font-size: 14px; color: var(--mute); line-height: 1.75; max-width: 640px; }
+.tl-list { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+.tl-item { font-size: 13px; color: #555; display: flex; gap: 10px; }
+.tl-item::before { content: '—'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+/* ── STATUS ── */
+.status-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--line); border: 1px solid var(--line);
+}
+.status-col { background: var(--bg); }
+.sc-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mute);
+  display: flex; align-items: center; gap: 8px;
+}
+.sc-head .dot-green { width:7px;height:7px;border-radius:50%;background:var(--green); }
+.sc-head .dot-amber { width:7px;height:7px;border-radius:50%;background:var(--amber); }
+.s-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  transition: background 0.12s;
+}
+.s-item:hover { background: var(--surface); }
+.s-item:last-child { border-bottom: none; }
+.s-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0;
+  font-weight: 700;
+}
+.s-check.done { background: var(--green-t); color: var(--green); }
+.s-check.wait { background: var(--surface); color: var(--line); border: 1px solid var(--line); }
+.s-name { flex: 1; }
+.s-name.done { color: var(--mute); text-decoration: line-through; text-decoration-color: var(--line); }
+
+/* ── UI SECTION ── */
+/* Full-page mockup style */
+.ui-page-wrap {
+  border: 1px solid var(--line);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.ui-page-title-bar {
+  padding: 12px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ui-page-name { font-size: 14px; font-weight: 700; }
+.ui-page-tag {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mute);
+}
+
+/* App chrome */
+.app-chrome { display: flex; height: 580px; }
+.app-sidebar {
+  width: 200px;
+  background: var(--ink);
+  border-right: 1px solid #2a2a2a;
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+}
+.app-sidebar-logo {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid #2a2a2a;
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.app-sidebar-section {
+  padding: 14px 0 6px;
+}
+.app-sidebar-label {
+  padding: 0 18px 6px;
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #555;
+}
+.app-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 18px;
+  font-size: 13px; color: #888;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.app-nav-item:hover { background: #222; color: #ccc; }
+.app-nav-item.active { background: #222; color: #fff; }
+.app-nav-icon {
+  width: 14px; height: 14px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+.app-nav-item.active .app-nav-icon { opacity: 0.9; }
+.app-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.app-topbar {
+  height: 48px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.app-breadcrumb { font-size: 13px; color: var(--mute); }
+.app-breadcrumb strong { color: var(--ink); font-weight: 600; }
+.app-topbar-right { display: flex; align-items: center; gap: 10px; }
+.app-content { flex: 1; padding: 24px; overflow-y: auto; background: var(--surface); }
+
+/* Content area elements */
+.mc-title {
+  font-size: 20px; font-weight: 700; margin-bottom: 4px;
+}
+.mc-sub { font-size: 13px; color: var(--mute); margin-bottom: 20px; }
+.mc-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+.mc-card-title {
+  font-size: 13px; font-weight: 700; margin-bottom: 10px; color: var(--ink);
+}
+.mc-field {
+  height: 34px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 0 12px;
+  display: flex; align-items: center;
+  font-size: 12px; color: var(--mute);
+  margin-bottom: 7px;
+}
+.mc-select {
+  height: 34px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 0 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+.mc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mc-btn {
+  height: 36px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; color: white;
+  margin-top: 4px; cursor: pointer;
+}
+.mc-btn.ghost {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--mute);
+}
+.mc-btn-row { display: flex; gap: 8px; }
+.mc-btn-row .mc-btn { flex: 1; }
+
+.mc-upload {
+  border: 1px dashed var(--line);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.mc-upload-text { font-size: 12px; color: var(--mute); }
+.mc-upload-hint { font-size: 11px; color: #bbb; margin-top: 3px; font-family: var(--mono); }
+
+.mc-tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.mc-tag {
+  font-family: var(--mono);
+  font-size: 10px; letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  color: var(--mute);
+}
+.mc-tag.on { border-color: var(--accent); color: var(--accent); background: var(--accent-t); }
+
+/* Live run */
+.mc-progress-bar-wrap {
+  height: 4px; background: var(--line); margin: 8px 0;
+}
+.mc-progress-bar { height: 100%; background: var(--accent); width: 38%; }
+.mc-prog-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--mute); margin-bottom: 4px; }
+.mc-log {
+  background: var(--ink);
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 10px; line-height: 1.9;
+  height: 90px; overflow: hidden;
+}
+.mc-log .ok { color: #4ade80; }
+.mc-log .info { color: #93c5fd; }
+.mc-log .warn { color: #fbbf24; }
+.mc-capture-row { display: flex; gap: 8px; margin-top: 10px; }
+.mc-capture {
+  flex: 1; height: 70px;
+  border: 1px solid var(--line);
+  background: #f0ede5;
+  display: flex; align-items: center; justify-content: center;
+}
+.mc-capture-label { font-family: var(--mono); font-size: 9px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Report */
+.mc-summary-row { display: flex; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 14px; }
+.mc-summary-col { flex: 1; background: var(--bg); padding: 12px; text-align: center; }
+.mc-summary-num { font-size: 22px; font-weight: 700; }
+.mc-summary-lbl { font-size: 10px; color: var(--mute); letter-spacing: 0.05em; font-family: var(--mono); }
+.mc-result-row {
+  display: grid; grid-template-columns: 60px 1fr auto;
+  align-items: center; gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.mc-result-row:last-child { border-bottom: none; }
+.mc-badge {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; letter-spacing: 0.04em;
+  text-align: center;
+}
+.mc-badge.pass { background: var(--green-t); color: var(--green); }
+.mc-badge.fail { background: var(--accent-t); color: var(--accent); }
+.mc-badge.skip { background: var(--amber-t); color: var(--amber); }
+.mc-attach { font-size: 11px; color: var(--mute); display: flex; gap: 5px; }
+
+/* Env check */
+.mc-env-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+.mc-env-row:last-child { border-bottom: none; }
+.mc-env-icon { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.mc-env-icon.ok { background: var(--green); }
+.mc-env-icon.warn { background: var(--amber); }
+.mc-env-val { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--mute); }
+
+/* Settings page */
+.mc-settings-grid { display: grid; grid-template-columns: 200px 1fr; gap: 16px; }
+.mc-settings-nav { border: 1px solid var(--line); padding: 8px 0; background: var(--bg); }
+.mc-settings-nav-item { padding: 10px 16px; font-size: 13px; color: var(--mute); border-left: 2px solid transparent; }
+.mc-settings-nav-item.active { color: var(--ink); font-weight: 600; border-left-color: var(--accent); background: var(--accent-t); }
+.mc-settings-body { border: 1px solid var(--line); padding: 18px 20px; background: var(--bg); }
+.mc-form-group { margin-bottom: 14px; }
+.mc-form-label { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+.mc-form-hint { font-size: 11px; color: var(--mute); margin-top: 3px; font-family: var(--mono); }
+
+/* ── COMPARE TABLE ── */
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+.compare-table th {
+  padding: 13px 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--mute);
+  font-weight: 600;
+}
+.compare-table th.col-acc { color: var(--accent); }
+.compare-table th:last-child { border-right: none; }
+.compare-table td {
+  padding: 13px 18px;
+  font-size: 13px; color: #555;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  vertical-align: top;
+}
+.compare-table td:first-child { color: var(--ink); font-weight: 500; font-size: 13px; }
+.compare-table td:last-child { border-right: none; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface); }
+.compare-table .win { color: var(--ink); font-weight: 500; }
+.compare-table .lose { color: #aaa; }
+
+.rec-box {
+  margin-top: 20px; padding: 20px 24px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-t);
+  font-size: 14px; color: #555; line-height: 1.75;
+}
+.rec-box strong { color: var(--ink); }
+
+/* ── TODO ── */
+.todo-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line); border: 1px solid var(--line);
+}
+.todo-col { background: var(--bg); }
+.todo-col-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.todo-col-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mute); margin-bottom: 4px;
+}
+.todo-col-title { font-size: 16px; font-weight: 700; }
+.todo-item {
+  display: flex; gap: 10px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--line);
+  align-items: flex-start;
+  transition: background 0.1s;
+}
+.todo-item:hover { background: var(--surface); }
+.todo-item:last-child { border-bottom: none; }
+.pri {
+  font-family: var(--mono);
+  font-size: 9px; font-weight: 700;
+  padding: 2px 5px; flex-shrink: 0; margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+.p0 { background: var(--accent-t); color: var(--accent); border: 1px solid var(--accent); }
+.p1 { background: var(--amber-t);  color: var(--amber);  border: 1px solid var(--amber); }
+.p2 { background: var(--blue-t);   color: var(--blue);   border: 1px solid var(--blue); }
+.todo-text { font-size: 13px; color: #555; line-height: 1.5; }
+.todo-text strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 1px; }
+
+/* ── RISK ── */
+.risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.risk-card { border: 1px solid var(--line); padding: 24px; }
+.risk-level {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.risk-level.high { color: var(--accent); }
+.risk-level.med  { color: var(--amber); }
+.risk-level.low  { color: var(--blue); }
+.risk-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.risk-desc { font-size: 13px; color: var(--mute); line-height: 1.65; }
+.risk-mit {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px; color: #999; line-height: 1.6;
+}
+.risk-mit strong { color: #555; font-weight: 500; }
+
+/* ── CALLOUT ── */
+.callout {
+  padding: 14px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-t);
+  margin: 20px 0;
+  font-size: 13px; color: #555; line-height: 1.65;
+}
+.callout strong { color: var(--ink); }
+
+/* ── BADGE ── */
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 600;
+  padding: 2px 8px; letter-spacing: 0.05em;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.badge.acc  { border-color: var(--accent); color: var(--accent); background: var(--accent-t); }
+.badge.grn  { border-color: var(--green);  color: var(--green);  background: var(--green-t); }
+.badge.amb  { border-color: var(--amber);  color: var(--amber);  background: var(--amber-t); }
+.badge.blu  { border-color: var(--blue);   color: var(--blue);   background: var(--blue-t); }
+.badge.neu  { border-color: var(--line);   color: var(--mute); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 40px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--line);
+}
+.footer-l { font-size: 13px; color: var(--mute); }
+.footer-r { font-family: var(--mono); font-size: 11px; color: #ccc; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .wrap { padding: 0 20px; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 36px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .hero-stat:nth-child(2) { border-right: none; }
+  .flow-wrap { grid-template-columns: 1fr; }
+  .flow-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .tech-grid { grid-template-columns: 1fr; }
+  .hybrid { grid-template-columns: 1fr; }
+  .h-center { border: none; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); height: 48px; flex-direction: row; }
+  .h-proto { writing-mode: horizontal-tb; transform: none; }
+  .status-grid { grid-template-columns: 1fr; }
+  .todo-grid { grid-template-columns: 1fr; }
+  .risk-grid { grid-template-columns: 1fr; }
+  .app-sidebar { width: 52px; }
+  .app-nav-item span { display: none; }
+  .app-sidebar-logo { font-size: 9px; padding: 14px 8px; }
+  .app-sidebar-label { display: none; }
+  .mc-settings-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Kazena Auto</div>
+  <ul class="nav-links">
+    <li><a href="#overview">개요</a></li>
+    <li><a href="#arch">아키텍처</a></li>
+    <li><a href="#impl">구현순서</a></li>
+    <li><a href="#ui">사용자 UI</a></li>
+    <li><a href="#status">현황</a></li>
+    <li><a href="#deploy">배포</a></li>
+    <li><a href="#todo">TODO</a></li>
+    <li><a href="#risk">리스크</a></li>
+  </ul>
+  <div class="nav-meta">Ver 0.1 · 2026.05.15</div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+<div class="hero" id="overview">
+  <div class="hero-kicker">
+    <div class="chip red"><span class="dot"></span>WIP</div>
+    <div class="chip">PC Game QA</div>
+    <div class="chip">Python / pyautogui</div>
+    <div class="chip">BVT Automation</div>
+  </div>
+  <h1 class="hero-title">카제나<br><em>테스트 자동화</em></h1>
+  <p class="hero-sub">Game QA Automation System — 설계 기획서</p>
+  <p class="hero-desc">
+    스토브 런처에서 카제나 게임을 자동 실행하고, 화면 인식 기반으로 BVT(빌드 검증 테스트)를 수행하여 결과 리포트를 자동 산출하는 시스템.
+    다수의 QA 담당자가 각자의 PC에서 동일한 자동화 환경을 실행할 수 있는 범용 구조를 목표로 한다.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-label">프로젝트 목표</div>
+      <div class="hs-value">빌드 안정성 자동화</div>
+      <div class="hs-sub">로그인 · 로비 · 결제 · 구출 BVT</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">개발 인원</div>
+      <div class="hs-value" style="color:var(--accent)">약 3명</div>
+      <div class="hs-sub">다수 QA 담당자 각자 PC 실행</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">PoC 상태</div>
+      <div class="hs-value">런처→게임 완료</div>
+      <div class="hs-sub">하드코딩 · 화면인식 · 스크린샷</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">1차 목표</div>
+      <div class="hs-value">로그인 + BVT</div>
+      <div class="hs-sub">사전 지식 베이스 구축 선행</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ARCH -->
+<div class="wrap">
+<section id="arch">
+  <div class="sec-head">
+    <div class="sec-eyebrow">01 · System Architecture</div>
+    <h2 class="sec-title">시스템 구조</h2>
+    <p class="sec-desc">전체 자동화 흐름과 컴포넌트 구성. 로컬 에이전트 + 중앙 웹 대시보드 하이브리드 구조를 권장한다.</p>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">실행 흐름 (End-to-End)</div>
+  <div class="flow-wrap">
+    <div class="flow-col">
+      <div class="flow-head">사용자 UI</div>
+      <div class="flow-items">
+        <div class="flow-item hi">브랜치(채널) 선택</div>
+        <div class="flow-item hi">TC 파일 업로드</div>
+        <div class="flow-item hi">테스트 계정 입력</div>
+        <div class="flow-item">실행 트리거</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">런처 제어</div>
+      <div class="flow-items">
+        <div class="flow-item hi">스토브 런처 실행</div>
+        <div class="flow-item hi">브랜치 채널 선택</div>
+        <div class="flow-item">카제나 실행</div>
+        <div class="flow-item">게임창 핸들 인식</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">TC 실행 엔진</div>
+      <div class="flow-items">
+        <div class="flow-item">엑셀 TC → IR 변환</div>
+        <div class="flow-item">사전 지식 베이스 룩업</div>
+        <div class="flow-item">Action / Verify</div>
+        <div class="flow-item">스텝 오케스트레이터</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">화면 인식</div>
+      <div class="flow-items">
+        <div class="flow-item hi">텍스트 탐지 (OCR)</div>
+        <div class="flow-item hi">아이콘 탐지</div>
+        <div class="flow-item hi">이미지 fallback</div>
+        <div class="flow-item">pyautogui 제어</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">결과 산출</div>
+      <div class="flow-items">
+        <div class="flow-item">실패 스크린샷</div>
+        <div class="flow-item">영상 클립 (±10초)</div>
+        <div class="flow-item">TC 리포트 생성</div>
+        <div class="flow-item">히스토리 저장</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin:32px 0 12px;">권장 배포 구조</div>
+  <div class="hybrid">
+    <div class="h-side">
+      <div class="h-label">Local Agent (exe)</div>
+      <div class="h-title">로컬 에이전트</div>
+      <div class="h-items">
+        <div class="h-item">게임/런처 직접 제어 (pyautogui native)</div>
+        <div class="h-item">브랜치 선택 + 화면 인식 실행</div>
+        <div class="h-item">동영상 녹화 + 스크린샷 캡처</div>
+        <div class="h-item">결과 데이터 서버 업로드</div>
+        <div class="h-item">PyInstaller .exe 트레이앱 형태</div>
+      </div>
+    </div>
+    <div class="h-center">
+      <div class="h-arrow">→</div>
+      <div class="h-proto">HTTP API</div>
+      <div class="h-arrow">←</div>
+    </div>
+    <div class="h-side">
+      <div class="h-label">Web Dashboard</div>
+      <div class="h-title">중앙 웹 대시보드</div>
+      <div class="h-items">
+        <div class="h-item">TC 관리 + 업로드 인터페이스</div>
+        <div class="h-item">사전 지식 베이스 편집</div>
+        <div class="h-item">실행 트리거 + 진행 모니터링</div>
+        <div class="h-item">결과 리포트 + 히스토리</div>
+        <div class="h-item">다수 PC 결과 중앙 취합</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin:32px 0 12px;">기술 스택</div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">Core Engine</div>
+      <div class="tc-title">자동화 엔진</div>
+      <div class="tc-desc">pyautogui 기반 마우스/키보드/스크린샷 제어. 텍스트·아이콘 탐지 우선, 실패 시 저장 이미지 fallback 방식으로 좌표 하드코딩 없이 동작.</div>
+      <div class="pills">
+        <div class="pill">Python 3.x</div>
+        <div class="pill">pyautogui</div>
+        <div class="pill">OpenCV</div>
+        <div class="pill">Tesseract / PaddleOCR</div>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Data Layer</div>
+      <div class="tc-title">사전 지식 베이스 (KB)</div>
+      <div class="tc-desc">카제나 인게임 요소(아이콘·화면·액션·검증)를 로컬 DB에 구조화하여 저장. TC가 이 베이스를 룩업하여 화면 탐지 대상과 행동 방식을 결정한다.</div>
+      <div class="pills">
+        <div class="pill">SQLite</div>
+        <div class="pill">openpyxl</div>
+        <div class="pill">pandas</div>
+      </div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Recording · Report</div>
+      <div class="tc-title">녹화 · 리포트</div>
+      <div class="tc-desc">TC 1건 수행마다 전 과정 녹화. 실패 시 ±10초 클립과 스크린샷 자동 보존. HTML/PDF 형식의 최종 테스트 결과 리포트 자동 생성.</div>
+      <div class="pills">
+        <div class="pill">MSS / PIL</div>
+        <div class="pill">ffmpeg</div>
+        <div class="pill">Jinja2</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- IMPL ORDER -->
+<div class="wrap">
+<section id="impl">
+  <div class="sec-head">
+    <div class="sec-eyebrow">02 · Implementation Roadmap</div>
+    <h2 class="sec-title">구현 순서</h2>
+    <p class="sec-desc">의존성 root부터 순차 구현. 사전 지식 베이스 스키마가 모든 후속 컴포넌트의 전제조건이다.</p>
+  </div>
+  <div class="callout">
+    <strong>원칙:</strong> "보이는 것부터"가 아닌 "의존성 root부터". 사전 지식 베이스 스키마 없이 TC 엔진을 먼저 만들면 재작업 확정. 에픽세븐 베이스를 카제나로 이식하는 작업이 critical path 최상단.
+  </div>
+  <div class="timeline">
+    <div class="tl-step now">
+      <div class="tl-head">
+        <span class="tl-num">STEP 01</span>
+        <span class="tl-title">사전 지식 베이스 스키마 정의</span>
+        <span class="badge acc">P0 · 최우선</span>
+      </div>
+      <p class="tl-body">에픽세븐 사전 지식 베이스 구조를 카제나로 이식. TC 실행 엔진·인식 파이프라인·리포트 모두 이 스키마에 의존하므로 최우선 확정 필요. <strong>사전 지식 베이스(KB, Knowledge Base)</strong>란 AI가 게임 화면을 인식할 때 참조하는 인게임 요소 데이터셋이다.</p>
+      <div class="tl-list">
+        <div class="tl-item">UI 요소 테이블 — 아이콘 명칭, 버튼 텍스트, 일러스트 ID 정의</div>
+        <div class="tl-item">화면 테이블 — 로비, 전투, 상점, 설정 등 화면 ID</div>
+        <div class="tl-item">액션 테이블 — 클릭, 입력, 스와이프, 대기 타입 정의</div>
+        <div class="tl-item">검증 테이블 — 화면 진입 확인, 텍스트 존재, 재화 증감 조건</div>
+        <div class="tl-item">캐릭터/재화 분류 — 전투원·파트너 분리, 재화 소모처 정의</div>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head">
+        <span class="tl-num">STEP 02</span>
+        <span class="tl-title">브랜치(채널) 선택 구현</span>
+        <span class="badge acc">P0</span>
+      </div>
+      <p class="tl-body"><strong>브랜치 = 스토브 런처에서 접속할 서버 환경(Dev / QA / Stage 등)을 선택하는 채널.</strong> 게임 접속 전 런처에서 어느 서버로 접속할지 선택하는 단계로, 테스트 수행 전 가장 먼저 실행되어야 한다.</p>
+      <div class="tl-list">
+        <div class="tl-item">런처 실행 → 브랜치 선택 UI 화면 탐지</div>
+        <div class="tl-item">pyautogui로 해당 브랜치 선택 및 게임 실행 자동화</div>
+        <div class="tl-item">브랜치 식별 방식 결정 (텍스트 탐지 / UI / 런처 설정파일)</div>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head">
+        <span class="tl-num">STEP 03</span>
+        <span class="tl-title">TC 실행 엔진 구현</span>
+        <span class="badge acc">P0</span>
+      </div>
+      <p class="tl-body">엑셀 TC를 파싱하여 사전 지식 베이스를 룩업하며 시나리오를 순차 실행하는 핵심 엔진. Action/Verify 추상 레이어로 pyautogui 직접 의존성 캡슐화.</p>
+      <div class="tl-list">
+        <div class="tl-item">TC DSL 정의 — 스텝 문법 (Action / Verify / Wait / Capture)</div>
+        <div class="tl-item">엑셀 파서 — 사용자 업로드 TC → 내부 스텝 IR 변환</div>
+        <div class="tl-item">인식 파이프라인 — 텍스트→아이콘→이미지 순서로 탐지</div>
+        <div class="tl-item">실행 상태머신 — Idle / Running / Paused / Failed / Aborted</div>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head">
+        <span class="tl-num">STEP 04</span>
+        <span class="tl-title">BVT 시나리오 1개 end-to-end</span>
+        <span class="badge amb">P1</span>
+      </div>
+      <p class="tl-body">로그인 → 로비 진입을 최소 시나리오로 전체 파이프라인 연결 검증. 성공 후 결제·구출 등 시나리오 확장.</p>
+      <div class="tl-list">
+        <div class="tl-item">로그인 시나리오 — ID/PW 입력 → 서버 선택 → 로비 진입 확인</div>
+        <div class="tl-item">실패 캡처 — 스텝 실패 시 스크린샷 + 영상 클립 자동 저장</div>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head">
+        <span class="tl-num">STEP 05</span>
+        <span class="tl-title">리포트 산출 + 사용자 UI</span>
+        <span class="badge amb">P1</span>
+      </div>
+      <p class="tl-body">TC ID 매핑 결과 리포트 HTML/PDF 생성. 사용자가 테스트를 설정하고 실행하며 결과를 확인하는 웹 인터페이스 구축.</p>
+      <div class="tl-list">
+        <div class="tl-item">리포트 — PASS/FAIL/SKIP 요약 + 실패 스크린샷 + 영상 클립 링크</div>
+        <div class="tl-item">웹 UI — 설정 / 실행 / 결과 3개 주요 화면</div>
+        <div class="tl-item">환경 진단 — 해상도/DPI/관리자권한/카제나 설치경로 자동 체크</div>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head">
+        <span class="tl-num">STEP 06</span>
+        <span class="tl-title">배포 + 히스토리 관리</span>
+        <span class="badge blu">P2</span>
+      </div>
+      <p class="tl-body">다수 PC 배포 파이프라인 (PyInstaller + auto-update). 테스트 히스토리 DB 및 전 빌드 대비 회귀 비교.</p>
+      <div class="tl-list">
+        <div class="tl-item">PyInstaller .exe 빌드 + 자동 업데이트 메커니즘</div>
+        <div class="tl-item">히스토리 DB + 빌드간 회귀 비교 뷰</div>
+        <div class="tl-item">사전 지식 베이스 관리 — QA 직접 편집/갱신 인터페이스</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- UI SECTION -->
+<div class="wrap">
+<section id="ui">
+  <div class="sec-head">
+    <div class="sec-eyebrow">03 · User Interface Design</div>
+    <h2 class="sec-title">사용자 UI / UX 설계</h2>
+    <p class="sec-desc">좌측 사이드바 네비게이션 + 우측 콘텐츠 영역의 웹 애플리케이션 구조. 브랜치 선택 → TC 업로드 → 실행 → 결과 확인의 4단계 주요 화면.</p>
+  </div>
+
+  <!-- SCREEN 0: Test Setup -->
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px;">화면 A — 테스트 설정 (브랜치 선택 + TC 업로드)</div>
+  <div class="ui-page-wrap">
+    <div class="ui-page-title-bar">
+      <div class="ui-page-name">테스트 설정 페이지</div>
+      <div class="ui-page-tag">Screen / 01</div>
+    </div>
+    <div class="app-chrome">
+      <div class="app-sidebar">
+        <div class="app-sidebar-logo">KAZENA AUTO</div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">테스트</div>
+          <div class="app-nav-item active"><div class="app-nav-icon"></div><span>테스트 설정</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>실행 모니터</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>결과 리포트</span></div>
+        </div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">관리</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>지식 베이스</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>히스토리</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>설정</span></div>
+        </div>
+      </div>
+      <div class="app-main">
+        <div class="app-topbar">
+          <div class="app-breadcrumb">테스트 설정 <strong>/ 새 테스트 실행</strong></div>
+          <div class="app-topbar-right">
+            <div class="badge grn">에이전트 연결됨</div>
+          </div>
+        </div>
+        <div class="app-content">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <!-- LEFT COL -->
+            <div>
+              <div class="mc-card">
+                <div class="mc-card-title">① 브랜치 선택 <span style="font-weight:400;color:var(--mute);font-size:11px;">(런처 채널 — 접속 서버 환경)</span></div>
+                <div class="mc-select">Dev Server (개발) <span>▾</span></div>
+                <div style="font-size:11px;color:var(--mute);font-family:var(--mono);">Dev · QA · Stage · Live 선택 가능</div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">② 테스트 계정</div>
+                <div class="mc-field">ID &nbsp;<span style="color:#bbb;">test_account_01@...</span></div>
+                <div class="mc-field">PW &nbsp;<span style="color:#bbb;">••••••••</span></div>
+                <div style="font-size:11px;color:var(--mute);font-family:var(--mono);margin-top:4px;">Windows Credential Manager 암호화 저장</div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">⑤ 환경 진단</div>
+                <div class="mc-env-row"><div class="mc-env-icon ok"></div><span style="font-size:12px;">해상도 확인</span><div class="mc-env-val">1920×1080 / 100%</div></div>
+                <div class="mc-env-row"><div class="mc-env-icon ok"></div><span style="font-size:12px;">카제나 설치 확인</span><div class="mc-env-val">C:\Games\Kazena</div></div>
+                <div class="mc-env-row"><div class="mc-env-icon ok"></div><span style="font-size:12px;">스토브 런처 확인</span><div class="mc-env-val">v3.2.1</div></div>
+                <div class="mc-env-row"><div class="mc-env-icon warn"></div><span style="font-size:12px;color:var(--amber);">관리자 권한 미확인</span><div class="mc-env-val" style="color:var(--amber);">재실행 권장</div></div>
+              </div>
+            </div>
+            <!-- RIGHT COL -->
+            <div>
+              <div class="mc-card">
+                <div class="mc-card-title">③ TC 파일 업로드</div>
+                <div class="mc-upload">
+                  <div class="mc-upload-text">.xlsx 파일을 드래그하거나 클릭하여 업로드</div>
+                  <div class="mc-upload-hint">BVT_카제나_20260515.xlsx 업로드됨 (32 TC)</div>
+                </div>
+                <div class="mc-card-title" style="margin-top:10px;">④ TC 필터 선택</div>
+                <div class="mc-tag-row">
+                  <div class="mc-tag on">BVT (8)</div>
+                  <div class="mc-tag">Smoke (12)</div>
+                  <div class="mc-tag">로그인 (4)</div>
+                  <div class="mc-tag">결제 (3)</div>
+                  <div class="mc-tag">구출 (5)</div>
+                </div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">⑥ 녹화 및 실행 옵션</div>
+                <div class="mc-select">녹화 정책: 실패 ±10초 클립 (권장) <span>▾</span></div>
+                <div class="mc-select">실패 재시도: 1회 <span>▾</span></div>
+                <div class="mc-select">실행 모드: 순차 실행 <span>▾</span></div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-btn">▶ &nbsp; 테스트 실행</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: Live Run -->
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px;margin-top:32px;">화면 B — 실행 모니터 (라이브 실행)</div>
+  <div class="ui-page-wrap">
+    <div class="ui-page-title-bar">
+      <div class="ui-page-name">실행 모니터</div>
+      <div class="ui-page-tag">Screen / 02</div>
+    </div>
+    <div class="app-chrome">
+      <div class="app-sidebar">
+        <div class="app-sidebar-logo">KAZENA AUTO</div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">테스트</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>테스트 설정</span></div>
+          <div class="app-nav-item active"><div class="app-nav-icon"></div><span>실행 모니터</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>결과 리포트</span></div>
+        </div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">관리</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>지식 베이스</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>히스토리</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>설정</span></div>
+        </div>
+      </div>
+      <div class="app-main">
+        <div class="app-topbar">
+          <div class="app-breadcrumb">실행 모니터 <strong>/ BVT_카제나_20260515 · Dev Server</strong></div>
+          <div class="app-topbar-right">
+            <div class="badge acc">실행 중</div>
+          </div>
+        </div>
+        <div class="app-content">
+          <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:12px;">
+            <!-- LEFT -->
+            <div>
+              <div class="mc-card">
+                <div class="mc-card-title">전체 진행 현황</div>
+                <div class="mc-prog-row">
+                  <span>TC-007 / 32</span>
+                  <span style="font-family:var(--mono);font-size:11px;">경과 00:04:32 / 예상 00:18:00</span>
+                </div>
+                <div class="mc-progress-bar-wrap"><div class="mc-progress-bar"></div></div>
+                <div style="font-size:12px;color:var(--mute);margin-top:6px;">현재 실행: 로비 진입 확인 중...</div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">현재 TC 상태</div>
+                <div style="font-size:13px;font-weight:600;margin-bottom:6px;">TC-007 · 로비 진입 확인</div>
+                <div style="font-size:12px;color:var(--mute);margin-bottom:2px;">스텝 3 / 5 진행 중</div>
+                <div style="font-size:12px;color:var(--mute);">탐지 대상: <span style="font-family:var(--mono);color:var(--ink);">lobby_icon</span></div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">제어</div>
+                <div class="mc-btn-row">
+                  <div class="mc-btn ghost">⏸ 일시정지</div>
+                  <div class="mc-btn ghost">⏭ TC 스킵</div>
+                  <div class="mc-btn" style="background:#b91c1c;">■ 중단</div>
+                </div>
+              </div>
+            </div>
+            <!-- RIGHT -->
+            <div>
+              <div class="mc-card">
+                <div class="mc-card-title">실시간 로그</div>
+                <div class="mc-log">
+                  <div class="ok">[04:28]&nbsp;TC-006 로그인 → PASS ✓</div>
+                  <div class="info">[04:31]&nbsp;TC-007 로비 진입 시작</div>
+                  <div class="info">[04:32]&nbsp;화면 탐지: "lobby_icon" 발견</div>
+                  <div class="ok">[04:33]&nbsp;로비 진입 확인 → PASS ✓</div>
+                  <div class="warn">[04:34]&nbsp;TC-008 시작 — 이미지 fallback 사용</div>
+                </div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">현재 화면 캡처 (라이브)</div>
+                <div class="mc-capture-row">
+                  <div class="mc-capture"><div class="mc-capture-label">Live Capture</div></div>
+                  <div style="display:flex;flex-direction:column;gap:4px;width:80px;flex-shrink:0;">
+                    <div class="mc-capture" style="height:32px;"><div class="mc-capture-label" style="font-size:8px;">TC-005</div></div>
+                    <div class="mc-capture" style="height:32px;background:#f5e8e8;"><div class="mc-capture-label" style="font-size:8px;color:var(--accent);">FAIL</div></div>
+                    <div class="mc-capture" style="height:32px;"><div class="mc-capture-label" style="font-size:8px;">TC-007</div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">누적 결과</div>
+                <div class="mc-summary-row" style="border:none;background:none;padding:0;gap:12px;display:flex;margin-bottom:0;">
+                  <div style="text-align:center;flex:1;border:1px solid var(--line);padding:8px 0;">
+                    <div class="mc-summary-num" style="color:var(--green);">5</div>
+                    <div class="mc-summary-lbl">PASS</div>
+                  </div>
+                  <div style="text-align:center;flex:1;border:1px solid var(--line);padding:8px 0;">
+                    <div class="mc-summary-num" style="color:var(--accent);">1</div>
+                    <div class="mc-summary-lbl">FAIL</div>
+                  </div>
+                  <div style="text-align:center;flex:1;border:1px solid var(--line);padding:8px 0;">
+                    <div class="mc-summary-num" style="color:var(--amber);">1</div>
+                    <div class="mc-summary-lbl">SKIP</div>
+                  </div>
+                  <div style="text-align:center;flex:1;border:1px solid var(--line);padding:8px 0;">
+                    <div class="mc-summary-num" style="font-size:16px;">25</div>
+                    <div class="mc-summary-lbl">대기</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Report -->
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px;margin-top:32px;">화면 C — 결과 리포트</div>
+  <div class="ui-page-wrap">
+    <div class="ui-page-title-bar">
+      <div class="ui-page-name">결과 리포트</div>
+      <div class="ui-page-tag">Screen / 03</div>
+    </div>
+    <div class="app-chrome">
+      <div class="app-sidebar">
+        <div class="app-sidebar-logo">KAZENA AUTO</div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">테스트</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>테스트 설정</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>실행 모니터</span></div>
+          <div class="app-nav-item active"><div class="app-nav-icon"></div><span>결과 리포트</span></div>
+        </div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">관리</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>지식 베이스</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>히스토리</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>설정</span></div>
+        </div>
+      </div>
+      <div class="app-main">
+        <div class="app-topbar">
+          <div class="app-breadcrumb">결과 리포트 <strong>/ BVT_카제나_20260515 · 2026.05.15 15:42</strong></div>
+          <div class="app-topbar-right">
+            <div class="mc-btn" style="height:28px;padding:0 12px;font-size:12px;display:flex;align-items:center;">리포트 다운로드</div>
+          </div>
+        </div>
+        <div class="app-content">
+          <div class="mc-summary-row">
+            <div class="mc-summary-col"><div class="mc-summary-num" style="color:var(--green);">24</div><div class="mc-summary-lbl">PASS</div></div>
+            <div class="mc-summary-col"><div class="mc-summary-num" style="color:var(--accent);">5</div><div class="mc-summary-lbl">FAIL</div></div>
+            <div class="mc-summary-col"><div class="mc-summary-num" style="color:var(--amber);">3</div><div class="mc-summary-lbl">SKIP</div></div>
+            <div class="mc-summary-col"><div class="mc-summary-num" style="font-family:var(--mono);font-size:16px;">18:24</div><div class="mc-summary-lbl">총 소요</div></div>
+            <div class="mc-summary-col"><div class="mc-summary-num" style="font-size:16px;">75%</div><div class="mc-summary-lbl">성공률</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="mc-card">
+              <div class="mc-card-title">TC 결과 목록</div>
+              <div class="mc-result-row"><div class="mc-badge pass">PASS</div><div>TC-001 · 로그인 정상 진입</div><div style="font-family:var(--mono);font-size:10px;color:var(--mute);">00:23</div></div>
+              <div class="mc-result-row"><div class="mc-badge fail">FAIL</div><div>TC-005 · 구출 전투 진입</div><div class="mc-attach">📷 🎬</div></div>
+              <div class="mc-result-row"><div class="mc-badge pass">PASS</div><div>TC-006 · 우편함 재화 수령</div><div style="font-family:var(--mono);font-size:10px;color:var(--mute);">00:41</div></div>
+              <div class="mc-result-row"><div class="mc-badge skip">SKIP</div><div>TC-029 · 결제 (샌드박스)</div><div style="font-family:var(--mono);font-size:10px;color:var(--mute);">—</div></div>
+              <div class="mc-result-row"><div class="mc-badge pass">PASS</div><div>TC-030 · 길드 미션 수행</div><div style="font-family:var(--mono);font-size:10px;color:var(--mute);">01:02</div></div>
+            </div>
+            <div>
+              <div class="mc-card">
+                <div class="mc-card-title">실패 케이스 — TC-005 상세</div>
+                <div style="font-size:12px;color:var(--mute);margin-bottom:8px;">스텝 3에서 실패 · 탐지 실패 (battle_enter_btn)</div>
+                <div class="mc-capture-row">
+                  <div class="mc-capture" style="background:#fdf2f2;height:80px;"><div class="mc-capture-label" style="color:var(--accent);">실패 스크린샷</div></div>
+                  <div class="mc-capture" style="height:80px;"><div class="mc-capture-label">영상 클립 (-10s)</div></div>
+                </div>
+                <div style="font-size:11px;color:var(--mute);margin-top:8px;font-family:var(--mono);">실패 분류: DETECTION_FAIL · 이미지 fallback도 미탐지</div>
+              </div>
+              <div class="mc-card">
+                <div class="mc-card-title">환경 정보 (Fingerprint)</div>
+                <div style="font-size:12px;color:var(--mute);display:flex;flex-direction:column;gap:4px;">
+                  <div style="display:flex;justify-content:space-between;"><span>브랜치</span><span style="font-family:var(--mono);">Dev Server</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>해상도</span><span style="font-family:var(--mono);">1920×1080</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>GPU 드라이버</span><span style="font-family:var(--mono);">27.21.14.5671</span></div>
+                  <div style="display:flex;justify-content:space-between;"><span>카제나 빌드</span><span style="font-family:var(--mono);">v2.4.1-dev-231</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Settings / KB -->
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px;margin-top:32px;">화면 D — 사전 지식 베이스 관리</div>
+  <div class="ui-page-wrap">
+    <div class="ui-page-title-bar">
+      <div class="ui-page-name">사전 지식 베이스 (Knowledge Base) 관리</div>
+      <div class="ui-page-tag">Screen / 04</div>
+    </div>
+    <div class="app-chrome">
+      <div class="app-sidebar">
+        <div class="app-sidebar-logo">KAZENA AUTO</div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">테스트</div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>테스트 설정</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>실행 모니터</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>결과 리포트</span></div>
+        </div>
+        <div class="app-sidebar-section">
+          <div class="app-sidebar-label">관리</div>
+          <div class="app-nav-item active"><div class="app-nav-icon"></div><span>지식 베이스</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>히스토리</span></div>
+          <div class="app-nav-item"><div class="app-nav-icon"></div><span>설정</span></div>
+        </div>
+      </div>
+      <div class="app-main">
+        <div class="app-topbar">
+          <div class="app-breadcrumb">사전 지식 베이스 <strong>/ 아이콘 · 화면 · 액션 정의</strong></div>
+          <div class="app-topbar-right">
+            <div class="mc-btn" style="height:28px;padding:0 12px;font-size:12px;display:flex;align-items:center;">+ 항목 추가</div>
+          </div>
+        </div>
+        <div class="app-content">
+          <div class="mc-settings-grid">
+            <div class="mc-settings-nav">
+              <div class="mc-settings-nav-item active">UI 요소 (아이콘 / 텍스트)</div>
+              <div class="mc-settings-nav-item">화면 (Screen)</div>
+              <div class="mc-settings-nav-item">액션 (Action)</div>
+              <div class="mc-settings-nav-item">검증 조건 (Verify)</div>
+              <div class="mc-settings-nav-item">캐릭터 / 재화</div>
+            </div>
+            <div class="mc-settings-body">
+              <div class="mc-card-title" style="font-size:16px;margin-bottom:14px;">UI 요소 목록 — 아이콘 / 텍스트 탐지 대상</div>
+              <div style="font-size:12px;color:var(--mute);font-family:var(--mono);margin-bottom:10px;">AI가 화면에서 탐지할 요소의 명칭, 탐지 방식, 이미지 파일을 등록·관리한다.</div>
+              <!-- Table header -->
+              <div style="display:grid;grid-template-columns:140px 80px 80px 1fr auto;gap:8px;padding:8px 0;border-bottom:2px solid var(--ink);font-size:11px;font-weight:700;font-family:var(--mono);letter-spacing:0.05em;text-transform:uppercase;color:var(--mute);">
+                <span>요소 ID</span><span>탐지 방식</span><span>화면</span><span>이미지 파일</span><span>상태</span>
+              </div>
+              <div style="display:grid;grid-template-columns:140px 80px 80px 1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;align-items:center;">
+                <span style="font-family:var(--mono);">lobby_icon</span><span style="color:var(--mute);">텍스트</span><span style="color:var(--mute);">로비</span><span style="color:var(--mute);">—</span><div class="mc-badge pass" style="font-size:9px;">정상</div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px 80px 80px 1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;align-items:center;">
+                <span style="font-family:var(--mono);">battle_enter_btn</span><span style="color:var(--mute);">이미지</span><span style="color:var(--mute);">전투</span><span style="color:var(--mute);">battle_enter_v2.png</span><div class="mc-badge fail" style="font-size:9px;">갱신 필요</div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px 80px 80px 1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;align-items:center;">
+                <span style="font-family:var(--mono);">shop_tab</span><span style="color:var(--mute);">아이콘</span><span style="color:var(--mute);">상점</span><span style="color:var(--mute);">shop_icon.png</span><div class="mc-badge pass" style="font-size:9px;">정상</div>
+              </div>
+              <div style="display:grid;grid-template-columns:140px 80px 80px 1fr auto;gap:8px;padding:10px 0;font-size:12px;align-items:center;">
+                <span style="font-family:var(--mono);">mail_icon</span><span style="color:var(--mute);">아이콘</span><span style="color:var(--mute);">메인</span><span style="color:var(--mute);">mail_icon.png</span><div class="mc-badge pass" style="font-size:9px;">정상</div>
+              </div>
+              <div style="margin-top:14px;padding:10px 12px;background:var(--amber-t);border-left:3px solid var(--amber);font-size:12px;color:var(--amber);">
+                <strong>1개 항목 갱신 필요</strong> — battle_enter_btn 이미지가 게임 업데이트 후 변경되었습니다.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional QA features note -->
+  <div style="margin-top:32px;">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">QA 관점 추가 기능 제안</div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tc-label">재현 모드</div>
+        <div class="tc-title">실패 TC 재실행</div>
+        <div class="tc-desc">이전 결과에서 FAIL TC만 선택해 재실행. 수정 후 회귀 확인 시 활용. 테스트 설정 화면에서 "이전 실패 TC만" 옵션으로 접근.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-label">환경 Fingerprint</div>
+        <div class="tc-title">PC 환경 자동 기록</div>
+        <div class="tc-desc">GPU 드라이버, OS 빌드, 해상도를 결과와 함께 저장. 환경에 따른 재현 버그 추적에 필수. 리포트 화면에 자동 포함.</div>
+      </div>
+      <div class="tech-card">
+        <div class="tc-label">보안</div>
+        <div class="tc-title">시크릿 자동 마스킹</div>
+        <div class="tc-desc">로그 및 스크린샷에 ID/PW 자동 블러. 결제 TC는 반드시 샌드박스 환경만 사용. 실결제 계정 접근 경로 코드 레벨 차단.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- STATUS -->
+<div class="wrap">
+<section id="status">
+  <div class="sec-head">
+    <div class="sec-eyebrow">04 · Implementation Status</div>
+    <h2 class="sec-title">구현 현황</h2>
+  </div>
+  <div style="margin:0 0 28px;padding:20px 24px;border:1px solid var(--line);border-radius:12px;background:var(--surface);">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+      <span style="font-size:13px;font-weight:600;letter-spacing:.04em;">전체 진행율</span>
+      <span style="font-size:24px;font-weight:700;color:var(--accent);">10<span style="font-size:14px;">%</span></span>
+    </div>
+    <div style="height:10px;border-radius:6px;background:rgba(0,0,0,.08);overflow:hidden;">
+      <div style="height:100%;width:10%;background:var(--accent);border-radius:6px;transition:width .4s ease;"></div>
+    </div>
+    <div style="font-size:11px;opacity:.6;margin-top:8px;">기반 기능(게임 제어·인식·캡처) 구축 단계 · 핵심 자동화 엔진(P0) 착수 전</div>
+  </div>
+  <div class="status-grid">
+    <div class="status-col">
+      <div class="sc-head"><div class="dot-green"></div>완료</div>
+      <div class="s-item"><div class="s-check done">✓</div><div class="s-name done">런처 → 카제나 게임 실행 (하드코딩)</div><div class="badge grn">완료</div></div>
+      <div class="s-item"><div class="s-check done">✓</div><div class="s-name done">화면 그래픽 + 윈도우 창 인식</div><div class="badge grn">완료</div></div>
+      <div class="s-item"><div class="s-check done">✓</div><div class="s-name done">실패 시 스크린샷 자동 캡처</div><div class="badge grn">완료</div></div>
+      <div class="s-item"><div class="s-check done">✓</div><div class="s-name done">텍스트/아이콘 탐지 + 이미지 fallback</div><div class="badge grn">완료</div></div>
+      <div class="s-item"><div class="s-check done">✓</div><div class="s-name done">마우스/키보드 제어 (클릭·드래그·입력)</div><div class="badge grn">완료</div></div>
+    </div>
+    <div class="status-col">
+      <div class="sc-head"><div class="dot-amber"></div>미구현</div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">사전 지식 베이스 스키마 정의 및 초기 데이터셋</div><div class="badge acc">P0</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">브랜치(채널) 선택 자동화</div><div class="badge acc">P0</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">TC 파서 + Action/Verify 실행 엔진</div><div class="badge acc">P0</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">로그인 BVT 시나리오 end-to-end</div><div class="badge amb">P1</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">동영상 녹화 + 리포트 생성</div><div class="badge amb">P1</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">사용자 웹 UI 구현</div><div class="badge amb">P1</div></div>
+      <div class="s-item"><div class="s-check wait">○</div><div class="s-name">배포 파이프라인 + auto-update</div><div class="badge blu">P2</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- DEPLOY COMPARE -->
+<div class="wrap">
+<section id="deploy">
+  <div class="sec-head">
+    <div class="sec-eyebrow">05 · Deployment Strategy</div>
+    <h2 class="sec-title">배포 방식 비교</h2>
+    <p class="sec-desc">약 3명 개발자 유지보수 + 다수 QA PC 독립 실행 조건 기준. exe 단독 vs 하이브리드 장단점.</p>
+  </div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>기준</th>
+        <th>.exe 단독<br><span style="font-size:9px;opacity:.6">PyInstaller</span></th>
+        <th class="col-acc">하이브리드 (권장)<br><span style="font-size:9px;opacity:.7">로컬 에이전트 + 웹 대시보드</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>게임 제어</td>
+        <td class="win">직접 native (pyautogui)</td>
+        <td class="win">로컬 에이전트에서 직접 native</td>
+      </tr>
+      <tr>
+        <td>배포 / 업데이트</td>
+        <td class="lose">.exe 갱신 시 QA 각자 재설치 필요<br>auto-update 별도 구축 부담</td>
+        <td class="win">웹 1곳만 갱신 = 전원 자동 반영<br>에이전트만 auto-update 신경</td>
+      </tr>
+      <tr>
+        <td>개발팀 유지보수</td>
+        <td class="win">빌드 파이프라인 1회 셋업 후 단순</td>
+        <td>서버 + 에이전트 2가지 관리<br>(FastAPI + PyInstaller)</td>
+      </tr>
+      <tr>
+        <td>UI 개발 속도 / 품질</td>
+        <td class="lose">tkinter / PySide: 느리고 투박</td>
+        <td class="win">React: 빠르고 인터랙티브</td>
+      </tr>
+      <tr>
+        <td>결과 공유 / 히스토리</td>
+        <td class="lose">로컬 파일 — 공유 어려움</td>
+        <td class="win">중앙 DB 자동 취합, 다수 PC 비교 가능</td>
+      </tr>
+      <tr>
+        <td>사전 지식 베이스 동기화</td>
+        <td class="lose">PC마다 파일 복사 필요 · drift 위험</td>
+        <td class="win">중앙 서버가 Single Source of Truth</td>
+      </tr>
+      <tr>
+        <td>초기 구축 복잡도</td>
+        <td class="win">낮음 — 빠른 시작</td>
+        <td>중간 — 서버 셋업 필요</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="rec-box">
+    <strong>권장: 하이브리드</strong> — 로컬 에이전트(.exe)가 게임 제어·녹화·결과 업로드만 담당, 웹 대시보드(FastAPI + React)가 TC 관리·브랜치 트리거·리포트·지식 베이스 편집을 담당.<br><br>
+    리소스 부족 시 Phase 1 대안: <strong>순수 .exe + 공유 네트워크 드라이브</strong>로 지식 베이스/결과 동기화 → Phase 2 웹 이전.
+  </div>
+</section>
+</div>
+
+<!-- TODO -->
+<div class="wrap">
+<section id="todo">
+  <div class="sec-head">
+    <div class="sec-eyebrow">06 · Backlog</div>
+    <h2 class="sec-title">TODO 리스트</h2>
+    <p class="sec-desc">의논/결정 → 설계 → 구현 순서로 분류. P0 즉시 · P1 단기 · P2 중기.</p>
+  </div>
+  <div class="todo-grid">
+    <!-- A -->
+    <div class="todo-col">
+      <div class="todo-col-head">
+        <div class="todo-col-eyebrow">Category A</div>
+        <div class="todo-col-title">의논 / 결정</div>
+      </div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>배포 아키텍처 확정</strong>exe 단독 / 하이브리드 / 웹앱 중 결정</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>사전 지식 베이스 스키마 방향</strong>에픽세븐 구조 그대로 이식 vs 카제나 특화 컬럼 추가</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>TC 포맷 확정</strong>엑셀 컬럼 스펙, 스텝 DSL 방식 정의</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>브랜치 식별 방식</strong>텍스트 탐지 / UI 좌표 / 런처 설정 파일 중 선택</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>이미지 인식 스택</strong>pyautogui / OpenCV / OCR 조합 결정</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>저장소 결정</strong>로컬 SQLite / 중앙 PostgreSQL / 파일+S3</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>녹화 정책</strong>전체 vs 실패 ±10초 클립 (디스크/성능)</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>시크릿 관리 방식</strong>Windows Credential Manager 사용 여부</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>실패 재시도 정책</strong>flaky TC 자동 재시도 횟수 기준</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>결제 TC 범위</strong>샌드박스 환경 운영 방식 확정</div></div>
+    </div>
+    <!-- B -->
+    <div class="todo-col">
+      <div class="todo-col-head">
+        <div class="todo-col-eyebrow">Category B</div>
+        <div class="todo-col-title">설계</div>
+      </div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>사전 지식 베이스 스키마 설계</strong>UI요소 / 화면 / 액션 / 검증 4 테이블</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>TC DSL 명세</strong>스텝 문법(Action/Verify/Wait/Capture), 변수, assertion</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>Action/Verify 추상 레이어</strong>pyautogui 직접 호출 캡슐화 인터페이스</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>인식 파이프라인 설계</strong>텍스트→아이콘→이미지 순서 + confidence 임계값</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>실행 엔진 상태머신</strong>Idle / Running / Paused / Failed / Aborted 전이</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>리포트 스키마</strong>TC ID 매핑, 실패 분류 taxonomy</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>API 계약 (하이브리드 선택 시)</strong>에이전트↔서버 HTTP 엔드포인트 정의</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>파일 저장 구조</strong>로그/스크린샷/영상 디렉토리 + retention 정책</div></div>
+      <div class="todo-item"><div class="pri p2">P2</div><div class="todo-text"><strong>환경 Fingerprint 스펙</strong>수집 항목: GPU/OS/해상도/DPI</div></div>
+      <div class="todo-item"><div class="pri p2">P2</div><div class="todo-text"><strong>지식 베이스 업데이트 워크플로우</strong>QA 직접 편집 인터페이스 설계</div></div>
+    </div>
+    <!-- C -->
+    <div class="todo-col">
+      <div class="todo-col-head">
+        <div class="todo-col-eyebrow">Category C</div>
+        <div class="todo-col-title">구현</div>
+      </div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>사전 지식 베이스 로더 + 초기 데이터셋</strong>카제나 아이콘/화면/액션 초기 입력</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>TC 파서</strong>사용자 업로드 .xlsx → 내부 IR 변환</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>브랜치 선택 자동화</strong>런처 채널 선택 UI 탐지 + pyautogui 제어</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>Action/Verify 레이어 + 런처 wrapper</strong>pyautogui 추상화 + 런처 캡슐화</div></div>
+      <div class="todo-item"><div class="pri p0">P0</div><div class="todo-text"><strong>인식 엔진</strong>텍스트(OCR) / 아이콘 / 이미지 탐지 통합</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>실행 엔진 + 상태머신</strong>스텝 오케스트레이터 + 실패 핸들링</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>동영상 녹화 + 실패 클립</strong>케이스 단위 녹화, 실패 ±10초 추출</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>리포트 생성기</strong>HTML/PDF, TC ID 매핑, 스크린샷/영상 링크</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>웹 UI 4개 화면 구현</strong>설정 / 실행모니터 / 결과 / 지식 베이스</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>환경 진단 + 시크릿 저장</strong>해상도/DPI/권한 체크 + Credential Manager</div></div>
+      <div class="todo-item"><div class="pri p1">P1</div><div class="todo-text"><strong>빌드/배포 파이프라인</strong>PyInstaller + CI 자동 빌드</div></div>
+      <div class="todo-item"><div class="pri p2">P2</div><div class="todo-text"><strong>히스토리 DB + 회귀 비교</strong>전 빌드 대비 결과 비교 뷰</div></div>
+      <div class="todo-item"><div class="pri p2">P2</div><div class="todo-text"><strong>auto-update 메커니즘</strong>.exe 배포 시 자동 업데이트</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- RISK -->
+<div class="wrap">
+<section id="risk">
+  <div class="sec-head">
+    <div class="sec-eyebrow">07 · Risk Register</div>
+    <h2 class="sec-title">리스크 등록부</h2>
+  </div>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-level high">● HIGH — 기술 한계</div>
+      <div class="risk-title">pyautogui DirectX 풀스크린 한계</div>
+      <div class="risk-desc">카제나가 DirectX 풀스크린 모드로 실행될 경우 화면 캡처 및 좌표 제어 오작동 가능. 안티치트 소프트웨어와 충돌 가능성도 존재.</div>
+      <div class="risk-mit"><strong>대응:</strong> PoC 단계에서 풀스크린 vs 창 모드 동작 우선 검증. 창 모드 강제 실행 옵션 확인. pywin32(Win32 API) 병행 검토.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level high">● HIGH — 보안</div>
+      <div class="risk-title">테스트 계정 ID/PW 보안</div>
+      <div class="risk-desc">평문 저장 또는 로그/스크린샷 노출 시 계정 탈취 위험. 결제 TC에서 실결제 방지 실패 시 운영 사고 발생.</div>
+      <div class="risk-mit"><strong>대응:</strong> Windows Credential Manager 암호화 저장 필수. 로그·스크린샷 ID/PW 자동 마스킹. 결제 TC = 샌드박스 환경만. 실결제 계정 접근 코드 경로 완전 차단.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level med">● MEDIUM — 유지보수</div>
+      <div class="risk-title">게임 업데이트 시 지식 베이스 재학습 공수</div>
+      <div class="risk-desc">라이브 빌드 업데이트로 아이콘·레이아웃 변경 시 이미지 fallback 소재 재캡처 필요. 업데이트마다 지식 베이스 갱신 공수 발생.</div>
+      <div class="risk-mit"><strong>대응:</strong> 지식 베이스에 "이미지 버전 + 마지막 확인 빌드" 필드 도입. QA가 직접 편집할 수 있는 관리 UI 필수 구현.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level med">● MEDIUM — 호환성</div>
+      <div class="risk-title">해상도 / DPI 스케일링 의존성</div>
+      <div class="risk-desc">pyautogui는 화면 해상도와 Windows DPI 설정에 민감. QA 담당자마다 PC 환경이 다르면 좌표 오차 및 탐지 실패 발생.</div>
+      <div class="risk-mit"><strong>대응:</strong> 실행 전 환경 진단으로 해상도/DPI 자동 체크. 표준 테스트 PC 프로파일 정의 (1920×1080, 100% DPI). 비표준 환경 경고 출력.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level med">● MEDIUM — 범위</div>
+      <div class="risk-title">PoC 일반화 비용 과소평가</div>
+      <div class="risk-desc">현재 "하드코딩 성공" 상태에서 TC 기반 추상화로 전환 시 실제 공수가 예상보다 클 수 있음.</div>
+      <div class="risk-mit"><strong>대응:</strong> TC 1건(로그인 시나리오) 완전 추상화 스파이크를 먼저 수행. 실측 공수 기반으로 전체 일정 재산정 후 확장.</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-level low">● LOW — 운영</div>
+      <div class="risk-title">지식 베이스 유지보수 주체 부재</div>
+      <div class="risk-desc">개발자만 지식 베이스를 수정할 수 있는 구조가 되면 게임 업데이트마다 개발자 의존 → 도구 사장 위험.</div>
+      <div class="risk-mit"><strong>대응:</strong> QA 담당자가 직접 지식 베이스를 편집할 수 있는 웹 UI 구현. 개발자 없이 갱신 가능한 구조 필수.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="wrap">
+<footer>
+  <div class="footer-l">카제나 게임 테스트 자동화 시스템 — 설계 기획서 v0.1</div>
+  <div class="footer-r">2026.05.15 · QA Automation · Python + pyautogui · c-minimal</div>
+</footer>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  links.forEach(a => { a.style.color = a.getAttribute('href') === '#'+cur ? 'var(--ink)' : ''; });
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.tech-card,.risk-card,.ui-page-wrap,.tl-step').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(12px)';
+  el.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+  io.observe(el);
+});
+</script>
+</body>
+</html>
