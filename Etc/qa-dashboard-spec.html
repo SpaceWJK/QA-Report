@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Issue Dashboard — 설계 기술서 (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #ffffff;
+  --ink:      #1a1a1a;
+  --mute:     #888888;
+  --line:     #e8e6e0;
+  --surface:  #f7f6f2;
+  --accent:   #c8483a;
+  --accent-t: rgba(200,72,58,0.08);
+  --green:    #2d7a4f;
+  --green-t:  rgba(45,122,79,0.08);
+  --amber:    #b45309;
+  --amber-t:  rgba(180,83,9,0.08);
+  --blue:     #2563eb;
+  --blue-t:   rgba(37,99,235,0.08);
+
+  --font: 'Noto Sans KR', sans-serif;
+  --mono: 'Noto Sans Mono', monospace;
+  --serif: 'Noto Serif JP', serif;
+
+  --max: 1120px;
+  --gap: 48px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; height: 52px;
+  padding: 0 40px; gap: 32px;
+}
+.nav-brand {
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap; margin-right: 8px;
+}
+.nav-links { display: flex; gap: 24px; list-style: none; }
+.nav-links a { font-size: 13px; color: var(--mute); text-decoration: none; transition: color 0.15s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-meta { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--mute); }
+
+/* ── LAYOUT ── */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+section { padding: 72px 0; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: none; }
+
+/* ── SECTION HEADER ── */
+.sec-head { margin-bottom: 52px; }
+.sec-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+.sec-title { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; color: var(--ink); margin-bottom: 14px; }
+.sec-desc { font-size: 15px; color: var(--mute); max-width: 620px; line-height: 1.75; }
+
+/* ── HERO ── */
+.hero { padding: 80px 0 72px; border-bottom: 1px solid var(--line); }
+.hero-kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border: 1px solid var(--line); font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--mute); }
+.chip.red { border-color: var(--accent); color: var(--accent); background: var(--accent-t); }
+.chip .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-title { font-size: 56px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 6px; }
+.hero-title em { font-style: normal; color: var(--accent); }
+.hero-sub { font-family: var(--serif); font-size: 20px; color: var(--mute); margin-bottom: 36px; letter-spacing: 0.01em; }
+.hero-desc { font-size: 15px; color: #555; max-width: 680px; line-height: 1.85; margin-bottom: 44px; }
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
+.hero-stat { padding: 20px 24px; border-right: 1px solid var(--line); }
+.hero-stat:last-child { border-right: none; }
+.hs-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+.hs-value { font-size: 18px; font-weight: 700; color: var(--ink); }
+.hs-sub { font-size: 12px; color: var(--mute); margin-top: 2px; }
+
+/* ── FLOW DIAGRAM ── */
+.flow-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--line); margin-bottom: 48px; overflow: hidden; }
+.flow-col { border-right: 1px solid var(--line); }
+.flow-col:last-child { border-right: none; }
+.flow-head { padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.flow-items { padding: 4px 0; }
+.flow-item { padding: 8px 16px; font-size: 13px; color: #555; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 7px; }
+.flow-item:last-child { border-bottom: none; }
+.flow-item::before { content: '·'; color: var(--line); font-size: 18px; line-height: 1; }
+.flow-item.hi { color: var(--ink); font-weight: 500; }
+.flow-item.hi::before { color: var(--accent); }
+
+/* ── TECH GRID ── */
+.tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.tech-card { background: var(--bg); padding: 28px 28px 24px; }
+.tc-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.tc-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.tc-desc { font-size: 13px; color: var(--mute); line-height: 1.65; }
+.pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.pill { font-family: var(--mono); font-size: 11px; padding: 2px 7px; border: 1px solid var(--line); color: var(--mute); }
+
+/* ── TIMELINE ── */
+.timeline { padding-left: 44px; position: relative; }
+.timeline::before { content: ''; position: absolute; left: 14px; top: 8px; bottom: 0; width: 1px; background: var(--line); }
+.tl-step { position: relative; padding-bottom: 48px; }
+.tl-step:last-child { padding-bottom: 0; }
+.tl-step::before { content: ''; position: absolute; left: -38px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--line); border: 2px solid var(--bg); }
+.tl-step.now::before { background: var(--accent); }
+.tl-step.done::before { background: var(--green); }
+.tl-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.tl-num { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--mute); letter-spacing: 0.1em; }
+.tl-title { font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+.tl-step.now .tl-title { color: var(--accent); }
+.tl-body { font-size: 14px; color: var(--mute); line-height: 1.75; max-width: 720px; }
+.tl-list { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+.tl-item { font-size: 13px; color: #555; display: flex; gap: 10px; }
+.tl-item::before { content: '—'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+/* ── COMPARE TABLE ── */
+.compare-table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); }
+.compare-table th { padding: 13px 18px; background: var(--surface); border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); text-align: left; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); font-weight: 600; }
+.compare-table th.col-acc { color: var(--accent); }
+.compare-table th:last-child { border-right: none; }
+.compare-table td { padding: 13px 18px; font-size: 13px; color: #555; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); vertical-align: top; }
+.compare-table td:first-child { color: var(--ink); font-weight: 500; }
+.compare-table td:last-child { border-right: none; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface); }
+.compare-table .win { color: var(--ink); font-weight: 600; text-align: center; }
+.compare-table .lose { color: #ccc; text-align: center; }
+.compare-table td.ctr { text-align: center; }
+
+/* ── CALLOUT ── */
+.callout { padding: 14px 18px; border-left: 3px solid var(--accent); background: var(--accent-t); margin: 20px 0; font-size: 13px; color: #555; line-height: 1.65; }
+.callout strong { color: var(--ink); }
+
+/* ── REC BOX ── */
+.rec-box { margin-top: 20px; padding: 20px 24px; border-left: 3px solid var(--accent); background: var(--accent-t); font-size: 14px; color: #555; line-height: 1.75; }
+.rec-box strong { color: var(--ink); }
+
+/* ── BADGE ── */
+.badge { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 600; padding: 2px 8px; letter-spacing: 0.05em; border: 1px solid; flex-shrink: 0; }
+.badge.acc { border-color: var(--accent); color: var(--accent); background: var(--accent-t); }
+.badge.grn { border-color: var(--green); color: var(--green); background: var(--green-t); }
+.badge.amb { border-color: var(--amber); color: var(--amber); background: var(--amber-t); }
+.badge.blu { border-color: var(--blue); color: var(--blue); background: var(--blue-t); }
+.badge.neu { border-color: var(--line); color: var(--mute); }
+
+/* ── RISK / GATE GRID ── */
+.gate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.gate-card { background: var(--bg); padding: 24px; }
+.gate-level { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; color: var(--accent); }
+.gate-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.gate-desc { font-size: 13px; color: var(--mute); line-height: 1.65; }
+
+/* ── PROGRESS (구현 현황 동일 톤) ── */
+.prog-box { margin: 0 0 28px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.prog-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.prog-label { font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+.prog-pct { font-size: 24px; font-weight: 700; color: var(--accent); }
+.prog-track { height: 10px; border-radius: 6px; background: rgba(0,0,0,.08); overflow: hidden; }
+.prog-fill { height: 100%; background: var(--accent); border-radius: 6px; }
+.prog-note { font-size: 11px; opacity: .6; margin-top: 8px; }
+
+/* ── FOOTER ── */
+footer { padding: 40px 0; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+.footer-l { font-size: 13px; color: var(--mute); }
+.footer-r { font-family: var(--mono); font-size: 11px; color: #ccc; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .wrap { padding: 0 20px; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 36px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .hero-stat:nth-child(2) { border-right: none; }
+  .flow-wrap { grid-template-columns: 1fr; }
+  .flow-col { border-right: none; border-bottom: 1px solid var(--line); }
+  .tech-grid { grid-template-columns: 1fr; }
+  .gate-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">QA Dashboard</div>
+  <ul class="nav-links">
+    <li><a href="#overview">개요</a></li>
+    <li><a href="#features">핵심 기능</a></li>
+    <li><a href="#coverage">지원 프로젝트</a></li>
+    <li><a href="#stack">기술 스택</a></li>
+    <li><a href="#arch">아키텍처</a></li>
+    <li><a href="#pipeline">데이터 파이프라인</a></li>
+    <li><a href="#glossary">용어</a></li>
+  </ul>
+  <div class="nav-meta">Ver 2.0 · 2026.04</div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+<div class="hero" id="overview">
+  <div class="hero-kicker">
+    <div class="chip red"><span class="dot"></span>LIVE</div>
+    <div class="chip">QA Ops · Internal</div>
+    <div class="chip">React 19 / Python 3.13</div>
+    <div class="chip">SQLite · Zero-Install</div>
+  </div>
+  <h1 class="hero-title">QA Issue<br><em>Dashboard</em></h1>
+  <p class="hero-sub">게임 라이브 운영 통합 품질 관제 시스템 — 설계 기술서</p>
+  <p class="hero-desc">
+    품질을 개별 테스트가 아닌 <strong>운영 가능한 체계</strong>로. Pre-Launch QA · 라이브 장애 대응(OPS) · 마켓 검수 · 월간 품질 지표 · 디바이스 Fleet 운용 · 팀 협업을
+    단일 인터페이스로 통합한다. JIRA 티켓 · 품질 지표 스프레드시트 · Confluence 장애 리포트 · 디바이스 대여 장부 · 퀘스트 협업 보드의 분산 데이터를 한곳으로 모은다.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-label">운영 퀘스트</div>
+      <div class="hs-value">42건</div>
+      <div class="hs-sub">서브 17 · 에피소드 8</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">길드</div>
+      <div class="hs-value" style="color:var(--accent)">6개</div>
+      <div class="hs-sub">52명 멤버 · 5국가</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">디바이스 대여</div>
+      <div class="hs-value">123건</div>
+      <div class="hs-sub">진행 중 72건</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-label">외부 의존 인프라</div>
+      <div class="hs-value">0건</div>
+      <div class="hs-sub">stdlib + SQLite 단일 프로세스</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 01 OVERVIEW / PHILOSOPHY -->
+<div class="wrap">
+<section id="philosophy">
+  <div class="sec-head">
+    <div class="sec-eyebrow">01 · Product Identity & Design Philosophy</div>
+    <h2 class="sec-title">개요</h2>
+    <p class="sec-desc">운영자가 매일 첫 커피와 함께 여는 대시보드. 분기 임원 리뷰에서 열리는 리포트. 매달 장애 복기에서 펼쳐지는 타임라인. 이 모든 일상이 하나의 제품 안에 담긴다.</p>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">설계 원칙 (3가지)</div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">01 · Editorial</div>
+      <div class="tc-title">에디토리얼 톤</div>
+      <div class="tc-desc">에이전시급 흑백 에디토리얼 디자인. "AI 티 안 나는" 절제된 타이포그래피로 정보 위계를 연출한다.</div>
+      <div class="pills"><div class="pill">Playfair Display</div><div class="pill">Source Sans 3</div><div class="pill">0px radius</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">02 · Zero-Install</div>
+      <div class="tc-title">무설치 구동</div>
+      <div class="tc-desc">Python stdlib HTTP 서버와 SQLite만으로 구동. 컨테이너·메시지큐·분산DB 없이 단일 프로세스에 모든 라이브 데이터를 통합한다.</div>
+      <div class="pills"><div class="pill">http.server</div><div class="pill">SQLite (WAL)</div><div class="pill">단일 프로세스</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">03 · Real-Time</div>
+      <div class="tc-title">실시간 반영</div>
+      <div class="tc-desc">모든 지표는 원천 시스템에서 직접 수집. 중간 저장은 캐시 계층으로 분리. 스냅샷이 아닌 현재 현실을 반영한다.</div>
+      <div class="pills"><div class="pill">원천 직수집</div><div class="pill">캐시 분리</div><div class="pill">on-write 무효화</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- 02 FEATURES -->
+<div class="wrap">
+<section id="features">
+  <div class="sec-head">
+    <div class="sec-eyebrow">02 · Six Domains, One Interface</div>
+    <h2 class="sec-title">핵심 기능</h2>
+    <p class="sec-desc">6개 메인 탭으로 구성. 각 도메인은 독립적이지만 공통 레이아웃(사이드바 · 필터 · 카드)을 공유한다.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">Tab 01 · JIRA</div>
+      <div class="tc-title">이슈 통합 + Market Review</div>
+      <div class="tc-desc">4개 게임 프로젝트의 JIRA 이슈를 실시간 프록시. 서머리·추이·분포·리스트로 시각화. Market Review(PRH)는 마켓 검수 + 반려 이슈 + Wiki 캐시를 결합.</div>
+      <div class="pills"><div class="pill">URL 동기화 필터</div><div class="pill">블로커 패널</div><div class="pill">우선순위 도넛</div><div class="pill">Virtual Scroll</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Tab 02 · QA</div>
+      <div class="tc-title">품질 지표 (PBI)</div>
+      <div class="tc-desc">SharePoint 월간 QA 지표 엑셀 자동 로드. 검출률·테스트 볼륨·핫픽스·커뮤니티 반응을 통합 표시. 월·프로젝트·타겟 3축 상호 배타 필터.</div>
+      <div class="pills"><div class="pill">전월 대비 델타</div><div class="pill">월별 트렌드</div><div class="pill">Claude 인사이트</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Tab 03 · REPORT</div>
+      <div class="tc-title">QA 리포트 아카이브</div>
+      <div class="tc-desc">Update / Monthly QA Report를 GitHub HTML 자산으로 보관, iframe 임베드. 프로젝트별 최신 리포트 자동 선택 + 과거 버전 날짜 인덱스 탐색.</div>
+      <div class="pills"><div class="pill">발행 내역 드롭다운</div><div class="pill">풀스크린 뷰어</div><div class="pill">10분 캐시</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Tab 04 · OPS</div>
+      <div class="tc-title">서비스 안정성 (장애 + 핫픽스)</div>
+      <div class="tc-desc">라이브 장애·핫픽스 이력을 Confluence Wiki에서 수집·파싱. MTTR·장애 등급 분포·핫픽스 배포 주기·이슈 카테고리를 월별 추이로 추적.</div>
+      <div class="pills"><div class="pill">Wiki 원본 직결</div><div class="pill">Post-Mortem</div><div class="pill">인시던트 타임라인</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Tab 05 · Device</div>
+      <div class="tc-title">디바이스 Fleet 관리</div>
+      <div class="tc-desc">테스트 디바이스(폰·태블릿)의 재고·대여·반납·연장을 SQLite로 관리. 대여 FSM: 요청 → 승인 → 사용 → 반납 요청 → 승인/거절 → 회수.</div>
+      <div class="pills"><div class="pill">2단계 반납</div><div class="pill">조기 전환 방지</div><div class="pill">재고·추이 차트</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Tab 06 · Quest · 3-Depth</div>
+      <div class="tc-title">협업 워크플로우 + 길드</div>
+      <div class="tc-desc">QA 팀 업무 협업을 게임화한 퀘스트 작업 관리. Episode(분기 목표) → Quest(2~4주) → SubQuest(1~3일) 3계층. 낙관적 락 + FSM + 감사 로그 3중 게이트.</div>
+      <div class="pills"><div class="pill">퀘스트 보드</div><div class="pill">길드홀</div><div class="pill">기여도 분배</div><div class="pill">연장 차수 기록</div></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- 03 COVERAGE -->
+<div class="wrap">
+<section id="coverage">
+  <div class="sec-head">
+    <div class="sec-eyebrow">03 · Coverage Matrix</div>
+    <h2 class="sec-title">지원 프로젝트</h2>
+    <p class="sec-desc">5개 JIRA 프로젝트 통합. 주력 2개는 전 탭 커버, 확장 3개는 JIRA·OPS 지원. 전체 운영 프로젝트 커버율 100%.</p>
+  </div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>프로젝트</th>
+        <th>코드</th>
+        <th class="col-acc">JIRA</th>
+        <th class="col-acc">QA</th>
+        <th class="col-acc">REPORT</th>
+        <th class="col-acc">OPS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Epicseven</td><td>EP7</td><td class="win">✓</td><td class="win">✓</td><td class="win">✓</td><td class="win">✓</td></tr>
+      <tr><td>Chaoszero Nightmare</td><td>GCZ / CZN</td><td class="win">✓</td><td class="win">✓</td><td class="win">✓</td><td class="win">✓</td></tr>
+      <tr><td>Lordnine</td><td>LDN</td><td class="win">✓</td><td class="lose">—</td><td class="lose">—</td><td class="win">✓</td></tr>
+      <tr><td>Lordnine Asia</td><td>LNA</td><td class="win">✓</td><td class="lose">—</td><td class="lose">—</td><td class="win">✓</td></tr>
+      <tr><td>Market Review</td><td>PRH</td><td class="win">✓</td><td class="lose">—</td><td class="lose">—</td><td class="win">✓</td></tr>
+    </tbody>
+  </table>
+  <div class="rec-box">
+    <strong>커버리지:</strong> JIRA 프로젝트 통합 5개 · 전 탭 커버 2개(주력) · JIRA·OPS 지원 3개(확장) · 전체 운영 프로젝트 커버율 <strong>100%</strong>.
+  </div>
+</section>
+</div>
+
+<!-- 04 STACK -->
+<div class="wrap">
+<section id="stack">
+  <div class="sec-head">
+    <div class="sec-eyebrow">04 · Stack Overview</div>
+    <h2 class="sec-title">기술 스택</h2>
+    <p class="sec-desc">외부 의존성 최소화 철학. 프론트는 strict TypeScript + 유틸리티 CSS, 백엔드는 단일 Python 프로세스 + SQLite WAL.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">Frontend</div>
+      <div class="tc-title">React 19 SPA</div>
+      <div class="tc-desc">strict 모드 TypeScript · 함수형 컴포넌트 · Hooks 11개로 데이터 레이어 추상화.</div>
+      <div class="pills"><div class="pill">React 19.2</div><div class="pill">TypeScript 5.9</div><div class="pill">Vite 8.0</div><div class="pill">Tailwind 3.4</div><div class="pill">Recharts 3.8</div><div class="pill">Framer Motion 12</div><div class="pill">lucide-react</div><div class="pill">Vitest 4.1</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">Backend</div>
+      <div class="tc-title">Python stdlib 서버</div>
+      <div class="tc-desc">단일 Python 프로세스 · SQLite WAL(Write-Ahead Logging) · JSON 캐시. 외부 의존성 최소화.</div>
+      <div class="pills"><div class="pill">Python 3.13</div><div class="pill">http.server</div><div class="pill">SQLite (WAL)</div><div class="pill">openpyxl</div><div class="pill">pytest</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">External</div>
+      <div class="tc-title">외부 연동</div>
+      <div class="tc-desc">모든 외부 연동 토큰은 환경 변수로 격리. 호스트명·PIN·API 키는 .env(gitignored)로만 주입.</div>
+      <div class="pills"><div class="pill">JIRA REST API</div><div class="pill">Confluence Wiki</div><div class="pill">SharePoint Excel</div><div class="pill">Claude API (Haiku 4.5)</div></div>
+    </div>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin:32px 0 12px;">품질 자동화</div>
+  <table class="compare-table">
+    <thead><tr><th>기술</th><th>용도</th></tr></thead>
+    <tbody>
+      <tr><td>TS Guard (TS2304)</td><td>TypeScript import 누락을 빌드 차단</td></tr>
+      <tr><td>ErrorBoundary</td><td>React 에러 격리</td></tr>
+      <tr><td>Sourcemap</td><td>프로덕션 런타임 에러를 원본 파일:라인으로 추적</td></tr>
+      <tr><td>Cache-Control</td><td>HTTP 캐시 전략</td></tr>
+      <tr><td>FSM 검증</td><td>상태 전이 유효성 검사</td></tr>
+      <tr><td>낙관적 락</td><td>동시 수정 conflict 감지</td></tr>
+    </tbody>
+  </table>
+</section>
+</div>
+
+<!-- 05 ARCHITECTURE -->
+<div class="wrap">
+<section id="arch">
+  <div class="sec-head">
+    <div class="sec-eyebrow">05 · Architecture</div>
+    <h2 class="sec-title">아키텍처</h2>
+    <p class="sec-desc">5계층 컨테이너 구조. 정적 자산(dist/)은 동일 서버가 제공하고 /api/* 요청만 Python 프로세스가 단일 포트(:9100)에서 처리한다.</p>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">컨테이너 다이어그램 (5-Layer)</div>
+  <div class="flow-wrap">
+    <div class="flow-col">
+      <div class="flow-head">L1 · User</div>
+      <div class="flow-items">
+        <div class="flow-item hi">QA 운영자</div>
+        <div class="flow-item">Browser</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">L2 · Frontend</div>
+      <div class="flow-items">
+        <div class="flow-item hi">React 19 + Vite 8</div>
+        <div class="flow-item">TSX / Hooks</div>
+        <div class="flow-item">dist/ 정적 자산</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">L3 · Application</div>
+      <div class="flow-items">
+        <div class="flow-item hi">Python HTTP :9100</div>
+        <div class="flow-item">Handlers · Aggregators</div>
+        <div class="flow-item">Parsers · Cache</div>
+        <div class="flow-item">FSM · Optimistic Lock</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">L4 · Data</div>
+      <div class="flow-items">
+        <div class="flow-item hi">quest.db (15 tables)</div>
+        <div class="flow-item">device_rental.db (2)</div>
+        <div class="flow-item">Cache (JSON + SQLite)</div>
+      </div>
+    </div>
+    <div class="flow-col">
+      <div class="flow-head">L5 · External (SoT)</div>
+      <div class="flow-items">
+        <div class="flow-item hi">JIRA REST</div>
+        <div class="flow-item hi">Confluence Wiki</div>
+        <div class="flow-item hi">SharePoint XLSX</div>
+        <div class="flow-item">Claude API (Haiku)</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin:32px 0 12px;">데이터 흐름 (5-Stage 단방향)</div>
+  <table class="compare-table">
+    <thead><tr><th>단계</th><th>모듈</th><th>책임</th><th class="col-acc">캐시 주기</th></tr></thead>
+    <tbody>
+      <tr><td>Stage 01</td><td>jira_api · quest_wiki · device_wiki</td><td>외부 API/파일 접근, 인증 래핑</td><td class="ctr">—</td></tr>
+      <tr><td>Stage 02</td><td>*_parser · *_aggregator</td><td>원본 문서 → 구조화 dict</td><td class="ctr">—</td></tr>
+      <tr><td>Stage 03</td><td>quest.db · device_rental.db · .cache/</td><td>SQLite WAL + JSON 2-tier</td><td class="ctr">5~10분 / on-write</td></tr>
+      <tr><td>Stage 04</td><td>server.py · *_handler.py</td><td>라우팅 · 권한 검증 · JSON 응답</td><td class="ctr">—</td></tr>
+      <tr><td>Stage 05</td><td>src/hooks/* · src/components/*</td><td>fetch · 메모이제이션 · 상태 관리</td><td class="ctr">Hook 메모</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>캐시 전략:</strong> Wiki/JIRA 응답은 1차 JSON → 2차 SQLite. 인시던트 5분 주기 · 리포트 10분 주기 · 퀘스트는 on-write 무효화(실시간).
+  </div>
+</section>
+</div>
+
+<!-- 06 PIPELINE -->
+<div class="wrap">
+<section id="pipeline">
+  <div class="sec-head">
+    <div class="sec-eyebrow">06 · Write-Back Flow · State Transition</div>
+    <h2 class="sec-title">데이터 파이프라인</h2>
+    <p class="sec-desc">외부 원천 데이터는 5단계를 거쳐 UI에 도달. 사용자 액션은 같은 경로를 역방향으로 타고 들어가 3중 게이트를 통과해 상태를 변경한다.</p>
+  </div>
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin-bottom:12px;">상태 변경 예시 · 퀘스트 승인</div>
+  <div class="timeline">
+    <div class="tl-step now">
+      <div class="tl-head"><span class="tl-num">STEP 01</span><span class="tl-title">사용자 "승인" 클릭</span></div>
+      <p class="tl-body">UI에서 운영자가 승인 액션을 트리거.</p>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head"><span class="tl-num">STEP 02</span><span class="tl-title">React Hook → POST</span></div>
+      <p class="tl-body"><code>POST /api/quest/{id}/approve</code> 요청 발신.</p>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head"><span class="tl-num">STEP 03</span><span class="tl-title">Server handle_admin_approve()</span></div>
+      <p class="tl-body">서버 핸들러가 라우팅·권한 검증 후 DB 트랜잭션 진입.</p>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head"><span class="tl-num">STEP 04</span><span class="tl-title">quest_db SQLite 트랜잭션</span></div>
+      <p class="tl-body">version check · FSM 검증 → UPDATE + _add_history → COMMIT. 3중 게이트가 여기서 작동.</p>
+    </div>
+    <div class="tl-step">
+      <div class="tl-head"><span class="tl-num">STEP 05</span><span class="tl-title">JSON 응답 + UI refresh</span></div>
+      <p class="tl-body"><code>{ok:true, version:N+1}</code> 반환 → UI 갱신 + 토스트 알림.</p>
+    </div>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mute);margin:32px 0 12px;">3중 게이트 (Triple Gate)</div>
+  <div class="gate-grid">
+    <div class="gate-card">
+      <div class="gate-level">Gate 1 · Optimistic Lock</div>
+      <div class="gate-title">낙관적 락</div>
+      <div class="gate-desc">version 필드로 동시 수정 conflict 감지. 사용자 A·B가 같은 레코드를 수정하면 후착 트랜잭션은 자동 거부된다.</div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-level">Gate 2 · FSM</div>
+      <div class="gate-title">상태 전이 검증</div>
+      <div class="gate-desc">_check_transition이 퀘스트/에피소드별 허용 전이를 검증. 허용되지 않은 상태 이동은 400 반환 + UI 토스트 경고.</div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-level">Gate 3 · Audit Log</div>
+      <div class="gate-title">히스토리 기록</div>
+      <div class="gate-desc">모든 상태 변경은 _add_history로 한글 detail 기록(예: "마감일: A → B"). 감사 추적 및 운영자 리뷰용.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- 07 GLOSSARY -->
+<div class="wrap">
+<section id="glossary">
+  <div class="sec-head">
+    <div class="sec-eyebrow">Appendix · Glossary</div>
+    <h2 class="sec-title">용어 사전</h2>
+    <p class="sec-desc">퀘스트 3계층 협업 모델과 시스템 핵심 용어.</p>
+  </div>
+  <table class="compare-table">
+    <thead><tr><th>용어</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>Episode</td><td>실(室) 단위 조직 목표이자 최상위 목표. 여러 Quest를 하나의 성과 흐름으로 묶는 상위 개념(분기/반기 단위). 에피소드가 닫히면 모든 Quest 진행률이 기여도로 환산된다.</td></tr>
+      <tr><td>Quest</td><td>팀/개인 단위 실행 목표. Episode 달성을 위한 구체 작업 단위로 담당자·기한·상태·진행률 보유. 일반적으로 2~4주 사이클.</td></tr>
+      <tr><td>SubQuest</td><td>Quest를 구성하는 실행 가능한 작은 작업 단위. 체크리스트 형태로 관리(1~3일 단위).</td></tr>
+      <tr><td>Guild</td><td>특정 목표로 조직된 그룹. 국가·지역·프로젝트 단위 편성. 멤버·포인트·랭킹으로 협업·기여도 집계.</td></tr>
+      <tr><td>FSM</td><td>Finite State Machine — 퀘스트/대여 상태 전이 검증.</td></tr>
+      <tr><td>PRH</td><td>Product Release Hub (Market Review) — 마켓 검수.</td></tr>
+      <tr><td>PBI</td><td>QA 품질 지표 엑셀 (SharePoint 저장).</td></tr>
+      <tr><td>MTTR</td><td>Mean Time To Repair — 장애 평균 복구 시간.</td></tr>
+      <tr><td>Hotfix</td><td>라이브 긴급 패치.</td></tr>
+      <tr><td>Optimistic Lock</td><td>version 필드로 동시 수정 conflict 감지.</td></tr>
+      <tr><td>WAL</td><td>Write-Ahead Logging — SQLite 동시성 향상 모드.</td></tr>
+      <tr><td>TS2304</td><td>TypeScript "Cannot find name" 에러 (import 누락).</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>License · Internal Only</strong> — 외부 배포/상용 미허가. 소스·디자인·데이터 구조의 무단 유출은 사내 보안 규정에 따라 제한.<br>
+    <strong>Contribute</strong> — feature/&lt;주제&gt; 브랜치 → TS Guard · Vitest · pytest 통과 → PR → QA 팀 리드 리뷰 → main 병합(수동 배포).
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<div class="wrap">
+<footer>
+  <div class="footer-l">QA Issue Dashboard · v2.0 · 2026.04 · 저작: 김우주 (Woozi) · QA Ops Team</div>
+  <div class="footer-r">© 2026 QA Ops Team · Internal</div>
+</footer>
+</div>
+
+</body>
+</html>
