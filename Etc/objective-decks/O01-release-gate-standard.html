@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O1 · 출시 판단 기준 표준화 — 세부과제 가이드</title>
+<title>출시 판단 기준 표준화 및 일관성 확보</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
@@ -45,9 +45,6 @@ td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--s
 .card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;}
 .card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
 .note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;margin:12px 0;}
-.chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border:1px solid var(--line);border-radius:999px;color:var(--mute);}
-.chip.g{border-color:#2d7a4f;color:#2d7a4f;background:rgba(45,122,79,.07);}
-.chip.w{border-color:var(--wine);color:var(--wine);background:rgba(122,31,43,.06);}
 .flow{display:flex;gap:0;border:1px solid var(--line);margin:14px 0;flex-wrap:wrap;overflow:hidden;}
 .flow .step{flex:1;min-width:120px;padding:11px 13px;border-right:1px solid var(--line);}
 .flow .step:last-child{border-right:none;}
@@ -86,48 +83,44 @@ td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--s
 const S=[];function add(t,h){S.push({t,h});}
 
 add("Cover",`<div class="slide cover">
-  <div class="kick">SGP 퍼블리싱QA · 26년 실행과제 세부과제 가이드</div>
-  <h1>O1 · 출시 판단 기준<br><span class="it">표준화 및 일관성 확보</span></h1>
+  <div class="kick">SGP 퍼블리싱QA · 출시 품질 Gate 통합 기준</div>
+  <h1>출시 판단 기준<br><span class="it">표준화 및 일관성 확보</span></h1>
   <div class="sub">프로젝트·조직별 상이하던 출시 판단 기준을 정렬하고, QA 착수·출시 승인 과정의 혼선을 제거하는 공통 Gate 기준.</div>
   <div class="meta">
     <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
-    <div><div class="l">상세과제</div><div class="v">출시 품질 Gate 통합 기준</div></div>
-    <div><div class="l">담당</div><div class="v">퍼블리싱QA 1·2팀 김우주</div></div>
-    <div><div class="l">상태</div><div class="v">진행중 · 25.12~26.04</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 품질 Gate 통합 기준 수립 및 운영</div></div>
   </div>
 </div>`);
 
 add("과제 정의",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Definition</span></div>
-  <span class="eyebrow">과제 정의 <span class="chip g">근거 충분</span></span>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Definition</span></div>
+  <span class="eyebrow">과제 정의</span>
   <h2 class="title">무엇을 <em>표준화</em>하나</h2>
   <div class="lead">출시 여부를 판단하는 기준을 프로젝트·조직 무관하게 동일하게 만든다 — 같은 빌드는 누가 봐도 같은 결론.</div>
   <div class="cols">
     <div><h3><span class="num">·</span>Key Result</h3>
       <ul><li>프로젝트·조직별 상이하던 출시 판단 기준 정렬</li><li>QA 착수·출시 승인 과정의 혼선 감소</li><li>출시 품질 판단 신뢰도 향상</li></ul></div>
     <div><h3><span class="num">·</span>Initiative</h3>
-      <ul><li>출시 품질 Gate 공통 기준 수립 및 문서화</li><li>퍼블리싱QA 공통 기준 문서로 관리</li></ul>
-      <div class="note">적용 검토: 2026.5 <strong>이클립스</strong> / 2026 상용화 <strong>미래시·데드어카운트</strong> 단계적 적용</div></div>
+      <ul><li>출시 품질 Gate 공통 기준 수립 및 문서화</li><li>퍼블리싱QA 공통 기준 문서로 관리</li></ul></div>
   </div>
 </div>`);
 
 add("Gate 구조",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Gate Structure</span></div>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Gate Structure</span></div>
   <span class="eyebrow">출시 Gate 공통 구조</span>
   <h2 class="title">5개 <em>관문</em>과 출시 판단 위치</h2>
   <div class="flow">
-    <div class="step"><div class="n">Gate 0</div><div class="t">소싱위원회</div><div class="d">계약 전 · CEO</div></div>
-    <div class="step"><div class="n">Gate 1</div><div class="t">FCB</div><div class="d">사전제작 · CEO</div></div>
-    <div class="step"><div class="n">Gate 2</div><div class="t">CCB Entry</div><div class="d">QA 투입 · QA 거부권</div></div>
-    <div class="step"><div class="n">Gate 3</div><div class="t">사업계획보고</div><div class="d">론칭 2~3M전 · CEO</div></div>
-    <div class="step"><div class="n">Gate 4</div><div class="t">Sign-off</div><div class="d">배포 직전 · 사업PM+QA</div></div>
+    <div class="step"><div class="n">Gate 0</div><div class="t">소싱위원회</div><div class="d">계약 전</div></div>
+    <div class="step"><div class="n">Gate 1</div><div class="t">FCB</div><div class="d">사전제작</div></div>
+    <div class="step"><div class="n">Gate 2</div><div class="t">CCB Entry</div><div class="d">QA 투입</div></div>
+    <div class="step"><div class="n">Gate 3</div><div class="t">사업계획보고</div><div class="d">론칭 2~3M전</div></div>
+    <div class="step"><div class="n">Gate 4</div><div class="t">Sign-off</div><div class="d">배포 직전</div></div>
   </div>
-  <p><strong>출시 판단의 핵심 관문 = Gate 2(CCB Entry) + Gate 4(Sign-off).</strong> Gate 2는 QA 단독 거부권 + 2차 중도금 연동, Gate 4는 최종 출시 적합 판정.</p>
-  <div class="note">근거: QA Framework v3.0 — 03 품질게이트 / 5Gem A·G</div>
+  <p>출시 판단의 핵심 관문은 <strong>Gate 2(CCB Entry)</strong>와 <strong>Gate 4(Sign-off)</strong>다. Gate 2는 QA 리소스 투입 가능 여부를 결정하고, Gate 4는 최종 출시 적합 여부를 판정한다.</p>
 </div>`);
 
 add("적용 시점",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Apply Point</span></div>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Apply Point</span></div>
   <span class="eyebrow">Gate 적용 시점</span>
   <h2 class="title">언제 <em>판단</em>하나</h2>
   <div class="cols">
@@ -140,7 +133,7 @@ add("적용 시점",`<div class="slide">
 </div>`);
 
 add("판단 영역",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Judge Domain</span></div>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Judge Domain</span></div>
   <span class="eyebrow">판단 대상 영역</span>
   <h2 class="title">무엇을 <em>본다</em></h2>
   <table>
@@ -149,11 +142,11 @@ add("판단 영역",`<div class="slide">
     <tr><td>플랫폼/마켓 연동</td><td>STOVE SDK(인증·빌링), 결제·계정, 마켓 검수 적합</td></tr>
     <tr><td>성능·안정성</td><td>FPS·메모리·로딩, 호환성 Tier 1 기기, 서버 응답·에러율</td></tr>
   </table>
-  <div class="note">3영역은 CCB Entry 10항목 + Sign-off QA Rate로 정량 측정. 마켓 연동 세부는 'O6 마켓 프로세스 표준화 가이드' 참조.</div>
+  <div class="note">3영역은 CCB Entry 10항목 + Sign-off QA Rate로 정량 측정한다. 마켓 연동 세부 기준은 마켓 프로세스 표준화 가이드를 따른다.</div>
 </div>`);
 
 add("결과 상태",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Verdict</span></div>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Verdict</span></div>
   <span class="eyebrow">판단 결과 상태 표준화</span>
   <h2 class="title">Pass · <em>Conditional</em> · Fail</h2>
   <table>
@@ -166,7 +159,7 @@ add("결과 상태",`<div class="slide">
 </div>`);
 
 add("정량 기준",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Quant Criteria</span></div>
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Quant Criteria</span></div>
   <span class="eyebrow">Sign-off 정량 기준</span>
   <h2 class="title">단계별 <em>판단 수치</em></h2>
   <table>
@@ -179,40 +172,9 @@ add("정량 기준",`<div class="slide">
     <tr><td>전체 TC PASS율</td><td>90%</td><td>95%</td><td>95%</td></tr>
     <tr><td>P0 PASS Rate</td><td>100%</td><td>100%</td><td>100%</td></tr>
   </table>
-  <div class="note">근거: QA Framework v3.0 — 01 테스트기준 / 13 이미지 보충(QAO Slide34 원본 수치)</div>
-</div>`);
-
-add("근거·커버리지",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Coverage</span></div>
-  <span class="eyebrow">근거 자산 & 커버리지</span>
-  <h2 class="title">데이터 <em>충분도</em> <span class="chip g">충분</span></h2>
-  <table>
-    <tr><th>요소</th><th class="acc">근거 자산</th></tr>
-    <tr><td>Gate 5관문·FAIL 경로</td><td>framework_v3 / 03 품질게이트, 5Gem A·G</td></tr>
-    <tr><td>CCB Entry 10항목</td><td>framework_v3 / 01 테스트기준</td></tr>
-    <tr><td>Sign-off 정량 기준</td><td>framework_v3 / 01, 13 이미지보충</td></tr>
-    <tr><td>RC FAIL 3경로</td><td>analysis / 14-1·15 재설계</td></tr>
-    <tr><td>Pass/Conditional/Fail</td><td>실행과제 642323855 Activity 정의</td></tr>
-  </table>
-  <p>판단 기준·시점·영역·상태·수치 전부 기존 자산으로 충당 가능. <strong>근거 충분 — 별도 신규 설계 불필요.</strong></p>
-</div>`);
-
-add("잔여·To-Do",`<div class="slide">
-  <div class="s-band"><span class="brand">Objective 01</span><span class="sec">Next</span></div>
-  <span class="eyebrow">잔여 과제</span>
-  <h2 class="title">마무리 <em>To-Do</em></h2>
-  <ul>
-    <li>"Contents Complete Build"(복수) vs "Content"(단수) 표기 통일</li>
-    <li>Pass/Conditional/Fail 판정을 프로젝트 적용 템플릿으로 배포</li>
-    <li>이클립스(26.5)·미래시·데드어카운트 단계적 적용 + 적용 결과 회수</li>
-    <li>Sign-off 주체(QA Veto) 쌍방 합의 구조 확정 — O2/거버넌스와 연계</li>
-  </ul>
-  <div class="note"><strong>결론:</strong> O1은 근거 자산 충분. 공통 기준 문서화는 사실상 완료 단계이며, 잔여는 표기 통일·프로젝트 적용·표준 운영. 실행과제 Status "진행중" → 적용 회수로 마감 가능.</div>
 </div>`);
 
 const track=document.getElementById('track');
-track.innerHTML=S.map(s=>`<div class="slide-wrap">${s.h}</div>`).join('').replace(/<div class="slide-wrap">/g,'');
-// simpler: slides already full
 track.innerHTML=S.map(s=>s.h).join('');
 document.getElementById('tot').textContent=S.length;
 let i=0;
