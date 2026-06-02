@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple / Google 마켓 프로세스 표준화 가이드 — 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --apple:#1c1815; --google:#7a1f2b;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--ink);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+
+/* deck */
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;background:#11100e;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);
+  display:flex;flex-direction:column;padding:48px 7vw 64px;position:relative;}
+.slide::-webkit-scrollbar{width:8px;} .slide::-webkit-scrollbar-thumb{background:var(--line);}
+
+/* header band per slide */
+.s-band{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:30px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--wine);}
+.s-band .sec{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
+h1.title{font-family:var(--serif);font-weight:700;font-size:clamp(30px,4.4vw,52px);line-height:1.08;letter-spacing:-.01em;margin-bottom:18px;}
+h1.title span{color:var(--wine);font-style:italic;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(24px,3.2vw,38px);line-height:1.12;margin-bottom:20px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.deck-lead{font-size:17px;line-height:1.7;color:#3a342e;max-width:60ch;border-left:3px solid var(--wine);padding-left:18px;margin-bottom:26px;}
+p{margin-bottom:12px;color:#3a342e;max-width:74ch;}
+strong{color:var(--ink);font-weight:700;}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 44px;}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:0 32px;}
+@media(max-width:900px){.cols,.cols-3{grid-template-columns:1fr;}}
+
+h3{font-family:var(--serif);font-size:19px;font-weight:600;margin:18px 0 8px;color:var(--ink);}
+h3 .num{color:var(--wine);font-style:italic;margin-right:8px;}
+ul{list-style:none;margin:6px 0 14px;}
+li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14px;color:#3a342e;line-height:1.6;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+ol{margin:6px 0 14px 0;padding-left:20px;} ol li{padding-left:4px;} ol li::before{content:none;}
+
+.chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border:1px solid var(--line);color:var(--mute);border-radius:999px;margin-left:8px;vertical-align:middle;}
+.chip.new{border-color:var(--wine);color:var(--wine);background:rgba(122,31,43,.06);}
+.chip.apple{border-color:var(--ink);color:var(--ink);}
+.chip.google{border-color:var(--wine);color:var(--wine);}
+
+table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:13px;}
+th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:9px 12px;}
+td{padding:9px 12px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;}
+tr:hover td{background:var(--surface);}
+
+.card{background:var(--surface);border:1px solid var(--line);padding:18px 20px;margin-bottom:14px;}
+.card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;color:#3a342e;margin:12px 0;}
+.warn{border-left:3px solid #b45309;background:rgba(180,83,9,.06);padding:12px 16px;font-size:13px;margin:12px 0;}
+
+.flow{display:flex;align-items:stretch;gap:0;border:1px solid var(--line);margin:14px 0;overflow:hidden;flex-wrap:wrap;}
+.flow .step{flex:1;min-width:130px;padding:12px 14px;border-right:1px solid var(--line);background:var(--paper);}
+.flow .step:last-child{border-right:none;}
+.flow .step .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;}
+.flow .step .t{font-size:13px;font-weight:600;margin-top:2px;}
+.flow .step .d{font-size:11px;color:var(--mute);margin-top:3px;}
+
+/* cover */
+.cover{justify-content:center;align-items:flex-start;background:
+  radial-gradient(120% 90% at 80% 10%, #e8e4dc 0%, var(--paper) 55%);}
+.cover .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);margin-bottom:26px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(40px,7vw,86px);line-height:1.0;letter-spacing:-.02em;margin-bottom:22px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:19px;color:var(--mute);max-width:54ch;margin-bottom:40px;}
+.cover .meta{display:flex;gap:40px;border-top:1px solid var(--line);padding-top:20px;flex-wrap:wrap;}
+.cover .meta div .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta div .v{font-size:15px;font-weight:600;}
+
+/* index */
+.toc{columns:2;column-gap:48px;margin-top:6px;}
+@media(max-width:900px){.toc{columns:1;}}
+.toc .row{break-inside:avoid;display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:baseline;}
+.toc .row:hover .nm{color:var(--wine);}
+.toc .row .no{font-family:var(--serif);font-style:italic;color:var(--wine);width:32px;flex-shrink:0;}
+.toc .row .nm{font-size:15px;font-weight:600;}
+.toc .row .gp{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-left:auto;}
+
+/* controls */
+.controls{height:62px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 22px;gap:18px;color:#cfc7bd;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:15px;color:#efece6;min-width:74px;}
+.controls .nav-btn{width:38px;height:38px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:16px;cursor:pointer;border-radius:50%;transition:.15s;display:flex;align-items:center;justify-content:center;}
+.controls .nav-btn:hover{background:var(--wine);border-color:var(--wine);}
+.controls .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.controls .ttl{font-size:12px;letter-spacing:.06em;color:#8c857c;flex:1;text-align:center;text-transform:uppercase;}
+.controls .toc-btn{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#cfc7bd;background:none;border:1px solid #3a3631;padding:8px 12px;cursor:pointer;}
+.controls .toc-btn:hover{border-color:var(--wine);color:#fff;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;}
+.hint{position:fixed;bottom:74px;right:18px;font-size:11px;color:#6f6860;letter-spacing:.05em;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage">
+    <div class="progress" id="prog"></div>
+    <div class="track" id="track"><!-- SLIDES --></div>
+  </div>
+  <div class="controls">
+    <button class="toc-btn" onclick="go(1)">목차</button>
+    <div class="ttl" id="ttl">Cover</div>
+    <button class="nav-btn" id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot">0</span></div>
+    <button class="nav-btn" id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키로 페이지 이동</div>
+
+<script>
+const SLIDES = [];
+function S(title, html){ SLIDES.push({title, html}); }
+
+/* 1 COVER */
+S("Cover", `<div class="slide cover">
+  <div class="kicker">SGP 퍼블리싱QA · 실행과제 표준화 가이드</div>
+  <h1>Apple / Google<br><span class="it">마켓 프로세스 표준화</span></h1>
+  <div class="sub">출시 품질 Gate와 연계된 마켓 제출·검수·반려 예방 표준 운영 가이드. 2026년 현행 App Store Connect / Google Play Console 기준으로 갱신.</div>
+  <div class="meta">
+    <div><div class="l">버전</div><div class="v">v1.0 · 2026.06</div></div>
+    <div><div class="l">소관</div><div class="v">퍼블리싱QA 1·2팀</div></div>
+    <div><div class="l">대상 마켓</div><div class="v">Apple · Google (+멀티스토어)</div></div>
+    <div><div class="l">분류</div><div class="v">Internal</div></div>
+  </div>
+</div>`);
+
+/* 2 INDEX */
+S("목차", `<div class="slide">
+  <div class="s-band"><span class="brand">Market Process Standard</span><span class="sec">Index</span></div>
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="toc" id="toc"></div>
+</div>`);
+
+/* 3 OVERVIEW */
+S("개요", `<div class="slide">
+  <div class="s-band"><span class="brand">Market Process Standard</span><span class="sec">00 · Overview</span></div>
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">왜 <em>표준화</em>인가</h2>
+  <div class="deck-lead">담당자가 바뀌어도 동일 품질로 제출·검수·대응이 가능한 단계별 SOP와 반려 예방 플레이북을 수립한다.</div>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>배경</h3>
+      <ul>
+        <li>프로젝트·조직별 상이한 마켓 제출 기준 → 혼선·재작업</li>
+        <li>마켓/스토어 검수 실패가 출시 일정 리스크로 직결</li>
+        <li>Apple·Google 정책 수시 변경 → 미반영 시 반려</li>
+      </ul>
+      <h3><span class="num">·</span>범위</h3>
+      <ul>
+        <li>Apple App Store Connect 제출·검수·피처드</li>
+        <li>Google Play Console 제출·테스트 트랙·검수</li>
+        <li>반려 사례 대응·예방 / 정책 모니터링 / 체크리스트</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>상위 과제 연계</h3>
+      <div class="card"><div class="k">실행과제</div>퍼블리싱 게임 품질 기반 강화 → <strong>출시 품질 Gate 통합 기준</strong>의 마켓 영역. 마켓 제출 Gate = QA 착수/출시 승인의 전제 조건.</div>
+      <div class="card"><div class="k">데이터 연계</div>마켓 검수 현황은 wiki "Market Store"(SSoT) → <strong>QA-Dashboard Market Review(PRH) 탭</strong>으로 시각화.</div>
+      <div class="note"><strong>판단 상태(Pass / Conditional Pass / Fail)</strong>를 마켓 제출 단계에 표준 적용.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 4 공통 플로우 */
+S("공통 플로우", `<div class="slide">
+  <div class="s-band"><span class="brand">Market Process Standard</span><span class="sec">01 · Common Flow</span></div>
+  <span class="eyebrow">표준 출시 플로우</span>
+  <h2 class="title">제출까지의 <em>공통 단계</em></h2>
+  <div class="flow">
+    <div class="step"><div class="n">D-90</div><div class="t">전략·계정</div><div class="d">스토어 계정/권한, 피처드 목표</div></div>
+    <div class="step"><div class="n">D-75</div><div class="t">테스트 배포</div><div class="d">TestFlight / 비공개 트랙</div></div>
+    <div class="step"><div class="n">D-45</div><div class="t">자산·피처드</div><div class="d">스크린샷·영상, 피처드 제안</div></div>
+    <div class="step"><div class="n">D-14</div><div class="t">제출</div><div class="d">빌드 업로드·심사 제출</div></div>
+    <div class="step"><div class="n">D-Day</div><div class="t">출시</div><div class="d">단계 출시·모니터링</div></div>
+  </div>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>마켓 제출 Gate (Pass/Conditional/Fail)</h3>
+      <ul>
+        <li><strong>기능 안정성</strong> — 핵심 플로우(로그인·결제·진입) 정상</li>
+        <li><strong>플랫폼/마켓 연동</strong> — 빌링·계정·게임서비스</li>
+        <li><strong>성능·안정성</strong> — 크래시/ANR, 호환성</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>BVT/BAT 연계</h3>
+      <ul>
+        <li>BVT/BAT 미통과 빌드 → QA 착수 제한</li>
+        <li>예외(조건부 착수) 기준 별도 정의</li>
+        <li>제출 빌드 = BAT 통과 RC 빌드 원칙</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 5 APPLE 제출 */
+S("Apple 제출", `<div class="slide">
+  <div class="s-band"><span class="brand">Apple App Store</span><span class="sec">02 · Apple ①</span></div>
+  <span class="eyebrow">App Store Connect</span>
+  <h2 class="title">Apple <em>제출 프로세스</em> <span class="chip apple">Apple</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">1</span>계정·앱 등록</h3>
+      <ol>
+        <li>App Store Connect에서 신규 앱 생성 (Bundle ID·SKU·기본 언어)</li>
+        <li>App 정보: 카테고리, 연령 등급, 지역</li>
+        <li><strong>App Privacy(개인정보 영양성분표)</strong> 작성 — 데이터 수집 항목 고지 <span class="chip new">2026 필수</span></li>
+      </ol>
+      <h3><span class="num">2</span>빌드 업로드</h3>
+      <ol>
+        <li>Xcode/Transporter로 빌드 업로드 → 처리 대기</li>
+        <li>수출 규정(암호화) 준수 선언</li>
+        <li>빌드를 버전에 연결</li>
+      </ol>
+    </div>
+    <div>
+      <h3><span class="num">3</span>메타데이터·자산</h3>
+      <ul>
+        <li>스크린샷(<strong>iPhone Pro Max 2868×1320 등</strong>), 미리보기 영상</li>
+        <li>설명·키워드·프로모션 텍스트·지원 URL</li>
+        <li>심사 메모 + 데모 계정 제공(로그인 필요 시 필수)</li>
+      </ul>
+      <h3><span class="num">4</span>심사 제출</h3>
+      <ul>
+        <li>수동/자동 출시, 단계적 출시(Phased Release) 선택</li>
+        <li>심사 평균 <strong>24~48h</strong></li>
+        <li>In-App Events / 가격·국가 설정</li>
+      </ul>
+      <div class="note">로그인·결제 포함 게임은 <strong>데모 계정 미제공 = 반려 단골 사유</strong>. 제출 전 필수 점검.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 6 TestFlight */
+S("TestFlight", `<div class="slide">
+  <div class="s-band"><span class="brand">Apple App Store</span><span class="sec">02 · Apple ②</span></div>
+  <span class="eyebrow">베타 배포</span>
+  <h2 class="title">TestFlight <em>베타 테스트</em> <span class="chip apple">Apple</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>구성</h3>
+      <table>
+        <tr><th>그룹</th><th>인원</th><th>심사</th></tr>
+        <tr><td>내부 테스터</td><td>최대 100명(팀 계정)</td><td>심사 불필요</td></tr>
+        <tr><td>외부 테스터</td><td>최대 10,000명</td><td>최초 빌드 베타 심사</td></tr>
+      </table>
+      <ul>
+        <li>빌드 유효기간 90일</li>
+        <li>그룹별 빌드 배포 + 피드백 수집</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>QA 활용</h3>
+      <ul>
+        <li>출시 2~3개월 전 베타 시작 → 사용자 피드백·크래시 수집</li>
+        <li>마켓 제출 전 실기기 호환성 사전 검증</li>
+        <li>피처드 제안 자산 준비와 병행</li>
+      </ul>
+      <div class="note">TestFlight 외부 베타 = 출시 빌드와 동일 환경(라이브 서버) 검증 권장.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 7 Apple Guideline */
+S("Apple 가이드라인", `<div class="slide">
+  <div class="s-band"><span class="brand">Apple App Store</span><span class="sec">02 · Apple ③</span></div>
+  <span class="eyebrow">App Review Guidelines</span>
+  <h2 class="title">심사 <em>5대 영역</em> <span class="chip apple">Apple</span></h2>
+  <div class="cols-3">
+    <div>
+      <h3><span class="num">1</span>안전성</h3>
+      <ul><li>불쾌·유해 콘텐츠 차단</li><li>UGC 신고/차단 기능</li><li>아동 안전·개인정보</li></ul>
+      <h3><span class="num">2</span>성능</h3>
+      <ul><li>완성도(베타·크래시 금지)</li><li>정확한 메타데이터</li><li>하드웨어 호환</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">3</span>비즈니스</h3>
+      <ul><li><strong>IAP 강제</strong>(디지털 재화)</li><li>외부 결제 유도 제한</li><li>구독·자동갱신 고지</li></ul>
+      <h3><span class="num">4</span>디자인</h3>
+      <ul><li>HIG 준수</li><li>최소 기능·독창성</li><li>스팸·복제 금지</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">5</span>법률</h3>
+      <ul><li>개인정보 정책 링크 필수</li><li>지역 법규(도박·암호화폐)</li><li>지적재산권</li></ul>
+      <div class="note">가이드라인 갱신 → <strong>Market Review Checklist 반영 룰</strong>. 변경 추적: Developer News + Guidelines History(SHAPE).</div>
+    </div>
+  </div>
+</div>`);
+
+/* 8 Apple 반려 */
+S("Apple 반려 예방", `<div class="slide">
+  <div class="s-band"><span class="brand">Apple App Store</span><span class="sec">02 · Apple ④</span></div>
+  <span class="eyebrow">반려 사례 & 예방</span>
+  <h2 class="title">대표 <em>반려 사유</em>와 대응 <span class="chip apple">Apple</span></h2>
+  <table>
+    <tr><th>가이드라인</th><th>반려 사유</th><th>예방 조치</th></tr>
+    <tr><td>2.1 성능</td><td>데모 계정 미제공 / 로그인 불가</td><td>심사 메모에 데모 계정·우회 경로 기재</td></tr>
+    <tr><td>2.3 메타데이터</td><td>스크린샷이 실제 앱과 불일치</td><td>실제 게임 화면 스크린샷, 과장 금지</td></tr>
+    <tr><td>3.1.1 결제</td><td>외부 결제 링크/유도</td><td>디지털 재화는 IAP만, 외부 유도 제거</td></tr>
+    <tr><td>4.0 디자인</td><td>미완성·크래시·placeholder</td><td>BAT 통과 RC 빌드만 제출</td></tr>
+    <tr><td>5.1.1 개인정보</td><td>App Privacy 항목 누락/불일치</td><td>실제 수집 데이터와 영양성분표 1:1 정합</td></tr>
+  </table>
+  <div class="note"><strong>운영 원칙:</strong> 반려 1건마다 사유·대응·재발방지를 누적 기록 → Apple 케이스는 Review Checklist에 버전 반영 중(예: "데이터 다운로드 없이 플레이 가능" 케이스 삭제 추적).</div>
+</div>`);
+
+/* 9 Apple Featured */
+S("Apple Featured", `<div class="slide">
+  <div class="s-band"><span class="brand">Apple App Store</span><span class="sec">02 · Apple ⑤</span></div>
+  <span class="eyebrow">Featured 전략</span>
+  <h2 class="title">피처드 <em>대응</em> <span class="chip apple">Apple</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>피처드 유형</h3>
+      <ul>
+        <li>App/Game of the Day (Today 탭)</li>
+        <li>Category Spotlight (예: RPG)</li>
+        <li>In-App Events / Editors' Choice / Collections</li>
+      </ul>
+      <h3><span class="num">·</span>제안 타이밍</h3>
+      <ul><li>론칭 <strong>4~6주 전</strong> App Store Connect 노미네이션</li><li>Editorial 팀이 최종 승인</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>자산 요청 대응 (실사례)</h3>
+      <div class="card"><div class="k">CZN Launch Story</div>Apple 에디터팀 자산 요청: 캐릭터 아트(노출/고어 제외), 국문·영문 UI 스크린샷(Pro Max), 라이브서버 캡처 게임플레이 영상(편집 금지·1분+·홍보문구 금지).</div>
+      <div class="warn"><strong>주의:</strong> 피처드 콘텐츠는 특정 빌드 기준 제작 → 게시 전 UI/기능 변경 업데이트는 Apple과 일정 협의. 단순 버그픽스는 사전 협의 후 가능.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 10 Google 제출 */
+S("Google 제출", `<div class="slide">
+  <div class="s-band"><span class="brand">Google Play</span><span class="sec">03 · Google ①</span></div>
+  <span class="eyebrow">Play Console</span>
+  <h2 class="title">Google <em>제출 프로세스</em> <span class="chip google">Google</span></h2>
+  <div class="warn"><strong>2026 최신화:</strong> 과거 "APK 직접 업로드 / 알파·베타 메뉴"는 폐지. 현재는 <strong>AAB(Android App Bundle) 필수</strong> + 릴리스 트랙 체계로 전환됨. <span class="chip new">갱신</span></div>
+  <div class="cols">
+    <div>
+      <h3><span class="num">1</span>앱 생성·설정</h3>
+      <ol>
+        <li>Play Console에서 앱 만들기 (이름·언어·앱/게임·무료/유료)</li>
+        <li><strong>앱 콘텐츠</strong>: 개인정보처리방침, 광고, 타겟층, <strong>Data safety</strong> 양식 <span class="chip new">필수</span></li>
+        <li>콘텐츠 등급: <strong>IARC 설문</strong></li>
+      </ol>
+      <h3><span class="num">2</span>번들 업로드</h3>
+      <ol>
+        <li><strong>.aab</strong> 업로드 (Play App Signing 자동)</li>
+        <li>대상 API 레벨 요건 충족</li>
+      </ol>
+    </div>
+    <div>
+      <h3><span class="num">3</span>스토어 등록정보</h3>
+      <ul>
+        <li>제목(30자)·간단한 설명(80자)·자세한 설명(4000자)</li>
+        <li>아이콘·피처 그래픽·스크린샷(폰/태블릿)·동영상</li>
+        <li>순수 게임화면 스크린샷 1종+ (피처드용)</li>
+      </ul>
+      <h3><span class="num">4</span>프로덕션 출시</h3>
+      <ul>
+        <li>국가·가격, <strong>단계적 출시(%)</strong></li>
+        <li>심사 후 게시 (수 시간~수 일)</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 11 Google 트랙 */
+S("Google 테스트 트랙", `<div class="slide">
+  <div class="s-band"><span class="brand">Google Play</span><span class="sec">03 · Google ②</span></div>
+  <span class="eyebrow">릴리스 트랙</span>
+  <h2 class="title">테스트 <em>트랙 체계</em> <span class="chip google">Google</span> <span class="chip new">2026 현행</span></h2>
+  <table>
+    <tr><th>트랙</th><th>용도</th><th>QA 사용</th></tr>
+    <tr><td>내부 테스트 (Internal)</td><td>최대 100명, 즉시 배포(심사 최소)</td><td>★ QA 내부 검증 기본</td></tr>
+    <tr><td>비공개 테스트 (Closed)</td><td>지정 테스터/그룹, 베타</td><td>개발사·피처드팀 포함 검증</td></tr>
+    <tr><td>공개 테스트 (Open)</td><td>스토어 노출 공개 베타</td><td>대규모 사전 테스트 시</td></tr>
+    <tr><td>프로덕션 (Production)</td><td>실 출시</td><td>단계적 출시</td></tr>
+  </table>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>Pre-launch Report</h3>
+      <ul><li>실기기 자동 구동 → 크래시·ANR·접근성·보안 사전 검출</li><li>업로드 시 자동 생성</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>Internal App Sharing</h3>
+      <ul><li>버전코드 무관 빠른 공유 링크 — 즉석 빌드 검증</li><li>결제 테스트는 라이선스 테스터 등록 병행</li></ul>
+    </div>
+  </div>
+</div>`);
+
+/* 12 Google 등록정보/Data Safety */
+S("Google 등록·등급", `<div class="slide">
+  <div class="s-band"><span class="brand">Google Play</span><span class="sec">03 · Google ③</span></div>
+  <span class="eyebrow">앱 콘텐츠 · 정책</span>
+  <h2 class="title">Data Safety · <em>콘텐츠 등급</em> <span class="chip google">Google</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>Data Safety (데이터 보안) <span class="chip new">2026 필수</span></h3>
+      <ul>
+        <li>수집·공유 데이터 유형, 목적, 암호화·삭제 요청 가능 여부 선언</li>
+        <li>실제 SDK 수집과 <strong>1:1 정합</strong> — 불일치 시 정책 위반</li>
+      </ul>
+      <h3><span class="num">·</span>콘텐츠 등급</h3>
+      <ul><li>IARC 설문 → 지역별 등급 자동 산출</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>주요 정책 점검</h3>
+      <ul>
+        <li>타겟 API 레벨(매년 상향) 미충족 → 업데이트 차단</li>
+        <li>광고 ID·권한 선언, 구독·결제 정책</li>
+        <li>도박/실시간 PvP 등 지역 제한 콘텐츠</li>
+      </ul>
+      <div class="note">스토어 등록정보 데이터는 사업측 관리, QA는 <strong>인앱 제품·정합성 크로스체크</strong>.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 13 Google IAP/프로모션 */
+S("Google IAP·프로모션", `<div class="slide">
+  <div class="s-band"><span class="brand">Google Play</span><span class="sec">03 · Google ④</span></div>
+  <span class="eyebrow">결제 · 프로모션</span>
+  <h2 class="title">IAP · <em>프로모션</em> <span class="chip google">Google</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>결제 테스트 세팅</h3>
+      <ul>
+        <li>Play Console에서 <strong>라이선스 테스터</strong> 등록 → 테스트 결제</li>
+        <li>GPG(Google Play Games on PC): 에뮬레이터+ADB, "테스트 결제" 문구 확인</li>
+        <li>인앱 상품: 관리되는 제품 / 구독</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>기프트카드 / Play Points <span class="chip">참고</span></h3>
+      <ul>
+        <li><strong>Gift Card 프로모션</strong>: OOAP(Out-Of-App Purchase) API — getPurchases()로 프로모 코드 보상 수령. IAP·Promotion 등록 후 코드 발급(분기당 500개 한도)</li>
+        <li><strong>Play Points</strong>: 적립/등급(Bronze~Diamond)·포인트 사용. OOAP 구현 시 인앱 아이템 교환 지원</li>
+      </ul>
+      <div class="note">검수 관점: 프로모 코드 리딤 → 보상 지급 플로우, OOAP <code>getPurchases()</code> onResume 호출 확인.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 14 Google Featured/Vitals */
+S("Google Featured", `<div class="slide">
+  <div class="s-band"><span class="brand">Google Play</span><span class="sec">03 · Google ⑤</span></div>
+  <span class="eyebrow">Featured · 품질지표</span>
+  <h2 class="title">피처드 & <em>Android Vitals</em> <span class="chip google">Google</span></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>Android Vitals 기술 기준</h3>
+      <ul>
+        <li>크래시율 &lt; 1%</li>
+        <li>ANR &lt; 0.1%</li>
+        <li>배터리·로딩 최적화, 앱 크기 관리</li>
+      </ul>
+      <h3><span class="num">·</span>ASO</h3>
+      <ul><li>아이콘·스크린샷·키워드·로컬라이징</li><li>평점 4.3+·리뷰 500+·유지율 30%+</li></ul>
+    </div>
+    <div>
+      <h3><span class="num">·</span>피처드 경로</h3>
+      <ul>
+        <li>Editorial + 알고리즘 큐레이션 (직접 제안 제한적)</li>
+        <li>LiveOps 등록 / Developer Agency Program / 신규·업데이트 30일 노출</li>
+      </ul>
+      <div class="note">Google은 자동 피처링 비중 큼 → <strong>Vitals 개선이 곧 피처드 대상 확대</strong>.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 15 정책 모니터링 */
+S("정책 모니터링", `<div class="slide">
+  <div class="s-band"><span class="brand">Policy Monitoring</span><span class="sec">04 · Policy</span></div>
+  <span class="eyebrow">정책 변경 감시</span>
+  <h2 class="title">정책 <em>모니터링 & 알림</em></h2>
+  <div class="cols">
+    <div>
+      <h3><span class="num">·</span>운영 방식 <span class="chip new">운영중</span></h3>
+      <ul>
+        <li><strong>Slack 정책 RSS 피드 구독</strong> — Apple/Google 정책·뉴스 변경을 Slack 채널로 자동 수신</li>
+        <li>변경 감지 → 담당자 확인 → Market Review Checklist 반영</li>
+      </ul>
+      <h3><span class="num">·</span>추적 소스</h3>
+      <ul>
+        <li>Apple Developer News / App Store Review Guidelines</li>
+        <li>Guidelines History(SHAPE) — 변경 diff</li>
+        <li>Google Play 정책 업데이트</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card"><div class="k">효과</div>최신 가이드 유지 · 정책 미반영 검수 실패 예방. 사람이 매번 정책 페이지 확인하던 수작업 제거.</div>
+      <div class="note"><strong>개선 여지:</strong> RSS 수신 → 체크리스트 반영까지 <strong>연계 자동화</strong>(변경 항목 → 체크리스트 diff 제안)는 향후 과제.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 16 체크리스트 */
+S("검수 체크리스트", `<div class="slide">
+  <div class="s-band"><span class="brand">Review Test</span><span class="sec">05 · Checklist</span></div>
+  <span class="eyebrow">검수 체크리스트 체계</span>
+  <h2 class="title">표준 <em>체크리스트</em> 자산</h2>
+  <table>
+    <tr><th>체크리스트</th><th>목적</th></tr>
+    <tr><td>Open Checklist</td><td>오픈 전 필수 점검 항목</td></tr>
+    <tr><td>BAT</td><td>Build Acceptance — 빌드 수용 판정</td></tr>
+    <tr><td>Interrupt</td><td>전화·알림·백그라운드 등 인터럽트 대응</td></tr>
+    <tr><td>SDK 연동 검수</td><td>로그인·결제 등 SDK (미지원 로그인 타입 제외)</td></tr>
+    <tr><td>호환성</td><td>기기/OS 조합, 네트워크</td></tr>
+    <tr><td>기능 약식</td><td>라이브 QA용 핵심 기능 약식</td></tr>
+  </table>
+  <div class="cols">
+    <div><h3><span class="num">·</span>관리</h3><ul><li>게임별 xlsx + <strong>버전·관리자·일자</strong> 관리</li><li>Apple 가이드라인 변경 → Checklist 버전 반영(v2.6→2.7…)</li></ul></div>
+    <div><h3><span class="num">·</span>마켓 검수 기준</h3><ul><li>Apple: App Review Guideline 기반</li><li>Google: Play 정책 기반</li><li>Market Review Checklist = 공통 기준 문서</li></ul></div>
+  </div>
+</div>`);
+
+/* 17 멀티스토어 */
+S("멀티스토어", `<div class="slide">
+  <div class="s-band"><span class="brand">Store Guide</span><span class="sec">06 · Multi-Store</span></div>
+  <span class="eyebrow">기타 스토어</span>
+  <h2 class="title">멀티스토어 <em>커버리지</em></h2>
+  <table>
+    <tr><th>스토어</th><th>비고</th></tr>
+    <tr><td>Apple App Store</td><td>주력 — 본 가이드 §02</td></tr>
+    <tr><td>Google Play</td><td>주력 — 본 가이드 §03</td></tr>
+    <tr><td>Amazon Appstore</td><td>Android 대체 배포</td></tr>
+    <tr><td>Huawei App Gallery</td><td>중국·글로벌(서모너즈워 기반 가이드 보유)</td></tr>
+    <tr><td>Galaxy Store / ONE store</td><td>국내·삼성 채널 <span class="chip new">추가 검토</span></td></tr>
+    <tr><td>Facebook Cloud</td><td>클라우드 플레이</td></tr>
+  </table>
+  <div class="note">계정·국가 변경(테스트 환경): iOS 해외 계정 생성(기기당 최대 3개), 마켓 국가 변경 가이드 별도 보유.</div>
+</div>`);
+
+/* 18 부족·향후 */
+S("향후 과제", `<div class="slide">
+  <div class="s-band"><span class="brand">Roadmap</span><span class="sec">07 · Gaps & Next</span></div>
+  <span class="eyebrow">부족 & 향후 업데이트</span>
+  <h2 class="title">아직 <em>채워야 할 것</em></h2>
+  <table>
+    <tr><th>항목</th><th>현재</th><th>To-Do</th></tr>
+    <tr><td>Google 제출 SOP</td><td>레거시 가이드 base만</td><td>2026 Play Console 기준 정식 SOP 문서화</td></tr>
+    <tr><td>반려 대응 매뉴얼</td><td>Apple 케이스 산발 누적</td><td>Apple/Google 반려 사유→대응→예방 단일 매뉴얼</td></tr>
+    <tr><td>정책 RSS→체크리스트</td><td>Slack 수신까지</td><td>변경 항목 자동 diff → 체크리스트 반영 제안</td></tr>
+    <tr><td>Featured 플레이북</td><td>CZN 1게임 사례</td><td>다게임 일반화 플레이북</td></tr>
+    <tr><td>레거시 문서</td><td>2015·2018 자료 혼재</td><td>현행화 또는 아카이브 분리</td></tr>
+    <tr><td>실행과제 Status</td><td>공란</td><td>진행률 갱신(현재 ~75%)</td></tr>
+  </table>
+  <div class="note"><strong>완료 판정:</strong> Apple 축 ≈완료 · Google SOP·반려 매뉴얼 잔여. 위 6건 중 상단 2건 닫으면 "표준화 완료" 선언 가능.</div>
+</div>`);
+
+/* 19 마무리 */
+S("요약", `<div class="slide cover">
+  <div class="kicker">Summary</div>
+  <h1>표준화는 <span class="it">사람이 바뀌어도</span><br>같은 품질</h1>
+  <div class="sub">단계별 SOP + 반려 예방 플레이북 + 정책 자동 감시. Apple은 완성 수준, Google SOP·반려 매뉴얼을 닫으면 과제 완료.</div>
+  <div class="meta">
+    <div><div class="l">Apple</div><div class="v">제출·심사·피처드 표준화 ✓</div></div>
+    <div><div class="l">Google</div><div class="v">트랙·Vitals 정리 · SOP 보강</div></div>
+    <div><div class="l">정책</div><div class="v">Slack RSS 모니터링 ✓</div></div>
+    <div><div class="l">완료도</div><div class="v">≈ 75% → 잔여 2건</div></div>
+  </div>
+</div>`);
+
+/* ---- render ---- */
+const track=document.getElementById('track');
+track.innerHTML=SLIDES.map(s=>s.html).join('');
+document.getElementById('tot').textContent=SLIDES.length;
+// build TOC
+const tocGroups=["표지","목차","개요","공통","Apple","Apple","Apple","Apple","Apple","Google","Google","Google","Google","Google","정책","검수","스토어","향후","요약"];
+const toc=document.getElementById('toc');
+if(toc){ toc.innerHTML=SLIDES.map((s,i)=>
+  `<div class="row" onclick="go(${i})"><span class="no">${String(i+1).padStart(2,'0')}</span><span class="nm">${s.title}</span><span class="gp">${tocGroups[i]||''}</span></div>`).join(''); }
+
+let idx=0;
+function render(){
+  track.style.transform=`translateX(-${idx*100}%)`;
+  document.getElementById('cur').textContent=idx+1;
+  document.getElementById('ttl').textContent=SLIDES[idx].title;
+  document.getElementById('prev').disabled=idx===0;
+  document.getElementById('next').disabled=idx===SLIDES.length-1;
+  document.getElementById('prog').style.width=((idx+1)/SLIDES.length*100)+'%';
+  const sl=track.children[idx]; if(sl) sl.scrollTop=0;
+}
+function move(d){ const n=idx+d; if(n>=0&&n<SLIDES.length){idx=n;render();} }
+function go(i){ if(i>=0&&i<SLIDES.length){idx=i;render();} }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown'){move(1);}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){move(-1);}
+  else if(e.key==='Home'){go(0);} else if(e.key==='End'){go(SLIDES.length-1);}
+});
+render();
+</script>
+</body>
+</html>
