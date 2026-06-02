@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Voice — 유저 동향 분석 시스템 기술 설계 리포트 (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --bg:#ffffff; --ink:#1a1a1a; --mute:#888888; --line:#e8e6e0; --surface:#f7f6f2;
+  --accent:#c8483a; --accent-t:rgba(200,72,58,0.08);
+  --green:#2d7a4f; --green-t:rgba(45,122,79,0.08);
+  --amber:#b45309; --amber-t:rgba(180,83,9,0.08);
+  --blue:#2563eb; --blue-t:rgba(37,99,235,0.08);
+  --font:'Noto Sans KR',sans-serif; --mono:'Noto Sans Mono',monospace; --serif:'Noto Serif JP',serif;
+  --max:1120px;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased; }
+nav { position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); display:flex; align-items:center; height:52px; padding:0 40px; gap:28px; overflow-x:auto; }
+.nav-brand { font-family:var(--mono); font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); white-space:nowrap; }
+.nav-links { display:flex; gap:20px; list-style:none; }
+.nav-links a { font-size:13px; color:var(--mute); text-decoration:none; white-space:nowrap; transition:color 0.15s; }
+.nav-links a:hover { color:var(--ink); }
+.nav-meta { margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--mute); white-space:nowrap; }
+.wrap { max-width:var(--max); margin:0 auto; padding:0 40px; }
+section { padding:64px 0; border-bottom:1px solid var(--line); }
+section:last-of-type { border-bottom:none; }
+.sec-head { margin-bottom:44px; }
+.sec-eyebrow { font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+.sec-title { font-size:30px; font-weight:700; letter-spacing:-0.02em; line-height:1.15; margin-bottom:14px; }
+.sec-desc { font-size:15px; color:var(--mute); max-width:680px; line-height:1.75; }
+.hero { padding:80px 0 64px; border-bottom:1px solid var(--line); }
+.hero-kicker { display:flex; align-items:center; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+.chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border:1px solid var(--line); font-family:var(--mono); font-size:11px; letter-spacing:0.06em; color:var(--mute); }
+.chip.red { border-color:var(--accent); color:var(--accent); background:var(--accent-t); }
+.chip .dot { width:5px; height:5px; border-radius:50%; background:currentColor; animation:blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.hero-title { font-size:54px; font-weight:700; letter-spacing:-0.03em; line-height:1.05; margin-bottom:6px; }
+.hero-title em { font-style:normal; color:var(--accent); }
+.hero-sub { font-family:var(--serif); font-size:19px; color:var(--mute); margin-bottom:34px; }
+.hero-desc { font-size:15px; color:#555; max-width:700px; line-height:1.85; margin-bottom:44px; }
+.hero-stats { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); }
+.hero-stat { padding:20px 24px; border-right:1px solid var(--line); }
+.hero-stat:last-child { border-right:none; }
+.hs-label { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); margin-bottom:6px; }
+.hs-value { font-size:18px; font-weight:700; }
+.hs-sub { font-size:12px; color:var(--mute); margin-top:2px; }
+.flow-wrap { display:grid; grid-template-columns:repeat(5,1fr); gap:0; border:1px solid var(--line); margin-bottom:24px; overflow:hidden; }
+.flow-col { border-right:1px solid var(--line); }
+.flow-col:last-child { border-right:none; }
+.flow-head { padding:12px 14px; background:var(--surface); border-bottom:1px solid var(--line); font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+.flow-items { padding:4px 0; }
+.flow-item { padding:8px 14px; font-size:12px; color:#555; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:6px; }
+.flow-item:last-child { border-bottom:none; }
+.flow-item::before { content:'·'; color:var(--line); font-size:18px; line-height:1; }
+.flow-item.hi { color:var(--ink); font-weight:500; }
+.flow-item.hi::before { color:var(--accent); }
+.tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+.tech-card { background:var(--bg); padding:26px 26px 22px; }
+.tc-label { font-family:var(--mono); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.tc-title { font-size:17px; font-weight:700; margin-bottom:8px; }
+.tc-desc { font-size:13px; color:var(--mute); line-height:1.65; }
+.pills { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
+.pill { font-family:var(--mono); font-size:11px; padding:2px 7px; border:1px solid var(--line); color:var(--mute); }
+.ct { width:100%; border-collapse:collapse; border:1px solid var(--line); margin-bottom:8px; font-size:13px; }
+.ct th { padding:11px 14px; background:var(--surface); border-bottom:1px solid var(--line); border-right:1px solid var(--line); text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; text-transform:uppercase; color:var(--mute); font-weight:600; }
+.ct th.col-acc { color:var(--accent); }
+.ct th:last-child { border-right:none; }
+.ct td { padding:10px 14px; color:#555; border-bottom:1px solid var(--line); border-right:1px solid var(--line); vertical-align:top; }
+.ct td:first-child { color:var(--ink); font-weight:500; }
+.ct td:last-child { border-right:none; }
+.ct tr:last-child td { border-bottom:none; }
+.ct tr:hover td { background:var(--surface); }
+.ct .mono { font-family:var(--mono); font-size:11px; }
+.ct .ctr { text-align:center; }
+.subhead { font-family:var(--mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute); margin:28px 0 12px; }
+.subhead.first { margin-top:0; }
+.callout { padding:14px 18px; border-left:3px solid var(--accent); background:var(--accent-t); margin:20px 0; font-size:13px; color:#555; line-height:1.65; }
+.callout strong { color:var(--ink); }
+.rec-box { margin-top:20px; padding:18px 22px; border-left:3px solid var(--accent); background:var(--accent-t); font-size:14px; color:#555; line-height:1.7; }
+.rec-box strong { color:var(--ink); }
+.badge { display:inline-block; font-family:var(--mono); font-size:10px; font-weight:600; padding:1px 6px; border:1px solid; }
+.badge.t1 { border-color:var(--accent); color:var(--accent); background:var(--accent-t); }
+.badge.t2 { border-color:var(--amber); color:var(--amber); background:var(--amber-t); }
+.badge.t3 { border-color:var(--blue); color:var(--blue); background:var(--blue-t); }
+.gate-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+.gate-card { background:var(--bg); padding:22px; }
+.gate-level { font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; color:var(--accent); }
+.gate-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+.gate-desc { font-size:13px; color:var(--mute); line-height:1.6; }
+.code-block { background:var(--ink); color:#e8e6e0; font-family:var(--mono); font-size:12px; line-height:1.85; padding:18px 20px; overflow-x:auto; margin:8px 0; white-space:pre; }
+.code-block .acc { color:#ff8c7a; } .code-block .mut { color:#888; } .code-block .grn { color:#4ade80; }
+.timeline { padding-left:40px; position:relative; }
+.timeline::before { content:''; position:absolute; left:12px; top:8px; bottom:0; width:1px; background:var(--line); }
+.tl-step { position:relative; padding-bottom:26px; }
+.tl-step:last-child { padding-bottom:0; }
+.tl-step::before { content:''; position:absolute; left:-34px; top:6px; width:8px; height:8px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+.tl-head { display:flex; align-items:center; gap:10px; margin-bottom:5px; flex-wrap:wrap; }
+.tl-num { font-family:var(--mono); font-size:10px; font-weight:600; color:var(--mute); }
+.tl-title { font-size:16px; font-weight:700; }
+.tl-body { font-size:13px; color:var(--mute); line-height:1.7; }
+footer { padding:40px 0; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--line); flex-wrap:wrap; gap:12px; }
+.footer-l { font-size:13px; color:var(--mute); }
+.footer-r { font-family:var(--mono); font-size:11px; color:#ccc; }
+@media (max-width:860px) {
+  .wrap { padding:0 20px; } nav { padding:0 20px; } .nav-links { display:none; }
+  .hero-title { font-size:34px; } .hero-stats { grid-template-columns:1fr 1fr; }
+  .flow-wrap,.tech-grid,.gate-grid { grid-template-columns:1fr; }
+  .flow-col { border-right:none; border-bottom:1px solid var(--line); }
+  .ct { font-size:12px; } .ct th,.ct td { padding:8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">User Voice · Tech Spec</div>
+  <ul class="nav-links">
+    <li><a href="#arch">아키텍처</a></li>
+    <li><a href="#channels">크롤링 채널</a></li>
+    <li><a href="#collect">수집</a></li>
+    <li><a href="#nlp">NLP</a></li>
+    <li><a href="#db">DB</a></li>
+    <li><a href="#kpi">집계</a></li>
+    <li><a href="#api">API</a></li>
+    <li><a href="#slack">버그 알림</a></li>
+    <li><a href="#ops">OPS 알림</a></li>
+    <li><a href="#topic">토픽 요약</a></li>
+    <li><a href="#front">프론트</a></li>
+  </ul>
+  <div class="nav-meta">Issue Dashboard · 2026.06</div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+<div class="hero" id="overview">
+  <div class="hero-kicker">
+    <div class="chip red"><span class="dot"></span>LIVE</div>
+    <div class="chip">Issue Dashboard · User Voice</div>
+    <div class="chip">Python / SQLite / Haiku</div>
+    <div class="chip">DB Schema v12</div>
+  </div>
+  <h1 class="hero-title">User Voice<br><em>유저 동향 분석 시스템</em></h1>
+  <p class="hero-sub">커뮤니티 VOC 수집 · NLP 분류 · 토픽 요약 · Slack 버그 알림 — 기술 설계 리포트</p>
+  <p class="hero-desc">
+    게임 커뮤니티 게시글을 다국어·다권역으로 24/7 수집하고, NLP로 감성·버그·카테고리를 분류해 토픽으로 묶고,
+    LLM이 bullet 요약 + 원문 인용을 생성하는 운영 시스템. 버그 게시글은 게임별 Slack 채널로 자동 알림하며,
+    워커 이상은 OPS 알림으로 고지한다. 본 리포트는 실제 코드(<code>server/user_voice/</code> 패키지 외)를 근거로 한 상세 기술 설계서다.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hs-label">크롤링 채널</div><div class="hs-value" style="color:var(--accent)">38+</div><div class="hs-sub">4게임 · 5권역</div></div>
+    <div class="hero-stat"><div class="hs-label">Fetcher</div><div class="hs-value">6종 가동</div><div class="hs-sub">DC·Arca·Stove·Reddit·YT·5ch</div></div>
+    <div class="hero-stat"><div class="hs-label">카테고리 분류</div><div class="hs-value">9종</div><div class="hs-sub">감성 3 + 버그 직교</div></div>
+    <div class="hero-stat"><div class="hs-label">DB 스키마</div><div class="hs-value">v12</div><div class="hs-sub">WAL · DEV/PROD 분리</div></div>
+  </div>
+</div>
+</div>
+
+<!-- 01 ARCH -->
+<div class="wrap">
+<section id="arch">
+  <div class="sec-head">
+    <div class="sec-eyebrow">01 · Architecture</div>
+    <h2 class="sec-title">아키텍처 · 데이터 흐름</h2>
+    <p class="sec-desc">수집 → PII 레닥션 → NLP 분류 → 번역 → 게임 도메인 감성 → 토픽 클러스터 → 집계 → API → 프론트. 각 단계는 이벤트/주기 루프로 비동기 연결된다.</p>
+  </div>
+  <div class="flow-wrap">
+    <div class="flow-col"><div class="flow-head">수집</div><div class="flow-items">
+      <div class="flow-item hi">Fetcher.fetch_new()</div>
+      <div class="flow-item">PIIRedactor.redact()</div>
+      <div class="flow-item">posts INSERT</div>
+      <div class="flow-item">crawl_done 이벤트</div>
+    </div></div>
+    <div class="flow-col"><div class="flow-head">NLP 분류</div><div class="flow-items">
+      <div class="flow-item hi">감성 (XLM-RoBERTa)</div>
+      <div class="flow-item hi">버그 키워드</div>
+      <div class="flow-item hi">카테고리 9종</div>
+      <div class="flow-item">classification upsert</div>
+    </div></div>
+    <div class="flow-col"><div class="flow-head">후처리</div><div class="flow-items">
+      <div class="flow-item">번역 (ko≠ → Haiku)</div>
+      <div class="flow-item hi">게임 감성/연관도</div>
+      <div class="flow-item hi">BugAlert 발송</div>
+    </div></div>
+    <div class="flow-col"><div class="flow-head">토픽·집계</div><div class="flow-items">
+      <div class="flow-item hi">토픽 클러스터 24h</div>
+      <div class="flow-item hi">KPI 사전계산 2h</div>
+      <div class="flow-item">kpi_snapshots</div>
+    </div></div>
+    <div class="flow-col"><div class="flow-head">서빙</div><div class="flow-items">
+      <div class="flow-item hi">voice_handler API</div>
+      <div class="flow-item">LLM 토픽/요약 캐시</div>
+      <div class="flow-item hi">UserDashboard.tsx</div>
+    </div></div>
+  </div>
+  <div class="callout">
+    <strong>DEV/PROD 분리</strong> (<code>voice_db.py:25</code>): <code>VOICE_DB_PATH</code> 환경변수로 DB 경로 분기. DEV <code>data/dev/user_voice.db</code> :9101 / PROD <code>data/prod/user_voice.db</code> :9100. path traversal 가드(<code>_ALLOWED_BASE</code>) 적용. SQLite <strong>WAL</strong> + foreign_keys ON + busy_timeout 10s.
+  </div>
+</section>
+</div>
+
+<!-- 02 CHANNELS -->
+<div class="wrap">
+<section id="channels">
+  <div class="sec-head">
+    <div class="sec-eyebrow">02 · Crawl Channels (channels.py)</div>
+    <h2 class="sec-title">게임별 크롤링 커뮤니티 매핑</h2>
+    <p class="sec-desc">게임 × 권역(KR/EN/JA/ZH-TW/SEA)별로 커뮤니티·SNS 채널을 정의한다. 스토브는 권역별 자유/버그 게시판을 별도 채널로 분리한다.</p>
+  </div>
+
+  <div class="subhead first">EP7 · 에픽세븐</div>
+  <table class="ct">
+    <thead><tr><th>권역</th><th>소스</th><th>채널</th><th class="col-acc">티어</th></tr></thead>
+    <tbody>
+      <tr><td>KR</td><td>디시인사이드</td><td>마이너 갤러리 (gall_id=epicseven)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>아카라이브</td><td>epic7 (구독 14,537)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>스토브</td><td>자유게시판 / 버그게시판 (board 1005 / 1012)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>YouTube</td><td>@EpicSevenKR</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>EN</td><td>Reddit</td><td>r/EpicSeven (57K)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>EN</td><td>스토브</td><td>글로벌 자유 / 버그 (989 / 998)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>EN</td><td>YouTube</td><td>@EpicSeven</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>JA</td><td>스토브</td><td>JP 자유 / 버그 (1954 / 1985)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>JA</td><td>X (Twitter)</td><td>@Epic7_jp 공식</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>JA</td><td>5ch</td><td><span class="mono">krsw (비활성 — 회사망 TLS 차단)</span></td><td class="ctr"><span class="badge t3">off</span></td></tr>
+      <tr><td>ZH-TW</td><td>스토브</td><td>TW 자유 / 버그 (1015 / 1022)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="subhead">CZN · 카오스제로 나이트메어</div>
+  <table class="ct">
+    <thead><tr><th>권역</th><th>소스</th><th>채널</th><th class="col-acc">티어</th></tr></thead>
+    <tbody>
+      <tr><td>KR</td><td>디시인사이드</td><td>마이너 갤러리 (gall_id=chaoszero)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>아카라이브</td><td>chaoszeronightmare (구독 9,209)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>스토브</td><td>KR 자유 / 버그 (139259 / 142440)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>KR</td><td>YouTube</td><td>@ChaosZeroNightmare_KR</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>EN</td><td>Reddit</td><td>r/ChaosZeroNightmare</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>EN</td><td>스토브</td><td>EN 자유 / 버그 (141775 / 141774)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>JA</td><td>스토브</td><td>JP 자유 / 버그 (139275 / 141762)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>JA</td><td>X (Twitter)</td><td>@CZN_Official_JP</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>JA</td><td>5ch</td><td><span class="mono">krsw.5ch.io gamesm (카오스ゼロ/CZN)</span></td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>ZH-TW</td><td>스토브</td><td>TW 자유 / 버그 (142435 / 141766)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="subhead">LDN · 로드나인 / LNA · 로드나인 아시아</div>
+  <table class="ct">
+    <thead><tr><th>게임</th><th>권역</th><th>소스</th><th>채널</th><th class="col-acc">티어</th></tr></thead>
+    <tbody>
+      <tr><td>LDN</td><td>KR</td><td>디시인사이드</td><td>미니 갤러리 (gall_id=mylord)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>LDN</td><td>KR</td><td>스토브</td><td>자유 / 버그 (game=L9, 128093 / 128507)</td><td class="ctr"><span class="badge t1">T1</span></td></tr>
+      <tr><td>LDN</td><td>KR</td><td>YouTube</td><td>@LORDNINE_KR</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>LDN</td><td>ZH-TW</td><td>YouTube</td><td>@LORDNINE_TW</td><td class="ctr"><span class="badge t2">T2</span></td></tr>
+      <tr><td>LNA</td><td>SEA</td><td>—</td><td>활성 채널 0 (placeholder · Discord/FB/YT 후보)</td><td class="ctr"><span class="badge t3">—</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    근거 <code>server/user_voice/channels.py:22-334</code>. 스토브는 onstove 공식 API, DC/Arca는 TLS impersonation·Playwright fallback, Reddit은 <code>.json</code> 공개 API, YouTube는 yt-dlp 댓글 수집.
+  </div>
+</section>
+</div>
+
+<!-- 03 COLLECT -->
+<div class="wrap">
+<section id="collect">
+  <div class="sec-head">
+    <div class="sec-eyebrow">03 · Collection</div>
+    <h2 class="sec-title">데이터 수집 · 스케줄</h2>
+    <p class="sec-desc">티어별 크롤 주기 + 이벤트 기반 NLP/집계 + 주기 모니터/토픽 루프로 구성. voice_scheduler.py가 전 루프를 오케스트레이션한다.</p>
+  </div>
+  <div class="subhead first">Fetcher 구현 (fetchers.py)</div>
+  <table class="ct">
+    <thead><tr><th>Fetcher</th><th>티어</th><th>대상</th><th>방식</th><th class="col-acc">rate</th></tr></thead>
+    <tbody>
+      <tr><td>RedditFetcher</td><td class="ctr"><span class="badge t1">T1</span></td><td>reddit.com</td><td>.json 공개 API (키 불필요)</td><td class="ctr mono">1.0s</td></tr>
+      <tr><td>DcinsideFetcher</td><td class="ctr"><span class="badge t1">T1</span></td><td>dcinside.com</td><td>curl_cffi(chrome120) + UA풀 5 + CircuitBreaker(3회→OPEN)</td><td class="ctr mono">5.0s</td></tr>
+      <tr><td>ArcaFetcher</td><td class="ctr"><span class="badge t1">T1</span></td><td>arca.live</td><td>requests(모바일 UA) + Playwright fallback</td><td class="ctr mono">2.5s</td></tr>
+      <tr><td>StoveFetcher</td><td class="ctr"><span class="badge t1">T1</span></td><td>onstove.com</td><td>공식 API cwms/v3.0 article/list</td><td class="ctr mono">6.0s</td></tr>
+      <tr><td>YouTubeFetcher</td><td class="ctr"><span class="badge t2">T2</span></td><td>youtube.com</td><td>yt-dlp --write-comments --skip-download</td><td class="ctr mono">10.0s</td></tr>
+      <tr><td>FivechFetcher</td><td class="ctr"><span class="badge t2">T2</span></td><td>krsw.5ch.io</td><td>HTML 파싱 (보드→키워드→스레드)</td><td class="ctr mono">3.0s</td></tr>
+      <tr><td>X / Facebook</td><td class="ctr"><span class="badge t3">T3</span></td><td>—</td><td>미구현 (격하 정책)</td><td class="ctr mono">—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="subhead">스케줄러 루프 (voice_scheduler.py:87-252)</div>
+  <table class="ct">
+    <thead><tr><th>루프</th><th>주기</th><th>대상</th></tr></thead>
+    <tbody>
+      <tr><td>_crawl_loop_t1</td><td class="mono">1h</td><td>T1 채널 전체 (+ BugAlert retry_pending)</td></tr>
+      <tr><td>_crawl_loop_t2</td><td class="mono">2h</td><td>T2 채널 전체</td></tr>
+      <tr><td>_nlp_loop</td><td class="mono">crawl_done 이벤트</td><td>미분류 게시글 (LEFT JOIN NULL)</td></tr>
+      <tr><td>_kpi_loop</td><td class="mono">nlp_done / 2h</td><td>kpi_snapshots 갱신</td></tr>
+      <tr><td>_review_queue_loop</td><td class="mono">2h</td><td>tier3 → review_queue</td></tr>
+      <tr><td>_monitor_loop</td><td class="mono">15min</td><td>채널 헬스 + NLP 지연 감시</td></tr>
+      <tr><td>_topic_cluster_loop</td><td class="mono">24h</td><td>토픽 재클러스터링</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    초기 수집 페이지: Reddit 5p(100/p) · DC 10p · Arca 10p · Stove 5p(24/p) · YouTube 최신 영상 10 × 댓글. <strong>스토브 버그게시판 자동 룰</strong>: <code>community_category='버그게시판'</code> → bug_flag=1 자동, Claude 호출 skip (<code>voice_scheduler.py:138-154</code>).
+  </div>
+</section>
+</div>
+
+<!-- 04 NLP -->
+<div class="wrap">
+<section id="nlp">
+  <div class="sec-head">
+    <div class="sec-eyebrow">04 · NLP Pipeline</div>
+    <h2 class="sec-title">NLP 분류 파이프라인</h2>
+    <p class="sec-desc">감성 3분류 + 버그 직교 플래그 + 카테고리 9종. 단계별 필터로 LLM 호출을 최소화하고, 통합 분류기는 1회 호출로 다중 라벨을 산출한다.</p>
+  </div>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="tc-label">감성 (nlp.py)</div>
+      <div class="tc-title">3-class + bug 직교</div>
+      <div class="tc-desc">pos/neg/neu. 모델 <code>cardiffnlp/twitter-xlm-roberta-base-sentiment</code>. comment 128 / post 512 토큰. mock heuristic fallback.</div>
+      <div class="pills"><div class="pill">Tier1 ≥0.80</div><div class="pill">Tier2 0.60~0.80</div><div class="pill">Tier3 &lt;0.60</div></div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">버그 (nlp.py:110)</div>
+      <div class="tc-title">키워드 직교 플래그</div>
+      <div class="tc-desc"><code>bug_keywords.json</code> lang별(ko/en/ja) substring 매칭. 감성과 독립. 스토브 버그게시판은 무조건 bug_flag=1.</div>
+    </div>
+    <div class="tech-card">
+      <div class="tc-label">언어 감지</div>
+      <div class="tc-title">정규식 간이</div>
+      <div class="tc-desc">ko/ja/zh-tw/en 4종. 언어별로 분기 처리 (번역·버그 키워드·모델 max_length).</div>
+    </div>
+  </div>
+
+  <div class="subhead">카테고리 분류 9종 (categories.py · 우선순위)</div>
+  <table class="ct">
+    <thead><tr><th>#</th><th>카테고리</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td class="ctr">1</td><td>버그/오류</td><td>클라 버그 + 서버 장애 통합</td></tr>
+      <tr><td class="ctr">2</td><td>BM/과금</td><td>과금·BM 통합</td></tr>
+      <tr><td class="ctr">3</td><td>운영/CS</td><td>공지부재·CS응대·약속미이행</td></tr>
+      <tr><td class="ctr">4</td><td>콘텐츠/개선</td><td>개선요청 + 콘텐츠요청</td></tr>
+      <tr><td class="ctr">5</td><td>업데이트/이벤트</td><td>패치·이벤트 반응</td></tr>
+      <tr><td class="ctr">6</td><td>질문/도움요청</td><td>초보질문·트러블슈팅</td></tr>
+      <tr><td class="ctr">7</td><td>공략/가이드</td><td>빌드·전략·팁</td></tr>
+      <tr><td class="ctr">8</td><td>메타/밸런스</td><td>메타토론 + 밸런스불만</td></tr>
+      <tr><td class="ctr">9</td><td>잡담/커뮤니티</td><td>친목·잡담 + 폴백</td></tr>
+    </tbody>
+  </table>
+
+  <div class="subhead">분류 파이프라인 5단계 (category_classifier.py:98-127)</div>
+  <div class="timeline">
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">STEP 0</span><span class="tl-title">noise 필터</span></div><p class="tl-body"><code>len(content) &lt; 11</code> → 'noise' (LLM 미투입)</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">STEP A</span><span class="tl-title">길이 필터</span></div><p class="tl-body"><code>&lt; 20자</code> → '잡담/커뮤니티' (LLM 미투입)</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">STEP B</span><span class="tl-title">버그 오버라이드</span></div><p class="tl-body">bug_flag_hint → '버그/오류' 강제</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">STEP C</span><span class="tl-title">BM 키워드</span></div><p class="tl-body"><code>bm_keywords.json</code> 고신뢰 + paid_marker 정규식 → 'BM/과금'</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">STEP D</span><span class="tl-title">LLM 분류</span></div><p class="tl-body">Haiku(claude-haiku-4-5) 또는 Gemini → JSON {primary, secondary, confidence}</p></div>
+  </div>
+  <div class="callout">
+    <strong>통합 분류기</strong> (<code>unified_classifier.py</code>, feature flag <code>USE_LLM_UNIFIED</code>): 단일 Haiku 호출로 sentiment + bug + category + intent 동시 산출. BATCH 25 · WORKERS 5 · RETRY 3 · 일일 토큰 예산 캡(<code>VOICE_LLM_DAILY_BUDGET</code>).
+  </div>
+</section>
+</div>
+
+<!-- 05 DB -->
+<div class="wrap">
+<section id="db">
+  <div class="sec-head">
+    <div class="sec-eyebrow">05 · DB Schema v12 (voice_db.py)</div>
+    <h2 class="sec-title">데이터베이스 스키마</h2>
+    <p class="sec-desc">SQLite WAL. posts(원본) ↔ classification_results(분류) 1:1, 토픽·요약·알림·검수·패치 보조 테이블. v1→v12 마이그레이션 누적.</p>
+  </div>
+  <table class="ct">
+    <thead><tr><th>테이블</th><th>핵심 컬럼</th><th class="col-acc">역할</th></tr></thead>
+    <tbody>
+      <tr><td>posts</td><td>post_id, source_type, game_key, lang, region_key, raw_url, content, title, community_category, ko_translation(v2), ko_title(v4)</td><td>수집 원본</td></tr>
+      <tr><td>classification_results</td><td>sentiment_class, bug_flag, confidence, tier_label, topic_id, post_category(v5), intent(v7), game_sentiment(v8), game_relevance(v8), nlp_provider(v11)</td><td>NLP 결과</td></tr>
+      <tr><td>crawl_cursors</td><td>channel_id, last_post_id, last_run, is_initial</td><td>채널 커서</td></tr>
+      <tr><td>kpi_snapshots</td><td>game_key, period, pos/neg/neu/bug/uncertain_count, total_posts</td><td>KPI 캐시(TTL 5m)</td></tr>
+      <tr><td>topic_clusters / canonical_topics</td><td>topic_id, topic_name, post_count, canonical_id, keywords</td><td>토픽 + 정규화</td></tr>
+      <tr><td>topic_summaries</td><td>summary_json, posts_signature, model</td><td>토픽 요약 캐시(7일)</td></tr>
+      <tr><td>category_summaries</td><td>cache_key, category, summary_json</td><td>카테고리 요약(24h)</td></tr>
+      <tr><td>bug_alerts</td><td>post_id(PK), alerted_at, slack_ts, channel_id, retry_count</td><td>버그 알림 중복방지</td></tr>
+      <tr><td>crawl_alerts</td><td>alert_id, channel_id, alert_type, notified_at(v12), escalated_at(v12)</td><td>채널 이상 알림</td></tr>
+      <tr><td>review_queue</td><td>queue_id, post_id, final_class, final_bug, final_category</td><td>tier3 검수</td></tr>
+      <tr><td>patch_registry</td><td>patch_id, game_key, label, start/end_date, event_type</td><td>패치 이벤트</td></tr>
+      <tr><td>monitor_heartbeat</td><td>last_probe_at, consecutive_failures</td><td>DB write probe</td></tr>
+    </tbody>
+  </table>
+</section>
+</div>
+
+<!-- 06 KPI -->
+<div class="wrap">
+<section id="kpi">
+  <div class="sec-head">
+    <div class="sec-eyebrow">06 · Aggregation</div>
+    <h2 class="sec-title">집계 · KPI 계산식</h2>
+    <p class="sec-desc">버그를 비율 모수에서 분리하고, game_sentiment를 우선한다. 비율 모수는 비버그 게시글, 버그는 별도 카운트.</p>
+  </div>
+  <div class="code-block"><span class="mut"># voice_aggregator.precompute_kpi() — 집계 규칙</span>
+eff_sentiment = COALESCE(game_sentiment, sentiment_class)   <span class="mut"># 게임 감성 우선</span>
+bug_flag=1  <span class="acc">→ bug 카운트만 (긍/부/중립 비율 제외)</span>
+tier2       → uncertain_count 추가 (비율엔 포함)
+tier3       → total_posts 미포함 (tier_label IS NOT NULL 필터)
+none/NULL   → 중립(neu) 편입
+
+<span class="mut"># 프론트 비율 (VoiceKpiCards.tsx:54) — 비버그 모수</span>
+nonBug  = total_posts - bug_count
+posRate = pos_count / nonBug × 100
+negRate = neg_count / nonBug × 100
+neuRate = neu_count / nonBug × 100
+
+<span class="mut"># 전기간 델타</span>
+delta = 현재기간 비율 - resolvePrevPeriod(동일길이 직전) 비율  <span class="grn">(%p)</span></div>
+  <div class="callout">
+    <strong>TOP5 토픽</strong> (<code>voice_aggregator.py:544</code>): Haiku가 최근 30일 샘플(≤60건)에서 구체 토픽 5개 추출 → search_query LIKE COUNT로 post_count 보정(환각 제거) → 0건 제거 → 내림차순. 캐시 24h. KPI snapshot TTL 5m / 카테고리 24h / 토픽요약 7일.
+  </div>
+</section>
+</div>
+
+<!-- 07 API -->
+<div class="wrap">
+<section id="api">
+  <div class="sec-head">
+    <div class="sec-eyebrow">07 · API (voice_handler.py)</div>
+    <h2 class="sec-title">API 엔드포인트</h2>
+    <p class="sec-desc">공통 필터: game_key · period · source_type · lang · region_key(KR/EN/JA/ZH-TW/SEA). 응답 meta에 NLP lag·신선도 플래그 포함.</p>
+  </div>
+  <table class="ct">
+    <thead><tr><th>METHOD</th><th>경로</th><th class="col-acc">핵심 파라미터</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/kpi</td><td>game_key, period_start/end, source_type?, lang?, region_key?</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/kpi/trend</td><td>granularity(day/week/month), start, end</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/kpi/compare</td><td>period_a, period_b</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/kpi/category</td><td>period_a, period_b, region_key?</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/posts</td><td>sentiment?, bug_flag?, topic_id?, post_category?, q?, page, limit</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/posts/search</td><td>q, page, limit</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/topics · /topics/&lt;id&gt;/summary</td><td>토픽 리스트 / Haiku 요약</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/summary_topics</td><td>top_n?, region_key? (LLM 토픽 집계표)</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/category/summary</td><td>category, start, end</td></tr>
+      <tr><td class="mono">PUT</td><td class="mono">/api/voice/review/&lt;id&gt;</td><td>final_class, final_bug, final_category (PIN)</td></tr>
+      <tr><td class="mono">·</td><td class="mono">/api/voice/patches</td><td>패치 등록/수정</td></tr>
+      <tr><td class="mono">GET</td><td class="mono">/api/voice/health</td><td>NLP lag, DB 상태</td></tr>
+    </tbody>
+  </table>
+  <div class="code-block"><span class="mut">// 공통 응답 meta (voice_handler.py:110)</span>
+{ "cached_at": "...", "nlp_lag_minutes": 5.2,
+  "nlp_lag_warning": false,  <span class="mut">// 30~60분</span>
+  "nlp_stale": false,        <span class="acc">// 60분+</span>
+  "calibration_ready": false, "no_data": false }</div>
+</section>
+</div>
+
+<!-- 08 SLACK BUG ALERT -->
+<div class="wrap">
+<section id="slack">
+  <div class="sec-head">
+    <div class="sec-eyebrow">08 · Slack Bug Alert (bug_alert_service.py)</div>
+    <h2 class="sec-title">Slack 버그 알림 시스템</h2>
+    <p class="sec-desc">버그 카테고리 게시글을 게임별 Slack 채널로 자동 발송. 중복방지·throttle·재시도를 갖춘 운영 안전 설계.</p>
+  </div>
+  <div class="subhead first">발송 대상 채널</div>
+  <table class="ct">
+    <thead><tr><th>game_key</th><th>Slack 채널 ID</th><th class="col-acc">상태</th></tr></thead>
+    <tbody>
+      <tr><td>EP7 (에픽세븐)</td><td class="mono">C0B6B5AAG5B</td><td class="ctr">✓ 가동</td></tr>
+      <tr><td>CZN (카오스제로)</td><td class="mono">C0B685TBYJX</td><td class="ctr">✓ 가동</td></tr>
+      <tr><td>LDN / LNA</td><td class="mono">—</td><td class="ctr">미등록 → early return</td></tr>
+    </tbody>
+  </table>
+
+  <div class="gate-grid" style="margin-top:24px;">
+    <div class="gate-card">
+      <div class="gate-level">발동 조건</div>
+      <div class="gate-title">버그 카테고리</div>
+      <div class="gate-desc"><code>post_category == "버그/오류"</code> AND game_key가 채널맵에 존재 (<code>:156-163</code>).</div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-level">중복 방지</div>
+      <div class="gate-title">post_id PK</div>
+      <div class="gate-desc"><code>bug_alerts INSERT OR IGNORE</code> rowcount=0 → skip. 발송 즉시 commit → pm2 재시작 중복 방지 (race-free).</div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-level">Throttle</div>
+      <div class="gate-title">채널당 90초</div>
+      <div class="gate-desc"><code>BUG_ALERT_INTERVAL_SECONDS=90</code>. 같은 채널 연속 알림 in-process 직렬화 (sleep).</div>
+    </div>
+  </div>
+
+  <div class="subhead">Block Kit 메시지 구조 (:65-106)</div>
+  <div class="code-block"><span class="acc">header</span>   🚨 [버그 감지] EpicSeven
+<span class="acc">section</span>  권역: 🇰🇷 KR  |  커뮤니티: DC  |  🕐 2026-05-27 | 18:32
+<span class="acc">section</span>  *제목*  +  첫 문장 (ko_translation 우선, 최대 100자…)
+<span class="acc">actions</span>  [ 🔗 원문 보기 ] → raw_url</div>
+  <div class="callout">
+    <strong>재시도</strong> (<code>retry_pending</code>): <code>alerted_at IS NULL AND retry_count &lt; 3</code> → crawl_loop 매 사이클 재시도, 실패 시 retry_count++ + last_error 기록. <strong>토큰</strong>: <code>SLACK_BOT_TOKEN</code> 환경변수 우선, 미설정 시 Slack Bot 프로젝트 <code>.env</code> fallback. 첫 문장 구분자 <code>. ? ! 。？！ \n</code>.
+  </div>
+</section>
+</div>
+
+<!-- 09 OPS ALERT -->
+<div class="wrap">
+<section id="ops">
+  <div class="sec-head">
+    <div class="sec-eyebrow">09 · OPS Alert (ops_alert_service.py)</div>
+    <h2 class="sec-title">시스템 이상 알림 (OPS)</h2>
+    <p class="sec-desc">버그 알림과 분리된 운영 채널. voice-worker 자체의 이상(크롤/NLP 중단·quota·DB락)을 감지해 단계적으로 에스컬레이션한다.</p>
+  </div>
+  <table class="ct">
+    <thead><tr><th>alert_type</th><th>의미</th><th class="col-acc">감지 조건</th></tr></thead>
+    <tbody>
+      <tr><td>NLP_STALL</td><td>NLP 분류 중단</td><td>60분 초과 (MONITOR_NLP_STALL_MINUTES)</td></tr>
+      <tr><td>CRAWL_STALL</td><td>크롤링 중단</td><td>120분 초과</td></tr>
+      <tr><td>QUOTA_EXCEEDED</td><td>API quota 초과 지속</td><td>quota 에러 + until 기록</td></tr>
+      <tr><td>DB_LOCK</td><td>DB write 연속 실패</td><td>probe failures 임계 초과</td></tr>
+      <tr><td>OPEN</td><td>채널 circuit OPEN</td><td>3회 연속 실패</td></tr>
+      <tr><td>ESCALATED</td><td>장기 미복구</td><td>circuit DISABLED</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    채널 <code>OPS_ALERT_CHANNEL_ID</code> 단일. State Machine: <strong>OPEN → NOTIFIED → (4h) ESCALATED → RESOLVED</strong>. Throttle 5분(버그 90초보다 길게). active alert 존재 시 발송 skip. escalate_stale()이 4h 경과 시 notified_at 초기화 → 재발송. Block Kit: "🚨 [시스템 이상] voice-worker" + 유형/시각/상세(≤500자).
+  </div>
+</section>
+</div>
+
+<!-- 10 TOPIC SUMMARY -->
+<div class="wrap">
+<section id="topic">
+  <div class="sec-head">
+    <div class="sec-eyebrow">10 · Topic Summary + Citation</div>
+    <h2 class="sec-title">토픽 요약 · 인용 생성</h2>
+    <p class="sec-desc">토픽 샘플을 Haiku로 bullet 5개 요약하고, 각 bullet에 원문 게시글 인용번호를 부착·검증한다. signature 기반 캐시로 재생성을 억제한다.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">01</span><span class="tl-title">샘플 수집</span></div><p class="tl-body"><code>fetch_topic_samples()</code> ≤50건, ko_translation 우선</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">02</span><span class="tl-title">signature</span></div><p class="tl-body"><code>SHA256(sorted post_ids + classified_at)[:16]</code> — 캐시 무효화 키</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">03</span><span class="tl-title">캐시 판정</span></div><p class="tl-body">signature 일치 AND 7일 이내 → 캐시 hit. miss → Haiku 호출</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">04</span><span class="tl-title">프롬프트</span></div><p class="tl-body">"[N] ko_title — body[:200]" 나열 → bullet 5 + 각 bullet [N] 인용 → JSON {bullets:[{text, citations:[]}]}</p></div>
+    <div class="tl-step"><div class="tl-head"><span class="tl-num">05</span><span class="tl-title">검증·저장</span></div><p class="tl-body"><code>1≤c≤len(samples)</code> 범위 외 인용 제거(CRITICAL-F1), bullet≤5·text≤200자. upsert 캐시.</p></div>
+  </div>
+  <div class="callout">
+    <strong>LLM 직접 토픽 추출</strong>(<code>generate_llm_topics</code>): Haiku가 60건 샘플에서 구체 토픽(캐릭터/스킬명 포함) 5개 추출 → <code>_enrich_topic_counts</code>가 search_query LIKE COUNT로 실제 건수 보정(환각 제거). 카테고리 요약은 별도 24h 캐시.
+  </div>
+</section>
+</div>
+
+<!-- 11 FRONTEND -->
+<div class="wrap">
+<section id="front">
+  <div class="sec-head">
+    <div class="sec-eyebrow">11 · Frontend (src/components/user/)</div>
+    <h2 class="sec-title">프론트엔드 컴포넌트 트리</h2>
+    <p class="sec-desc">UserDashboard가 section 라우터. NLP 신선도 배너 + 5개 섹션(동향/버그/비교/요약목록/검수큐).</p>
+  </div>
+  <div class="code-block">UserDashboard.tsx <span class="mut">(section 라우터)</span>
+├─ NlpStaleWarning          <span class="mut">NLP lag 배너 (30/60분 임계)</span>
+├─ [trend]  UserTrendSection
+│   ├─ <span class="acc">VoiceKpiCards</span>      긍/부/중립 비율% + 버그 의심 + 전기간 delta
+│   ├─ TopicListPanel       LLM 토픽 카드+패널
+│   └─ PostExplorerSection  게시글 탐색 (필터 다축) → PostDetailDrawer
+├─ [bug]    BugVoiceSection   BugStepChart + 버그 게시글 목록
+├─ [compare] TrendSection     Volume / Sentiment / Category / Keyword 탭
+├─ [list]   SummaryListSection 커뮤니티별 LLM 토픽 표 → <span class="acc">bullet5 + 인용</span> 슬라이드
+└─ [review] ReviewQueueSection tier3 검수 (QA ADMIN PIN)</div>
+  <div class="callout">
+    <strong>VoiceKpiCards</strong> delta 색상: 긍정▲/부정▼=green, 부정▲/긍정▼=red (운영 의미 기준). 공통 필터 <code>gameKey/start/end/granularity/sourceType/lang/region</code>.
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<div class="wrap">
+<footer>
+  <div class="footer-l">User Voice 유저 동향 분석 시스템 · 기술 설계 리포트 · Issue Dashboard · 2026.06 · QA Ops Team</div>
+  <div class="footer-r">© 2026 QA Ops Team · Internal · code-based</div>
+</footer>
+</div>
+
+</body>
+</html>
