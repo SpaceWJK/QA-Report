@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>품질 데이터 누락·지연 없는 수집 구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:46px 7vw 60px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:28px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--wine);}
+.s-band .sec{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,42px);line-height:1.12;margin-bottom:18px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:17px;line-height:1.7;color:#3a342e;max-width:62ch;border-left:3px solid var(--wine);padding-left:18px;margin-bottom:24px;}
+p{margin-bottom:11px;color:#3a342e;max-width:74ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:16px 0 8px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:8px;}
+ul{list-style:none;margin:6px 0 14px;} li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+ol{margin:6px 0 14px 20px;} ol li{padding-left:4px;} ol li::before{content:none;}
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:13px;}
+th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:9px 11px;}
+th.acc{color:var(--wine);}
+td{padding:9px 11px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;}
+.card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;margin:12px 0;}
+.flow{display:flex;gap:0;border:1px solid var(--line);margin:14px 0;flex-wrap:wrap;overflow:hidden;}
+.flow .step{flex:1;min-width:120px;padding:11px 13px;border-right:1px solid var(--line);}
+.flow .step:last-child{border-right:none;}
+.flow .step .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;}
+.flow .step .t{font-size:13px;font-weight:600;margin-top:2px;}
+.flow .step .d{font-size:11px;color:var(--mute);margin-top:2px;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);margin-bottom:22px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,6vw,72px);line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:18px;color:var(--mute);max-width:54ch;margin-bottom:36px;}
+.cover .meta{display:flex;gap:36px;border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap;}
+.cover .meta .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:15px;font-weight:600;}
+.controls{height:60px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 22px;gap:16px;color:#cfc7bd;}
+.controls .ttl{font-size:12px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:15px;color:#efece6;min-width:62px;text-align:right;}
+.controls button{width:36px;height:36px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:16px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:70px;right:16px;font-size:11px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+
+add("Cover",`<div class="slide cover">
+  <div class="kick">SGP 퍼블리싱QA · 품질 대시보드 구축</div>
+  <h1>품질 데이터<br><span class="it">누락·지연 없는 수집 구조</span></h1>
+  <div class="sub">VOC·버그·품질 데이터를 누락 없이 자동 수집하고, 지연을 감지·고지해 품질 현황의 신선도를 보장한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">품질 거버넌스 & 데이터 기반 운영</div></div>
+    <div><div class="l">상세과제</div><div class="v">품질 대시보드 구축 및 데이터 기반 품질 가시성 강화</div></div>
+  </div>
+</div>`);
+
+add("과제 정의",`<div class="slide">
+  <div class="s-band"><span class="brand">품질 대시보드 구축</span><span class="sec">Definition</span></div>
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">빠짐없이 · <em>늦지 않게</em></h2>
+  <div class="lead">대시보드는 데이터가 누락되거나 늦으면 신뢰를 잃는다. 수집 책임·흐름을 명확히 하고, 누락·지연을 자동 감지하는 구조를 확립한다.</div>
+  <div class="cols">
+    <div><h3><span class="num">·</span>Key Result</h3>
+      <ul><li>VOC/버그 데이터 누락 감소</li><li>품질 현황 지연 공유 최소화</li></ul></div>
+    <div><h3><span class="num">·</span>Initiative</h3>
+      <ul><li>품질 데이터 수집 책임·흐름 명확화</li></ul></div>
+  </div>
+</div>`);
+
+add("책임·흐름",`<div class="slide">
+  <div class="s-band"><span class="brand">품질 대시보드 구축</span><span class="sec">Ownership & Flow</span></div>
+  <span class="eyebrow">수집 책임·흐름 + 입력 기준</span>
+  <h2 class="title">누가 · 무엇을 <em>입력</em>하나</h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>수집 책임 주체</h3>
+      <ul><li>이슈(결함) 등록 주체 정의</li><li>상태 변경 책임 정의 (전이 책임자)</li><li>QA가 선제 이슈 트래킹 역할 유지</li></ul></div>
+    <div><h3><span class="num">·</span>입력 기준 명문화</h3>
+      <ul><li>필수 필드 정의 (등록 시 누락 차단)</li><li>상태 전환 규칙 (FSM 기반 허용 전이)</li><li>증분 수집 — 커서(last_post_id) 기반 중복·누락 방지</li></ul></div>
+  </div>
+  <div class="note">자동 수집(VOC·커뮤니티)은 채널별 커서 증분으로, 운영 데이터(QA Workflow)는 작성 주체·상태 전이 규칙으로 입력 기준을 고정한다.</div>
+</div>`);
+
+add("누락 방지",`<div class="slide">
+  <div class="s-band"><span class="brand">품질 대시보드 구축</span><span class="sec">No Loss</span></div>
+  <span class="eyebrow">누락 방지 구조</span>
+  <h2 class="title">데이터가 <em>새지 않게</em></h2>
+  <table>
+    <tr><th>장치</th><th class="acc">동작</th></tr>
+    <tr><td>커서 증분 수집</td><td>채널별 last_post_id 기준 — 중복·누락 방지</td></tr>
+    <tr><td>미분류 자동 포착</td><td>분류 누락분(post_category NULL)을 자동 재포착 → 복구</td></tr>
+    <tr><td>Circuit Breaker</td><td>채널 수집 실패 누적 시 OPEN/ESCALATED, 알림 기록</td></tr>
+    <tr><td>입력 정제 게이트</td><td>PII redact 통과분만 적재, 실패 건 로그</td></tr>
+    <tr><td>운영 데이터 무결성</td><td>QA Workflow: Optimistic Lock(동시수정 방지) + ActivityLog 감사 + Socket.io 실시간 반영</td></tr>
+    <tr><td>재시도</td><td>번역·미발송 알림·분류 실패 건 자동 재시도</td></tr>
+  </table>
+</div>`);
+
+add("지연 방지",`<div class="slide">
+  <div class="s-band"><span class="brand">품질 대시보드 구축</span><span class="sec">No Lag</span></div>
+  <span class="eyebrow">지연 방지·감지</span>
+  <h2 class="title">늦으면 <em>알린다</em></h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>갱신 주기</h3>
+      <ul><li>크롤: T1 1시간 / T2 2시간</li><li>NLP 분류: 수집 이벤트 구동</li><li>KPI 사전계산: 2시간 (+ 화면 새로고침 시 5분 TTL 최신화)</li></ul></div>
+    <div><h3><span class="num">·</span>지연 감지 (15분 주기 모니터)</h3>
+      <ul><li>NLP 지연 30분 경고 / 60분 STALL 알림</li><li>크롤 중단 120분 STALL</li><li>DB write 3회 연속 락 / API quota 초과</li></ul></div>
+  </div>
+  <div class="note">지연 임계 초과 시 Slack 자동 알림(OpsAlert) + 대시보드에 "데이터 비최신" 경고 배너로 사용자에게 신선도를 고지한다.</div>
+</div>`);
+
+add("선제 트래킹",`<div class="slide">
+  <div class="s-band"><span class="brand">품질 대시보드 구축</span><span class="sec">Proactive</span></div>
+  <span class="eyebrow">QA 선제 이슈 트래킹 + 확인 프로세스</span>
+  <h2 class="title">누락·지연 <em>대응</em></h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t">감지</div><div class="d">모니터·알림 자동 포착</div></div>
+    <div class="step"><div class="n">2</div><div class="t">확인</div><div class="d">누락·지연 원인 점검 프로세스</div></div>
+    <div class="step"><div class="n">3</div><div class="t">복구</div><div class="d">재수집·재분류·재시도</div></div>
+    <div class="step"><div class="n">4</div><div class="t">선제 트래킹</div><div class="d">QA가 이슈 선제 추적·등록 유지</div></div>
+  </div>
+  <p>누락·지연이 발생하면 정해진 확인 프로세스로 원인을 점검하고 복구한다. 자동화에 의존하되 <strong>QA의 선제 이슈 트래킹 역할</strong>을 유지해 시스템 사각을 사람이 메운다.</p>
+  <div class="note">자동 수집 + 자동 감지 + QA 선제 추적의 3중 구조로 "빠짐없이, 늦지 않게"를 보장한다.</div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
