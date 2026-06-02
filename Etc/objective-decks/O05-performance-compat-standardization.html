@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성능·호환성 테스트 표준화 및 고도화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:46px 7vw 60px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:28px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--wine);}
+.s-band .sec{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,42px);line-height:1.12;margin-bottom:18px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:17px;line-height:1.7;color:#3a342e;max-width:62ch;border-left:3px solid var(--wine);padding-left:18px;margin-bottom:24px;}
+p{margin-bottom:11px;color:#3a342e;max-width:74ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:16px 0 8px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:8px;}
+ul{list-style:none;margin:6px 0 14px;} li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+ol{margin:6px 0 14px 20px;} ol li{padding-left:4px;} ol li::before{content:none;}
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:13px;}
+th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:9px 11px;}
+th.acc{color:var(--wine);}
+td{padding:9px 11px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;}
+.card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;margin:12px 0;}
+.flow{display:flex;gap:0;border:1px solid var(--line);margin:14px 0;flex-wrap:wrap;overflow:hidden;}
+.flow .step{flex:1;min-width:120px;padding:11px 13px;border-right:1px solid var(--line);}
+.flow .step:last-child{border-right:none;}
+.flow .step .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;}
+.flow .step .t{font-size:13px;font-weight:600;margin-top:2px;}
+.flow .step .d{font-size:11px;color:var(--mute);margin-top:2px;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);margin-bottom:22px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,6vw,72px);line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:18px;color:var(--mute);max-width:54ch;margin-bottom:36px;}
+.cover .meta{display:flex;gap:36px;border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap;}
+.cover .meta .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:15px;font-weight:600;}
+.controls{height:60px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 22px;gap:16px;color:#cfc7bd;}
+.controls .ttl{font-size:12px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:15px;color:#efece6;min-width:62px;text-align:right;}
+.controls button{width:36px;height:36px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:16px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:70px;right:16px;font-size:11px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+
+add("Cover",`<div class="slide cover">
+  <div class="kick">SGP 퍼블리싱QA · 사전 품질 검증 체계</div>
+  <h1>성능 · 호환성<br><span class="it">테스트 표준화 · 고도화</span></h1>
+  <div class="sub">현행 성능·호환성 테스트 프로세스를 전면 점검해 판정 기준·검증 단계를 표준 프로세스로 재설계한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 안정성 확보를 위한 사전 품질 검증 체계 구축</div></div>
+  </div>
+</div>`);
+
+add("과제 정의",`<div class="slide">
+  <div class="s-band"><span class="brand">사전 품질 검증 체계</span><span class="sec">Definition</span></div>
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">프로세스를 <em>표준</em>으로</h2>
+  <div class="lead">성능·호환성 테스트가 담당자별로 다르면 결과를 신뢰·비교할 수 없다. 현행을 점검하고 판정 기준과 단계를 표준 프로세스로 고정한다.</div>
+  <div class="cols">
+    <div><h3><span class="num">·</span>Key Result</h3>
+      <ul><li>성능 & 호환성 테스트 프로세스 전면 점검</li></ul></div>
+    <div><h3><span class="num">·</span>Initiative</h3>
+      <ul><li>표준 프로세스 재설계 (현행 분석 → 판정 기준 확립 → 단계별 Flow 수립)</li></ul></div>
+  </div>
+</div>`);
+
+add("현행 점검",`<div class="slide">
+  <div class="s-band"><span class="brand">사전 품질 검증 체계</span><span class="sec">As-Is Review</span></div>
+  <span class="eyebrow">현행 프로세스 분석</span>
+  <h2 class="title">먼저 <em>현행</em>을 본다</h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>점검 대상</h3>
+      <ul><li>기존 테스트 단계 구성</li><li>기존 체크리스트 항목</li><li>판정 근거의 정량성 여부</li></ul></div>
+    <div><h3><span class="num">·</span>개선 방향</h3>
+      <ul><li>중복·누락 단계 식별</li><li>주관 판정 항목 정량화</li><li>프로세스 재설계로 연결</li></ul></div>
+  </div>
+  <div class="note">현행 분석 없는 재설계는 같은 사각을 반복한다. 현행 단계·체크리스트를 먼저 진단한다.</div>
+</div>`);
+
+add("판정 기준",`<div class="slide">
+  <div class="s-band"><span class="brand">사전 품질 검증 체계</span><span class="sec">Criteria</span></div>
+  <span class="eyebrow">판정 기준 확립</span>
+  <h2 class="title">성능 · <em>호환성</em> 기준</h2>
+  <table>
+    <tr><th>구분</th><th class="acc">기준 항목</th></tr>
+    <tr><td>성능 (CCB 최소 기준)</td><td>FPS(중급 기기 25↑) · 메모리(중급 RAM 60%↓) · 발열(기준 별도 수립) · Cold Start 5초↓ · Crash-free 99%↑</td></tr>
+    <tr><td>호환성 (OS)</td><td>Android 9(API 28) · iOS 16 최소 지원</td></tr>
+    <tr><td>호환성 (디바이스)</td><td>Tier 1 15~20종(칩셋·폴더블·노치 대표) · 론칭 95% PASS</td></tr>
+  </table>
+  <div class="note">성능 기준(FPS·메모리·발열)과 호환성 기준(OS·디바이스 스펙)을 정량으로 명문화해, 누가 측정해도 같은 판정이 나오게 한다.</div>
+</div>`);
+
+add("검증 Flow",`<div class="slide">
+  <div class="s-band"><span class="brand">사전 품질 검증 체계</span><span class="sec">Verification Flow</span></div>
+  <span class="eyebrow">단계별 검증 Flow 수립</span>
+  <h2 class="title">검증의 <em>순서</em></h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t">사전 검증</div><div class="d">빌드 기본 구동·설치</div></div>
+    <div class="step"><div class="n">2</div><div class="t">기능 검증</div><div class="d">핵심 플로우 정상</div></div>
+    <div class="step"><div class="n">3</div><div class="t">호환성 검증</div><div class="d">OS·디바이스 조합</div></div>
+    <div class="step"><div class="n">4</div><div class="t">성능 검증</div><div class="d">FPS·메모리·부하</div></div>
+  </div>
+  <p>사전 → 기능 → 호환성 → 성능 순서로 단계 Flow를 고정한다. 앞 단계 미통과 시 다음 단계로 진행하지 않아, 불필요한 성능 측정 리소스 낭비를 막는다.</p>
+  <div class="note">Tier 2~3 호환성은 클라우드 디바이스팜으로 병렬 확대해 검증 범위를 고도화한다.</div>
+</div>`);
+
+add("고도화",`<div class="slide">
+  <div class="s-band"><span class="brand">사전 품질 검증 체계</span><span class="sec">Advance</span></div>
+  <span class="eyebrow">표준화 이후 고도화</span>
+  <h2 class="title">표준 위에 <em>자동화</em></h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>도구 고도화</h3>
+      <ul><li>성능: GameBench·PerfDog 등 프로파일링</li><li>부하: k6·Locust API 부하 테스트</li><li>호환성: 클라우드 디바이스팜(Tier 2~3 병렬)</li></ul></div>
+    <div><h3><span class="num">·</span>효과</h3>
+      <ul><li>판정 기준 통일로 결과 신뢰·비교 가능</li><li>Tier 2~3 호환성 수동 3~5일 → 클라우드 6~12시간</li><li>안정화 기간 단축</li></ul></div>
+  </div>
+  <div class="note">표준 프로세스가 먼저고 자동화는 그 위에 올린다. 기준 없는 자동화는 잘못된 판정을 빠르게 반복할 뿐이다.</div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
