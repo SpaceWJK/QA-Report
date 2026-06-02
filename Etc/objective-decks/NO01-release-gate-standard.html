@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>출시 판단 기준의 표준화 및 일관성 확보 — 출시 품질 Gate 공통 기준</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 26px;}
+@media(max-width:900px){.cols,.cols3{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin:14px 0 7px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:7px;}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;letter-spacing:.03em;}
+.tag.g{background:rgba(58,107,79,.14);color:var(--good);} .tag.w{background:rgba(154,106,31,.14);color:var(--warn);} .tag.b{background:rgba(138,42,42,.14);color:var(--bad);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.gates{display:flex;gap:0;border:1px solid var(--line);margin:13px 0;flex-wrap:wrap;overflow:hidden;}
+.gates .g{flex:1;min-width:110px;padding:10px 12px;border-right:1px solid var(--line);}
+.gates .g:last-child{border-right:none;}
+.gates .g .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:12px;}
+.gates .g .t{font-size:13px;font-weight:700;margin-top:2px;}
+.gates .g .d{font-size:10.5px;color:var(--mute);margin-top:2px;}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+const BAND=`<div class="s-band"><span class="brand">출시 품질 Gate 공통 기준</span><span class="sec">SEC</span></div>`;
+function band(sec){return `<div class="s-band"><span class="brand">출시 품질 Gate 공통 기준</span><span class="sec">${sec}</span></div>`;}
+
+/* S-01 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">퍼블리싱 게임 품질 기반 강화 · 출시 품질 Gate 통합 기준 수립 및 운영</div>
+  <h1>출시 판단 기준의<br><span class="it">표준화 및 일관성 확보</span></h1>
+  <div class="sub">출시 품질 Gate 공통 기준 수립 및 문서화 — 프로젝트·조직별로 상이한 출시 판단 척도를 단일 기준으로 정렬하고, QA의 품질 거부권을 제도적으로 보장한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 품질 Gate 통합 기준 수립 및 운영</div></div>
+    <div><div class="l">발행</div><div class="v">SGP 퍼블리싱 QA실</div></div>
+  </div>
+</div>`);
+
+/* S-02 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">진단(현행 갭) → 정의(과제) → 기준(CCB·RC·Sign-off) → 운영(거버넌스·시나리오·점검)의 흐름으로 구성된다. 좌측 항목 클릭 시 해당 슬라이드로 이동.</div>
+</div>`);
+
+/* S-03 현행 갭 */
+add("현행 갭 분석",`<div class="slide">
+  ${band("Background — AS-IS Gap")}
+  <span class="eyebrow">현행 갭 분석 · 왜 지금 표준화인가</span>
+  <h2 class="title">지금 기준 체계의 <em>세 가지 구조적 결함</em></h2>
+  <h3><span class="num">갭 1</span>기준의 분산 — 프로젝트마다 다른 척도</h3>
+  <p>QA Rate 수치가 기준 문서에서는 비어 있고 실운영 위키에서만 존재하는 상태다. CCB Entry 10개 항목과 퍼블리싱 게이트 체크항목 간 1:1 매핑이 없다. 같은 빌드가 A 프로젝트에서 PASS, B 프로젝트에서 FAIL을 받는 상황이 반복된다.</p>
+  <h3><span class="num">갭 2</span>Sign-off 주체의 불일치 — 문서마다 다른 결정권자</h3>
+  <table>
+    <tr><th>문서</th><th class="acc">Sign-off 주체</th></tr>
+    <tr><td>QA 프로세스 문서</td><td>QA팀이 최종 Sign-off 수행</td></tr>
+    <tr><td>운영 위기관리 문서</td><td>사업PM 주도</td></tr>
+    <tr><td>퍼블리싱 프로세스 문서</td><td>QA팀이 주체</td></tr>
+  </table>
+  <p>동일 게이트를 다루며 주체를 다르게 명시 → 오픈 적합 회의에서 QA 판단이 무력화되는 근본 원인.</p>
+  <h3><span class="num">갭 3</span>CCB FAIL 무한반복 가드레일 부재</h3>
+  <p>현행: FAIL → 수정(약 3일) → 재빌드 → 재검수 → FAIL 반복. <strong>횟수 제한·에스컬레이션 기준 없음.</strong> 론칭 일정 지연의 주요 원인이나 경영진 보고 발동 기준이 없다.</p>
+  <div class="note">이 세 갭의 해소가 본 Initiative의 핵심 목적이다.</div>
+</div>`);
+
+/* S-04 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative Definition")}
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">공통 기준 수립 — <em>4 Activity · 3 KR</em></h2>
+  <table>
+    <tr><th>Activity</th><th>내용</th><th class="acc">산출물</th></tr>
+    <tr><td>① Gate 적용 시점</td><td>1차 QA 착수 전(CCB Entry), RC 단계 — 적용 시점 명확화</td><td>Gate 적용 타임라인</td></tr>
+    <tr><td>② 판단 대상 영역</td><td>기능 안정성 / 플랫폼·마켓 연동 / 성능·안정성 검증 범위 확정</td><td>영역별 검증 항목표</td></tr>
+    <tr><td>③ 결과 상태 표준화</td><td>Pass · Conditional Pass · Fail 3상태 및 처리 경로 정의</td><td>상태 정의·처리 흐름</td></tr>
+    <tr><td>④ 공통 기준 문서 관리</td><td>퍼블리싱 QA 공통 기준 문서로 Confluence 등록, 반기 1회 갱신</td><td>공통 기준 문서(본 문서)</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>Key Results</h4>
+      <ul><li><strong>KR1</strong> 프로젝트·조직별 상이 기준 정렬 → 전 프로젝트 동일 Gate 기준 적용(예외 0건)</li><li><strong>KR2</strong> QA 착수·출시 승인 혼선 감소 → Sign-off 주체 쌍방합의 구조 명문화</li><li><strong>KR3</strong> 출시 품질 판단 신뢰도 향상 → 판단 결과 정량 근거 문서화율 100%</li></ul></div>
+    <div><h4>핵심 원리</h4>
+      <ul><li>모든 정량 기준은 단계(CBT/론칭/업데이트)별 차등</li><li>P0·Critical·보안은 단계 무관 절대 기준</li><li>QA 거부권은 자금집행과 연동되어 실효성 확보</li></ul></div>
+  </div>
+</div>`);
+
+/* S-05 5관문 */
+add("Gate 전체 체계",`<div class="slide">
+  ${band("Gate Architecture — 5 Gates")}
+  <span class="eyebrow">Gate 전체 체계</span>
+  <h2 class="title">라이프사이클의 <em>5개 의사결정 관문</em></h2>
+  <div class="gates">
+    <div class="g"><div class="n">Gate 0</div><div class="t">소싱위원회</div><div class="d">계약 전 · CEO 결재</div></div>
+    <div class="g"><div class="n">Gate 1</div><div class="t">FCB</div><div class="d">사전제작 완료 · CEO</div></div>
+    <div class="g"><div class="n">Gate 2</div><div class="t">CCB Entry</div><div class="d">QA 투입 전 · QA팀</div></div>
+    <div class="g"><div class="n">Gate 3</div><div class="t">사업계획보고</div><div class="d">론칭 2~3개월 전 · CEO</div></div>
+    <div class="g"><div class="n">Gate 4</div><div class="t">Sign-off</div><div class="d">배포 직전 · 사업PM+QA</div></div>
+  </div>
+  <table>
+    <tr><th>Gate</th><th>검증 목적</th><th>의사결정자</th><th class="acc">PASS 조건</th></tr>
+    <tr><td>0 소싱위원회</td><td>사업성·계약 규모</td><td>SGP CEO(40억↓)/그룹 CEO(40억↑)</td><td>위원회 과반 + CEO 결재</td></tr>
+    <tr><td>1 FCB</td><td>핵심 재미 요소(Fun Loop)</td><td>CEO</td><td>핵심 기능 완성도·투자가치 판단</td></tr>
+    <tr><td>2 CCB Entry</td><td>완성도 + 10 Entry Criteria</td><td><strong>QA팀(완전 거부권)</strong></td><td>10항목 전부 PASS</td></tr>
+    <tr><td>3 사업계획보고</td><td>매출·손익·마케팅</td><td>CEO</td><td>사업계획서 CEO 승인</td></tr>
+    <tr><td>4 Sign-off</td><td>최종 품질 적합</td><td>사업PM(결정)+QA(거부)</td><td>Readiness 정량 기준 충족</td></tr>
+  </table>
+  <div class="note"><strong>자금 연동</strong> — Gate 2 PASS→2차 중도금 지급 / FAIL→중도금 보류(수정 압박). Gate 4 FAIL→마케팅 예산 집행 불가. <strong>본 문서는 Gate 2와 Gate 4 사이 품질 판단 기준 전체를 다룬다.</strong></div>
+</div>`);
+
+/* S-06 CCB 10항목 */
+add("CCB Entry 10항목",`<div class="slide">
+  ${band("Gate 2 — CCB Entry Criteria")}
+  <span class="eyebrow">Gate 2 · CCB Entry 상세</span>
+  <h2 class="title">QA 투입을 결정하는 <em>10개 관문</em> — 1개라도 FAIL 시 착수 불가</h2>
+  <p>기획 명세상 구현되어야 하는 콘텐츠·기능이 구현된 빌드(Contents Complete Build)인지 약 3일 검증. CCB PASS 이후를 QA 시작 시점으로 보며, 그 전엔 인력 투입·세부 테스트 미진행.</p>
+  <table>
+    <tr><th>#</th><th>항목</th><th class="acc">PASS 기준</th></tr>
+    <tr><td>1</td><td>OS 호환성</td><td>목표 기기 전체(Android 46+/iOS 23+) 설치·실행·기본 플레이 (<strong>Android 9 / iOS 16</strong> 이상)</td></tr>
+    <tr><td>2</td><td>CCB Test Case</td><td><strong>FAIL 0건.</strong> 미구현 사유 N/A 불허(FAIL 처리), N/A는 개발사 코멘트 필수</td></tr>
+    <tr><td>3</td><td>Admin Command</td><td>필수 치트 명령어 <strong>100% 구현·동작</strong></td></tr>
+    <tr><td>4</td><td>점검·업데이트 시나리오</td><td>점검 진입·해제, 선택(2버전)·강제 업데이트 모두 정상</td></tr>
+    <tr><td>5</td><td>CDN 패치 다운로드</td><td>Wi-Fi/LTE/3G <strong>15분 이내</strong>(초과 시 Background Download 구현)</td></tr>
+    <tr><td>6</td><td>STOVE SDK 연동</td><td>인증·빌링·Itembox·Push·getconfig 정상(인증·빌링은 절대 기준)</td></tr>
+    <tr><td>7</td><td>Binary-Patch 구조</td><td>Android <strong>AAB&lt;150MB</strong>(APK 제출 FAIL), iOS IPA<strong>&lt;200MB</strong></td></tr>
+    <tr><td>8</td><td>운영툴 CRUD</td><td>회원·아이템·로그 Create/Read/Update/Delete 전 동작</td></tr>
+    <tr><td>9</td><td>BOT Verification</td><td>개발사 성능 테스트 결과 제출 + 기술PM BOT 실행 가능</td></tr>
+    <tr><td>10</td><td>비사회적 용어 검수</td><td>텍스트 스크립트 전체(Unsmile+Excel 2차) <strong>0건</strong> 또는 수정 완료</td></tr>
+  </table>
+  <div class="note">Tier별 투입 — S급(AAA) 3명·A급 2~3명·B급 2명·C급 1~2명, 공통 2~3일.</div>
+</div>`);
+
+/* S-07 CCB 선행조건/가드레일 */
+add("CCB 선행·FAIL 가드레일",`<div class="slide">
+  ${band("Gate 2 — Prerequisites & FAIL Guardrail")}
+  <span class="eyebrow">CCB 진입 선행 조건 + FAIL 가드레일</span>
+  <h2 class="title">착수 전 <em>3 선행 조건</em> + FAIL 반복 방지 장치</h2>
+  <div class="cols">
+    <div><h4>선행 조건 (모두 충족 必)</h4>
+    <table>
+      <tr><th>조건</th><th class="acc">기준</th></tr>
+      <tr><td>최신 기획서</td><td>CCB 착수 14일 전 전달</td></tr>
+      <tr><td>호환성 빌드</td><td>CCB 착수 14일 전 전달</td></tr>
+      <tr><td>Spec Freeze</td><td>콘텐츠·기능 변경 불가(리소스·밸런스만 허용)</td></tr>
+    </table>
+    <div class="codeblk">킥오프(D-1M) → 기획서·빌드(D-14)
+  → CCB 검증(3일)
+     → PASS: 안정화 착수
+     → FAIL: 수정(3일)→재빌드→재검수</div></div>
+    <div><h4>FAIL 반복 가드레일 (현행 무한반복 → 단계적 에스컬레이션)</h4>
+    <table>
+      <tr><th>차수</th><th class="acc">의무 조치</th></tr>
+      <tr><td>1차 FAIL</td><td>3일 수정→재빌드→재검수(현행)</td></tr>
+      <tr><td>2차 FAIL</td><td>긴급 회의 — 리더+사업PM 참여, 3차 가부·일정 재검토</td></tr>
+      <tr><td>3차 FAIL</td><td>론칭 일정 공식 재조정, 개선계획 서면 제출, 경영진 보고</td></tr>
+      <tr><td>FAIL 70%↑</td><td>즉시 경영진 보고, 방향성 재검토</td></tr>
+    </table></div>
+  </div>
+  <div class="note">모든 FAIL은 JIRA 이력 등록 필수(사유·재진입 조건·일정). 2회 이상 반복 FAIL은 사업PM+QA팀장 공동 리뷰 의무.</div>
+</div>`);
+
+/* S-08 RC */
+add("RC 단계·FAIL 3경로",`<div class="slide">
+  ${band("Pre-Gate 4 — Release Candidate")}
+  <span class="eyebrow">RC 단계 · 진입 조건 · 3종 · FAIL 3경로</span>
+  <h2 class="title">Code Freeze 이후 <em>최종 안전망</em></h2>
+  <p>RC는 출시 후보 빌드. Code Freeze 이후로 Critical 수정 외 코드 변경 불가. 안정화 6종 완료 전제 위에 RC는 3종으로 집중.</p>
+  <div class="cols">
+    <div><h4>RC 진입 조건 (모두 충족)</h4>
+      <ul><li>안정화 전수 테스트 PASS·리포트 발행</li><li>개발사 공식 Code Freeze 선언</li><li>RC 빌드 BAT 재수행·PASS</li><li>미해결 Critical 0건</li></ul>
+      <h4>RC 3종 집중 테스트</h4>
+      <table>
+        <tr><th>유형</th><th class="acc">대상</th></tr>
+        <tr><td>Functional</td><td>P0/P1 핵심 기능 전체</td></tr>
+        <tr><td>Verification</td><td>안정화 수정 이슈 전체</td></tr>
+        <tr><td>Regression</td><td><strong>P0 100% / P1 95%↑</strong></td></tr>
+      </table></div>
+    <div><h4>RC FAIL 조건</h4>
+      <p>Critical 1건↑ 즉시 FAIL. Major 미처리 5건 초과 시 FAIL.</p>
+      <h4>FAIL 3경로 (공식 명문화)</h4>
+      <table>
+        <tr><th>경로</th><th>승인</th><th class="acc">필수 산출물</th></tr>
+        <tr><td>① Known Issue 수용</td><td>QA+사업PM 합의</td><td>리스크 문서화(ID·사유·결정자·일정)</td></tr>
+        <tr><td>② 오픈 연기</td><td>사업PM</td><td>CEO 보고</td></tr>
+        <tr><td>③ 강제 오픈</td><td><strong>CEO 승인 必</strong></td><td>QA 리스크 평가서+책임자 서명</td></tr>
+      </table></div>
+  </div>
+  <div class="note warn">Code Freeze 중 "협의 하 수정 가능" 범위 = <strong>Critical 한정</strong>. Major 이하는 Known Issue 또는 연기. 수정 시 해당 영역 Focused Regression 必.</div>
+</div>`);
+
+/* S-09 판단 3영역 */
+add("Sign-off 판단 3영역",`<div class="slide">
+  ${band("Gate 4 — Judgment Domains")}
+  <span class="eyebrow">Sign-off 판단 대상 3영역</span>
+  <h2 class="title">세 영역의 <em>교차 검증</em> — 하나도 생략 불가</h2>
+  <p>하나라도 미충족 출시 시: 영역1→서비스 장애, 영역2→마켓 정책 위반·계정 제재, 영역3→초기 유저 이탈.</p>
+  <div class="cols3">
+    <div><h4>① 기능 안정성</h4>
+      <ul><li>기능 PASS율 론칭 <strong>90%↑</strong>(CBT80/업뎃95)</li><li>Critical 잔존 <strong>0건</strong>(절대)</li><li>Major 론칭 5건↓</li><li>P0 TC <strong>100%</strong></li><li>결함 처리율 론칭 80%↑</li><li>회귀 Regression P0 <strong>100%</strong>/P1 95%↑</li></ul>
+      <p style="font-size:12px;color:var(--mute)">P0·보안 이슈는 Known Issue 등록 불가.</p></div>
+    <div><h4>② 플랫폼·마켓 연동</h4>
+      <ul><li>STOVE 인증·빌링 정상(항목6 재검증)</li><li>보안 론칭 <strong>Medium↑ 처리</strong></li><li>targetSdkVersion <strong>SDK 35↑</strong></li><li>Privacy Policy 노출·동의</li><li>권한 필수·선택 분리</li><li>전 API <strong>HTTPS</strong></li><li>AAB&lt;150MB·IPA&lt;200MB</li></ul>
+      <p style="font-size:12px;color:var(--mute)">인증·빌링 이슈는 등급 무관 1등급 장애.</p></div>
+    <div><h4>③ 성능·안정성</h4>
+      <ul><li>CCU Peak×<strong>2.0배</strong></li><li>API 95p <strong>1초↓</strong></li><li>TPS ×2.0배↑</li><li>5xx 오류율 <strong>0.1%↓</strong></li><li>FPS 최저사양 30↑</li><li>메모리 중급 RAM 50%↓</li><li>크래시프리 <strong>99.5%↑</strong></li><li>Cold Start 5초↓</li><li>기술PM Readiness(12h)</li><li>호환성 론칭 95%(Tier1 전체)</li></ul></div>
+  </div>
+</div>`);
+
+/* S-10 정량 기준표 */
+add("Sign-off 정량 기준표",`<div class="slide">
+  ${band("Gate 4 — QA Rate Standard")}
+  <span class="eyebrow">단계별 정량 기준 · CBT / Launching / Update</span>
+  <h2 class="title">단계마다 다른 기준 — <em>협의 가능 vs 고정</em>의 명확한 구분</h2>
+  <table>
+    <tr><th>품질 요소</th><th>CBT</th><th class="acc">Launching</th><th>Service Update</th></tr>
+    <tr><td>게임기능 PASS율</td><td>80%</td><td><strong>90%</strong></td><td>95%</td></tr>
+    <tr><td>전체 TC PASS율</td><td>90%</td><td><strong>95%</strong></td><td>95%</td></tr>
+    <tr><td>OS/HW 호환성 커버리지</td><td>90%</td><td><strong>95%</strong></td><td>95%</td></tr>
+    <tr><td>서버 성능</td><td>기술PM Readiness</td><td><strong>기술PM Readiness</strong></td><td>기술 검토 통과</td></tr>
+    <tr><td>결함 처리율</td><td>70%</td><td><strong>80%</strong></td><td>90%</td></tr>
+    <tr><td>잔존 결함 수</td><td>Crit 0, Major ≤20</td><td><strong>Crit 0, Major ≤5</strong></td><td>Known Issue 협의</td></tr>
+    <tr><td>보안성</td><td>High↑ 처리</td><td><strong>Medium↑ 처리</strong></td><td>보안 검수 통과</td></tr>
+    <tr><td>로컬라이제이션</td><td>90%</td><td><strong>95%</strong></td><td>95%</td></tr>
+  </table>
+  <div class="codeblk">Sign-off 가능 = PASS Rate ≥ 단계 기준
+  AND P0 TC PASS = 100%
+  AND Critical Open = 0건
+  AND 회귀 커버리지 ≥ 단계 목표</div>
+  <div class="cols">
+    <div><h4>협의 가능 (사업 사유 재조정)</h4>
+      <ul><li>CBT: 호환성·결함처리율·잔존결함·로컬</li><li>Launching: 호환성·로컬</li><li>Update: 게임기능·결함·잔존·로컬</li></ul></div>
+    <div><h4>절대 기준 (예외 없음)</h4>
+      <ul><li>P0·보안 이슈 Known Issue 등록 불가</li><li>Critical Open 0건 미충족 → Launching 불가(<strong>Veto 자동</strong>)</li><li>게임기능·서버성능·보안은 론칭 협의 불가</li></ul></div>
+  </div>
+</div>`);
+
+/* S-11 결과 상태 */
+add("판단 결과 상태",`<div class="slide">
+  ${band("Decision Status Standardization")}
+  <span class="eyebrow">판단 결과 상태 표준화</span>
+  <h2 class="title">3상태로 — <em>애매한 PASS</em>와 <em>협의 가능 FAIL</em>을 구조화</h2>
+  <div class="cols3">
+    <div><h4><span class="tag g">PASS</span> 무조건 통과</h4>
+      <ul><li>모든 정량 기준 충족 + Critical/P0 0건</li><li>다음 단계 즉시 진행</li><li>기록: Gate명·일시·QA 담당자</li></ul></div>
+    <div><h4><span class="tag w">CONDITIONAL</span> 조건부 통과</h4>
+      <ul><li>"협의 가능" 항목 일부 미충족 + QA·사업PM 합의</li><li><strong>Critical·P0 불가</strong> — 잔존 시 무조건 Fail</li><li>3조건 必: Known Issue 등록 / 리스크 수용 확인서 서명 / JIRA 추적</li></ul>
+      <p style="font-size:11.5px;color:var(--mute)">예: 론칭 호환성 92%(기준95), Major 기기 3종·Critical 0</p></div>
+    <div><h4><span class="tag b">FAIL</span> 진행 차단</h4>
+      <ul><li>정량 미충족 또는 Critical·P0 잔존</li><li>CCB: 수정·재검수(2차↑ 에스컬레이션)</li><li>RC: 3경로 선택</li><li>Sign-off: 연기·재신청</li><li>JIRA 이력 必</li></ul></div>
+  </div>
+  <div class="note">Conditional Pass 공식화로 위험 수용 의사결정을 가시화 — 사후 장애 시 책임 소재 불명확 문제 차단. 강제 오픈은 CEO 승인+리스크 평가서 의무.</div>
+</div>`);
+
+/* S-12 거버넌스 */
+add("의사결정 거버넌스",`<div class="slide">
+  ${band("Decision Governance")}
+  <span class="eyebrow">QA Veto · 쌍방합의 · 자금연동</span>
+  <h2 class="title">QA 거부권의 실효성을 <em>제도로 보장</em>하는 3장치</h2>
+  <div class="cols">
+    <div><h4>장치 1 · QA Veto 명문화</h4>
+    <table>
+      <tr><th>발동 조건</th><th class="acc">권한</th></tr>
+      <tr><td>CCB 10항목 중 1 FAIL</td><td>완전 거부권</td></tr>
+      <tr><td>BAT FAIL</td><td>완전 거부권</td></tr>
+      <tr><td>RC: Critical 1건↑</td><td>완전 거부권</td></tr>
+      <tr><td>Sign-off: Critical≠0</td><td>Veto 자동</td></tr>
+      <tr><td>Sign-off: P0 TC≠100%</td><td>Veto 자동</td></tr>
+    </table>
+    <div class="codeblk">QA팀장 → 사업PM 1차 협의
+  → 사업본부장 → CEO 최종</div>
+    <p style="font-size:12px">사업PM은 QA팀장 동의 없이 경영 승인만으로 Veto 오버라이드 불가.</p></div>
+    <div><h4>장치 2 · Sign-off 쌍방합의</h4>
+    <div class="codeblk">사업PM(최종 결정권)
+  + QA 본부장(품질 거부권)
+  = 쌍방 합의</div>
+    <table>
+      <tr><th>상황</th><th>QA</th><th class="acc">사업PM</th></tr>
+      <tr><td>CCB/BAT</td><td>완전 거부권</td><td>의견만</td></tr>
+      <tr><td>RC 진입</td><td>완전 거부권</td><td>—</td></tr>
+      <tr><td>Sign-off</td><td>조건부 Veto</td><td>최종 결정</td></tr>
+      <tr><td>Hot-Fix 바이패스</td><td>팀장 공동승인</td><td>단독 불가</td></tr>
+    </table>
+    <p style="font-size:12px">강행 시 리스크 수용 확인서에 사업PM+QA팀장 양쪽 서명.</p></div>
+  </div>
+  <h4>장치 3 · 자금집행 연동</h4>
+  <table>
+    <tr><th>지급 시점</th><th>항목</th><th>연동 Gate</th><th class="acc">QA 의미</th></tr>
+    <tr><td>계약 체결</td><td>계약금</td><td>Gate 0</td><td>—</td></tr>
+    <tr><td>FCB 통과</td><td>1차 중도금</td><td>Gate 1</td><td>—</td></tr>
+    <tr><td>CCB 통과</td><td>2차 중도금</td><td><strong>Gate 2</strong></td><td><strong>QA FAIL→중도금 보류(수정 압박)</strong></td></tr>
+    <tr><td>론칭 후</td><td>추가 마케팅</td><td>Gate 4↑</td><td>LTV&gt;UAC 확인 시(5억↑ 별도 보고)</td></tr>
+  </table>
+</div>`);
+
+/* S-13 실무 시나리오 */
+add("실무 적용 시나리오",`<div class="slide">
+  ${band("Practical Scenarios")}
+  <span class="eyebrow">실무 적용 시나리오</span>
+  <h2 class="title">세 가지 <em>현장 시나리오</em></h2>
+  <h3><span class="num">A</span>CCB Entry 2차 FAIL — 에스컬레이션 발동</h3>
+  <p>신규 RPG. 1차: 항목5(CDN 17분)·항목6(빌링 결제 실패) FAIL. 재제출 2차에 항목6 재발. → 2차 FAIL이므로 리더+사업PM 긴급 회의 의무. 항목6은 CCB이자 Sign-off 영역2 절대 기준 → 론칭 재검토 공식화. JIRA 2차 이력 등록, 3차 가부 후 서면 일정 요청.</p>
+  <h3><span class="num">B</span>RC 단계 Critical 발생 — 3경로 선택</h3>
+  <p>안정화 통과 후 RC Functional에서 결제 후 아이템 미지급(Critical). D-7. → Critical 1건 즉시 RC FAIL. 경로①(결제=Known Issue 불가)→제외. 경로②(연기)+기술 수정 가부 확인. 경로③(강제오픈)=결제이므로 불가. 수정→BAT 재수행→RC 재진입, 불가 시 ②연기.</p>
+  <h3><span class="num">C</span>Sign-off 호환성 미달 — Conditional Pass</h3>
+  <p>론칭 Sign-off. 기능92%(≥90 충족)·Critical0·Major4(≤5). 호환성92%(기준95 미달) — Z Fold5 비율 Major 3건, 해당 기기 판매 1%↓. → 호환성은 론칭 협의 가능 → Conditional Pass 검토. Known Issue 등록·확인서(PM+QA팀장 서명)·JIRA 추적 후 Conditional Pass 발행. 회의록에 확인서 첨부.</p>
+</div>`);
+
+/* S-14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">현장에서 반복되는 7가지 실수</span>
+  <h2 class="title">이 기준을 <em>형식적</em>으로 적용할 때</h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th class="acc">올바른 적용</th></tr>
+    <tr><td>1</td><td>"CCB PASS면 일단 착수" — 선행조건 생략</td><td>기획서·빌드 14일전·Spec Freeze 3조건 확인 후 착수</td></tr>
+    <tr><td>2</td><td>"항목 하나는 양해" — 10항목 부분 PASS</td><td>10항목 AND 조건. 비사회적 용어 0건은 절대</td></tr>
+    <tr><td>3</td><td>"RC니까 Minor는 봐준다"</td><td>RC FAIL=Critical 1↑ OR Major 미처리 5↑. Major도 처리</td></tr>
+    <tr><td>4</td><td>"협의 가능이니 PASS" — 문서화 생략</td><td>Conditional Pass 선언+Known Issue+확인서 서명 의무</td></tr>
+    <tr><td>5</td><td>"PM이 오픈하자니까" — Veto 미발동</td><td>P0 TC≠100%는 Veto 자동. 에스컬레이션 실행</td></tr>
+    <tr><td>6</td><td>"FAIL 이력은 내부만" — JIRA 미등록</td><td>모든 FAIL JIRA 등록(사유·재진입·일정)</td></tr>
+    <tr><td>7</td><td>"강제 오픈은 PM 결정" — CEO 승인 생략</td><td>강제오픈=CEO 승인+QA 리스크 평가서 의무</td></tr>
+  </table>
+  <div class="note warn">공통 근본 원인 — 정량 기준을 "참고치"로 다루고 기록·서명·에스컬레이션을 생략하는 것. 본 기준의 모든 절대값은 협의 대상이 아니다.</div>
+</div>`);
+
+/* S-15 체크리스트 */
+add("자가점검 체크리스트",`<div class="slide">
+  ${band("Self-Assessment Checklist")}
+  <span class="eyebrow">단계별 자가점검</span>
+  <h2 class="title">착수 전 · 중간 · 완료 직전 <em>점검</em></h2>
+  <div class="cols3">
+    <div><h4>A · CCB 착수 전</h4>
+    <div class="codeblk">□ 기획서 14일전 수령
+□ 호환성 빌드 14일전
+□ Spec Freeze 선언
+□ TC 작성 3일↑ 확보
+□ OS 기준 A9/iOS16 갱신
+□ 용량 AAB150/iOS200
+□ 운영팀 CRUD 협조
+□ 기술PM BOT 협조
+□ 용어검수 스크립트 수령</div></div>
+    <div><h4>B · RC 착수 전</h4>
+    <div class="codeblk">□ 안정화 전수 PASS 리포트
+□ Code Freeze 선언
+□ RC 빌드 BAT 재수행 PASS
+□ Critical 0건(JIRA 확인)
+□ Functional P0/P1 TC 확정
+□ Verification 수정이슈 목록
+□ Regression P0100/P195
+□ Critical 발생 시 3경로
+  사전 협의(사업PM)</div></div>
+    <div><h4>C · Sign-off 직전</h4>
+    <div class="codeblk">□ 기능 PASS율 ≥ 단계기준
+□ P0 TC=100%(미달→중단)
+□ Critical Open=0
+□ 결함 처리율 ≥ 기준
+□ STOVE 인증·빌링 재확인
+□ 보안 ≥ 단계기준
+□ targetSdk 35↑
+□ 서버 Readiness 통과
+□ 호환성 ≥ 단계기준
+□ 미충족=협의가능 항목?
+□ Conditional 시 확인서
+□ 전 판정 JIRA 등록
+□ 보고서 Gate·일시·담당·상태</div></div>
+  </div>
+</div>`);
+
+/* S-16 용어·참조 */
+add("용어·참조",`<div class="slide">
+  ${band("Glossary & References")}
+  <span class="eyebrow">용어 정의 및 참조</span>
+  <h2 class="title">주요 <em>용어</em> 및 원전</h2>
+  <div class="cols">
+    <div><h4>용어 정의</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>CCB</td><td>기획 명세 콘텐츠·기능 구현 빌드. Entry는 QA 투입 가부 게이트</td></tr>
+      <tr><td>BAT</td><td>빌드 릴리즈마다 QA 수락 가부 검증</td></tr>
+      <tr><td>BVT</td><td>개발사 자체 기본 동작 검증(보고서 제출 의무)</td></tr>
+      <tr><td>RC</td><td>출시 후보. Code Freeze 후 3종 집중</td></tr>
+      <tr><td>Sign-off</td><td>오픈 적합 회의 최종 판정(QA Rate+Readiness)</td></tr>
+      <tr><td>Spec/Code Freeze</td><td>콘텐츠·기능 / 코드 변경 불가 상태</td></tr>
+      <tr><td>QA Veto</td><td>절대 기준 위반 시 게이트 차단 공식 거부권</td></tr>
+      <tr><td>Conditional Pass</td><td>협의 항목 미충족 + 등록·서명 전제 조건부 통과</td></tr>
+      <tr><td>Known Issue</td><td>수용 이슈(P0·보안 등록 불가)</td></tr>
+      <tr><td>P0 TC</td><td>운영 필수 최상위 TC. 100% 절대</td></tr>
+      <tr><td>Readiness Checklist</td><td>출시 전 부서별 최종 점검 산출물</td></tr>
+    </table></div>
+    <div><h4>참조 원전</h4>
+    <table>
+      <tr><th>문서</th><th class="acc">내용</th></tr>
+      <tr><td>테스트 기준</td><td>CCB 10항목·BAT/BVT/RC·Sign-off 기준표·OS/용량</td></tr>
+      <tr><td>품질 게이트</td><td>5관문·FAIL 경로·QA 권한·거버넌스·자금연동</td></tr>
+      <tr><td>품질 게이트 보강</td><td>CCB 무한반복 가드레일·Freeze 정의</td></tr>
+      <tr><td>QA 프로세스 재설계</td><td>RC FAIL 3경로·Veto 에스컬레이션·확정/제안</td></tr>
+    </table>
+    <h4>문서 관리</h4>
+    <ul><li>갱신 주기: 반기 1회(6개월)</li><li>관리: SGP 퍼블리싱 QA실 / 전략기획실</li><li>보관: Confluence(퍼블리싱 QA 공통 기준)</li><li>플랫폼 정책·수치 재협의 시 수시 개정(변경 내역 명기)</li></ul></div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+// 목차 채우기 (표지·목차 제외)
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
