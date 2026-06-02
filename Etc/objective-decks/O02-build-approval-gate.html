@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>빌드 승인(BVT/BAT)과 출시 Gate 연계</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:46px 7vw 60px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:28px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--wine);}
+.s-band .sec{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(26px,3.4vw,42px);line-height:1.12;margin-bottom:18px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:17px;line-height:1.7;color:#3a342e;max-width:62ch;border-left:3px solid var(--wine);padding-left:18px;margin-bottom:24px;}
+p{margin-bottom:11px;color:#3a342e;max-width:74ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:16px 0 8px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:8px;}
+ul{list-style:none;margin:6px 0 14px;} li{position:relative;padding-left:18px;margin-bottom:7px;font-size:14px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+ol{margin:6px 0 14px 20px;} ol li{padding-left:4px;} ol li::before{content:none;}
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:13px;}
+th{text-align:left;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:9px 11px;}
+th.acc{color:var(--wine);}
+td{padding:9px 11px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;}
+.card .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--wine);font-weight:700;margin-bottom:6px;}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:12px 16px;font-size:13px;margin:12px 0;}
+.flow{display:flex;gap:0;border:1px solid var(--line);margin:14px 0;flex-wrap:wrap;overflow:hidden;}
+.flow .step{flex:1;min-width:120px;padding:11px 13px;border-right:1px solid var(--line);}
+.flow .step:last-child{border-right:none;}
+.flow .step .n{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;}
+.flow .step .t{font-size:13px;font-weight:600;margin-top:2px;}
+.flow .step .d{font-size:11px;color:var(--mute);margin-top:2px;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--wine);margin-bottom:22px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,6vw,72px);line-height:1.02;letter-spacing:-.02em;margin-bottom:20px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:18px;color:var(--mute);max-width:54ch;margin-bottom:36px;}
+.cover .meta{display:flex;gap:36px;border-top:1px solid var(--line);padding-top:18px;flex-wrap:wrap;}
+.cover .meta .l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:15px;font-weight:600;}
+.controls{height:60px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 22px;gap:16px;color:#cfc7bd;}
+.controls .ttl{font-size:12px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:15px;color:#efece6;min-width:62px;text-align:right;}
+.controls button{width:36px;height:36px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:16px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:70px;right:16px;font-size:11px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+
+add("Cover",`<div class="slide cover">
+  <div class="kick">SGP 퍼블리싱QA · 출시 품질 Gate 통합 기준</div>
+  <h1>빌드 승인(BVT/BAT)과<br><span class="it">출시 Gate 연계</span></h1>
+  <div class="sub">개발사 BVT와 QA팀 BAT를 출시 Gate에 명확히 연계해, 테스트 불가 빌드의 QA 착수를 사전 차단한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 품질 Gate 통합 기준 수립 및 운영</div></div>
+  </div>
+</div>`);
+
+add("과제 정의",`<div class="slide">
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Definition</span></div>
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">착수 전에 <em>거른다</em></h2>
+  <div class="lead">테스트조차 불가능한 빌드가 QA에 들어오면 리소스가 낭비된다. 빌드 승인(BVT/BAT)을 QA 착수 Gate로 운영해 사전 차단한다.</div>
+  <div class="cols">
+    <div><h3><span class="num">·</span>Key Result</h3>
+      <ul><li>QA 착수 불가 빌드 사전 차단</li><li>빌드 재전달 횟수 감소</li><li>QA 리소스 낭비 최소화</li></ul></div>
+    <div><h3><span class="num">·</span>Initiative</h3>
+      <ul><li>빌드 승인 체크리스트 기반 QA 착수 Gate 운영</li></ul></div>
+  </div>
+</div>`);
+
+add("역할 분담",`<div class="slide">
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Roles</span></div>
+  <span class="eyebrow">BVT / BAT 역할 분담</span>
+  <h2 class="title">누가 <em>무엇을</em> 검증하나</h2>
+  <div class="flow">
+    <div class="step"><div class="n">BVT</div><div class="t">개발사 수행</div><div class="d">단위·통합 테스트 일부, 빌드 릴리즈 직전 자체 최종 확인</div></div>
+    <div class="step"><div class="n">→</div><div class="t">PASS 시 전달</div><div class="d">빌드 + BVT 결과문서 QA팀 송부</div></div>
+    <div class="step"><div class="n">BAT</div><div class="t">QA팀 수행</div><div class="d">QA 타겟 빌드가 테스트 가능 수준인지 검증</div></div>
+  </div>
+  <table>
+    <tr><th>구분</th><th class="acc">수행 주체</th><th>PASS</th><th>FAIL</th></tr>
+    <tr><td>BVT</td><td>개발사</td><td>빌드를 QA팀에 전달</td><td>BVT 재검증</td></tr>
+    <tr><td>BAT</td><td>QA팀</td><td>QA 프로세스 테스트 수행</td><td>개발사에 이슈 전달 · BAT 재검증</td></tr>
+  </table>
+</div>`);
+
+add("BVT 기준",`<div class="slide">
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">BVT</span></div>
+  <span class="eyebrow">BVT — 개발사 빌드 검증</span>
+  <h2 class="title">빌드 <em>전달 전</em> 자체 확인</h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>수행</h3>
+      <ul><li>개발사가 빌드 릴리즈 직전 직접 최종 확인</li><li>단위 테스트 + 통합 테스트 일부 범위 포함</li><li>QA팀이 전달한 BAT TC 참고해 자체 BVT 작성·수행</li></ul></div>
+    <div><h3><span class="num">·</span>통과·전달 조건</h3>
+      <ul><li>BVT 결과 <strong>모든 항목 Pass</strong></li><li>빌드 + BVT 결과문서 함께 송부 (첨부 필수)</li><li>가급적 QA 환경과 동일 환경에서 수행</li></ul></div>
+  </div>
+  <div class="note">필수 검증 영역: 실행 가능 여부 · 서버/계정/빌링 연동 여부 · 핵심 기능 정상 동작 여부.</div>
+</div>`);
+
+add("BAT 기준",`<div class="slide">
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">BAT</span></div>
+  <span class="eyebrow">BAT — QA 착수 가능 판정</span>
+  <h2 class="title">QA 착수 <em>가능</em> 판정 기준</h2>
+  <table>
+    <tr><th>항목</th><th class="acc">기준</th></tr>
+    <tr><td>TC 작성 원칙</td><td>1 depth 통합 테스트, blocking 유발 가능 항목 중심. 사업·개발팀 사전 공유·협의</td></tr>
+    <tr><td>수행 시점</td><td>① CCB Entry Pass 후 안정화 통합테스트 시작 시 ② 패치·RC 빌드 수령 후 N차</td></tr>
+    <tr><td>통과 기준</td><td><strong>TC 모든 항목 Pass</strong></td></tr>
+    <tr><td>애매 판정 시</td><td>1차 담당 QA매니저 검토 → 2차 유관부서(기획·사업·개발·기술PM) 협의로 최종 BAT 결과 확정</td></tr>
+  </table>
+  <div class="note">산출물: BAT 결과서(작성 주체 TL) · 템플릿 <code>프로젝트명_유니크ID_BAT_yymmdd</code>. "테스트 가능 수준"의 주관 판정을 전항목 Pass + 2단계 협의 절차로 표준화한다.</div>
+</div>`);
+
+add("Gate 연계",`<div class="slide">
+  <div class="s-band"><span class="brand">출시 품질 Gate 통합 기준</span><span class="sec">Gate Link</span></div>
+  <span class="eyebrow">출시 Gate 연계</span>
+  <h2 class="title">미통과 = <em>착수 차단</em></h2>
+  <div class="cols">
+    <div><h3><span class="num">·</span>연계 원칙</h3>
+      <ul><li>BVT/BAT 미통과 빌드 → QA 착수 제한</li><li>BAT는 CCB Entry Pass 후 안정화 착수 게이트</li><li>RC 빌드는 BAT 재수행 후 진입</li></ul></div>
+    <div><h3><span class="num">·</span>예외 (조건부 착수)</h3>
+      <ul><li>불가피 시 조건부 착수 기준 별도 정의</li><li>QA매니저 + 유관부서 협의로 리스크 수용 명시</li><li>조건부 착수도 미충족 항목·사유 기록</li></ul></div>
+  </div>
+  <div class="note">빌드 승인이 QA 착수의 전제 Gate가 되면, 재전달 횟수와 QA 리소스 낭비가 함께 줄어든다.</div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
