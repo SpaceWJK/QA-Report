@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성능·호환성 테스트 표준화 및 고도화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">성능·호환성 테스트 표준화 및 고도화</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">퍼블리싱 게임 품질 기반 강화 · 출시 안정성 확보를 위한 사전 품질 검증 체계 구축</div>
+  <h1>성능·호환성<br><span class="it">테스트 표준화·고도화</span></h1>
+  <div class="sub">RBT 방법론 기반 테스트 스위트 계층화 · 라이브 업데이트 차등 검증 · Rollback QA · 자동화 로드맵 — 방법론 부재 = 테스터 역량에 품질이 귀속.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 안정성 확보를 위한 사전 품질 검증 체계 구축</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">NO4(기준값·Tier·CCB Entry)와 역할 분리 — NO5 스코프: <strong>어떻게 검증할지</strong> (RBT 방법론·스위트 계층화·라이브 업데이트 차등·전수 조건·Rollback·자동화 로드맵)</div>
+</div>`);
+
+/* 3 배경 */
+add("배경 — 비표준화의 비용",`<div class="slide">
+  ${band("Background — Why")}
+  <span class="eyebrow">배경 · 프로세스 비표준화의 구조적 비용</span>
+  <h2 class="title">방법론 부재 = <em>테스터 역량에 품질이 귀속</em></h2>
+  <div class="cols">
+    <div><h4>5가지 문제</h4>
+      <ul>
+        <li><strong>테스트 범위 임의 결정</strong>: 담당자마다 다른 기준 → 동일 빌드 재현 불가</li>
+        <li><strong>라이브 단일 루틴 적용</strong>: Hot-Fix·정기 업데이트에 동일 Regression → 시간 낭비 or 검증 누락</li>
+        <li><strong>Rollback 절차 부재</strong>: 복구 직후 재개 판단이 경험에만 의존</li>
+        <li><strong>전수 테스트 기준 없음</strong>: 엔진 업그레이드·SDK 교체 시 범위 협의 과다 소모</li>
+        <li><strong>자동화 미흡</strong>: BAT 2~4h / Regression 1~2일 / 호환성 3~5일 수작업 지속</li>
+      </ul></div>
+    <div><h4>결과</h4>
+      <ul>
+        <li>조직 스케일 불가 — 담당자 이탈 시 품질 붕괴</li>
+        <li>라이브 업데이트마다 검증 범위 협상 반복</li>
+        <li>Rollback 후 재개 판단 지연 → 서비스 중단 연장</li>
+      </ul>
+      <div class="note">방법론을 표준화해야 담당자 무관 동일 품질 보증이 가능하다. RBT 스코어링이 출발점.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 4 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative")}
+  <span class="eyebrow">과제 정의 · KR + Initiative</span>
+  <h2 class="title"><em>어떻게</em> 검증할지를 표준으로 고정한다</h2>
+  <table>
+    <tr><th>KR</th><th class="acc">목표</th></tr>
+    <tr><td>KR1 RBT 스코어링 적용률</td><td>전 프로젝트 100% 적용</td></tr>
+    <tr><td>KR2 라이브 업데이트 차등 검증</td><td>4개 유형 표준화 완료</td></tr>
+    <tr><td>KR3 Rollback QA 절차서</td><td>전 프로젝트 보유</td></tr>
+    <tr><td>KR4 BAT 자동화 전환 시간</td><td>2~4h → 10~30분</td></tr>
+    <tr><td>KR5 P1 TC 자동화율 (Phase 3)</td><td>50%</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>Initiative 6가지</h4>
+      <ul>
+        <li>I1: RBT 스코어링 모델 도입</li>
+        <li>I2: 단계별 회귀전략 표준화</li>
+        <li>I3: 전수 테스트 조건 명문화</li>
+        <li>I4: 테스트 스위트 3계층 정의</li>
+        <li>I5: 장애·Rollback QA 표준화</li>
+        <li>I6: 자동화 로드맵 3-Phase</li>
+      </ul></div>
+    <div><h4>NO4↔NO5 역할 분리</h4>
+      <ul>
+        <li><strong>NO4</strong>: 무엇을 검증할지 (기준값·Tier·CCB·OS)</li>
+        <li><strong>NO5</strong>: 어떻게 검증할지 (RBT·스위트·절차·자동화)</li>
+        <li>두 덱이 합쳐져 사전 검증 체계 완성</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 5 RBT 스코어링 1/2 */
+add("RBT 스코어링 모델",`<div class="slide">
+  ${band("Risk-Based Testing — §2")}
+  <span class="eyebrow">공식 · Impact · Probability · Modifier</span>
+  <h2 class="title">Risk Score = Impact × Probability + <em>Modifier</em></h2>
+  <div class="codeblk">Risk Score = Impact(영향도) × Probability(발생확률) + Modifier(게임 특화 가점)</div>
+  <div class="cols">
+    <div>
+      <h4>Impact 5점 척도</h4>
+      <table>
+        <tr><th>점수</th><th>등급</th><th class="acc">정의</th></tr>
+        <tr><td>5</td><td>Critical</td><td>서비스 전면 중단 · 결제 불가</td></tr>
+        <tr><td>4</td><td>High</td><td>핵심 게임플레이 불가</td></tr>
+        <tr><td>3</td><td>Medium</td><td>주요 기능 이상 · 다수 유저</td></tr>
+        <tr><td>2</td><td>Low</td><td>소수 유저 영향</td></tr>
+        <tr><td>1</td><td>Minimal</td><td>오탈자 · 미관</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Probability 5점 척도</h4>
+      <table>
+        <tr><th>점수</th><th class="acc">기준</th></tr>
+        <tr><td>5</td><td>변경 이력 3회+ / 고복잡도</td></tr>
+        <tr><td>4</td><td>변경 이력 2회 / 중복잡도</td></tr>
+        <tr><td>3</td><td>변경 이력 1회 / 연동 포인트</td></tr>
+        <tr><td>2</td><td>변경 없음 / 저복잡도</td></tr>
+        <tr><td>1</td><td>검증된 안정 모듈</td></tr>
+      </table>
+      <h4>Modifier (게임 특화 가점)</h4>
+      <table>
+        <tr><th>조건</th><th class="acc">가점</th></tr>
+        <tr><td>결제 관련 변경</td><td><strong>+3</strong></td></tr>
+        <tr><td>데이터 정합성 영향</td><td>+2</td></tr>
+        <tr><td>신규 기능 추가</td><td>+2</td></tr>
+        <tr><td>과거 재발 이슈</td><td>+2</td></tr>
+        <tr><td>게임 엔진 업그레이드</td><td>+1</td></tr>
+      </table>
+    </div>
+  </div>
+</div>`);
+
+/* 6 Score별 범위 */
+add("Risk Score별 테스트 범위",`<div class="slide">
+  ${band("Risk Score → Test Scope")}
+  <span class="eyebrow">Score 구간 · 결제 절대 원칙</span>
+  <h2 class="title">Score가 <em>범위를 결정</em>한다</h2>
+  <table>
+    <tr><th>Risk Score</th><th>테스트 범위</th><th class="acc">TC 비율</th></tr>
+    <tr><td><strong>20~30점</strong></td><td>Full Regression</td><td>전체 100%</td></tr>
+    <tr><td><strong>12~19점</strong></td><td>Partial Regression</td><td>P0+P1+영향 범위 P2</td></tr>
+    <tr><td><strong>6~11점</strong></td><td>Smoke + Key Scenario</td><td>P0+핵심 시나리오</td></tr>
+    <tr><td><strong>1~5점</strong></td><td>Smoke Test</td><td>P0 기본 흐름만</td></tr>
+  </table>
+  <div class="note warn"><strong>결제 절대 원칙</strong>: 결제 관련 변경 시 Modifier +3 자동 적용. <strong>Score 미달이어도 결제 TC는 Full 수행 의무 — 예외 없음.</strong></div>
+  <div class="cols">
+    <div><h4>판단 트리</h4>
+      <div class="codeblk">결제 관련 변경 포함?
+  → YES: 결제 TC Full 수행 확약 먼저
+  → 이후 전체 Score로 나머지 범위 결정
+
+결제 무관?
+  → Score 20+: Full
+  → Score 12~19: Partial
+  → Score 6~11: Smoke+Key
+  → Score 1~5: Smoke Only</div>
+    </div>
+    <div><h4>운영 원칙</h4>
+      <ul>
+        <li>Score 계산은 Build Note 수령 직후 실시</li>
+        <li>결과는 QA Plan에 기록 — 임의 변경 불가</li>
+        <li>Score 없는 범위 결정 = 안티패턴 1번</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 7 단계별 전략 */
+add("단계별 회귀테스트 전략",`<div class="slide">
+  ${band("Stage-Based Regression — §4")}
+  <span class="eyebrow">개발 단계별 접근법 · 진입 조건</span>
+  <h2 class="title">단계마다 <em>다른 전략</em>을 적용한다</h2>
+  <table>
+    <tr><th>단계</th><th>접근법</th><th class="acc">핵심 조건</th></tr>
+    <tr><td><strong>CCB Entry</strong></td><td>핵심 10개 영역 Smoke (10개 항목 상세: NO4 §CCB Entry 참조)</td><td>8/10 항목 이상 PASS → CCB 진입 판단</td></tr>
+    <tr><td><strong>안정화 초기</strong></td><td>Build Note 기반 선별 검증</td><td>변경 영향 범위 100% 커버 / Build Note 수령 필수</td></tr>
+    <tr><td><strong>안정화 후기</strong></td><td>Critical Path 전수 Regression</td><td>Bug Fix Rate ≥ 95%</td></tr>
+    <tr><td><strong>RC</strong></td><td>P0/P1 TC 전체 수행</td><td>P0 100% · P1 95% / Critical 1건 → RC 불통과</td></tr>
+    <tr><td><strong>Sign-off</strong></td><td>Readiness Checklist</td><td>단계별 기준값 충족</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>PASS Rate + 결함처리율 기준</h4>
+      <table>
+        <tr><th>단계</th><th>PASS Rate</th><th>P0</th><th class="acc">결함처리율</th></tr>
+        <tr><td>CBT</td><td>≥80%</td><td>100%</td><td>≥70%</td></tr>
+        <tr><td>정식 출시</td><td>≥90%</td><td>100%</td><td>≥80%</td></tr>
+        <tr><td>라이브 업데이트</td><td>≥95%</td><td>100%</td><td>≥90%</td></tr>
+      </table>
+    </div>
+    <div><h4>실무 원칙</h4>
+      <ul>
+        <li>P0는 단계 무관 100% — 협상 대상 아님</li>
+        <li>라이브 기준이 정식 출시보다 높음 (운영 중 신뢰성 가중)</li>
+        <li>Build Note 없으면 안정화 초기 진입 불가</li>
+        <li>Critical 1건 = RC 블로커 (타협 없음)</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 8 라이브 업데이트 차등 */
+add("라이브 업데이트 차등 검증",`<div class="slide">
+  ${band("Live Update QA — §5")}
+  <span class="eyebrow">업데이트 유형별 · RBT 우선순위</span>
+  <h2 class="title">업데이트 유형이 <em>검증 범위를 결정</em>한다</h2>
+  <table>
+    <tr><th>업데이트 유형</th><th>검증 범위</th><th class="acc">소요 시간</th></tr>
+    <tr><td><strong>정기 업데이트</strong></td><td>신규기능 TC + P0/P1 Regression</td><td>4~8시간</td></tr>
+    <tr><td><strong>밸런스 패치</strong></td><td>경제/밸런스 영향 TC + P0 Smoke</td><td>2~4시간</td></tr>
+    <tr><td><strong>Hot-Fix</strong></td><td>P0 Smoke + 수정 기능 검증</td><td>30분~2시간</td></tr>
+    <tr><td><strong>SDK 교체</strong></td><td>결제/인증 Full Regression</td><td>4~8시간</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>RBT 우선순위 (라이브 공통)</h4>
+      <table>
+        <tr><th>순위</th><th class="acc">영역</th></tr>
+        <tr><td>1순위</td><td>결제 / 구매 / 환불</td></tr>
+        <tr><td>2순위</td><td>로그인 / 인증 / 계정</td></tr>
+        <tr><td>3순위</td><td>서버 데이터 (인벤토리·랭킹·진행도)</td></tr>
+        <tr><td>4순위</td><td>신규 콘텐츠 핵심 기능</td></tr>
+        <tr><td>5순위</td><td>기존 기능 변경 영향 범위</td></tr>
+      </table>
+    </div>
+    <div><h4>실무 주의사항</h4>
+      <ul>
+        <li>SDK 교체 = Hot-Fix보다 시간 더 필요 — 결제/인증 Full Regression 의무</li>
+        <li>Hot-Fix 30분~2시간 = Core Suite 중 P0 Smoke만 — 범위 확대 요청 시 RBT Score로 판단</li>
+        <li>유형 판별 전 검증 착수 = 안티패턴</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 9 전수 테스트 조건 */
+add("전수 테스트 필수 조건",`<div class="slide">
+  ${band("Full Test Conditions — §6")}
+  <span class="eyebrow">7가지 의무 조건 · 리소스 산정</span>
+  <h2 class="title">이 7가지 조건에서는 <em>전수 테스트가 의무</em>다</h2>
+  <div class="cols">
+    <div>
+      <h4>전수 테스트 의무 트리거 (7개)</h4>
+      <table>
+        <tr><th>#</th><th class="acc">조건</th></tr>
+        <tr><td>1</td><td>최초 론칭</td></tr>
+        <tr><td>2</td><td>대규모 리팩토링</td></tr>
+        <tr><td>3</td><td>게임 엔진 업그레이드</td></tr>
+        <tr><td>4</td><td>OS 지원 범위 변경</td></tr>
+        <tr><td>5</td><td>결제 SDK 교체</td></tr>
+        <tr><td>6</td><td>서버 아키텍처 변경</td></tr>
+        <tr><td>7</td><td>CBT → OBT 전환</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>리소스 산정 공식</h4>
+      <div class="codeblk">전수 테스트 의무 조건 해당 시
+= 표준 리소스 대비 1.5배 인원
+  OR
+  표준 리소스 대비 1.5배 기간
+  (둘 중 하나 확보 필수)</div>
+      <h4>실무 적용</h4>
+      <ul>
+        <li>7개 조건 해당 여부 = 빌드 킥오프 시 즉시 확인</li>
+        <li>해당 시 PM/PD에 리소스 협의 즉시 에스컬레이션</li>
+        <li>"기존 일정 내 소화" 요구 → 조건 미충족 리스크 문서화 후 승인 요청</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 10 스위트 계층 */
+add("테스트 스위트 3계층",`<div class="slide">
+  ${band("Suite Architecture — §7")}
+  <span class="eyebrow">Core / Extended / Full · 상황별 선택</span>
+  <h2 class="title">스위트는 <em>RBT Score 결과</em>에 종속된다</h2>
+  <table>
+    <tr><th>Suite</th><th>구성</th><th>TC 비율</th><th class="acc">사용 상황</th></tr>
+    <tr><td><strong>Core Suite</strong></td><td>P0 + P1</td><td>약 30~40%</td><td>Hot-Fix · 긴급 검증 · Rollback Smoke</td></tr>
+    <tr><td><strong>Extended Suite</strong></td><td>Core + P2</td><td>약 65~75%</td><td>일반 업데이트 · 밸런스 패치</td></tr>
+    <tr><td><strong>Full Suite</strong></td><td>전체 TC</td><td>100%</td><td>정식 출시 · 전수 필수 조건 해당 시</td></tr>
+  </table>
+  <div class="codeblk">TC 우선순위 정의:
+P0: 서비스 존폐 — 불통과 시 즉시 출시 불가 (로그인 불가, 결제 전체 장애)
+P1: 핵심 기능 / 출시 차단 레벨 (캐릭터 생성 불가, 핵심 전투 불가)
+P2: 주요 기능 (특정 시나리오 오류, 일부 기능 이상)
+P3: 보조 기능 (설정 메뉴, 알림 기능)
+P4: 부가/UX (오탈자, 색상 미관)</div>
+  <div class="cols">
+    <div><h4>운영 원칙</h4>
+      <ul>
+        <li>Suite 선택 = RBT Score 결과에 종속 (임의 결정 금지)</li>
+        <li>Rollback 발생 → Core Suite 우선 → 상황에 따라 확장</li>
+        <li>Extended에서 Full로 상향은 전수 조건 해당 시만</li>
+      </ul></div>
+    <div><h4>라이브 업데이트 Suite 매핑</h4>
+      <ul>
+        <li>Hot-Fix → Core Suite</li>
+        <li>밸런스 패치 → Extended Suite</li>
+        <li>정기 업데이트 → Extended Suite + 신규 기능 영역 Full Suite 범위 적용</li>
+        <li>SDK 교체 → Full Suite (결제/인증 영역)</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 11 장애 등급 QA */
+add("장애 등급 기반 QA 깊이 조정",`<div class="slide">
+  ${band("Incident-Based QA — §8")}
+  <span class="eyebrow">등급별 QA 깊이 · 1등급 즉시 선언 조건</span>
+  <h2 class="title">장애 등급이 <em>QA 시간과 범위</em>를 결정한다</h2>
+  <table>
+    <tr><th>등급</th><th>QA 범위</th><th>소요 시간</th><th class="acc">판단 목적</th></tr>
+    <tr><td><strong>1등급</strong></td><td>P0 Smoke Test</td><td><strong>10분 이내</strong></td><td>즉각 재개 여부 판단</td></tr>
+    <tr><td><strong>2등급</strong></td><td>Smoke + 핵심 Sanity</td><td><strong>30분 이내</strong></td><td>담당 QA</td></tr>
+    <tr><td><strong>3등급</strong></td><td>Sanity + 회귀 검증</td><td>충분한 시간</td><td>정상 QA 수준</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>1등급 즉시 선언 조건 (3가지)</h4>
+      <ul>
+        <li>서버 무응답 <strong>5분 이상</strong></li>
+        <li>로그인 또는 결제 불가</li>
+        <li>데이터 이상으로 밸런스 파괴</li>
+      </ul>
+      <div class="note warn"><strong>절대 규칙</strong>: 인증(로그인)/빌링(결제) 장애 = 서비스 등급 무관 무조건 1등급</div>
+    </div>
+    <div><h4>실무 원칙</h4>
+      <ul>
+        <li>10분 이내 판단 = QA가 "조금 더 보자"로 지연 금지</li>
+        <li>1등급 선언 권한을 QA Lead에 명시적 위임 필수</li>
+        <li>재개 승인 = P0 Smoke 완료 후만 가능 (완료 전 재개 금지)</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 12 Rollback QA */
+add("Rollback 유형별 리스크 + QA",`<div class="slide">
+  ${band("Rollback QA — §9")}
+  <span class="eyebrow">4유형 · 위험도 · Suite · 필수 검증</span>
+  <h2 class="title">Rollback 유형 판별이 <em>QA 범위의 시작</em>이다</h2>
+  <table>
+    <tr><th>유형</th><th>정의</th><th>위험도</th><th>QA Suite</th><th class="acc">필수 검증</th></tr>
+    <tr><td><strong>Type A</strong></td><td>클라이언트 빌드 교체</td><td>중</td><td>Core Suite</td><td>API 버전 호환 · 로그인 · 결제</td></tr>
+    <tr><td><strong>Type B</strong></td><td>서버 코드/설정 복구</td><td>높음</td><td>Core Suite + DB 정합성 TC</td><td>데이터 조회/저장</td></tr>
+    <tr><td><strong>Type C</strong></td><td>DB/데이터 복구</td><td><strong>최고</strong></td><td><strong>Full Suite 의무</strong> + 결제 전수</td><td>결제 내역 · 인벤토리 · 재화 <strong>(샘플링 불가)</strong></td></tr>
+    <tr><td><strong>Type D</strong></td><td>Feature Flag 비활성화</td><td>낮음</td><td>Core Suite 중 연동 관련 TC</td><td>의존 기능 동작</td></tr>
+  </table>
+  <div class="note warn"><strong>Type C 경고</strong>: 결제 내역·인벤토리·재화는 샘플링 불가 — 전수 검증 의무. DB 복구 후 Full Suite 면제 협의는 수용 불가.</div>
+  <div class="codeblk">Rollback 발생
+→ 유형 판별 (A/B/C/D)
+→ 해당 Suite 즉시 착수
+→ 필수 검증 항목 완료 후만 서비스 재개 승인</div>
+</div>`);
+
+/* 13 자동화 로드맵 */
+add("자동화 고도화 로드맵 + ROI",`<div class="slide">
+  ${band("Automation Roadmap — 3-Phase")}
+  <span class="eyebrow">Phase 1~3 · ROI 실증 수치</span>
+  <h2 class="title">표준 위에 <em>자동화</em>를 올린다</h2>
+  <table>
+    <tr><th>Phase</th><th>기간</th><th class="acc">핵심 활동</th></tr>
+    <tr><td><strong>Phase 1</strong></td><td>즉시~1개월</td><td>Appium 환경 구성 + Firebase Crashlytics 연동</td></tr>
+    <tr><td><strong>Phase 2</strong></td><td>3~6개월</td><td>CI/CD 파이프라인 연동 / TestRail·Xray / k6·Locust 성능 테스트</td></tr>
+    <tr><td><strong>Phase 3</strong></td><td>6~12개월</td><td>P1 TC 자동화 50% 달성 / AI TC 생성(공수 30% 절감) / AI 결함 클러스터링</td></tr>
+  </table>
+  <h4>ROI — 자동화 구축 완료 후 비교</h4>
+  <table>
+    <tr><th>항목</th><th>수작업</th><th class="acc">자동화 후</th></tr>
+    <tr><td>BAT</td><td>2~4시간</td><td><strong>10~30분</strong></td></tr>
+    <tr><td>Regression</td><td>1~2일</td><td><strong>2~4시간</strong></td></tr>
+    <tr><td>호환성</td><td>3~5일</td><td><strong>6~12시간</strong></td></tr>
+    <tr><td>인력 절감 (구축 완료 후)</td><td>—</td><td><strong>55~80%</strong></td></tr>
+  </table>
+  <div class="note">표준 프로세스(NO5 방법론)가 먼저, 자동화는 그 위에 올린다. Phase 1만으로 55~80% 달성 주장 금지 — "구축 완료 후" 수치.</div>
+</div>`);
+
+/* 14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">5대 실패 패턴</span>
+  <h2 class="title">표준화 이후에도 반복되는 <em>5가지 함정</em></h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th>증상</th><th class="acc">대응</th></tr>
+    <tr><td>①</td><td><strong>Score 없이 범위 결정</strong></td><td>"이번 빌드는 간단하니까 Smoke만"</td><td>RBT Score 계산 먼저 — 범위는 결과에 종속</td></tr>
+    <tr><td>②</td><td><strong>결제 TC 축소</strong></td><td>Score 낮다고 결제 TC 생략</td><td>결제 변경 = Score 무관 Full 수행 절대 원칙</td></tr>
+    <tr><td>③</td><td><strong>Rollback 후 즉시 재개</strong></td><td>"일단 복구됐으니 오픈"</td><td>유형 판별 → 해당 Suite 완료 후만 재개</td></tr>
+    <tr><td>④</td><td><strong>전수 조건 협의 생략</strong></td><td>엔진 업그레이드인데 Partial Regression</td><td>7개 조건 해당 시 1.5배 리소스 협의 의무</td></tr>
+    <tr><td>⑤</td><td><strong>자동화 ROI 과장</strong></td><td>Phase 1 완료 후 "인력 80% 절감" 주장</td><td>"구축 완료 후" 수치임을 명시</td></tr>
+  </table>
+  <div class="note warn">공통 root cause — 일정 압박 → 기준 우회. 대응: 기준 완화 요청 수신 시 리스크 문서화 + 상위 승인 의무화.</div>
+</div>`);
+
+/* 15 자가점검 + 용어 */
+add("자가점검 + 용어",`<div class="slide">
+  ${band("Self-Check + Glossary")}
+  <span class="eyebrow">15항목 체크리스트 · 핵심 용어</span>
+  <h2 class="title">현장 적용 전 <em>순서대로</em> 점검한다</h2>
+  <div class="cols">
+    <div>
+      <div class="codeblk">RBT 스코어링
+□ Impact×Probability를 매 빌드에 적용했는가?
+□ Modifier(결제/정합성/신규/재발/엔진) 누락 없이 반영했는가?
+□ 결제 변경 시 Score 미달이어도 Full TC 확약했는가?
+
+단계별 전략
+□ CCB Entry: 핵심 10개 영역 Smoke + 8/10 PASS 확인했는가? (항목 상세: NO4 참조)
+□ 안정화 초기 진입 전 Build Note를 수령했는가?
+□ 현 단계 PASS Rate/P0/결함처리율 기준값 인지했는가?
+
+라이브 업데이트
+□ 업데이트 유형(정기/밸런스/Hot-Fix/SDK) 분류했는가?
+□ RBT 1순위(결제)부터 검증 순서 배정했는가?
+
+전수·스위트
+□ 7개 전수 조건 해당 여부를 킥오프 시 확인했는가?
+□ 전수 조건 해당 시 1.5배 리소스 협의 완료했는가?
+□ Suite 선택이 RBT Score 결과 기반인가?
+
+장애·Rollback
+□ 장애 1등급 선언 권한자가 지정되어 있는가?
+□ 인증/결제 장애를 무조건 1등급으로 처리했는가?
+□ Rollback 유형(A/B/C/D) 판별 후 Suite 착수했는가?
+□ Type C: 결제/인벤토리/재화 전수(샘플링 없음) 확약했는가?</div>
+    </div>
+    <div><h4>핵심 용어</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>RBT</td><td>Risk-Based Testing — 리스크 점수 기반 테스트 우선순위화</td></tr>
+      <tr><td>Modifier</td><td>게임 특화 가점 (결제+3·정합성+2·신규+2·재발+2·엔진+1)</td></tr>
+      <tr><td>Core Suite</td><td>P0+P1 / 약 30~40% / 긴급·Rollback Smoke</td></tr>
+      <tr><td>Extended Suite</td><td>Core+P2 / 약 65~75% / 일반 업데이트</td></tr>
+      <tr><td>Full Suite</td><td>100% TC / 정식 출시·전수 의무 조건</td></tr>
+      <tr><td>Bug Fix Rate</td><td>안정화 후기 진입 기준 (≥95%)</td></tr>
+      <tr><td>Type C Rollback</td><td>DB/데이터 복구 — 위험도 최고 / 결제 전수 의무</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--mute);margin-top:8px">참조 출처: framework_v3/04 §2~9 · framework_v3/05 §2·7.</p>
+    </div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
