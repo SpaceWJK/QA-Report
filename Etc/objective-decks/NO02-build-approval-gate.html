@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>빌드 승인 기준(BVT/BAT)과 출시 Gate 연계 표준화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 26px;}
+@media(max-width:900px){.cols,.cols3{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin:14px 0 7px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:7px;}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;letter-spacing:.03em;}
+.tag.g{background:rgba(58,107,79,.14);color:var(--good);} .tag.w{background:rgba(154,106,31,.14);color:var(--warn);} .tag.b{background:rgba(138,42,42,.14);color:var(--bad);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">빌드 승인 기준 · BVT/BAT</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">퍼블리싱 게임 품질 기반 강화 · 출시 품질 Gate 통합 기준 수립 및 운영</div>
+  <h1>빌드 승인 기준(BVT/BAT)과<br><span class="it">출시 Gate 연계 표준화</span></h1>
+  <div class="sub">Build Acceptance 프로세스 정의 및 품질 게이트 연계 기준 — 개발사 자체 검증(BVT)으로 불완전 빌드를 선필터링하고, QA 수락 검증(BAT)을 정량 기준으로 표준화한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 품질 Gate 통합 기준 수립 및 운영</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">진단(현행 갭) → 정의(과제) → 관계도 → BVT 상세 → BAT 상세 → 수령~수락 프로세스 → FAIL·거부권 → 출시 Gate 연계 → 시나리오·안티패턴·체크리스트.</div>
+</div>`);
+
+/* 3 현행 갭 */
+add("현행 갭 분석",`<div class="slide">
+  ${band("Background — AS-IS Gap")}
+  <span class="eyebrow">현행 갭 분석 · 왜 필요한가</span>
+  <h2 class="title">불완전 빌드 수령이 <em>QA 리소스를 잠식</em>한다</h2>
+  <table>
+    <tr><th>갭</th><th>현상</th><th class="acc">결과</th></tr>
+    <tr><td>① BVT 부재·형식화</td><td>결과보고서 없이 빌드 제출 / 항목 기준 미정의로 형식적 제출</td><td>BAT 중 기동 불가·로그인 장애 등 기초 오류 → BAT 무효화</td></tr>
+    <tr><td>② BAT 판정 주관 의존</td><td>"PASS/FAIL 정량 기준 부재 — 담당자 주관에 의존"</td><td>동일 빌드도 담당자·프로젝트별 수락 여부 상이</td></tr>
+    <tr><td>③ BAT–Gate 연계 단절</td><td>RC 단계 BAT FAIL 대응 미정의. BAT 결과가 게이트 판단에 미반영</td><td>불완전 빌드 RC 통과 / 일정 압박 시 BAT 생략</td></tr>
+  </table>
+  <div class="codeblk">불완전 빌드 수령 → BAT 중 기초오류 → BAT 무효화
+  → 재수령 대기 → QA 일정 지연 → 안정화 단축 압박
+  → 품질 기준 완화 / Sign-off 미충족 출시</div>
+  <div class="note">목적 — BVT로 개발사 자체 필터링 강화 + BAT 정량 표준화 + BAT 결과를 출시 5관문에 명시 연계.</div>
+</div>`);
+
+/* 4 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative Definition")}
+  <span class="eyebrow">과제 정의</span>
+  <h2 class="title">빌드 단위 품질 게이트 정의 — <em>4 Activity · 3 KR</em></h2>
+  <table>
+    <tr><th>Activity</th><th>내용</th><th class="acc">KR 연결</th></tr>
+    <tr><td>① BVT 기준 정의</td><td>개발사 자체 검증 항목·환경·보고서 서식 표준화</td><td>불완전 빌드 사전 필터링</td></tr>
+    <tr><td>② BAT 기준 정의</td><td>QA 수락 검증 5개 항목 정량 통과 기준 수립</td><td>수락 기준 프로젝트 간 일관화</td></tr>
+    <tr><td>③ BVT/BAT→Gate 연계</td><td>BAT 결과의 CCB/RC/Sign-off 반영 경로 명문화</td><td>QA 리소스 낭비 감소</td></tr>
+    <tr><td>④ 수령~수락 프로세스</td><td>릴리즈 노트→수령→BAT→수락/거부 전 단계 확정</td><td>프로세스 일관화</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>Key Results</h4>
+      <ul><li><strong>KR1</strong> 불완전 빌드 수령 건수 감소(BVT 미첨부=수령 거부 원칙)</li><li><strong>KR2</strong> BAT FAIL 반려 빌드 중 BVT 선필터 비율 ≥70%</li><li><strong>KR3</strong> 전 프로젝트 BAT 판정 기준 통일(담당자 편차 해소)</li></ul></div>
+    <div><h4>핵심 원리</h4>
+      <ul><li>BVT=개발사 자체 필터 / BAT=QA 수락 게이트</li><li>BVT 보고서는 BAT 수락 조건의 하나</li><li>BAT 결과는 CCB·RC·Sign-off 진입 조건에 직결</li></ul></div>
+  </div>
+</div>`);
+
+/* 5 관계도 */
+add("BVT/BAT 관계도",`<div class="slide">
+  ${band("Framework Overview")}
+  <span class="eyebrow">BVT/BAT 전체 관계도</span>
+  <h2 class="title">BVT는 <em>개발사 자체 필터</em>, BAT는 <em>QA 수락 게이트</em></h2>
+  <div class="codeblk">[개발사]                              [SGP QA팀]
+  ├ 빌드 생성
+  ├ BVT 수행 ◀──── BAT TC 참조(작성 기준 제공)
+  │  (릴리즈 전 기본 동작 검증)
+  ├ BVT 결과보고서 작성
+  └ 빌드 + BVT 보고서 + Build Note 제출
+            │
+            ▼  [빌드 수령 확인]
+       Build Note? ─No─▶ 수령 거부
+       BVT 보고서? ─No─▶ 수령 거부(원칙)
+            │ Yes
+            ▼  [BAT 수행] 5개 항목
+       PASS ─▶ 수락 → 테스트 착수
+       FAIL ─▶ 거부(QA 완전 거부권) → 재빌드·재제출</div>
+  <table>
+    <tr><th>구분</th><th>BVT</th><th class="acc">BAT</th></tr>
+    <tr><td>수행 주체</td><td>개발사</td><td>SGP QA팀</td></tr>
+    <tr><td>시점</td><td>빌드 릴리즈 前</td><td>빌드 수령 後</td></tr>
+    <tr><td>목적</td><td>기본 동작 가능 빌드 자체 확인</td><td>테스트 환경 수락 가부 판단</td></tr>
+    <tr><td>근거</td><td>BAT TC 참고 개발사 자체 작성</td><td>Framework 정의 5개 항목</td></tr>
+    <tr><td>환경</td><td>가급적 QA 환경과 동일</td><td>QA 테스트 환경(표준 디바이스)</td></tr>
+    <tr><td>결과물</td><td>BVT 결과보고서(제출 의무)</td><td>BAT PASS/FAIL 판정서</td></tr>
+    <tr><td>거부권</td><td>없음</td><td><strong>QA 완전한 거부권</strong></td></tr>
+  </table>
+</div>`);
+
+/* 6 BVT 상세 */
+add("BVT 상세",`<div class="slide">
+  ${band("BVT — Developer Responsibility")}
+  <span class="eyebrow">BVT · 개발사 자체 빌드 검증</span>
+  <h2 class="title">BVT는 개발사가 릴리즈 전 수행하는 <em>기본 동작 검증</em></h2>
+  <div class="note">"Build Verification Test — 개발사가 빌드 릴리즈 전 자체 수행하는 빌드 검증. 기본 동작 가능 상태인지 확인." <span style="color:var(--mute)">(01_테스트기준 §3)</span></div>
+  <div class="cols">
+    <div><h4>책임 소재</h4>
+    <table>
+      <tr><th>구분</th><th class="acc">내용</th></tr>
+      <tr><td>수행 주체</td><td>개발사 — QA 대행 금지</td></tr>
+      <tr><td>시점</td><td>빌드 릴리즈 前(제출 이전 완료)</td></tr>
+      <tr><td>TC 기준</td><td>BAT TC 참고 자체 작성</td></tr>
+      <tr><td>환경</td><td>가급적 QA 환경과 동일</td></tr>
+      <tr><td>결과 제출</td><td>BVT 보고서와 함께 릴리즈 필수</td></tr>
+    </table></div>
+    <div><h4>왜 "QA 환경과 동일"인가</h4>
+      <ul><li>개발사 내부=디버그 빌드·내부 서버 → 실서비스 연동 다름</li><li>QA=릴리즈 빌드·실서버·표준 디바이스</li><li>환경 동기화 없이는 BVT PASS=BAT PASS 예측 불가</li></ul>
+      <p style="font-size:12px">실무 — 제출 전 ①Release 빌드 ②실서버 연동 ③QA 표준 디바이스에서 BVT 수행.</p></div>
+  </div>
+  <div class="codeblk">[BAT 항목 — QA작성] ──참조──▶ [BVT 항목 — 개발사작성]
+ ① Build Note 수령              ① 빌드 환경 자체 확인
+ ② 로그인 플로우        ◀──     ② 로그인 정상 동작
+ ③ 강제 업데이트        ◀──     ③ 강제 업데이트 동작
+ ④ 결제 플로우          ◀──     ④ 결제 기본 확인
+ ⑤ BVT 결과 첨부               ⑤ 이슈 목록 문서화</div>
+  <p style="font-size:12px;color:var(--mute)">BVT는 BAT의 "사전 거울 테스트" — 개발사가 먼저 내부 검증해 BAT FAIL 확률을 낮춘다.</p>
+</div>`);
+
+/* 7 BVT 보고서 */
+add("BVT 보고서·수령 기준",`<div class="slide">
+  ${band("BVT Report & Build Note")}
+  <span class="eyebrow">BVT 결과보고서 · 제출 의무 항목</span>
+  <h2 class="title">BVT 보고서 미첨부 빌드는 <em>BAT 수행 거부</em> 가능</h2>
+  <div class="cols">
+    <div><h4>BVT 결과보고서 필수 항목 <span style="color:var(--mute);font-weight:400">(01 §3)</span></h4>
+    <table>
+      <tr><th>항목</th><th class="acc">기준</th></tr>
+      <tr><td>① 빌드 환경</td><td>버전·플랫폼·빌드타입(Release)·디바이스 — 1개↑ 명시</td></tr>
+      <tr><td>② 수행 일시</td><td>BVT 수행 일시 기재 필수</td></tr>
+      <tr><td>③ 핵심 기능 동작</td><td>로그인/결제/업데이트 항목별 PASS/FAIL</td></tr>
+      <tr><td>④ 발견 이슈 목록</td><td>알려진 이슈 전수 기재(숨김 금지)</td></tr>
+    </table>
+    <h4>Build Note 필수 항목 <span style="color:var(--mute);font-weight:400">(02 §3.2)</span></h4>
+    <ul><li>버전 정보 / DB 스크립트 / 변경사항 명세 / BVT 결과</li></ul></div>
+    <div><h4>미제출 시 처리 <span style="color:var(--mute);font-weight:400">(01 §3)</span></h4>
+    <table>
+      <tr><th>상황</th><th class="acc">처리</th></tr>
+      <tr><td>BVT 미첨부</td><td>BAT 수행 거부(원칙) → 재제출 요청</td></tr>
+      <tr><td>Build Note 미수령</td><td>빌드 수령 거부(원칙)</td></tr>
+      <tr><td>예외 적용</td><td>QA팀장 승인 + <strong>사유 JIRA 등재 필수</strong></td></tr>
+    </table>
+    <div class="note">Build Note와 BVT 보고서는 별개 문서이며, 각각 수령의 독립 조건이다.</div></div>
+  </div>
+</div>`);
+
+/* 8 BAT 상세 */
+add("BAT 상세",`<div class="slide">
+  ${band("BAT — QA Acceptance")}
+  <span class="eyebrow">BAT · QA 수락 검증</span>
+  <h2 class="title">BAT는 <em>빌드 릴리즈 시마다</em> 수행하는 수락 게이트</h2>
+  <div class="note">"Build Acceptance Test — 빌드 릴리즈 시마다 해당 빌드를 테스트 환경에 수락할 수 있는지 검증. 개발사 Build Note와 함께 제공한 빌드를 QA가 수락할지 결정." <span style="color:var(--mute)">(01 §2)</span></div>
+  <table>
+    <tr><th>#</th><th>확인 항목</th><th class="acc">판정 기준</th></tr>
+    <tr><td>①</td><td>Build Note 수령</td><td>버전·DB스크립트·변경사항 포함 — <strong>미수령=즉시 FAIL</strong></td></tr>
+    <tr><td>②</td><td>로그인 플로우</td><td>로그인·계정 연동 정상 동작</td></tr>
+    <tr><td>③</td><td>강제 업데이트</td><td>공지 화면 노출 + 강제 업데이트 동작</td></tr>
+    <tr><td>④</td><td>결제 플로우</td><td>결제 진입 + 완료 기본 흐름</td></tr>
+    <tr><td>⑤</td><td>BVT 결과 첨부</td><td>개발사 보고서 첨부 — <strong>미첨부=즉시 FAIL</strong></td></tr>
+  </table>
+  <div class="note warn">현행 이슈 — "BAT PASS/FAIL 정량 기준 부재: 담당자 주관 의존." 개선 — "로그인/결제/업데이트 3개 기능 각 5개↑ 정량 체크리스트 수립." <span style="color:var(--mute)">(01 §2)</span></div>
+  <h4>정량 기준 개선안 (Activity ② 산출물)</h4>
+  <table>
+    <tr><th>영역</th><th class="acc">5개 정량 항목 (1개라도 FAIL → 해당 영역 FAIL → 전체 BAT FAIL)</th></tr>
+    <tr><td>로그인</td><td>계정 생성 / 로그인 / 계정 전환 / 소셜 로그인 / 비정상 계정 차단</td></tr>
+    <tr><td>강제 업데이트</td><td>공지 노출 / 확인 동작 / 업뎃 후 재개 / 패치 ≤15분 / 취소 시 종료</td></tr>
+    <tr><td>결제</td><td>스토어 진입 / 상품 노출 / 결제 모달 / 완료 후 재화 지급 / 영수증 발행</td></tr>
+  </table>
+</div>`);
+
+/* 9 프로세스 */
+add("수령~수락 프로세스",`<div class="slide">
+  ${band("Process Standard")}
+  <span class="eyebrow">빌드 수령~수락 표준 흐름</span>
+  <h2 class="title">제출 → 수령 확인 → BAT → <em>수락/거부</em> 4단계</h2>
+  <div class="codeblk">[제출] 3종 동시: ①Release 빌드 ②Build Note ③BVT 보고서
+        │
+[STEP1 수령 확인] (제출 당일)
+  Build Note 완료? ─No─▶ 재제출 요청(수령 거부)
+  BVT 보고서 첨부? ─No─▶ BAT 거부(원칙)/팀장 예외 승인 시 진행
+        │ Yes
+[STEP2 BAT 수행] (수령 당일~익일)
+  ①Build Note ②로그인 ③강제업뎃 ④결제 ⑤BVT 첨부
+  PASS(5개 전체) ─▶ STEP3 / FAIL(1개라도) ─▶ STEP4
+        │
+[STEP3 수락] BAT PASS 기록(JIRA) → 범위 재확인 → 안정화/RC 착수
+        │ (FAIL 경로)
+[STEP4 거부] FAIL 항목 문서화 → 개발사 통보(JIRA 의무)
+            → 재제출 요청 → 재제출 빌드 STEP1~3 재수행</div>
+  <h4>수령~수락 SLA (표준 제안)</h4>
+  <table>
+    <tr><th>단계</th><th class="acc">목표 처리 시간</th></tr>
+    <tr><td>수령 확인(STEP1)</td><td>제출 당일 업무시간 내</td></tr>
+    <tr><td>BAT 수행(STEP2)</td><td>수령 확인 후 1영업일 이내</td></tr>
+    <tr><td>PASS/FAIL 통보</td><td>BAT 완료 즉시(JIRA+개발사 통보)</td></tr>
+    <tr><td>FAIL 후 재제출 수령</td><td>재제출일 1영업일 이내 동일 절차</td></tr>
+  </table>
+</div>`);
+
+/* 10 BAT FAIL 거부권 */
+add("BAT FAIL·거부권",`<div class="slide">
+  ${band("BAT FAIL & Veto")}
+  <span class="eyebrow">BAT FAIL 처리 · QA 거부권</span>
+  <h2 class="title">BAT FAIL 시 QA는 <em>완전한 거부권</em>을 보유한다</h2>
+  <div class="note">"BAT PASS/FAIL — QA팀 완전한 거부권. 사업PM은 의견 제시만." <span style="color:var(--mute)">(03 §4)</span></div>
+  <div class="cols">
+    <div><h4>거부권의 의미·한계</h4>
+    <table>
+      <tr><th>구분</th><th class="acc">내용</th></tr>
+      <tr><td>범위</td><td>BAT FAIL 빌드 수락 거부 — 사업PM 번복 불가</td></tr>
+      <tr><td>효과</td><td>안정화 착수 불가, 재빌드 전 리소스 투입 중단</td></tr>
+      <tr><td>한계</td><td>통과 이후 단계는 Sign-off에서 권한 약화 가능</td></tr>
+      <tr><td>예외</td><td>없음 — 예외 없이 통과 후 수락</td></tr>
+    </table></div>
+    <div><h4>FAIL 후 처리 경로</h4>
+    <div class="codeblk">① FAIL 항목 문서화
+   (재현·환경·스크린샷 + JIRA)
+② 개발사 통보(즉시)
+③ 재빌드 대기(슬롯 사전 확보)
+④ 재제출 → STEP1~3 전체 재수행
+   (부분 검증 불가)
+⑤ BAT PASS 후 수락</div></div>
+  </div>
+  <h4>RC 단계 BAT FAIL (특수)</h4>
+  <table>
+    <tr><th>상황</th><th class="acc">처리</th></tr>
+    <tr><td>Critical FAIL</td><td>즉시 RC FAIL → 긴급 수정 → 재빌드 → BAT 재수행 → RC 재진입</td></tr>
+    <tr><td>기술 항목 FAIL(로그인/결제)</td><td>동일 경로(RC라도 BAT 우선)</td></tr>
+    <tr><td>일정상 재빌드 불가</td><td>사업PM+QA팀장 공동 협의 + 리스크 수용 확인서 서명</td></tr>
+  </table>
+</div>`);
+
+/* 11 Gate 연계 */
+add("출시 Gate 연계",`<div class="slide">
+  ${band("Gate Integration")}
+  <span class="eyebrow">출시 5관문과 BAT 연계</span>
+  <h2 class="title">BAT는 매 빌드마다 수행되며 <em>RC·Sign-off의 선행 조건</em></h2>
+  <div class="codeblk">[Gate2 CCB Entry]  CCB 빌드에도 BAT 필수
+  BAT FAIL → CCB 착수 불가 / BAT PASS → 검증 시작
+        ▼
+[안정화 최소 7주]  ★매 빌드 수령 시마다 BAT
+  FAIL → 해당 빌드 거부 / PASS → 선별 검증 착수
+        ▼
+[RC · Code Freeze 후]  ★RC 빌드 BAT 신규 수행(필수)
+  "RC 빌드에 대한 BAT 신규 수행"(01 §4)
+  FAIL → RC FAIL 즉시 / PASS → 3종 집중 테스트
+        ▼
+[Gate4 Sign-off]  최종 빌드 BAT 결과 확인
+  Readiness 검토 → 사업PM 최종(QA Veto: Critical>0)</div>
+  <table>
+    <tr><th>게이트</th><th>BAT 역할</th><th class="acc">FAIL 시 영향</th></tr>
+    <tr><td>CCB Entry</td><td>검증 착수 전 수락 조건</td><td>CCB 검증 착수 불가</td></tr>
+    <tr><td>안정화(매 빌드)</td><td>빌드별 수락 조건</td><td>해당 빌드 거부(일정 지연)</td></tr>
+    <tr><td>RC 진입</td><td>RC 빌드 신규 BAT 필수</td><td>RC FAIL 즉시 선언</td></tr>
+    <tr><td>Sign-off 전</td><td>최종 빌드 상태 수락 확인</td><td>Sign-off 불가</td></tr>
+  </table>
+</div>`);
+
+/* 12 단계별 비교 */
+add("단계별 BAT 비교",`<div class="slide">
+  ${band("BAT by Phase")}
+  <span class="eyebrow">단계별 BAT 수행 기준 비교</span>
+  <h2 class="title">동일한 5개 항목이 단계마다 <em>다른 맥락</em>으로 작동</h2>
+  <table>
+    <tr><th>구분</th><th>CCB Entry</th><th>안정화 중</th><th>RC</th><th class="acc">라이브 업데이트</th></tr>
+    <tr><td>빈도</td><td>CCB 빌드 1회</td><td>매 빌드</td><td>RC 빌드 1회(필수)</td><td>업뎃 빌드마다</td></tr>
+    <tr><td>특이</td><td>CCB 10항목 前 선수행</td><td>변경 기반 선별 추가</td><td>Code Freeze 후 — FAIL시 RC 전체 FAIL</td><td>변경 기능 Sanity 추가</td></tr>
+    <tr><td>FAIL 영향</td><td>CCB 착수 불가</td><td>빌드 거부·재제출</td><td>RC FAIL 즉시</td><td>배포 불가</td></tr>
+    <tr><td>확인 포인트</td><td>기본 동작(최초 진입)</td><td>회귀(기능 유지)</td><td>Freeze 후 핵심 정상</td><td>패치 후 무영향</td></tr>
+  </table>
+  <h4>라이브 업데이트 BAT 추가 기준 <span style="color:var(--mute);font-weight:400">(02 §7)</span></h4>
+  <table>
+    <tr><th>유형</th><th>BAT + 추가 검증</th><th class="acc">목표 시간</th></tr>
+    <tr><td>정기 업데이트</td><td>BAT 5 + 신규 기능 + P0/P1 Regression</td><td>4~8h</td></tr>
+    <tr><td>밸런스 패치</td><td>BAT 5 + 경제/밸런스 TC + P0</td><td>2~4h</td></tr>
+    <tr><td>Hot-Fix</td><td>BAT 5(축약) + P0 Smoke + 수정 기능</td><td>30분~2h</td></tr>
+    <tr><td>SDK 교체</td><td>BAT 5 + 결제/인증 Full Regression</td><td>4~8h</td></tr>
+  </table>
+</div>`);
+
+/* 13 시나리오 */
+add("실무 시나리오",`<div class="slide">
+  ${band("Scenarios")}
+  <span class="eyebrow">실무 시나리오 — 정상 vs FAIL</span>
+  <h2 class="title">정상 흐름과 <em>FAIL 흐름</em> 두 경로</h2>
+  <div class="cols">
+    <div><h4><span class="tag g">A</span> 정상 (BAT PASS)</h4>
+    <div class="codeblk">D+0 개발사: 빌드+Note+BVT 동시 제출
+D+0 QA: 수령 확인 → 첨부 확인 OK
+D+1 QA: BAT ①~⑤ 전체 ✓ → PASS
+D+1 수락 → JIRA 기록 → 범위 확정
+        → 안정화 착수</div></div>
+    <div><h4><span class="tag b">B</span> BAT FAIL</h4>
+    <div class="codeblk">D+0 개발사: BVT 보고서 없이 제출
+D+0 QA: 미첨부 → BAT 거부 → 재제출
+D+1 재제출 → BAT ② 로그인 ✗
+   "계정 전환 시 크래시" → 전체 FAIL
+D+1 문서화 → 개발사 통보(재현+SS)
+D+3 수정·재빌드 → BAT 전체 PASS
+        → 착수 (3일 지연)</div></div>
+  </div>
+  <h4><span class="tag b">C</span> RC 단계 BAT FAIL (고위험)</h4>
+  <div class="codeblk">RC 진입: Code Freeze 확인 → RC 빌드 BAT
+  ③ 강제 업데이트 FAIL "업뎃 후 재실행 불가(특정 기기)"
+  → RC FAIL 즉시 → 긴급 수정 → 재빌드 → BAT 재수행 → RC 재진입
+  → 일정 영향: RC 지연 = 출시일 연기 직결
+교훈: 안정화 중 매 빌드 BAT 철저 수행이 RC 리스크를 가장 효과적으로 낮춘다.</div>
+</div>`);
+
+/* 14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">반복되는 7가지 실수</span>
+  <h2 class="title">이 패턴이 <em>리소스를 낭비</em>하고 품질을 낮춘다</h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th class="acc">올바른 기준</th></tr>
+    <tr><td>①</td><td>BVT 보고서 없이 수령("급하니까")</td><td>미첨부=수령 거부. 예외 시 팀장 승인+JIRA</td></tr>
+    <tr><td>②</td><td>BAT 주관 판정("대충 됩니다")</td><td>5개 항목별 PASS/FAIL 기록. 1개 FAIL=전체 FAIL</td></tr>
+    <tr><td>③</td><td>Build Note 없이 BAT 착수</td><td>Note 수령=BAT 항목①. 미수령=FAIL</td></tr>
+    <tr><td>④</td><td>FAIL 후 구두 통보만</td><td>항목+재현+SS JIRA 등재 의무</td></tr>
+    <tr><td>⑤</td><td>RC 빌드 BAT 생략("안정화 때 다 함")</td><td>RC BAT 별도 신규 수행 의무. 대체 불가</td></tr>
+    <tr><td>⑥</td><td>BAT 결과 게이트 미반영</td><td>BAT PASS 확인을 CCB·RC·Sign-off 체크 항목 명문화</td></tr>
+    <tr><td>⑦</td><td>QA가 BVT 대행</td><td>BVT 주체=개발사. QA는 검토·수령만. 대행 금지</td></tr>
+  </table>
+  <div class="note warn">공통 근본 원인 — BVT/BAT를 게이트가 아닌 "통과 의례"로 다루는 것. 모든 거부권·문서화·연계는 생략 불가.</div>
+</div>`);
+
+/* 15 체크리스트·용어 */
+add("체크리스트·용어",`<div class="slide">
+  ${band("Checklist & Glossary")}
+  <span class="eyebrow">자가점검 체크리스트 · 용어 · 참조</span>
+  <h2 class="title">수령 전 · BAT · <em>Gate 진입 전</em> 점검</h2>
+  <div class="cols3">
+    <div><h4>수령 전</h4>
+    <div class="codeblk">□ Release 빌드(Debug 거부)
+□ Build Note 완료
+□ BVT 보고서 첨부
+□ BVT 환경=QA 동일?
+□ 예외 시 팀장 승인
+  +사유 JIRA</div></div>
+    <div><h4>BAT 수행</h4>
+    <div class="codeblk">□ ①Build Note 수령
+□ ②로그인 정상
+□ ③강제 업데이트
+□ ④결제 플로우
+□ ⑤BVT 첨부·내용
+─ 5개 전체 PASS만 수락</div></div>
+    <div><h4>Gate 진입 전</h4>
+    <div class="codeblk">□ CCB 착수: BAT PASS
+□ 안정화: 빌드마다 BAT
+□ RC 진입: 신규 BAT
+  (대체 불가)
+□ Sign-off: 최종 BAT
+  PASS 이력</div></div>
+  </div>
+  <div class="cols">
+    <div><h4>용어</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>BVT</td><td>개발사 릴리즈 전 자체 검증(보고서 제출 의무)</td></tr>
+      <tr><td>BAT</td><td>빌드마다 QA 수락 검증(완전 거부권)</td></tr>
+      <tr><td>Build Note</td><td>버전·DB스크립트·변경사항·BVT 결과</td></tr>
+      <tr><td>CCB Entry</td><td>QA 투입 가부 게이트(Gate2)</td></tr>
+      <tr><td>RC</td><td>Code Freeze 후 최종 안정성 검증</td></tr>
+      <tr><td>Sign-off</td><td>오픈 적합 회의 최종 판정(Gate4)</td></tr>
+    </table></div>
+    <div><h4>참조 원전</h4>
+    <table>
+      <tr><th>문서</th><th class="acc">내용</th></tr>
+      <tr><td>테스트 기준</td><td>BVT/BAT 정의·항목·통과 기준·수령 절차(§2·§3)</td></tr>
+      <tr><td>테스트 프로세스</td><td>수령~수락 흐름·라이브 업데이트 BAT(§3.2·§7)</td></tr>
+      <tr><td>품질 게이트</td><td>5관문·BAT 위치·QA 거부권(§2·§4)</td></tr>
+    </table>
+    <h4>문서 관리</h4>
+    <ul><li>갱신 반기 1회 · Confluence 보관(퍼블리싱 QA 공통 기준)</li></ul></div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
