@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>품질 데이터 누락·지연 없는 수집 구조</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin:14px 0 7px;}
+h3 .num{color:var(--wine);font-style:italic;margin-right:7px;}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:3px;letter-spacing:.03em;}
+.tag.g{background:rgba(58,107,79,.14);color:var(--good);} .tag.w{background:rgba(154,106,31,.14);color:var(--warn);} .tag.b{background:rgba(138,42,42,.14);color:var(--bad);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">품질 데이터 누락·지연 없는 수집 구조</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">품질 거버넌스 & 데이터 기반 운영 · 품질 대시보드 구축</div>
+  <h1>품질 데이터<br><span class="it">누락·지연 없는 수집 구조</span></h1>
+  <div class="sub">TC 3-Level 분류부터 Postmortem 환류까지 — 데이터 공백 없는 QA 파이프라인을 설계한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">품질 거버넌스 & 데이터 기반 운영</div></div>
+    <div><div class="l">상세과제</div><div class="v">품질 대시보드 구축 및 데이터 기반 품질 가시성 강화</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">배경(수집 누락·지연 비용) → 과제정의(KR+Initiative) → TC 3-Level 분류 → TC ID+버전 관리 → TC 라이프사이클 → TC 우선순위+P0 원칙 → TC 핵심 지표 → 도구 로드맵 → 데이터 수집 흐름(누락·지연 방지) → Postmortem 환류 → 장애 보고 등급별 → 안티패턴 → 자가점검+용어.</div>
+</div>`);
+
+/* 3 배경 */
+add("배경 — 수집 누락·지연의 비용",`<div class="slide">
+  ${band("Background — Why")}
+  <span class="eyebrow">배경 · 수집 누락·지연의 실제 비용</span>
+  <h2 class="title">측정되지 않는 품질은 <em>관리할 수 없다</em></h2>
+  <table>
+    <tr><th>실패 유형</th><th>구체 현상</th><th class="acc">파급 효과</th></tr>
+    <tr><td><strong>TC 미분류</strong></td><td>도메인·시나리오 코드 없이 TC 누적</td><td>DDR 측정 불가, 회귀 커버리지 공백</td></tr>
+    <tr><td><strong>데이터 지연</strong></td><td>NLP 분류 60분 STALL 미감지</td><td>KPI 왜곡 → Sign-off 판단 오류</td></tr>
+    <tr><td><strong>환류 단절</strong></td><td>Postmortem 후 TC 미등록</td><td>동일 장애 반복, 예방 QA 부재</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>지표 관점 위험</h4>
+      <ul>
+        <li>P0 TC 자동화율 미달 → 릴리스마다 수동 재실행 비용 발생</li>
+        <li>TC 유효율 80% 미만 → ACTIVE TC 실질 가치 하락</li>
+        <li>일일 달성률 95% 미달 → 격차 누적, 출시 차단 판단 불가</li>
+      </ul></div>
+    <div><h4>핵심 전제</h4>
+      <ul>
+        <li>TC가 수집되지 않으면 품질이 측정되지 않는다</li>
+        <li>측정되지 않는 품질은 관리할 수 없다</li>
+        <li>품질 데이터는 발생 시점에 수집하지 않으면 복구되지 않는다</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 4 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative")}
+  <span class="eyebrow">과제 정의 · KR + Initiative</span>
+  <h2 class="title">무엇을 <em>달성할 것인가</em></h2>
+  <table>
+    <tr><th>KR</th><th>기준값</th><th class="acc">Phase</th></tr>
+    <tr><td>DDR (Defect Detection Rate)</td><td><strong>≥95%</strong></td><td>지속 추적</td></tr>
+    <tr><td>P0 TC 자동화율</td><td><strong>100%</strong> (최종)</td><td>Phase 3</td></tr>
+    <tr><td>TC 유효율 (ACTIVE 비율)</td><td><strong>≥80%</strong></td><td>Phase 1부터</td></tr>
+    <tr><td>일일 TC 달성률</td><td><strong>≥95%</strong></td><td>Phase 2부터</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>Initiative</h4>
+      <ul>
+        <li>A: TC 3-Level 분류 코드 소급 적용 (Phase 1, 즉시~1개월)</li>
+        <li>B: TestRail/JIRA Xray 도입 + 일일 리포트 자동화 (Phase 2, 3~6개월)</li>
+        <li>C: Appium + CI/CD 연계 / P1 자동화 50% 달성 (Phase 3, 6~12개월)</li>
+        <li>D: 데이터 수집 파이프라인 지연 감지 체계 운영 (즉시)</li>
+        <li>E: Postmortem → TC → 모니터링 환류 루프 제도화 (즉시)</li>
+      </ul></div>
+    <div><h4>지표 간 연관 관계</h4>
+      <div class="codeblk">TC 유효율 하락
+  → ACTIVE TC 신뢰도 하락
+  → 일일 달성률 왜곡
+  → DDR 과대/과소 계상
+  → P0 PASS 판단 오류</div>
+    </div>
+  </div>
+</div>`);
+
+/* 5 TC 분류 체계 */
+add("TC 3-Level 분류 체계",`<div class="slide">
+  ${band("TC Classification")}
+  <span class="eyebrow">TC 3-Level 분류 · 도메인→영역→시나리오</span>
+  <h2 class="title">TC를 <em>3계층</em>으로 분류한다</h2>
+  <div class="cols">
+    <div>
+      <h4>Level 1 — 도메인 (7개)</h4>
+      <table>
+        <tr><th>코드</th><th class="acc">도메인</th></tr>
+        <tr><td>FUN</td><td>기능</td></tr>
+        <tr><td>COMP</td><td>호환성</td></tr>
+        <tr><td>PERF</td><td>성능</td></tr>
+        <tr><td>SEC</td><td>보안</td></tr>
+        <tr><td>LOC</td><td>로컬라이제이션 <span class="tag w">현행 미정의—신설 필요</span></td></tr>
+        <tr><td>UX</td><td>사용자경험</td></tr>
+        <tr><td>STB</td><td>안정성</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Level 2 — 기능 영역</h4>
+      <p style="font-size:12.5px;color:#3a342e;"><strong>공통 모듈:</strong> LOGIN · PAY · MATCH · NOTICE · UPDATE · BATTLE</p>
+      <p style="font-size:12.5px;color:#3a342e;"><strong>RPG 특화:</strong> GROWTH · GUILD · TRADE</p>
+      <p style="font-size:12.5px;color:#3a342e;"><strong>전략 특화:</strong> AI · BALANCE · RESOURCE</p>
+      <h4 style="margin-top:12px;">Level 3 — 시나리오 유형 (7개)</h4>
+      <table>
+        <tr><th>코드</th><th>유형</th><th>코드</th><th class="acc">유형</th></tr>
+        <tr><td>NF</td><td>정상흐름</td><td>CC</td><td>동시성</td></tr>
+        <tr><td>AF</td><td>예외흐름</td><td>ST</td><td>스트레스</td></tr>
+        <tr><td>BV</td><td>경계값</td><td>INT</td><td>연동</td></tr>
+        <tr><td>REG</td><td>회귀</td><td>—</td><td>—</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note warn">LOC(로컬라이제이션)는 현행 프레임워크 미정의 상태 — 글로벌 서비스 대비를 위해 신설 검토 필수.</div>
+</div>`);
+
+/* 6 TC ID + 버전 */
+add("TC ID 명명 + 버전 관리",`<div class="slide">
+  ${band("TC ID + Versioning")}
+  <span class="eyebrow">TC 식별 체계 · Semantic Versioning</span>
+  <h2 class="title">TC를 <em>정확하게 식별</em>한다</h2>
+  <div class="cols">
+    <div>
+      <h4>TC ID 명명 규칙</h4>
+      <div class="codeblk">[도메인코드]-[기능영역코드]-[시나리오유형]-[일련번호]</div>
+      <table>
+        <tr><th>예시 ID</th><th class="acc">해석</th></tr>
+        <tr><td>FUN-LOGIN-NF-001</td><td>기능 / 로그인 / 정상흐름 / 001번</td></tr>
+        <tr><td>COMP-DEVICE-BV-032</td><td>호환성 / 디바이스 / 경계값 / 032번</td></tr>
+        <tr><td>PAY-BILLING-INT-015</td><td>결제 / 빌링 / 연동 / 015번</td></tr>
+        <tr><td>FUN-BATTLE-CC-008</td><td>기능 / 전투 / 동시성 / 008번</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>TC 버전 관리 (Semantic Versioning)</h4>
+      <table>
+        <tr><th>버전</th><th>형식</th><th class="acc">트리거 조건</th></tr>
+        <tr><td><strong>Major</strong></td><td>X.0.0</td><td>게임 버전 업데이트 또는 전면 개편</td></tr>
+        <tr><td><strong>Minor</strong></td><td>x.X.0</td><td>신규 기능 추가 또는 TC 신규 등록</td></tr>
+        <tr><td><strong>Patch</strong></td><td>x.x.X</td><td>기존 TC 내용 수정 (오탈자, 기준값 변경)</td></tr>
+      </table>
+      <div class="note">버전 없이 TC 수정 시 이력 추적 불가 → 회귀 커버리지 단절. Phase 1 분류 코드 소급 시 ID·버전 체계 동시 정비.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 7 TC 라이프사이클 */
+add("TC 라이프사이클",`<div class="slide">
+  ${band("TC Lifecycle")}
+  <span class="eyebrow">DRAFT → ARCHIVED · 6단계 + 승인 프로세스</span>
+  <h2 class="title">TC는 <em>6단계</em>로 관리된다</h2>
+  <div class="codeblk">DRAFT → REVIEW → APPROVED → ACTIVE → DEPRECATED → ARCHIVED</div>
+  <table>
+    <tr><th>상태</th><th class="acc">정의·전환 조건</th></tr>
+    <tr><td><strong>DRAFT</strong></td><td>QA 담당자 작성 중</td></tr>
+    <tr><td><strong>REVIEW</strong></td><td>리뷰어 지정, 승인 대기</td></tr>
+    <tr><td><strong>APPROVED</strong></td><td>리드 QA 승인 완료 — 사용 가능</td></tr>
+    <tr><td><strong>ACTIVE</strong></td><td>현재 테스트 실행 중</td></tr>
+    <tr><td><strong>DEPRECATED</strong></td><td>기능 삭제·변경으로 무효 — 즉시 전환 의무</td></tr>
+    <tr><td><strong>ARCHIVED</strong></td><td>보관 (이력 추적용, 서비스 버전 종료 시)</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>TC 승인 프로세스 4단계</h4>
+      <ol style="margin:5px 0 0 16px;list-style:decimal;">
+        <li style="padding-left:4px;margin-bottom:5px;color:#3a342e;">QA 담당자 — DRAFT 작성</li>
+        <li style="padding-left:4px;margin-bottom:5px;color:#3a342e;">JIRA/TestRail에서 REVIEW 전환 + 리뷰어 지정</li>
+        <li style="padding-left:4px;margin-bottom:5px;color:#3a342e;">리드 QA — <strong>SMART 원칙</strong> 검토 (독립성·재현성·명확성·원자성·추적성)</li>
+        <li style="padding-left:4px;margin-bottom:5px;color:#3a342e;">승인→APPROVED / 반려→수정 후 재검토</li>
+      </ol></div>
+    <div><h4>주의 사항</h4>
+      <ul>
+        <li>DEPRECATED 생략하고 ARCHIVED 이동 시 기능 변경 이력 단절</li>
+        <li>반드시 DEPRECATED 경유 후 ARCHIVED</li>
+        <li>TC 유효율 = ACTIVE 상태 비율 → ≥80% 유지 목표</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 8 TC 우선순위 */
+add("TC 우선순위 + P0 특수 원칙",`<div class="slide">
+  ${band("TC Priority")}
+  <span class="eyebrow">P0~P4 · P0 절대 원칙</span>
+  <h2 class="title">P0는 <em>협의 대상이 아니다</em></h2>
+  <table>
+    <tr><th>등급</th><th>정의</th><th class="acc">예시</th></tr>
+    <tr><td><strong>P0</strong></td><td>서비스 존폐 / 출시 즉시 차단</td><td>로그인 전체 불가, 결제 전체 장애</td></tr>
+    <tr><td><strong>P1</strong></td><td>핵심 기능 / 출시 차단 레벨</td><td>캐릭터 생성 불가, 핵심 전투 진행 불가</td></tr>
+    <tr><td><strong>P2</strong></td><td>주요 기능</td><td>특정 시나리오 오류, 일부 기능 이상</td></tr>
+    <tr><td><strong>P3</strong></td><td>보조 기능</td><td>설정 메뉴, 알림, 부가 콘텐츠</td></tr>
+    <tr><td><strong>P4</strong></td><td>부가/UX</td><td>오탈자, 색상 미관, 비필수 UI 개선</td></tr>
+  </table>
+  <div class="note warn">
+    <strong>P0 TC 3대 절대 원칙 — 예외 없음, 협의 대상 없음</strong><br>
+    ① P0 TC는 <strong>Known Issue 등록 불가</strong> — 절대 예외 없음<br>
+    ② P0 TC PASS = <strong>100%</strong> — 모든 단계 Sign-off의 전제 조건<br>
+    ③ P0 TC는 <strong>자동화 최우선 대상</strong> — 100% 자동화 목표
+  </div>
+  <div class="note">P0가 하나라도 FAIL이면 Sign-off를 발급할 수 없다. 릴리스 일정이 이유가 될 수 없다.</div>
+</div>`);
+
+/* 9 TC 핵심 지표 */
+add("TC 관리 핵심 지표",`<div class="slide">
+  ${band("TC Core Metrics")}
+  <span class="eyebrow">4개 기준값 · 지표 연관 관계</span>
+  <h2 class="title">4개 지표로 <em>TC 건강도</em>를 측정한다</h2>
+  <table>
+    <tr><th>지표</th><th>약어</th><th>목표 기준값</th><th class="acc">측정 기준</th></tr>
+    <tr><td><strong>Defect Detection Rate</strong></td><td>DDR</td><td><strong>≥95%</strong></td><td>QA 발견 결함 / 전체 결함</td></tr>
+    <tr><td><strong>P0 TC 자동화율</strong></td><td>—</td><td><strong>100%</strong> (최종)</td><td>P0 자동화 TC / 전체 P0 TC</td></tr>
+    <tr><td><strong>TC 유효율</strong></td><td>—</td><td><strong>≥80%</strong></td><td>ACTIVE 상태 TC / 전체 등록 TC</td></tr>
+    <tr><td><strong>일일 실행 TC 달성률</strong></td><td>—</td><td><strong>≥95%</strong></td><td>실제 수행 TC / 계획 TC</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>지표 연관 관계 (연쇄 효과)</h4>
+      <div class="codeblk">TC 유효율 하락
+  → ACTIVE TC 신뢰도 하락
+  → 일일 달성률 왜곡
+  → DDR 과대/과소 계상
+  → P0 PASS 판단 오류</div>
+    </div>
+    <div><h4>실무 관리 원칙</h4>
+      <ul>
+        <li>4개 지표는 독립이 아님 — TC 유효율이 80% 미만이면 분모가 오염됨</li>
+        <li>DDR은 출시 후 2주 소급 측정 (NO9 기준 연동)</li>
+        <li>일일 달성률 추적은 Phase 2(TestRail/Xray) 도입 후 자동화</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 10 도구 로드맵 */
+add("TC 관리 도구 로드맵",`<div class="slide">
+  ${band("Tooling Roadmap")}
+  <span class="eyebrow">Phase 1~3 · 도구 전환 계획</span>
+  <h2 class="title">도구는 <em>3단계</em>로 전환한다</h2>
+  <table>
+    <tr><th>Phase</th><th>기간</th><th>도구</th><th class="acc">핵심 달성 목표</th></tr>
+    <tr><td><strong>Phase 1</strong></td><td>즉시~1개월</td><td>스프레드시트 / 표준 템플릿</td><td>Level 1~3 분류 코드 소급 적용 + 표준 배포</td></tr>
+    <tr><td><strong>Phase 2</strong></td><td>3~6개월</td><td>TestRail 또는 JIRA Xray</td><td>JIRA 연동 + 일일 리포트 자동화</td></tr>
+    <tr><td><strong>Phase 3</strong></td><td>6~12개월</td><td>Appium + CI/CD 연계</td><td><strong>P1 TC 자동화 50% 이상 달성</strong></td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>단계별 선행 조건</h4>
+      <ul>
+        <li>Phase 2 진입: Phase 1 분류 코드 소급 완료 + 템플릿 적용 확인</li>
+        <li>Phase 3 진입: JIRA 연동 + 일일 리포트 안정화 확인</li>
+        <li>P0 100% 자동화: Phase 3 종료 시점 최종 목표</li>
+      </ul></div>
+    <div><h4>주의</h4>
+      <ul>
+        <li>Phase를 건너뛰면 데이터 정합성 없이 자동화가 올라감</li>
+        <li>스프레드시트 → TestRail 전환 시 기존 TC ID 체계 유지 필수</li>
+        <li>Phase 2 도입 후 TC 유효율·일일 달성률 자동 집계 활성화</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 11 데이터 수집 흐름 */
+add("데이터 수집 흐름 — 누락·지연 방지",`<div class="slide">
+  ${band("Data Collection Architecture")}
+  <span class="eyebrow">채널별 갱신 주기 · 누락 방지 5대 메커니즘</span>
+  <h2 class="title">수집 파이프라인의 <em>공백을 차단</em>한다</h2>
+  <div class="cols">
+    <div>
+      <h4>채널별 갱신 주기</h4>
+      <table>
+        <tr><th>채널</th><th class="acc">갱신 주기</th></tr>
+        <tr><td>T1 채널</td><td><strong>1시간</strong></td></tr>
+        <tr><td>T2 채널</td><td><strong>2시간</strong></td></tr>
+        <tr><td>NLP 분류</td><td>수집 이벤트 구동</td></tr>
+        <tr><td>KPI 사전계산</td><td><strong>2시간</strong> (새로고침 시 5분 TTL)</td></tr>
+      </table>
+      <h4>지연 감지 임계값</h4>
+      <table>
+        <tr><th>임계</th><th>시간</th><th class="acc">조치</th></tr>
+        <tr><td>NLP 경고</td><td><strong>30분</strong></td><td>알람 발송</td></tr>
+        <tr><td>NLP STALL</td><td><strong>60분</strong></td><td>STALL 알림</td></tr>
+        <tr><td>크롤 중단 STALL</td><td><strong>120분</strong></td><td>에스컬레이션</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>누락 방지 5대 메커니즘</h4>
+      <table>
+        <tr><th>메커니즘</th><th class="acc">역할</th></tr>
+        <tr><td><strong>커서 증분 (last_post_id)</strong></td><td>재시작 시 중복·누락 방지</td></tr>
+        <tr><td><strong>Circuit Breaker (OPEN/ESCALATED)</strong></td><td>연속 실패 시 격리 + 에스컬레이션</td></tr>
+        <tr><td><strong>PII redact 게이트</strong></td><td>개인정보 비식별화 후 수집</td></tr>
+        <tr><td><strong>Optimistic Lock + ActivityLog</strong></td><td>동시 쓰기 충돌 방지 + 이력 보존</td></tr>
+        <tr><td><strong>재시도 자동화</strong></td><td>일시 장애 시 자동 재시도로 손실 차단</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note">Circuit Breaker가 ESCALATED로 전환되면 수동 확인 없이 자동 복구되지 않는다. 에스컬레이션 수신자 지정이 선제 조건.</div>
+</div>`);
+
+/* 12 Postmortem 환류 */
+add("Postmortem 환류 경로",`<div class="slide">
+  ${band("Postmortem Loop")}
+  <span class="eyebrow">TC → 모니터링 → 체크리스트 환류</span>
+  <h2 class="title">장애 경험이 <em>품질 자산으로</em> 전환된다</h2>
+  <table>
+    <tr><th>액션</th><th>내용</th><th class="acc">데드라인</th></tr>
+    <tr><td><strong>회귀 TC 추가</strong></td><td>장애 유발 시나리오 → 신규 TC 등록 (FUN-XXX-REG-XXX 형식)</td><td>보고서 제출 후 <strong>1주 이내</strong></td></tr>
+    <tr><td><strong>모니터링 항목 신설</strong></td><td>탐지 못했던 지표 → 대시보드 추가</td><td>보고서 제출 후 <strong>2주 이내</strong></td></tr>
+    <tr><td><strong>체크리스트 갱신</strong></td><td>해당 패턴 사전 점검 항목 추가</td><td>다음 업데이트 전 적용</td></tr>
+    <tr><td><strong>분기 패턴 분석 회의</strong></td><td>반복 패턴 도출 및 구조 개선 검토</td><td>매 분기 말</td></tr>
+  </table>
+  <div class="note warn"><strong>동일 유형 장애 3회 반복 시:</strong> 자동화 테스트 도입 등 예방적 QA 강화 <strong>의무화</strong></div>
+  <div class="codeblk">환류 루프:
+장애 발생
+  → RCA 완료 + 보고서 작성
+  → 회귀 TC 등록 (1주 이내) → FUN-XXX-REG-XXX
+  → 모니터링 신설 (2주 이내) → 대시보드 추가
+  → 체크리스트 갱신 (다음 업데이트 전)
+  → 분기 패턴 분석 회의
+  → 3회 반복 시 자동화 의무화</div>
+</div>`);
+
+/* 13 장애 보고 등급 */
+add("장애 보고 등급별 체계",`<div class="slide">
+  ${band("Incident Reporting")}
+  <span class="eyebrow">등급별 전파 속도 · 롤백 QA</span>
+  <h2 class="title">전파 속도가 <em>피해 규모</em>를 결정한다</h2>
+  <table>
+    <tr><th>등급</th><th>전파 수단</th><th>수신 대상</th><th class="acc">전파 기한</th></tr>
+    <tr><td><strong>1등급</strong></td><td>실시간 메신저 + 오프라인</td><td>팀장급 이상 + P장애_1등급 메일그룹 (~15명)</td><td>감지 후 <strong>5분 이내</strong></td></tr>
+    <tr><td><strong>2등급</strong></td><td>메신저 그룹 + 이메일</td><td>P장애_2등급 메일그룹 (~15명)</td><td>감지 후 <strong>15분 이내</strong></td></tr>
+    <tr><td><strong>3등급</strong></td><td>메신저 공유</td><td>P장애_3등급 메일그룹 (~8명)</td><td>감지 후 <strong>30분 이내</strong></td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>장애 종료 후 보고</h4>
+      <table>
+        <tr><th>산출물</th><th>수신자</th><th class="acc">기한</th></tr>
+        <tr><td>장애 보고서 (RCA 포함)</td><td>사업PM + 팀장</td><td><strong>24시간 이내</strong></td></tr>
+      </table>
+    </div>
+    <div><h4>Rollback QA 체크리스트</h4>
+      <ul>
+        <li>롤백 수행 후 <strong>Smoke Test 10개 항목 (P0 기준)</strong> 실행 의무</li>
+        <li>판정 기준: <strong>10개 항목 전체 PASS</strong> = Rollback QA PASS</li>
+        <li>하나라도 FAIL이면 롤백 완료 선언 불가</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">데이터 수집 실패 5대 패턴</span>
+  <h2 class="title">현장에서 반복되는 <em>5가지 실패</em></h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th>실제 결과</th><th class="acc">올바른 대응</th></tr>
+    <tr><td>①</td><td><strong>TC 분류 없이 등록</strong></td><td>DDR 측정 불가, Level 3 커버리지 공백</td><td>등록 시점에 3-Level 코드 필수 부여</td></tr>
+    <tr><td>②</td><td><strong>P0 TC에 Known Issue 태그</strong></td><td>Sign-off 기준 붕괴, P0 의미 소멸</td><td>P0 Known Issue 등록 절대 금지 원칙 적용</td></tr>
+    <tr><td>③</td><td><strong>Postmortem 후 TC 미등록</strong></td><td>동일 장애 반복, 예방 QA 공백</td><td>1주 이내 REG TC 등록을 JIRA 티켓으로 즉시 생성</td></tr>
+    <tr><td>④</td><td><strong>NLP STALL 60분 미감지로 KPI 발행</strong></td><td>왜곡된 지표로 릴리스 판단 오류</td><td>30분 경고 → 60분 STALL 알림 체계 운영</td></tr>
+    <tr><td>⑤</td><td><strong>TC 버전 없이 내용 수정</strong></td><td>이력 추적 불가, 회귀 커버리지 단절</td><td>Patch 버전(x.x.X) 올려 수정 이력 보존</td></tr>
+  </table>
+  <div class="note warn">공통 root cause — "나중에 하면 된다"는 판단. 품질 데이터는 발생 시점에 수집하지 않으면 복구되지 않는다.</div>
+</div>`);
+
+/* 15 자가점검 + 용어 */
+add("자가점검 + 용어",`<div class="slide">
+  ${band("Self-Check + Glossary")}
+  <span class="eyebrow">운영 전 최종 확인 · 핵심 용어</span>
+  <h2 class="title">운영 전 <em>12항목</em>을 점검한다</h2>
+  <div class="cols">
+    <div>
+      <h4>TC 분류·관리</h4>
+      <div class="codeblk">□ 모든 TC에 Level 1~3 분류 코드 부여됐는가?
+□ TC ID가 [도메인]-[영역]-[유형]-[번호] 형식인가?
+□ TC 수정 시 Patch 버전이 올라갔는가?
+□ DEPRECATED → ARCHIVED 순서가 지켜졌는가?
+□ TC 유효율(ACTIVE 비율)이 ≥80%인가?</div>
+      <h4>우선순위·지표</h4>
+      <div class="codeblk">□ P0 TC에 Known Issue 태그가 없는가?
+□ P0 TC PASS 100% 없이 Sign-off된 사례가 없는가?
+□ DDR ≥95% 달성 여부를 주기적으로 확인하는가?
+□ 일일 TC 달성률 ≥95%를 추적하는가?</div>
+      <h4>수집·환류</h4>
+      <div class="codeblk">□ NLP 30/60/120분 지연 감지 알림이 작동하는가?
+□ Postmortem 후 1주 이내 REG TC가 등록됐는가?
+□ 동일 유형 장애 3회 시 자동화 검토가 이루어지는가?</div>
+    </div>
+    <div><h4>핵심 용어</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>DDR</td><td>Defect Detection Rate. 목표 ≥95%</td></tr>
+      <tr><td>TC 유효율</td><td>전체 TC 중 ACTIVE 비율. 목표 ≥80%</td></tr>
+      <tr><td>STALL</td><td>수집 파이프라인이 규정 시간 이상 멈춘 상태</td></tr>
+      <tr><td>Circuit Breaker</td><td>연속 실패 시 자동 격리 (OPEN/ESCALATED)</td></tr>
+      <tr><td>커서 증분</td><td>last_post_id 기반 증분 수집 — 누락·중복 방지</td></tr>
+      <tr><td>SMART 원칙</td><td>TC 리뷰 기준 — 독립성·재현성·명확성·원자성·추적성</td></tr>
+      <tr><td>LOC</td><td>로컬라이제이션 도메인 — 현행 미정의, 신설 필요</td></tr>
+      <tr><td>Rollback QA PASS</td><td>Smoke Test 10개 항목 전체 PASS 시에만 선언 가능</td></tr>
+      <tr><td>REG</td><td>회귀 시나리오 유형 코드 — 장애 후 신규 TC에 사용</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--mute);margin-top:8px">참조 출처: framework_v3/06 §1~9.</p>
+    </div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
