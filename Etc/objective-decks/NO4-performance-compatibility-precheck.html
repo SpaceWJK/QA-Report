@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성능·호환성 중심 사전 검증 체계 강화</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">성능·호환성 중심 사전 검증 체계 강화</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">퍼블리싱 게임 품질 기반 강화 · 출시 안정성 확보를 위한 사전 품질 검증 체계 구축</div>
+  <h1>성능·호환성<br><span class="it">사전 검증 체계 강화</span></h1>
+  <div class="sub">출시 후 발견되는 성능·호환성 결함은 출시 전 발견 비용의 수십 배를 요구한다 — 사전 단계에서 정량 기준으로 걸러 안정화 기간을 줄인다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">퍼블리싱 게임 품질 기반 강화</div></div>
+    <div><div class="l">상세과제</div><div class="v">출시 안정성 확보를 위한 사전 품질 검증 체계 구축</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">배경(출시 후 장애 비용) → 과제정의(KR+Initiative) → 성능 기준값 5종 → OS 최소 지원(시장별) → 패키지+CDN 기준 → Tier 체계+Sign-off 연동 → Android Tier 1 선정+디바이스 운영 → Android 호환성 이슈 4종 → iOS 호환성 이슈 3종 → 인력 기준 → CCB Entry 10항목+Sign-off → 안티패턴 → 자가점검+용어.</div>
+</div>`);
+
+/* 3 배경 */
+add("배경 — 출시 후 장애의 비용",`<div class="slide">
+  ${band("Background — Why")}
+  <span class="eyebrow">배경 · 사전 검증 부재의 구조적 비용</span>
+  <h2 class="title">성능·호환성 결함은 <em>기준 미설정</em>의 문제다</h2>
+  <table>
+    <tr><th>장애 유형</th><th>발생 원인</th><th class="acc">사후 비용</th></tr>
+    <tr><td>크래시프리율 &lt;99%</td><td>사전 Tier 1 미검증</td><td>세션 단위 이탈 → 스토어 부정 리뷰</td></tr>
+    <tr><td>Cold Start &gt;5초</td><td>기준값 미설정</td><td>첫 인상 이탈 (복구 불가)</td></tr>
+    <tr><td>P95 &gt;2초 (Peak)</td><td>부하 조건 미검증</td><td>CCU Peak 서비스 중단 노출</td></tr>
+    <tr><td>호환성 미검증 기기 크래시</td><td>Tier 1 리스트 미확정</td><td>긴급 패치 + 마켓 반려</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>사전 검증이 막는 3가지 사후 비용</h4>
+      <ul>
+        <li>긴급 패치 배포 → CCB Entry §4·§5 사전 검증으로 차단</li>
+        <li>Tier 1 기기 크래시 급증 → CBT 90% Sign-off 강제 게이트</li>
+        <li>글로벌 OS 파편화 장애 → Android 9(API 28) 97% 커버리지</li>
+      </ul></div>
+    <div><h4>QA 실장 관점</h4>
+      <ul>
+        <li>성능·호환성 결함 = 테스트 단계의 문제 아님</li>
+        <li>기준 미설정이 근본 원인</li>
+        <li>정량 임계값 → CCB Entry → Sign-off 게이트 연동이 해법</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 4 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative")}
+  <span class="eyebrow">과제 정의 · KR + Initiative</span>
+  <h2 class="title">정량 임계값을 <em>게이트에 고정</em>한다</h2>
+  <table>
+    <tr><th>KR</th><th>기준값</th><th class="acc">측정 시점</th></tr>
+    <tr><td>KR1 크래시프리율</td><td><strong>≥99%</strong></td><td>론칭 Sign-off</td></tr>
+    <tr><td>KR2 호환성 PASS율 (Tier 1)</td><td><strong>≥95%</strong></td><td>론칭 Sign-off</td></tr>
+    <tr><td>KR3 잔존 Critical</td><td><strong>0건</strong></td><td>CBT + 론칭 모두</td></tr>
+    <tr><td>KR4 CCB Entry 10개 항목</td><td><strong>전항 PASS</strong></td><td>CCB 진입 전</td></tr>
+    <tr><td>KR5 CDN 패치 다운로드</td><td><strong>≤15분</strong></td><td>CCB Entry §5</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>Initiative 4가지</h4>
+      <ul>
+        <li>I1: 성능 기준값 5종 → 빌드 자동화 게이트 연동</li>
+        <li>I2: Tier 1 기기 리스트 고정 + 자체 보유 원칙 이행</li>
+        <li>I3: Android/iOS 주요 호환성 이슈 대응 TC 체계화</li>
+        <li>I4: CCB Entry 10항목 체크리스트 Sign-off 연동</li>
+      </ul></div>
+    <div><h4>핵심 원칙</h4>
+      <ul>
+        <li>CCB Entry → CBT 게이트 → 론칭 게이트 순차 적용</li>
+        <li>미달 시 마일스톤 차단 (실장급 최종 판단)</li>
+        <li>기준값 = 목표가 아닌 게이트 — 미달 = 배포 차단</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 5 성능 기준값 */
+add("성능 필수 기준값 5종",`<div class="slide">
+  ${band("Performance Baseline")}
+  <span class="eyebrow">성능 5종 · 중급 디바이스 기준 / Tier 1 실측 필수</span>
+  <h2 class="title">무엇을 <em>어떤 조건</em>에서 측정하는가</h2>
+  <table>
+    <tr><th>#</th><th>지표</th><th>기준값</th><th class="acc">측정 조건</th></tr>
+    <tr><td>P1</td><td><strong>FPS</strong></td><td><strong>25 이상</strong></td><td>핵심 플레이 구간 / 중급 디바이스</td></tr>
+    <tr><td>P2</td><td><strong>메모리 사용률</strong></td><td><strong>RAM 60% 미만</strong></td><td>장시간 플레이 / 누수 점검 포함</td></tr>
+    <tr><td>P3</td><td><strong>Cold Start</strong></td><td><strong>5초 이내</strong></td><td>최초 실행 진입</td></tr>
+    <tr><td>P4</td><td><strong>크래시프리율</strong></td><td><strong>99% 이상</strong></td><td>세션 기준</td></tr>
+    <tr><td>P5</td><td><strong>서버 응답 (P95)</strong></td><td><strong>2초 이내</strong> / 오류율 1% 미만</td><td>CCU 예상 Peak ×1.5 부하 조건</td></tr>
+  </table>
+  <div class="codeblk">P1~P5 중 1개라도 기준 미달
+  ↓
+Critical 결함 등록
+  ↓
+론칭 Sign-off 차단 (잔존 Critical 0건 위배)
+  ↓
+수정 후 해당 지표 단독 재측정 필수</div>
+  <div class="cols">
+    <div><h4>실무 주의사항</h4>
+      <ul>
+        <li>FPS 25 = 핵심 구간에서 "25 이상 유지" — 평균값 아님</li>
+        <li>메모리 누수 = 단기 측정 검출 불가 → 장시간 플레이 시나리오 필수</li>
+      </ul></div>
+    <div><ul style="margin-top:28px;">
+        <li>P95 = 상위 5% 지연 포함 — Mean(평균)과 혼동 금지</li>
+        <li>서버 응답은 CCU Peak × 1.5 조건 미설정 시 측정값 무효</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 6 OS 최소 지원 */
+add("OS 최소 지원 기준",`<div class="slide">
+  ${band("OS Baseline")}
+  <span class="eyebrow">Android · iOS · 시장별 분기</span>
+  <h2 class="title">어떤 OS에서 <em>도는가</em></h2>
+  <div class="cols">
+    <div>
+      <h4>Android (framework_v3/01 §7)</h4>
+      <table>
+        <tr><th>시장</th><th>최소 OS</th><th class="acc">근거</th></tr>
+        <tr><td>글로벌</td><td><strong>Android 9 (API 28)</strong></td><td>커버리지 약 97%</td></tr>
+        <tr><td>한국</td><td><strong>Android 10</strong></td><td>국내 점유율</td></tr>
+        <tr><td>동남아</td><td><strong>Android 9</strong></td><td>저사양 단말 비중</td></tr>
+      </table>
+      <h4>targetSdkVersion 의무</h4>
+      <table>
+        <tr><th>대상</th><th>기준</th><th class="acc">의무화</th></tr>
+        <tr><td>신규 앱</td><td><strong>Android 15 (API 35)</strong></td><td>2025.8~</td></tr>
+        <tr><td>기존 앱 업데이트</td><td><strong>Android 15 (API 35)</strong></td><td>2026.2~</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>iOS (framework_v3/01 §7)</h4>
+      <table>
+        <tr><th>시장</th><th>최소 OS</th><th class="acc">근거</th></tr>
+        <tr><td>글로벌</td><td><strong>iOS 16</strong></td><td>커버리지 약 93%</td></tr>
+        <tr><td>한국</td><td><strong>iOS 16</strong></td><td>국내 업데이트 비율</td></tr>
+        <tr><td>동남아</td><td><strong>iOS 15</strong></td><td>구형 기기 비중</td></tr>
+      </table>
+      <ul>
+        <li>SDK 빌드 권장: <strong>iOS 18 SDK</strong></li>
+        <li>실질 최저 기기: <strong>iPhone 8 / iPhone X</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="note warn">targetSdkVersion 미충족 시 Google Play 심사 거부 → CCB Entry 진입 불가 조건으로 관리 필요. 동남아 빌드는 minSdkVersion 별도 분기 설정 요.</div>
+</div>`);
+
+/* 7 패키지+CDN */
+add("패키지 용량 + CDN 기준",`<div class="slide">
+  ${band("Package Size + CDN")}
+  <span class="eyebrow">용량 기준 · CCB Entry §5·§7 연동</span>
+  <h2 class="title">용량과 배포 속도도 <em>기준이 있다</em></h2>
+  <div class="cols">
+    <div>
+      <h4>패키지 용량 기준</h4>
+      <table>
+        <tr><th>플랫폼</th><th>형식</th><th class="acc">기준값</th></tr>
+        <tr><td>Android</td><td>AAB</td><td><strong>150MB 미만</strong></td></tr>
+        <tr><td>iOS</td><td>—</td><td><strong>200MB 미만</strong></td></tr>
+      </table>
+      <h4>CDN 패치 기준</h4>
+      <table>
+        <tr><th>항목</th><th class="acc">기준값</th></tr>
+        <tr><td>패치 다운로드 완료</td><td><strong>15분 이내</strong> (CCB Entry §5)</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="codeblk">용량 초과 시 처리:
+AAB ≥150MB 또는 iOS ≥200MB
+  ↓
+CCB Entry 통과 불가
+  ↓
+에셋 최적화 / 불필요 리소스 제거
+  ↓
+용량 재측정 → 기준 이하 확인 후 재진입</div>
+      <h4>실무 주의사항</h4>
+      <ul>
+        <li>AAB 150MB는 Play 업로드 제한이 아닌 QA 품질 기준값</li>
+        <li>CDN 15분 = 네트워크 환경 정의 필수 (미정의 시 기준 무효)</li>
+        <li>CDN 전파 완료 시점 ≠ 다운로드 완료 시점 — 구분 측정 필요</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 8 Tier 체계 */
+add("디바이스 Tier 체계 + Sign-off 연동",`<div class="slide">
+  ${band("Device Tier + Sign-off Gate")}
+  <span class="eyebrow">3-Tier · CCB/CBT/론칭 게이트 연동</span>
+  <h2 class="title">Tier가 <em>게이트를 결정</em>한다</h2>
+  <table>
+    <tr><th>Tier</th><th>기기 수</th><th>TC 커버리지</th><th>보유</th><th class="acc">활용</th></tr>
+    <tr><td><strong>Tier 1 (Must)</strong></td><td>15~20종</td><td><strong>TC 100%</strong></td><td>자체 보유 필수</td><td>실기기 테스트</td></tr>
+    <tr><td><strong>Tier 2 (Should)</strong></td><td>20~30종</td><td>핵심 TC 80%</td><td>—</td><td>클라우드 디바이스팜</td></tr>
+    <tr><td><strong>Tier 3 (Nice)</strong></td><td>10~20종</td><td>Smoke TC 50%</td><td>—</td><td>클라우드 자동화 병렬</td></tr>
+  </table>
+  <h4>Sign-off 기준 (Tier 1 기준)</h4>
+  <table>
+    <tr><th>마일스톤</th><th>호환성 PASS율</th><th>게임기능 PASS율</th><th>Critical</th><th class="acc">Major</th></tr>
+    <tr><td><strong>CBT</strong></td><td>≥<strong>90%</strong></td><td>≥<strong>80%</strong></td><td><strong>0건</strong></td><td>≤<strong>20건</strong></td></tr>
+    <tr><td><strong>론칭</strong></td><td>≥<strong>95%</strong></td><td>≥<strong>90%</strong></td><td><strong>0건</strong></td><td>≤<strong>5건</strong></td></tr>
+    <tr><td><strong>Service Update</strong></td><td>≥<strong>95%</strong></td><td>≥<strong>95%</strong></td><td>—</td><td>—</td></tr>
+  </table>
+  <div class="note">CCB Entry: <strong>50종 기기</strong> 기본 구동 확인 (Tier 1 전체 + Tier 2 일부). Tier 1 전체 미확인 시 CCB 진입 불가. CBT 90% → 론칭 95% = 게이트이지 목표가 아님.</div>
+</div>`);
+
+/* 9 Android Tier 1 선정 + 운영 */
+add("Android Tier 1 선정 + 디바이스 운영 전략",`<div class="slide">
+  ${band("Android Tier 1 Selection + Device Operations")}
+  <span class="eyebrow">선정 기준 3가지 · 운영 전략</span>
+  <h2 class="title">Tier 1은 <em>3가지 기준</em>의 교차점이다</h2>
+  <div class="cols">
+    <div>
+      <h4>Tier 1 선정 기준 (AND 조건)</h4>
+      <table>
+        <tr><th>#</th><th>기준</th><th class="acc">내용</th></tr>
+        <tr><td>①</td><td>국내 점유율</td><td><strong>Top 5 기기</strong></td></tr>
+        <tr><td>②</td><td>글로벌 점유율</td><td><strong>Top 10 기기 중 Android 9 이상</strong></td></tr>
+        <tr><td>③</td><td>칩셋 대표성</td><td><strong>Snapdragon / MediaTek / Exynos 각 1~2종</strong></td></tr>
+      </table>
+      <div class="note">3기준 교차 적용 → Tier 1 리스트 확정. 칩셋 편중 금지.</div>
+    </div>
+    <div>
+      <h4>디바이스 운영 전략</h4>
+      <table>
+        <tr><th>항목</th><th class="acc">기준</th></tr>
+        <tr><td>자체 보유</td><td>Tier 1 실기기 필수 (대체 불가)</td></tr>
+        <tr><td>신규 기기 구매</td><td>출시 후 <strong>3개월 이내</strong> 검토</td></tr>
+        <tr><td>OS 업데이트 적용</td><td>정식 출시 후 <strong>1개월</strong> 안정화 후</td></tr>
+        <tr><td>Tier 2~3 운영</td><td>클라우드팜 (AWS Device Farm, BrowserStack)</td></tr>
+        <tr><td>자동화 ROI</td><td>호환성 검증 <strong>3~5일 → 6~12시간</strong></td></tr>
+      </table>
+    </div>
+  </div>
+</div>`);
+
+/* 10 Android 호환성 이슈 */
+add("Android 주요 호환성 이슈 4종",`<div class="slide">
+  ${band("Android Compatibility Issues")}
+  <span class="eyebrow">4대 패턴 · 원인·대응·검증 포인트</span>
+  <h2 class="title">Android 파편화가 만드는 <em>4가지 함정</em></h2>
+  <table>
+    <tr><th>#</th><th>이슈</th><th>원인</th><th class="acc">대응 방법</th></tr>
+    <tr><td>A1</td><td><strong>Shader Stutter</strong></td><td>셰이더 Pre-Compile 미적용 → 렌더링 지연</td><td>셰이더 Pre-Compile 적용</td></tr>
+    <tr><td>A2</td><td><strong>OEM 백그라운드 킬</strong></td><td>Samsung/Xiaomi 제조사별 배터리 정책</td><td>배터리 최적화 예외 처리</td></tr>
+    <tr><td>A3</td><td><strong>폴더블/노치 UI</strong></td><td>특수 폼팩터 UI 배치 이슈</td><td>UI 최적화 TC 별도 추가</td></tr>
+    <tr><td>A4</td><td><strong>GPU 렌더링 파편화</strong></td><td>칩셋별(Snapdragon/MediaTek/Exynos) GPU 차이</td><td>칩셋별 별도 검증</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>A2 OEM 백그라운드 킬 실무 검증</h4>
+      <ul>
+        <li>시나리오: <strong>30분 이상 백그라운드 유지 후 복귀</strong></li>
+        <li>복귀 후 크래시 / 세션 유지 여부 확인</li>
+        <li>Samsung · Xiaomi 기기 각각 별도 TC 실행 필수</li>
+      </ul></div>
+    <div><h4>A4 파편화 실무 검증</h4>
+      <ul>
+        <li>Tier 1에 Snapdragon/MediaTek/Exynos 대표 기기 필수 포함 이유</li>
+        <li>칩셋별 렌더링 결과 스크린샷 비교 TC 별도 운영</li>
+        <li>A1 Shader Stutter: Pre-Compile 적용 + FPS 25 이하 순간 포착</li>
+      </ul></div>
+  </div>
+</div>`);
+
+/* 11 iOS 호환성 이슈 */
+add("iOS 주요 호환성 이슈 3종",`<div class="slide">
+  ${band("iOS Compatibility Issues")}
+  <span class="eyebrow">3대 패턴 · 판단 트리 포함</span>
+  <h2 class="title">iOS는 <em>업데이트 속도</em>가 위험이다</h2>
+  <table>
+    <tr><th>#</th><th>이슈</th><th>발생 조건</th><th class="acc">대응 방법</th></tr>
+    <tr><td>i1</td><td><strong>Dynamic Island UI</strong></td><td>iPhone 14 Pro 이상</td><td>UI 미침범 확인 TC</td></tr>
+    <tr><td>i2</td><td><strong>Safe Area Inset</strong></td><td>노치/홈바 영역 침범</td><td>Safe Area 준수 TC</td></tr>
+    <tr><td>i3</td><td><strong>iOS 즉각 업데이트 반영</strong></td><td>신규 iOS 출시 후 사용자 즉시 업데이트</td><td>신규 iOS 출시 후 <strong>1주 내</strong> Tier 1 재검증</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>i1·i2 검증 포인트</h4>
+      <ul>
+        <li>Dynamic Island: iPhone 14 Pro 이상 전 기종 — UI 겹침 여부</li>
+        <li>Safe Area: iPhone X 이상(노치) + iPhone 8(홈버튼) 모두 포함</li>
+        <li>버튼/메뉴/텍스트가 Safe Area 밖 배치 여부</li>
+      </ul></div>
+    <div>
+      <div class="codeblk">신규 iOS 정식 출시
+  ↓
+1주 이내 Tier 1 재검증 착수
+  ↓
+크래시프리율 / Safe Area / API 호환성 확인
+  ↓
+이슈 발견 → Critical 등록 → 긴급 패치</div>
+    </div>
+  </div>
+</div>`);
+
+/* 12 인력 기준 */
+add("인력 기준",`<div class="slide">
+  ${band("Staffing Standard")}
+  <span class="eyebrow">호환성 · 현지화 · 보안</span>
+  <h2 class="title">인력은 <em>기기 수와 언어 수</em>로 결정된다</h2>
+  <div class="cols">
+    <div>
+      <h4>호환성 전담 인력</h4>
+      <table>
+        <tr><th>기준</th><th class="acc">인력</th></tr>
+        <tr><td>기기 <strong>20~50대당</strong></td><td><strong>1명</strong></td></tr>
+        <tr><td>Tier 1 (15~20종)</td><td>최소 <strong>1명</strong> 전담 권장</td></tr>
+      </table>
+      <h4>현지화(L10N) 추가 인력</h4>
+      <table>
+        <tr><th>언어 수</th><th class="acc">추가 인력</th></tr>
+        <tr><td><strong>4~7개 언어</strong></td><td><strong>1~2명</strong> 추가</td></tr>
+        <tr><td><strong>8개 이상</strong></td><td><strong>별도 산정</strong> (언어별 전문 계약)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>보안 인력</h4>
+      <table>
+        <tr><th>Tier</th><th>방식</th><th class="acc">시작 시점</th></tr>
+        <tr><td><strong>S/A급</strong></td><td>외부 전문업체 의뢰 권장</td><td>RC 단계 <strong>4주 전</strong></td></tr>
+        <tr><td><strong>B/C급</strong></td><td>내부 수행</td><td>RC 단계 <strong>4주 전</strong></td></tr>
+      </table>
+      <h4>실무 주의사항</h4>
+      <ul>
+        <li>호환성 1명 = Tier 1 실기기 전담 — 자동화 운영 인력과 분리 계산</li>
+        <li>보안 외부 의뢰: RC 4주 전 착수 = 계약·NDA·환경 설정 포함 역산</li>
+        <li>현지화 8개+ "별도 산정" = 언어 수 확정 전 일정 수립 금지</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 13 CCB Entry + Sign-off */
+add("CCB Entry 10개 항목 + Sign-off 연동",`<div class="slide">
+  ${band("CCB Entry + Sign-off Integration")}
+  <span class="eyebrow">10개 필수 항목 · 성능·호환성 연동</span>
+  <h2 class="title">CCB Entry가 <em>모든 게이트의 기점</em>이다</h2>
+  <div class="cols">
+    <div>
+      <h4>CCB Entry 10개 필수 항목</h4>
+      <table>
+        <tr><th>#</th><th>항목</th><th class="acc">성능·호환성 연동</th></tr>
+        <tr><td>1</td><td>OS 호환성</td><td>Android 9(API 28) / iOS 16 최소</td></tr>
+        <tr><td>2</td><td>CCB TC</td><td>50종 기기 구동 (Tier 1+2)</td></tr>
+        <tr><td>3</td><td>Admin Command</td><td>—</td></tr>
+        <tr><td>4</td><td>점검·업데이트</td><td>—</td></tr>
+        <tr><td>5</td><td>CDN 패치</td><td><strong>15분 이내</strong></td></tr>
+        <tr><td>6</td><td>STOVE SDK</td><td>—</td></tr>
+        <tr><td>7</td><td>Client Binary-Patch</td><td>AAB &lt;150MB / iOS &lt;200MB</td></tr>
+        <tr><td>8</td><td>운영툴 CRUD</td><td>—</td></tr>
+        <tr><td>9</td><td>BOT Verification</td><td>성능 기준치 이상</td></tr>
+        <tr><td>10</td><td>비사회적 용어</td><td><strong>0건</strong></td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Sign-off 통합 기준</h4>
+      <table>
+        <tr><th>마일스톤</th><th>호환성</th><th>기능</th><th class="acc">Critical</th></tr>
+        <tr><td>CBT</td><td>≥90%</td><td>≥80%</td><td>0건</td></tr>
+        <tr><td>론칭</td><td>≥95%</td><td>≥90%</td><td>0건</td></tr>
+        <tr><td>S/U</td><td>≥95%</td><td>≥95%</td><td>—</td></tr>
+      </table>
+      <div class="note">10개 항목 중 1개라도 미통과 시 CCB 진입 불가. CCB Entry → CBT → 론칭 게이트 순차 적용.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">5대 실패 패턴 · 원인·대응</span>
+  <h2 class="title">반복되는 <em>5가지 실패</em></h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th>증상</th><th class="acc">대응</th></tr>
+    <tr><td>①</td><td><strong>"중급 기기" 미정의 상태에서 FPS 25 측정</strong></td><td>팀마다 다른 기기로 측정 → 결론 불일치</td><td>Tier 1 기기 리스트 고정 + 측정 기기 명시 필수</td></tr>
+    <tr><td>②</td><td><strong>targetSdkVersion을 빌드 직전에 올림</strong></td><td>Google Play 심사 거부 (신규앱 2025.8 / 기존앱 2026.2 의무)</td><td>개발 착수 시점에 targetSdkVersion 확정 + CCB 연동</td></tr>
+    <tr><td>③</td><td><strong>Tier 2~3 기기를 Tier 1 대체로 운영</strong></td><td>클라우드팜으로만 Tier 1 검증 → 실기기 특이 이슈 미발견</td><td>Tier 1 자체 보유 = 비협상 조건. 클라우드팜 = Tier 2~3 전용</td></tr>
+    <tr><td>④</td><td><strong>OEM 백그라운드 킬 TC 미포함</strong></td><td>Samsung/Xiaomi 기기 출시 후 복귀 크래시 신고 급증</td><td>30분 이상 백그라운드 후 복귀 시나리오를 Tier 1 의무 TC</td></tr>
+    <tr><td>⑤</td><td><strong>신규 iOS 재검증을 "다음 스프린트"로 미룸</strong></td><td>사용자 즉각 업데이트 후 Safe Area / 크래시 버그 노출</td><td>신규 iOS 정식 출시 후 1주 이내 재검증 = 프로세스 고정</td></tr>
+  </table>
+  <div class="note warn">공통 root cause — 기준값 미설정 + 리스트 미고정. 정량 임계값 + Tier 1 리스트가 확정되지 않으면 어떤 안티패턴도 반복된다.</div>
+</div>`);
+
+/* 15 자가점검 + 용어 */
+add("자가점검 + 용어",`<div class="slide">
+  ${band("Self-Check + Glossary")}
+  <span class="eyebrow">실장급 검토용 · 핵심 용어</span>
+  <h2 class="title">출시 전 <em>순서대로</em> 점검한다</h2>
+  <div class="cols">
+    <div>
+      <h4>성능·OS 기준</h4>
+      <div class="codeblk">□ FPS 25 측정 기기가 Tier 1 목록에 명시됐는가?
+□ 메모리 60% 측정이 장시간 시나리오 기반인가?
+□ Cold Start 5초 = 최초 실행 기준인가?
+□ P95 서버 응답 측정 조건 = Peak×1.5인가?
+□ minSdkVersion이 시장별 분기 설정됐는가?
+□ targetSdkVersion = Android 15(API 35)인가?
+□ iOS 최저 기기에 iPhone 8/X 포함됐는가?</div>
+      <h4>디바이스·CCB</h4>
+      <div class="codeblk">□ Tier 1에 Snapdragon/MediaTek/Exynos 각 1~2종인가?
+□ Tier 1 전체 기기를 자체 보유하는가?
+□ CBT Sign-off 90%/0건/≤20건 공유됐는가?
+□ 론칭 Sign-off 95%/0건/≤5건 공유됐는가?
+□ CCB Entry 10항목 체크리스트가 연동됐는가?
+□ OEM 30분 백그라운드 TC가 Tier 1에 있는가?
+□ 신규 iOS 1주 내 재검증 프로세스 고정됐는가?</div>
+    </div>
+    <div><h4>핵심 용어</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>Cold Start</td><td>앱 프로세스 없는 상태에서의 최초 실행</td></tr>
+      <tr><td>P95</td><td>전체 응답 중 상위 5% 제외 최대값 (95th Percentile)</td></tr>
+      <tr><td>Tier 1 (Must)</td><td>15~20종, TC 100%, 자체 보유 필수 기기군</td></tr>
+      <tr><td>minSdkVersion</td><td>Android 앱이 지원하는 최소 OS 버전 (API Level)</td></tr>
+      <tr><td>targetSdkVersion</td><td>Android 앱이 최적화 대상으로 선언하는 OS 버전</td></tr>
+      <tr><td>Shader Stutter</td><td>셰이더 컴파일 지연으로 발생하는 렌더링 프레임 드롭</td></tr>
+      <tr><td>Safe Area Inset</td><td>노치/홈바 영역을 제외한 안전한 UI 표시 영역</td></tr>
+      <tr><td>Dynamic Island</td><td>iPhone 14 Pro 이상의 전면 카메라 일체형 UI 영역</td></tr>
+      <tr><td>크래시프리율</td><td>전체 세션 중 크래시 없이 완료된 세션 비율</td></tr>
+      <tr><td>AAB</td><td>Android App Bundle — Google Play 제출용 빌드 형식</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--mute);margin-top:8px">참조 출처: framework_v3/01 §1·§5·§7 · framework_v3/05 §3·§4·§5·§6.</p>
+    </div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
