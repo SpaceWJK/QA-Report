@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글로벌 출시 품질 기준 일관성 확보</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --paper:#efece6; --ink:#1c1815; --mute:#7a716a; --wine:#7a1f2b; --line:#c9c2b8; --surface:#e8e4dc;
+  --serif:'Playfair Display',Georgia,serif; --sans:'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:#11100e;color:var(--ink);font-family:var(--sans);font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--wine);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--paper);display:flex;flex-direction:column;padding:42px 6vw 64px;}
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--wine);}
+.s-band .sec{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine);margin-bottom:11px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(23px,2.9vw,36px);line-height:1.13;margin-bottom:15px;}
+h2.title em{font-style:italic;color:var(--wine);}
+.lead{font-size:15.5px;line-height:1.66;color:#3a342e;max-width:74ch;border-left:3px solid var(--wine);padding-left:16px;margin-bottom:18px;}
+p{margin-bottom:9px;color:#3a342e;max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;}
+@media(max-width:900px){.cols{grid-template-columns:1fr;}}
+h4{font-size:13px;font-weight:700;color:var(--wine);margin:12px 0 5px;letter-spacing:.02em;}
+ul{list-style:none;margin:5px 0 12px;} li{position:relative;padding-left:16px;margin-bottom:6px;font-size:13.5px;color:#3a342e;}
+li::before{content:'—';position:absolute;left:0;color:var(--wine);}
+table{width:100%;border-collapse:collapse;margin:9px 0 13px;font-size:12.5px;}
+th{text-align:left;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:7px 9px;}
+th.acc{color:var(--wine);}
+td{padding:7px 9px;border-bottom:1px solid var(--line);color:#3a342e;vertical-align:top;}
+td:first-child{color:var(--ink);font-weight:600;} tr:hover td{background:var(--surface);}
+.note{border-left:3px solid var(--wine);background:rgba(122,31,43,.05);padding:11px 15px;font-size:13px;margin:11px 0;}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.06);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;background:#26221d;color:#e8e2d8;padding:13px 16px;border-radius:5px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:6px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--wine);font-size:13px;min-width:24px;}
+.idx .row .tt{font-size:13.5px;color:#3a342e;}
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#e8e4dc 0%,var(--paper) 55%);}
+.cover .kick{font-size:11.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:20px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5.2vw,62px);line-height:1.04;letter-spacing:-.02em;margin-bottom:16px;}
+.cover h1 .it{font-style:italic;color:var(--wine);}
+.cover .sub{font-size:17px;color:var(--mute);max-width:60ch;margin-bottom:32px;}
+.cover .meta{display:flex;gap:34px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;}
+.cover .meta .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.cover .meta .v{font-size:14.5px;font-weight:600;}
+.controls{height:56px;background:#11100e;border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 20px;gap:14px;color:#cfc7bd;}
+.controls .ttl{font-size:11px;letter-spacing:.05em;color:#8c857c;flex:1;text-transform:uppercase;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:14px;color:#efece6;min-width:60px;text-align:right;}
+.controls button{width:34px;height:34px;border:1px solid #3a3631;background:transparent;color:#efece6;font-size:15px;cursor:pointer;border-radius:50%;}
+.controls button:hover{background:var(--wine);border-color:var(--wine);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:64px;right:14px;font-size:10.5px;color:#6f6860;}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="prev" onclick="move(-1)">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)">›</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">글로벌 출시 품질 기준 일관성 확보</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">글로벌 게임 출시 품질체계 구축 · 글로벌 출시 품질 기준 및 테스트 범위 표준 수립</div>
+  <h1>글로벌 출시<br><span class="it">품질 기준 일관성 확보</span></h1>
+  <div class="sub">국가별 기준 불일치는 반복 비용 구조다 — 공통 판단 3축 + 지역별 특수 요건 레이어로 글로벌 일관성을 확보한다.</div>
+  <div class="meta">
+    <div><div class="l">사업과제</div><div class="v">글로벌 게임 출시 품질체계 구축</div></div>
+    <div><div class="l">상세과제</div><div class="v">글로벌 출시 품질 기준 및 테스트 범위 표준 수립</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  ${band("Contents")}
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 문서가 <em>다루는 것</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">배경(기준 불일치 비용) → 과제정의 → 공통 판단 3축 → Pass/Fail 기준 5개 영역 → OS 최소 지원(시장별) → 패키지+L10N 인력 → 지역별 요건(중국·EU) → 지역별 요건(일본·미국·인도·한국) → 지역별 매트릭스 → 체크리스트 구조 → L10N QA 핵심 검증 → 안티패턴 → 자가점검+용어.</div>
+</div>`);
+
+/* 3 배경 */
+add("배경 — 기준 불일치의 비용",`<div class="slide">
+  ${band("Background — Why")}
+  <span class="eyebrow">배경 · 국가별 기준 불일치의 실질 비용</span>
+  <h2 class="title">기준 불일치는 <em>반복 비용 구조</em>다</h2>
+  <div class="cols">
+    <div><h4>4가지 실질 비용</h4>
+      <ul>
+        <li><strong>스토어 심사 반려</strong>: 연령등급 국가 조건 미충족 → 즉시 반려, 재심사 일정 지연</li>
+        <li><strong>규제 벌금</strong>: EU GDPR 위반 시 최대 <strong>2천만 유로</strong></li>
+        <li><strong>스토어 퇴출 리스크</strong>: 쿠키 동의 미표기·국외저장 미고지 (데이터 보호 Fail)</li>
+        <li><strong>반복 재정의 비용</strong>: "글로벌 공통 기준" 부재 → 매 출시마다 국가별 기준 재협의</li>
+      </ul></div>
+    <div><h4>실장급 관점</h4>
+      <ul>
+        <li>같은 빌드가 국가마다 다른 결과 → QA 판단 편차</li>
+        <li>지역별 법령 미숙지 → 출시 직전 긴급 수정</li>
+        <li>L10N 테스터 투입 지연 → 일정 압박 전가</li>
+      </ul>
+      <div class="note">기준 불일치는 일회성 버그가 아니라 구조 문제다. 공통 기준 명문화가 반복 비용을 차단한다.</div>
+    </div>
+  </div>
+</div>`);
+
+/* 4 과제 정의 */
+add("과제 정의",`<div class="slide">
+  ${band("Initiative")}
+  <span class="eyebrow">과제 정의 · KR + Initiative</span>
+  <h2 class="title">국가가 달라도 <em>같은 기준</em>으로 판단한다</h2>
+  <div class="cols">
+    <div><h4>Key Results</h4>
+      <ul>
+        <li>글로벌 출시 Pass/Fail 기준 단일 문서 명문화</li>
+        <li>지역별 법·데이터·마켓 요건 QA 체크리스트 반영</li>
+        <li>OS 최소 지원·패키지 용량·L10N 인력 기준 수치 고정</li>
+      </ul></div>
+    <div><h4>Initiative</h4>
+      <ul>
+        <li>공통 판단 3축 정의 → 지역 특수 요건 레이어 추가 구조화</li>
+        <li>framework_v3 §1·§5 원전 수치를 기준선으로 채택</li>
+        <li>안티패턴 5가지 명문화 → 반복 실수 사전 차단</li>
+      </ul></div>
+  </div>
+  <div class="note">구조: 공통 3축(레이어 1) + 지역별 특수 요건(레이어 2) + L10N QA(레이어 3). 레이어 구분이 혼선을 방지한다.</div>
+</div>`);
+
+/* 5 공통 3축 */
+add("글로벌 공통 판단 3축",`<div class="slide">
+  ${band("Global Common Standard")}
+  <span class="eyebrow">모든 출시 국가에 공통 적용</span>
+  <h2 class="title">3축 모두 통과해야 <em>출시</em>가 가능하다</h2>
+  <table>
+    <tr><th>축</th><th>핵심 영역</th><th class="acc">검증 대상</th></tr>
+    <tr><td><strong>기능 안정성 (호환성)</strong></td><td>글로벌 디바이스·해상도</td><td>다국어 UI 레이아웃·폰트 (텍스트 오버플로우/잘림·특수문자)</td></tr>
+    <tr><td><strong>핵심 플로우 (결제·계정·로그인)</strong></td><td>지역별 화폐단위·다화폐 변환·결제 UI</td><td>계정 연동·로그인</td></tr>
+    <tr><td><strong>서비스 진입 (네트워크·서버)</strong></td><td>현지 통신사 환경·VPN·방화벽 대응</td><td>리전별 서버 배정·접속</td></tr>
+  </table>
+  <div class="cols">
+    <div><h4>적용 원칙</h4>
+      <ul>
+        <li>3축은 <strong>모든 출시 국가에 공통 적용</strong></li>
+        <li>지역별 특수 요건은 이 3축 위에 추가 레이어</li>
+        <li>3축 중 하나라도 Fail → 출시 보류 판단</li>
+      </ul></div>
+    <div><h4>레이어 구조</h4>
+      <div class="codeblk">레이어 1: 공통 3축 (모든 국가)
+레이어 2: 지역별 법·마켓·등급 요건
+레이어 3: L10N QA (언어별 검증)</div>
+    </div>
+  </div>
+</div>`);
+
+/* 6 Pass/Fail */
+add("글로벌 Pass/Fail 기준",`<div class="slide">
+  ${band("Pass/Fail Criteria")}
+  <span class="eyebrow">5개 영역 · Fail 기준 명문화</span>
+  <h2 class="title">하나라도 Fail이면 <em>출시 차단</em>이다</h2>
+  <table>
+    <tr><th>영역</th><th class="acc">Fail(불합격) 기준</th></tr>
+    <tr><td><strong>호환성</strong></td><td>UI 깨짐·텍스트 오버플로우/잘림·폰트 미지원 (점유율 상위 디바이스·해상도)</td></tr>
+    <tr><td><strong>네트워크</strong></td><td>현지 통신사 미대응·VPN/방화벽 미해결 / 리전 서버 접속 불가 / 고핑 UI 지연·재연결 불안정</td></tr>
+    <tr><td><strong>결제</strong></td><td>화폐단위·소수점 오표기 / 자동변환 실패 / 결제 UI 깨짐·충돌</td></tr>
+    <tr><td><strong>연령등급</strong></td><td>국가 심의 등급조건 미충족 → 스토어 심사 반려</td></tr>
+    <tr><td><strong>데이터 보호</strong></td><td>쿠키 동의 미표기·국외저장 미고지 (벌금·스토어 퇴출 리스크)</td></tr>
+  </table>
+  <div class="note warn"><strong>5개 영역은 OR 조건</strong> — 하나라도 Fail이면 전체 출시 차단. 협상·예외 없음. 기준 완화는 별도 의사결정 단계에서만.</div>
+</div>`);
+
+/* 7 OS 최소 지원 */
+add("OS 최소 지원 기준",`<div class="slide">
+  ${band("OS Minimum Support — §7")}
+  <span class="eyebrow">Android · iOS · 시장별 분기</span>
+  <h2 class="title">시장마다 <em>다른 최소 기준</em>을 적용한다</h2>
+  <div class="cols">
+    <div>
+      <h4>Android (framework_v3/01 §7)</h4>
+      <table>
+        <tr><th>시장</th><th>최소 OS</th><th class="acc">커버리지</th></tr>
+        <tr><td>글로벌</td><td><strong>Android 9 (API 28)</strong></td><td>약 97%</td></tr>
+        <tr><td>한국</td><td><strong>Android 10</strong></td><td>—</td></tr>
+        <tr><td>동남아</td><td><strong>Android 9</strong></td><td>—</td></tr>
+      </table>
+      <h4>targetSdkVersion 의무</h4>
+      <table>
+        <tr><th>대상</th><th class="acc">기준 · 시점</th></tr>
+        <tr><td>신규 앱</td><td>Android 15(API 35) — <strong>2025.8~</strong></td></tr>
+        <tr><td>기존 앱 업데이트</td><td>Android 15(API 35) — <strong>2026.2~</strong></td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>iOS (framework_v3/01 §7)</h4>
+      <table>
+        <tr><th>시장</th><th>최소 OS</th><th class="acc">커버리지</th></tr>
+        <tr><td>글로벌</td><td><strong>iOS 16</strong></td><td>약 93%</td></tr>
+        <tr><td>한국</td><td><strong>iOS 16</strong></td><td>—</td></tr>
+        <tr><td>동남아</td><td><strong>iOS 15</strong></td><td>—</td></tr>
+      </table>
+      <h4>실무 주의사항</h4>
+      <ul>
+        <li>단일 빌드 검증 매트릭스에서 시장 분기 처리 필수</li>
+        <li>targetSdkVersion 미충족 → Google Play 심사 거부</li>
+        <li>동남아용 iOS 15 분기 빌드 별도 관리 필요 시 확인</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 8 패키지 + L10N */
+add("패키지 용량 + L10N 인력 기준",`<div class="slide">
+  ${band("Package Size + L10N Staffing")}
+  <span class="eyebrow">용량 기준 · 현지화 인력</span>
+  <h2 class="title">용량과 <em>인력 기준</em>도 수치로 고정한다</h2>
+  <div class="cols">
+    <div>
+      <h4>패키지 용량 (framework_v3/01 §8)</h4>
+      <table>
+        <tr><th>플랫폼</th><th class="acc">용량 상한</th></tr>
+        <tr><td>Android AAB</td><td><strong>&lt;150MB</strong></td></tr>
+        <tr><td>iOS</td><td><strong>&lt;200MB</strong></td></tr>
+      </table>
+      <ul>
+        <li>상한 초과 시 스토어 등록 차단 또는 다운로드 전환율 저하</li>
+        <li>빌드 파이프라인에 자동 게이팅 권장</li>
+      </ul>
+    </div>
+    <div>
+      <h4>L10N 인력 기준 (framework_v3/05 §6)</h4>
+      <table>
+        <tr><th>언어 수</th><th class="acc">인력 기준</th></tr>
+        <tr><td><strong>4~7개 언어</strong></td><td><strong>1~2명</strong> 추가</td></tr>
+        <tr><td><strong>8개 이상</strong></td><td><strong>별도 산정</strong> (언어별 전문 계약)</td></tr>
+      </table>
+      <h4>실무 주의사항</h4>
+      <ul>
+        <li>8개+ = 내부 인력 커버 불가 — 계약 리드타임 역산 필수</li>
+        <li>언어 수 확정 즉시 L10N 테스터 계약 시작</li>
+        <li>"별도 산정"을 일정 후반부에 처리 = 안티패턴</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 9 지역별 요건 중국·EU */
+add("지역별 특수 요건 — 중국·EU",`<div class="slide">
+  ${band("Regional Requirements — China / EU")}
+  <span class="eyebrow">법·데이터 중심 · 아키텍처 영향 시장</span>
+  <h2 class="title">이 두 시장은 <em>아키텍처 단계</em>부터 영향을 준다</h2>
+  <div class="cols">
+    <div>
+      <h4>중국</h4>
+      <ul>
+        <li>적용 법령: <strong>PIPL / CSL</strong></li>
+        <li>국외 데이터 이전 <strong>불가</strong> → 국내 서버 필수</li>
+        <li>판호 필수 (미취득 시 스토어 등록 불가)</li>
+        <li>실명인증 의무</li>
+        <li>클라우드: <strong>Alibaba Cloud</strong></li>
+        <li>결제: <strong>위챗페이</strong></li>
+      </ul>
+    </div>
+    <div>
+      <h4>EU / 독일</h4>
+      <ul>
+        <li>적용 법령: <strong>GDPR</strong></li>
+        <li>위반 시 최대 <strong>2천만 유로</strong> 벌금</li>
+        <li>독일: <strong>USK 등급</strong> 적용</li>
+        <li>쿠키 동의 <strong>분리 처리</strong> 필수 (묶음 동의 불가)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note warn">중국·EU는 QA 단계에서 발견해도 개발 수정 리드타임이 길다. <strong>출시 전 아키텍처 리뷰 단계에서 체크</strong> 필요 — QA 의존만으로는 일정 위험.</div>
+</div>`);
+
+/* 10 지역별 요건 일본·미국·인도·한국 */
+add("지역별 특수 요건 — 일본·미국·인도·한국",`<div class="slide">
+  ${band("Regional Requirements — JP / US / IN / KR")}
+  <span class="eyebrow">확률·결제·등급·보관 의무</span>
+  <h2 class="title">지역마다 <em>다른 의무</em>가 있다</h2>
+  <div class="cols">
+    <div>
+      <h4>일본</h4>
+      <ul>
+        <li>적용 법령: <strong>APPI / PPC</strong></li>
+        <li>가챠 당첨률·상한 명시 의무</li>
+        <li>등급: <strong>CERO</strong></li>
+      </ul>
+      <h4>미국</h4>
+      <ul>
+        <li>적용 법령: <strong>CCPA</strong></li>
+        <li>국외 데이터 이전 자유</li>
+        <li>loot box 확률 미표기 = 사기성</li>
+        <li>등급: <strong>ESRB</strong></li>
+        <li>Chargeback 대응 체계 필요</li>
+      </ul>
+    </div>
+    <div>
+      <h4>인도</h4>
+      <ul>
+        <li>적용 법령: <strong>DPDP Act 2023</strong></li>
+        <li>결제 SMS <strong>2중인증</strong> 필수</li>
+        <li>결제: <strong>UPI</strong></li>
+      </ul>
+      <h4>한국</h4>
+      <ul>
+        <li>개인정보 <strong>3년 보관·분리·파기</strong> 의무</li>
+        <li>확률표 공개 의무</li>
+        <li>청불/전체이용가 분리 운영</li>
+        <li>등급: <strong>GRAC</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 11 매트릭스 */
+add("지역별 마켓·결제·등급 요건 매트릭스",`<div class="slide">
+  ${band("Regional Requirements Matrix")}
+  <span class="eyebrow">6개 시장 · 5개 항목 교차</span>
+  <h2 class="title">한눈에 보는 <em>지역별 요건</em></h2>
+  <table>
+    <tr><th>항목</th><th>중국</th><th>EU/독일</th><th>일본</th><th>미국</th><th>인도</th><th class="acc">한국</th></tr>
+    <tr><td><strong>주요 법령</strong></td><td>PIPL/CSL</td><td>GDPR</td><td>APPI/PPC</td><td>CCPA</td><td>DPDP 2023</td><td>개인정보보호법</td></tr>
+    <tr><td><strong>데이터 국외이전</strong></td><td><strong>불가</strong></td><td>GDPR 준수</td><td>APPI 준수</td><td>자유</td><td>DPDP 준수</td><td>3년 보관·파기</td></tr>
+    <tr><td><strong>결제 특이사항</strong></td><td>위챗페이</td><td>쿠키 동의 분리</td><td>가챠 확률 명시</td><td>Chargeback</td><td>UPI/SMS 2중인증</td><td>확률표 공개 / 청불·전체이용가 분리</td></tr>
+    <tr><td><strong>등급 기관</strong></td><td>판호</td><td>USK</td><td>CERO</td><td>ESRB</td><td>—</td><td>GRAC</td></tr>
+    <tr><td><strong>서버 요건</strong></td><td>국내 서버 필수 / Alibaba Cloud</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+  </table>
+  <div class="note">빈 칸 = 원전 미명시. 출시 국가 추가 시 열을 확장하는 방식으로 운영. 빈 칸을 "요건 없음"으로 해석 금지.</div>
+</div>`);
+
+/* 12 체크리스트 구조 */
+add("글로벌 출시 QA 체크리스트 구조",`<div class="slide">
+  ${band("QA Checklist Structure")}
+  <span class="eyebrow">3레이어 구조 · 공통→지역→L10N</span>
+  <h2 class="title">레이어 순서대로 <em>체크</em>한다</h2>
+  <div class="cols">
+    <div>
+      <h4>레이어 1 — 글로벌 공통 (모든 국가)</h4>
+      <div class="codeblk">□ 호환성 Fail 기준 5개 영역 확인
+□ OS 최소 지원 시장별 분기 적용
+□ Android AAB &lt;150MB / iOS &lt;200MB
+□ 3축(호환성·결제플로우·서비스진입) 완료</div>
+      <h4>레이어 2 — 지역별 (해당 국가)</h4>
+      <div class="codeblk">□ 데이터 보호 법령 대응 확인 (국가별)
+□ 결제 UI·화폐단위·소수점 검증
+□ 등급 심의 조건 충족 (국가별 기관)
+□ 국외 데이터 이전 정책 적용 여부</div>
+    </div>
+    <div>
+      <h4>레이어 3 — L10N 검증</h4>
+      <div class="codeblk">□ 언어 수 기준 테스터 투입
+  4~7개: 1~2명 / 8개+: 별도 계약
+□ 텍스트 오버플로우·잘림·특수문자 확인
+□ 화폐단위·소수점 표기 검증
+□ 확률표·가챠 표기 (일본·한국)</div>
+      <h4>레이어 적용 순서</h4>
+      <ul>
+        <li>레이어 1 통과 없이 레이어 2 진행 금지</li>
+        <li>레이어 2는 국가별 해당 항목만 적용</li>
+        <li>레이어 3은 언어 수에 따라 인력·범위 결정</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 13 L10N QA */
+add("현지화(L10N) QA 핵심 검증 항목",`<div class="slide">
+  ${band("L10N QA Core Verification")}
+  <span class="eyebrow">폰트·텍스트·수치·인력 기준</span>
+  <h2 class="title">현지화 결함은 <em>호환성·결제 Fail로 직결</em>된다</h2>
+  <div class="cols">
+    <div>
+      <h4>폰트·텍스트 안정성</h4>
+      <ul>
+        <li>텍스트 오버플로우 / 잘림 — 점유율 상위 디바이스·해상도 기준</li>
+        <li>특수문자 미지원 → <strong>호환성 Fail 기준</strong>에 직결</li>
+        <li>다국어 UI 레이아웃 붕괴 여부</li>
+      </ul>
+      <h4>수치·단위 표기</h4>
+      <ul>
+        <li>화폐단위·소수점 오표기 → <strong>결제 Fail 기준</strong></li>
+        <li>자동변환 실패 → <strong>결제 Fail 기준</strong></li>
+        <li>가챠 당첨률·상한 명시 (일본)</li>
+        <li>확률표 공개 (한국)</li>
+      </ul>
+    </div>
+    <div>
+      <h4>L10N 인력 배정 기준</h4>
+      <table>
+        <tr><th>언어 수</th><th class="acc">인력</th></tr>
+        <tr><td>4~7개 언어</td><td><strong>1~2명</strong> 추가</td></tr>
+        <tr><td>8개 이상</td><td><strong>별도 산정</strong> (전문 계약)</td></tr>
+      </table>
+      <h4>검증 우선순위</h4>
+      <ul>
+        <li>글로벌 커버리지 기준 디바이스 우선</li>
+        <li>Android 약 97% 커버 / iOS 약 93% 커버 기준</li>
+        <li>시장별 OS 최소 지원 분기 적용</li>
+      </ul>
+    </div>
+  </div>
+</div>`);
+
+/* 14 안티패턴 */
+add("안티패턴",`<div class="slide">
+  ${band("Anti-Patterns")}
+  <span class="eyebrow">5대 반복 실수</span>
+  <h2 class="title">글로벌 출시에서 반복되는 <em>5가지 함정</em></h2>
+  <table>
+    <tr><th>#</th><th>안티패턴</th><th>증상</th><th class="acc">교정</th></tr>
+    <tr><td>①</td><td><strong>"글로벌 단일 기준" 착각</strong></td><td>동남아·한국·EU를 같은 기준 검증 → OS 최소 지원 분기 누락</td><td>시장별 OS 분기표를 체크리스트 최상단에 고정</td></tr>
+    <tr><td>②</td><td><strong>결제 UI만 검증, 화폐단위 미검증</strong></td><td>화폐단위·소수점 오표기 → 결제 Fail → 스토어 반려</td><td>결제 검증 항목에 "화폐단위·소수점" 명시 분리</td></tr>
+    <tr><td>③</td><td><strong>데이터 보호를 "개발 이슈"로 분류</strong></td><td>쿠키 동의 미표기·국외저장 미고지 = QA Fail 기준</td><td>레이어 2 체크리스트에 데이터 보호 항목 의무화</td></tr>
+    <tr><td>④</td><td><strong>L10N 테스터를 일정 후반에 투입</strong></td><td>8개+ 언어는 별도 계약 — 계약 리드타임 미확보 시 지연</td><td>언어 수 확정 즉시 L10N 테스터 계약 시작</td></tr>
+    <tr><td>⑤</td><td><strong>패키지 용량을 최종 빌드 직전에만 확인</strong></td><td>AAB &lt;150MB / iOS &lt;200MB 초과 → 빌드 재작업</td><td>빌드 파이프라인에 용량 게이팅 자동화</td></tr>
+  </table>
+  <div class="note warn">공통 root cause — "글로벌 = 하나"라는 착각. 글로벌 출시는 공통 기준 위에 국가별 레이어가 쌓이는 구조다.</div>
+</div>`);
+
+/* 15 자가점검 + 용어 */
+add("자가점검 + 용어",`<div class="slide">
+  ${band("Self-Check + Glossary")}
+  <span class="eyebrow">출시 전 최종 확인 · 핵심 용어</span>
+  <h2 class="title">출시 전 <em>순서대로</em> 점검한다</h2>
+  <div class="cols">
+    <div>
+      <h4>자가점검 체크리스트</h4>
+      <div class="codeblk">레이어 1 — 글로벌 공통
+□ Fail 기준 5개 영역 전수 확인됨
+□ 시장별 OS 최소 지원 분기 적용됨
+□ AAB &lt;150MB / iOS &lt;200MB 확인됨
+□ 3축(호환성·결제플로우·서비스진입) 완료됨
+
+레이어 2 — 지역별
+□ EU GDPR 쿠키 동의 분리 처리 확인됨
+□ 중국 국내 서버·판호·실명인증 확인됨
+□ 일본 가챠 당첨률·상한 명시 확인됨
+□ 한국 확률표 공개·GRAC 등급 확인됨
+□ 인도 SMS 2중인증·UPI 확인됨
+□ targetSdkVersion (신규 2025.8/기존 2026.2) 확인됨
+
+레이어 3 — L10N
+□ 언어 수 기준 테스터 투입됨
+  (4~7개: 1~2명 / 8개+: 별도 계약)
+□ 텍스트 오버플로우·잘림·특수문자 확인됨</div>
+    </div>
+    <div><h4>핵심 용어</h4>
+    <table>
+      <tr><th>용어</th><th class="acc">정의</th></tr>
+      <tr><td>L10N</td><td>Localization — 현지화 (언어·문화·법령 포함)</td></tr>
+      <tr><td>AAB</td><td>Android App Bundle — Google Play 제출 형식</td></tr>
+      <tr><td>GRAC</td><td>Game Rating and Administration Committee — 한국 게임물관리위원회</td></tr>
+      <tr><td>PIPL</td><td>Personal Information Protection Law — 중국 개인정보보호법</td></tr>
+      <tr><td>DPDP Act</td><td>Digital Personal Data Protection Act — 인도 2023년 제정</td></tr>
+      <tr><td>판호</td><td>중국 게임 출시 허가 번호 — 미취득 시 스토어 등록 불가</td></tr>
+      <tr><td>targetSdkVersion</td><td>앱이 타겟하는 Android SDK 버전 — 스토어 등록 조건에 직결</td></tr>
+      <tr><td>USK</td><td>Unterhaltungssoftware Selbstkontrolle — 독일 게임 등급 기관</td></tr>
+      <tr><td>CERO</td><td>Computer Entertainment Rating Organization — 일본 게임 등급 기관</td></tr>
+      <tr><td>ESRB</td><td>Entertainment Software Rating Board — 미국 게임 등급 기관</td></tr>
+    </table>
+    <p style="font-size:11px;color:var(--mute);margin-top:8px">참조 출처: framework_v3/01 §7·8 · framework_v3/05 §6 · 기존 O7 원전.</p>
+    </div>
+  </div>
+</div>`);
+
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" style="cursor:pointer"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){track.style.transform=`translateX(-${i*100}%)`;document.getElementById('cur').textContent=i+1;document.getElementById('ttl').textContent=S[i].t;document.getElementById('prev').disabled=i===0;document.getElementById('next').disabled=i===S.length-1;document.getElementById('prog').style.width=((i+1)/S.length*100)+'%';const sl=track.children[i];if(sl)sl.scrollTop=0;}
+function move(d){const n=i+d;if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')move(1);else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);else if(e.key==='Home'){i=0;r();}else if(e.key==='End'){i=S.length-1;r();}});
+r();
+</script>
+</body>
+</html>
