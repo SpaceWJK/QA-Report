@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 테스트 자동화 효율 분석 보고서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#c9d1d9; --mute:#7d8590;
+  --green:#3fb950; --cyan:#58a6ff; --yellow:#d29922; --magenta:#bc8cff; --red:#f85149;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono','Pretendard',monospace;font-size:14px;line-height:1.6}
+.wrap{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+
+/* ── 터미널 헤더 ── */
+.term-header{border:1px solid var(--border);border-radius:8px;background:var(--panel);overflow:hidden;margin-bottom:32px}
+.term-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:#21262d;border-bottom:1px solid var(--border)}
+.dot{width:12px;height:12px;border-radius:50%}
+.dot.r{background:#ff5f56}.dot.y{background:#ffbd2e}.dot.g{background:#27c93f}
+.term-title{margin-left:8px;color:var(--mute);font-size:12px}
+.term-body{padding:28px 32px}
+.prompt{color:var(--green)}
+.cmd{color:var(--text)}
+h1{font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:14px 0 6px;color:#fff}
+.sub{color:var(--mute);font-size:13px}
+.meta-row{display:flex;gap:24px;margin-top:18px;flex-wrap:wrap}
+.meta-item{font-size:12px;color:var(--mute)}
+.meta-item b{color:var(--cyan);font-weight:500}
+
+/* ── 섹션 공통 ── */
+section{margin-bottom:40px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:10px}
+.sec-no{color:var(--magenta);font-weight:700;font-size:13px}
+h2{font-size:18px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+h3{font-size:14px;font-weight:700;color:var(--cyan);margin:20px 0 10px}
+.comment{color:var(--mute);font-size:12px;margin-bottom:14px}
+.comment::before{content:"// "}
+
+/* ── 카드 ── */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:20px}
+.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--mute);margin-bottom:8px}
+.kpi-val{font-size:36px;font-weight:800;line-height:1;color:#fff}
+.kpi-val .unit{font-size:18px;font-weight:500;color:var(--mute);margin-left:2px}
+.kpi-note{font-size:12px;color:var(--mute);margin-top:8px}
+.c-green{color:var(--green)!important}.c-cyan{color:var(--cyan)!important}
+.c-yellow{color:var(--yellow)!important}.c-magenta{color:var(--magenta)!important}.c-red{color:var(--red)!important}
+
+/* ── 테이블 ── */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#21262d;color:var(--mute);font-weight:500;text-align:left;padding:10px 14px;border:1px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:0.04em}
+td{padding:10px 14px;border:1px solid var(--border);vertical-align:top}
+tr:hover td{background:rgba(88,166,255,0.04)}
+.tbl-wrap{overflow-x:auto;border-radius:8px}
+
+/* ── 바 차트 ── */
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.bar-label{width:200px;flex-shrink:0;font-size:12px;color:var(--text);text-align:right}
+.bar-track{flex:1;height:22px;background:#0a0e14;border:1px solid var(--border);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#0d1117;white-space:nowrap}
+.bf-green{background:var(--green)}.bf-cyan{background:var(--cyan)}.bf-yellow{background:var(--yellow)}.bf-magenta{background:var(--magenta)}.bf-red{background:var(--red)}
+.bar-val{width:120px;flex-shrink:0;font-size:12px;color:var(--mute)}
+
+/* ── 배지 / 상태 ── */
+.badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.04em}
+.b-green{background:rgba(63,185,80,0.15);color:var(--green);border:1px solid rgba(63,185,80,0.4)}
+.b-yellow{background:rgba(210,153,34,0.15);color:var(--yellow);border:1px solid rgba(210,153,34,0.4)}
+.b-red{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.4)}
+.b-cyan{background:rgba(88,166,255,0.15);color:var(--cyan);border:1px solid rgba(88,166,255,0.4)}
+.b-magenta{background:rgba(188,140,255,0.15);color:var(--magenta);border:1px solid rgba(188,140,255,0.4)}
+
+/* ── 인사이트 박스 ── */
+.insight{border-left:3px solid var(--cyan);background:rgba(88,166,255,0.06);padding:14px 18px;border-radius:0 8px 8px 0;margin:14px 0;font-size:13px}
+.insight.warn{border-color:var(--yellow);background:rgba(210,153,34,0.06)}
+.insight.good{border-color:var(--green);background:rgba(63,185,80,0.06)}
+.insight.crit{border-color:var(--red);background:rgba(248,81,73,0.06)}
+.insight b{color:#fff}
+.insight .tag{font-weight:700;font-size:11px;letter-spacing:0.06em;display:block;margin-bottom:4px}
+.insight .tag.t-cyan{color:var(--cyan)}.insight .tag.t-yellow{color:var(--yellow)}
+.insight .tag.t-green{color:var(--green)}.insight .tag.t-red{color:var(--red)}
+
+/* ── 타임라인 (로드맵) ── */
+.roadmap{position:relative;padding-left:28px}
+.roadmap::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.rm-item{position:relative;margin-bottom:22px}
+.rm-item::before{content:"";position:absolute;left:-26px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--mute)}
+.rm-item.active::before{border-color:var(--green);background:var(--green);box-shadow:0 0 8px rgba(63,185,80,0.6)}
+.rm-item.next::before{border-color:var(--cyan)}
+.rm-item.future::before{border-color:var(--magenta)}
+.rm-phase{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+.rm-title{font-size:14px;font-weight:700;color:#fff;margin:2px 0}
+.rm-desc{font-size:12px;color:var(--mute)}
+
+/* ── ASCII 분리선 ── */
+.ascii-div{color:var(--border);font-size:12px;margin:8px 0 24px;overflow:hidden;white-space:nowrap}
+
+/* ── footer ── */
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);color:var(--mute);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.blink{animation:blink 1.2s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.assume{font-size:11px;color:var(--mute);margin-top:6px}
+.assume::before{content:"※ "}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="term-header">
+  <div class="term-bar">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="term-title">qa-ops@smilegate: ~/reports/ai-test-efficiency</span>
+  </div>
+  <div class="term-body">
+    <div><span class="prompt">$</span> <span class="cmd">analyze --target="AI 테스트 자동화" --baseline="휴먼 QA" --report=full</span></div>
+    <h1>AI 테스트 자동화 효율 분석 보고서<span class="blink" style="color:var(--green)">▌</span></h1>
+    <p class="sub">사람 vs AI 테스트 수행 실측 비교 — 리소스 절감 · 확장성 · 커버리지 로드맵 종합 분석</p>
+    <div class="meta-row">
+      <span class="meta-item">REPORT_DATE: <b>2026-06-10</b></span>
+      <span class="meta-item">PILOT_PROJECT: <b>에픽세븐 BAT</b></span>
+      <span class="meta-item">EXPANSION_TARGET: <b>8 Projects</b></span>
+      <span class="meta-item">STATUS: <b style="color:var(--green)">MEASURED</b></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 0. EXECUTIVE SUMMARY ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[00]</span><h2>Executive Summary</h2></div>
+  <div class="grid g4">
+    <div class="card">
+      <div class="kpi-label">AI BAT 커버리지</div>
+      <div class="kpi-val c-cyan">60<span class="unit">%</span></div>
+      <div class="kpi-note">잔여 40%는 사람 필수 영역</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">회당 인력 절감 (실질)</div>
+      <div class="kpi-val c-green">15<span class="unit">분</span></div>
+      <div class="kpi-note">검수 미포함 시 25분</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">AI 수행 시간 (무인)</div>
+      <div class="kpi-val c-yellow">170<span class="unit">분</span></div>
+      <div class="kpi-note">1계정 기준 · 기계 시간</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">확장 시 연간 절감 잠재</div>
+      <div class="kpi-val c-magenta">~26<span class="unit">PD</span></div>
+      <div class="kpi-note">8프로젝트 · 주2회 빌드 가정</div>
+    </div>
+  </div>
+
+  <div class="insight good">
+    <span class="tag t-green">▲ CORE FINDING</span>
+    현재 단일 프로젝트(에픽세븐) 기준 절감 효과는 <b>연 4~7시간 수준으로 미미</b>하다. 그러나 효율의 본질은 <b>"한계비용 0의 반복 실행"</b>에 있다 —
+    AI 테스트는 실행 빈도와 프로젝트 수가 늘어도 인력 비용이 늘지 않으므로, <b>8개 프로젝트 확장 + 빌드 수급별 BAT + Functional Test 야간 배치</b>가
+    실현되는 시점에 절감 효과가 비선형적으로 증폭된다.
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 1. 측정 데이터 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[01]</span><h2>측정 데이터 원본</h2></div>
+  <p class="comment">사람 vs AI 실측 비교 — 에픽세븐 BAT 기준</p>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th style="width:180px">항목</th><th>사람 (휴먼 QA)</th><th>AI 자동화</th></tr>
+    <tr>
+      <td><b>BAT 커버리지</b></td>
+      <td><span class="badge b-green">100%</span> 전체 TC 수행 가능</td>
+      <td><span class="badge b-yellow">60%</span> 잔여 40%는 사람 필수</td>
+    </tr>
+    <tr>
+      <td><b>Functional Test</b></td>
+      <td><span class="badge b-green">수행 가능</span> 1인 3시간+ 소요 (방대한 분량)</td>
+      <td><span class="badge b-red">현재 불가</span> 커버리지 확장 예정</td>
+    </tr>
+    <tr>
+      <td><b>수행 시간</b></td>
+      <td>1인 25분/OS · 4 OS(iOS/AOS/PC/화웨이) 병렬 4인 = 경과 25분<br><span style="color:var(--mute)">총 투입: 100 인·분/회</span></td>
+      <td>1계정 170분 (무인 기계 시간)<br><span style="color:var(--mute)">인력 투입: 검수만 (~10분 추정)</span></td>
+    </tr>
+    <tr>
+      <td><b>투입 인원</b></td>
+      <td>총 5인 (OS별 4인 병렬 운영)</td>
+      <td>0인 (검수자 1인 부분 투입)</td>
+    </tr>
+    <tr>
+      <td><b>수행 주기</b></td>
+      <td>3주 1회 BAT + Functional Test</td>
+      <td>제약 없음 — 빌드 수급 시마다 반복 가능</td>
+    </tr>
+    <tr>
+      <td><b>회당 절감 효과</b></td>
+      <td>—</td>
+      <td>25분/회 (AI 수행 영역) · <b>검수 포함 실질 15분/회</b></td>
+    </tr>
+  </table>
+  </div>
+
+  <h3>수행 시간 비교 (1회 BAT 기준)</h3>
+  <div class="card">
+    <div class="bar-row">
+      <div class="bar-label">사람 · 총 인력 투입</div>
+      <div class="bar-track"><div class="bar-fill bf-cyan" style="width:59%">100 인·분</div></div>
+      <div class="bar-val">4 OS × 25분</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">사람 · 경과 시간 (4인 병렬)</div>
+      <div class="bar-track"><div class="bar-fill bf-cyan" style="width:15%">25분</div></div>
+      <div class="bar-val">근무시간 점유</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">AI · 경과 시간 (기계)</div>
+      <div class="bar-track"><div class="bar-fill bf-yellow" style="width:100%">170분</div></div>
+      <div class="bar-val">무인 · 야간 가능</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">AI · 인력 투입 (검수)</div>
+      <div class="bar-track"><div class="bar-fill bf-green" style="width:6%">~10분</div></div>
+      <div class="bar-val">결과 확인만</div>
+    </div>
+    <div class="assume">인·분 = person-minute. AI 170분은 사람 근무시간을 점유하지 않는 기계 시간이므로 비용 성격이 다름.</div>
+  </div>
+
+  <div class="insight">
+    <span class="tag t-cyan">◆ INSIGHT — 시간의 질이 다르다</span>
+    AI는 사람보다 <b>회당 경과 시간이 6.8배 길지만(170분 vs 25분)</b>, 이 시간은 <b>인건비가 발생하지 않는 기계 시간</b>이다.
+    효율 비교의 올바른 단위는 "경과 시간"이 아니라 <b>"사람 근무시간 점유량"</b>이며, 이 기준으로 AI는 회당 100인·분 → 검수 ~10분으로 줄인다
+    (단, 커버리지 60% 영역에 한함).
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 2. 리소스 절감 분석 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[02]</span><h2>리소스 절감 분석 — 3개 시나리오</h2></div>
+  <p class="comment">현재(실측) → 8프로젝트 확장(계획) → Functional 커버리지 확장(목표)</p>
+
+  <h3>SCENARIO A — 현재: 에픽세븐 단일 · 3주 1회</h3>
+  <div class="grid g3">
+    <div class="card">
+      <div class="kpi-label">연간 수행 횟수</div>
+      <div class="kpi-val">17<span class="unit">회</span></div>
+      <div class="kpi-note">52주 ÷ 3주 주기</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">연간 인력 절감</div>
+      <div class="kpi-val c-yellow">4.3<span class="unit">h</span></div>
+      <div class="kpi-note">17회 × 15분 (검수 포함 실질)</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">판정</div>
+      <div class="kpi-val" style="font-size:20px;padding-top:8px"><span class="badge b-yellow">절감 미미</span></div>
+      <div class="kpi-note">단독으로는 투자 정당화 부족</div>
+    </div>
+  </div>
+  <div class="insight warn">
+    <span class="tag t-yellow">▲ 주의 — 현재 구조의 한계</span>
+    에픽세븐은 업데이트(빌드별) 테스트를 지원하지 않아 <b>실행 빈도를 늘릴 수 없다</b>. 빈도가 고정된 상태에서 AI의 "한계비용 0" 장점이 발휘되지 않음.
+    다만 빌드 수급 시마다 반복 실행하면 <b>추가 인력 비용 없이 빌드 안정성 확보 + 개발사 측 리소스 절감</b>이라는 정성 효과는 즉시 발생한다.
+  </div>
+
+  <h3>SCENARIO B — 8개 프로젝트 BAT 확장 (빌드 수급별 실행)</h3>
+  <p class="comment">타 프로젝트는 빌드 수급 시마다 BAT 수행 → 빈도가 핵심 변수. 회당 절감 15분(실질) 기준</p>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th>빌드 빈도 가정</th><th>연간 실행 횟수</th><th>연간 인력 절감 (실질 15분)</th><th>연간 인력 절감 (검수 자동화 시 25분)</th><th>환산 (8h=1PD)</th></tr>
+    <tr><td>주 1회 × 8개</td><td>416회</td><td><b class="c-green">104시간</b></td><td>173시간</td><td>13 ~ 22 PD</td></tr>
+    <tr><td><b>주 2회 × 8개</b></td><td><b>832회</b></td><td><b class="c-green">208시간</b></td><td><b>347시간</b></td><td><b>26 ~ 43 PD</b></td></tr>
+    <tr><td>주 3회 × 8개</td><td>1,248회</td><td><b class="c-green">312시간</b></td><td>520시간</td><td>39 ~ 65 PD</td></tr>
+  </table>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="bar-row">
+      <div class="bar-label">현재 (시나리오 A)</div>
+      <div class="bar-track"><div class="bar-fill bf-yellow" style="width:2%"></div></div>
+      <div class="bar-val">4.3 h/년</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">8프로젝트 · 주1회</div>
+      <div class="bar-track"><div class="bar-fill bf-green" style="width:33%">104h</div></div>
+      <div class="bar-val">13 PD/년</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">8프로젝트 · 주2회</div>
+      <div class="bar-track"><div class="bar-fill bf-green" style="width:67%">208h</div></div>
+      <div class="bar-val">26 PD/년</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">8프로젝트 · 주3회</div>
+      <div class="bar-track"><div class="bar-fill bf-green" style="width:100%">312h</div></div>
+      <div class="bar-val">39 PD/년</div>
+    </div>
+    <div class="assume">빌드 빈도는 프로젝트별 실제 수급 주기 실측 후 보정 필요. 절감분은 "AI 수행 60% 영역"에 한정된 보수적 추정.</div>
+  </div>
+
+  <h3>SCENARIO C — Functional Test 커버리지 확장 (목표)</h3>
+  <p class="comment">사람 수행 시 1인 3시간+ 분량 — 퇴근 시 AI 야간 배치 실행 시나리오</p>
+  <div class="grid g3">
+    <div class="card">
+      <div class="kpi-label">회당 대체 인력 시간</div>
+      <div class="kpi-val c-magenta">3<span class="unit">h+</span></div>
+      <div class="kpi-note">1인 기준 · OS 확장 시 배수 증가</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">연간 절감 (3주 주기 · 1 프로젝트)</div>
+      <div class="kpi-val c-magenta">52<span class="unit">h+</span></div>
+      <div class="kpi-note">17회 × 3h — BAT 절감의 12배</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">8프로젝트 적용 시</div>
+      <div class="kpi-val c-magenta">416<span class="unit">h+</span></div>
+      <div class="kpi-note">≈ 52 PD/년 (동일 주기 가정)</div>
+    </div>
+  </div>
+  <div class="insight">
+    <span class="tag t-cyan">◆ INSIGHT — 야간 배치의 구조적 우위</span>
+    Functional Test는 <b>방대한 분량(3h+) × 낮은 긴급도</b> 조합이라 야간 무인 실행에 최적이다.
+    AI의 약점인 "긴 경과 시간(170분+)"이 야간에는 <b>아무 비용도 아니게 된다</b> — 퇴근 시 실행 → 출근 시 결과 검수.
+    사람의 근무시간은 검수와 40% 수동 영역에만 투입되는 구조로 전환. <b>Functional 커버리지 확보가 ROI 극대화의 최대 레버</b>다.
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 3. 확장성 분석 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[03]</span><h2>확장성 분석</h2></div>
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin-top:0">⚡ 수평 확장 — 프로젝트 수</h3>
+      <p style="font-size:13px">사람: 프로젝트 추가 = 인력 추가 (선형 비용 증가).<br>
+      AI: 프로젝트 추가 = 계정/디바이스 슬롯 추가 (한계비용 ≈ 인프라만).<br><br>
+      1개 → 8개 확장 시 사람은 <b class="c-red">8배 인력</b>이 필요하지만 AI는
+      <b class="c-green">스크립트 이식 + 계정 추가</b>로 대응. 프로젝트별 TC 차이에 따른
+      시나리오 유지보수 비용만 발생.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">⚡ 수직 확장 — 실행 빈도</h3>
+      <p style="font-size:13px">사람: 3주 1회가 현실적 상한 (5인 운영 부담).<br>
+      AI: 빌드 수급 시마다, 매일 밤, 회귀 의심 시마다 — <b class="c-green">빈도 무제한</b>.<br><br>
+      "더 자주 테스트"는 결함의 조기 발견을 의미 — 결함 발견이 늦을수록 수정 비용은
+      기하급수로 증가하므로, 빈도 확장 자체가 <b>간접 절감 효과</b>를 만든다.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">⚡ 시간 확장 — 야간/주말 활용</h3>
+      <p style="font-size:13px">사람의 가용 시간: 주 40시간.<br>
+      AI의 가용 시간: <b class="c-green">주 168시간</b> (24/7).<br><br>
+      야간 10시간만 활용해도 1계정당 <b>매일 3회+ BAT</b> 또는 <b>Functional 1회+</b> 수행 가능.
+      비근무 시간대 활용은 사람으로는 원천 불가능한 영역.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">⚡ 병렬 확장 — 계정/디바이스</h3>
+      <p style="font-size:13px">현재 1계정 170분 — 직렬 실행 기준.<br>
+      계정 N개 병렬 시 경과 시간 <b class="c-green">170/N분</b>으로 단축 가능 (TC 분할 전제).<br><br>
+      OS 4종(iOS/AOS/PC/화웨이) 병렬 인프라를 갖추면 사람 4인 병렬 구조를 그대로
+      기계로 복제 — 경과 시간 격차(6.8배)도 해소 가능.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 4. 한계 및 리스크 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[04]</span><h2>한계 및 리스크</h2></div>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th style="width:60px">등급</th><th style="width:240px">항목</th><th>내용</th><th style="width:260px">완화 방안</th></tr>
+    <tr>
+      <td><span class="badge b-red">HIGH</span></td>
+      <td>커버리지 상한 (현재 60%)</td>
+      <td>총 TC의 40%는 AI 수행 불가 영역 — 사람 테스트가 구조적으로 필수. 인원 "0명화"는 불가능하며, 절감은 부분 대체에 그침.</td>
+      <td>불가 영역 TC를 유형 분류 → 자동화 가능/불가 경계를 명시하고 분기별 재평가</td>
+    </tr>
+    <tr>
+      <td><span class="badge b-yellow">MED</span></td>
+      <td>검수 오버헤드</td>
+      <td>AI 결과의 사람 검수가 절감분을 잠식 (25분 → 실질 15분, 40% 손실). 신뢰도가 낮으면 검수 비중이 더 커질 수 있음.</td>
+      <td>오탐/미탐률 측정 → 신뢰 구간 확보 시 샘플링 검수로 전환</td>
+    </tr>
+    <tr>
+      <td><span class="badge b-yellow">MED</span></td>
+      <td>시나리오 유지보수 비용</td>
+      <td>8개 프로젝트 확장 시 UI 변경·패치마다 자동화 스크립트 수정 필요. 이 비용은 현재 측정에 미포함.</td>
+      <td>프로젝트당 유지보수 시간 실측 → 절감분에서 차감한 순절감 재산출</td>
+    </tr>
+    <tr>
+      <td><span class="badge b-cyan">LOW</span></td>
+      <td>경과 시간 (170분)</td>
+      <td>긴급 빌드 검증 시 사람(25분)보다 6.8배 느림 — 당일 출시 등 긴급 상황에서는 사람 병렬이 우위.</td>
+      <td>긴급=사람, 정기/야간=AI 역할 분담 + 계정 병렬화로 단축</td>
+    </tr>
+    <tr>
+      <td><span class="badge b-cyan">LOW</span></td>
+      <td>Functional 미지원</td>
+      <td>현재 가장 방대한 테스트(3h+)는 AI 수행 불가 — 최대 절감 레버가 아직 잠겨 있음.</td>
+      <td>로드맵 Phase 3 — BAT 안정화 후 Functional TC 단계적 확장</td>
+    </tr>
+  </table>
+  </div>
+
+  <div class="insight crit">
+    <span class="tag t-red">▼ 핵심 제약 — 인원 절감의 비선형성</span>
+    AI가 60%를 대체해도 잔여 40% TC는 여전히 <b>OS 4종 병렬 인력</b>을 요구한다. 즉 "60% 절감 = 인원 60% 감축"이 아니다 —
+    테스트 인원은 단계적으로만 줄고, 절감 효과는 당분간 <b>"인원 감축"이 아니라 "동일 인원의 처리량 확대"</b>(더 많은 프로젝트·더 자주)로 실현하는 것이 현실적이다.
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 5. 정성 효과 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[05]</span><h2>정량 외 효과 (정성)</h2></div>
+  <div class="grid g3">
+    <div class="card">
+      <h3 style="margin-top:0">🛡 빌드 안정성</h3>
+      <p style="font-size:13px">에픽세븐도 빌드 수급 시마다 반복 BAT 실행 가능 — 추가 인력 0으로
+      회귀 결함의 <b>조기 발견 창구</b>가 생긴다. 결함 수정 비용은 발견 시점이 늦을수록 증가하므로
+      직접 절감으로 환산되지 않는 숨은 가치.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🤝 개발사 측 절감</h3>
+      <p style="font-size:13px">개발사 사용성이 개선되면 개발사 측 자체 테스트 리소스 절감 기대 —
+      절감 효과가 <b>퍼블리셔 내부를 넘어 파트너까지 확장</b>되는 구조. 협업 관계 가치로도 작용.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">📊 측정 가능성</h3>
+      <p style="font-size:13px">AI 테스트는 실행 로그·결과가 구조화되어 <b>품질 지표의 시계열 축적</b>이 자동으로 이뤄진다.
+      사람 테스트 대비 추적성(traceability)·재현성이 높아 품질 리포팅 비용도 절감.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ascii-div">────────────────────────────────────────────────────────────────────────────────────────────────────────────</div>
+
+<!-- ═══════════ 6. 로드맵 ═══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-no">[06]</span><h2>확장 로드맵 & 권고</h2></div>
+  <div class="card">
+    <div class="roadmap">
+      <div class="rm-item active">
+        <span class="rm-phase c-green">PHASE 1 — 현재</span>
+        <div class="rm-title">에픽세븐 BAT 자동화 (60% 커버리지)</div>
+        <div class="rm-desc">실측 완료: 회당 15분(실질) 절감 · 1계정 170분 · 빌드 안정성 확보 단계</div>
+      </div>
+      <div class="rm-item next">
+        <span class="rm-phase c-cyan">PHASE 2 — 확장 예정</span>
+        <div class="rm-title">8개 프로젝트 BAT 확장</div>
+        <div class="rm-desc">빌드 수급별 실행으로 빈도 레버 활성화 → 연 104~312h 절감 구간 진입. 권고: 프로젝트별 빌드 빈도 실측 + 시나리오 유지보수 비용 추적</div>
+      </div>
+      <div class="rm-item future">
+        <span class="rm-phase c-magenta">PHASE 3 — 목표</span>
+        <div class="rm-title">Functional Test 커버리지 확장 + 야간 배치</div>
+        <div class="rm-desc">사람 3h+ 분량을 퇴근 시 AI 실행 → 출근 시 검수. 1프로젝트 연 52h+, 8프로젝트 416h+(≈52 PD) — 최대 ROI 레버</div>
+      </div>
+      <div class="rm-item future">
+        <span class="rm-phase" style="color:var(--mute)">PHASE 4 — 장기</span>
+        <div class="rm-title">검수 자동화 + 계정 병렬화</div>
+        <div class="rm-desc">오탐률 데이터 축적 → 샘플링 검수 전환(15분→25분 절감 복원) · 계정 N개 병렬로 경과 시간 170/N분 단축</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>권고 사항 요약</h3>
+  <div class="tbl-wrap">
+  <table>
+    <tr><th style="width:80px">우선순위</th><th>권고</th><th>근거</th></tr>
+    <tr><td><b class="c-red">P1</b></td><td>8개 프로젝트 확장 시 <b>프로젝트별 빌드 수급 빈도 실측</b></td><td>절감 효과가 빈도에 정비례 — 추정(104~312h)의 폭을 좁혀야 투자 판단 가능</td></tr>
+    <tr><td><b class="c-red">P1</b></td><td><b>시나리오 유지보수 비용 추적</b> 체계 선행 구축</td><td>현재 측정에 미포함된 유일한 대형 비용 — 순절감 왜곡 방지</td></tr>
+    <tr><td><b class="c-yellow">P2</b></td><td>오탐/미탐률 측정 시작 (검수 신뢰도 데이터 축적)</td><td>검수 40% 손실(25→15분)의 회복 경로 — 샘플링 검수 전환 근거</td></tr>
+    <tr><td><b class="c-yellow">P2</b></td><td>Functional TC 중 <b>자동화 우선순위 분류</b> (분량 큰 순)</td><td>3h+ 분량의 야간 배치가 최대 레버 — 커버리지 확장 착수점 명확화</td></tr>
+    <tr><td><b class="c-cyan">P3</b></td><td>긴급/정기 역할 분담 정책 명문화 (긴급=사람, 정기·야간=AI)</td><td>경과 시간 6.8배 격차의 운영적 해소</td></tr>
+  </table>
+  </div>
+</section>
+
+<footer>
+  <span>generated by QA Ops · AI Test Efficiency Analysis · f-terminal theme</span>
+  <span>data: 에픽세븐 BAT 실측 (2026-06) · 추정치는 가정 명시 항목 참조</span>
+</footer>
+
+</div>
+</body>
+</html>
