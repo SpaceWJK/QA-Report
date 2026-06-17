@@ -92,12 +92,16 @@ body::after{
 .tape.t-coral{background:rgba(217,105,74,.28)}
 
 .pin{
-  position:absolute;width:18px;height:18px;border-radius:50%;
+  position:absolute;top:-9px;left:50%;margin-left:-9px;
+  width:18px;height:18px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#ff8a6a,#c44a2c);
   box-shadow:0 3px 5px -1px rgba(45,27,14,.5);z-index:6;
 }
 .pin.p-teal{background:radial-gradient(circle at 35% 30%,#4f9a9a,#235757)}
 .pin.p-mustard{background:radial-gradient(circle at 35% 30%,#f3c451,#c2851a)}
+/* quest dot + tile (slide 7) */
+.qd{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:.5em;vertical-align:middle}
+.qtile{flex:1;text-align:center;font-weight:700;font-size:clamp(13px,1.05vw,16px);border:1.5px solid var(--line);border-radius:10px;padding:.6em .3em}
 
 .hand{font-family:var(--hand);color:var(--coral);line-height:1;font-weight:700}
 .arrow{position:absolute;pointer-events:none;z-index:4}
@@ -220,7 +224,7 @@ a.link .ar{font-weight:700}
     <div class="stage center">
       <span class="tape" style="top:6%;left:14%;transform:rotate(-7deg)"></span>
       <span class="tape t-teal" style="top:13%;right:18%;width:90px;transform:rotate(9deg)"></span>
-      <span class="pin p-teal" style="top:24%;right:9%"></span>
+      <span class="pin p-teal" style="top:24%;right:9%;left:auto;margin-left:0"></span>
 
       <span class="chip r d1" style="align-self:flex-start"><span class="dot"></span>QA Quality Ops · 2026</span>
 
@@ -246,24 +250,26 @@ a.link .ar{font-weight:700}
   <!-- ============ 02 · WHY (PROBLEM) ============ -->
   <section class="slide alt" data-title="문제의식">
     <div class="stage center">
-      <span class="eyebrow r d1">왜 시작했나 · The Problem</span>
-      <h2 class="h2 r d2" style="margin-top:.3em;max-width:18ch">
-        흩어진 데이터는<br><mark>잠들어 있을 뿐</mark>이다
+      <span class="eyebrow r d1">왜 시작했나 · THE PROBLEM</span>
+      <h2 class="h2 r d2" style="margin-top:.25em;max-width:22ch">
+        데이터는 쌓기 시작했지만,<br><mark>흩어져 있었다</mark>
       </h2>
+      <p class="lead r d3" style="margin-top:.7em;max-width:56ch">
+        테스트마다 생기고 그대로 휘발되던 데이터 — <strong style="color:var(--ink)">Data‑Driven QA Ops</strong> 구축을 목표로 <b>적재를 시작</b>. 그러나 적재처는 곳곳에 흩어졌다.
+      </p>
 
-      <div class="r d3" style="position:relative;margin-top:1.4em;height:46%;min-height:230px">
-        <!-- scattered source stickers = 파편화 시각화 -->
-        <span class="sticker lift" style="position:absolute;left:1%;top:4%;--rot:-8deg;font-weight:700"><span class="pin"></span>Wiki</span>
-        <span class="sticker lift" style="position:absolute;left:20%;top:34%;--rot:6deg;font-weight:700"><span class="pin p-teal"></span>Jira</span>
-        <span class="sticker lift" style="position:absolute;left:39%;top:2%;--rot:-3deg;font-weight:700"><span class="pin p-mustard"></span>Excel 시트</span>
-        <span class="sticker lift" style="position:absolute;left:58%;top:38%;--rot:9deg;font-weight:700"><span class="pin"></span>SharePoint</span>
-        <span class="sticker lift" style="position:absolute;left:78%;top:8%;--rot:-6deg;font-weight:700"><span class="pin p-teal"></span>PowerBI</span>
-        <div class="hand" style="position:absolute;right:2%;bottom:2%;font-size:clamp(20px,2vw,30px);color:var(--coral);transform:rotate(4deg)">파편화 — 따로 노는 품질 정보</div>
+      <div class="r d4" style="position:relative;margin-top:.9em;height:38%;min-height:190px">
+        <!-- scattered storage stickers = 파편화된 적재처 -->
+        <span class="sticker lift" style="position:absolute;left:1%;top:8%;--rot:-8deg;font-weight:700"><span class="pin"></span>Wiki</span>
+        <span class="sticker lift" style="position:absolute;left:21%;top:42%;--rot:6deg;font-weight:700"><span class="pin p-teal"></span>Jira</span>
+        <span class="sticker lift" style="position:absolute;left:40%;top:4%;--rot:-3deg;font-weight:700"><span class="pin p-mustard"></span>Excel 시트</span>
+        <span class="sticker lift" style="position:absolute;left:59%;top:44%;--rot:9deg;font-weight:700"><span class="pin"></span>SharePoint</span>
+        <span class="sticker lift" style="position:absolute;left:79%;top:12%;--rot:-6deg;font-weight:700"><span class="pin p-teal"></span>PowerBI</span>
+        <div class="hand" style="position:absolute;right:2%;bottom:0;font-size:clamp(19px,1.9vw,28px);color:var(--coral);transform:rotate(4deg)">파편화 — 따로 노는 품질 정보</div>
       </div>
 
-      <p class="lead r d4" style="margin-top:1em;max-width:50ch">
-        <strong style="color:var(--ink)">"관리되지 않는 데이터는 활용될 수 없다."</strong>
-        다양하고 파편화된 형태로 분산된 품질 데이터를 한곳으로 모으는 것에서 출발.
+      <p class="body r d5" style="margin-top:.5em;max-width:58ch;color:var(--mute)">
+        <strong style="color:var(--ink)">"관리되지 않는 데이터는 활용될 수 없다."</strong> 흩어진 적재를 한곳으로 모으는 데서 시스템이 출발했다.
       </p>
     </div>
   </section>
@@ -420,18 +426,32 @@ a.link .ar{font-weight:700}
   <section class="slide" data-title="QM-Quest">
     <div class="stage center">
       <span class="chip r d1" style="background:var(--coral-tint);align-self:flex-start"><span class="dot"></span>System 03 · 임무 관리</span>
-      <h2 class="h2 r d2" style="margin-top:.4em">QM‑Quest <span class="hand" style="font-size:.5em;color:var(--coral)">— 실과제를 퀘스트로</span></h2>
-      <p class="lead r d3" style="margin-top:.5em;max-width:48ch">조직 내 실과제와 Action Item을 <mark>Quest Board</mark> 형태로 운영 — 진행 현황·담당자·일정·우선순위를 한눈에</p>
+      <h2 class="h2 r d2" style="margin-top:.3em">QM‑Quest <span class="hand" style="font-size:.5em;color:var(--coral)">— 성장을 위한 퀘스트</span></h2>
+      <p class="lead r d3" style="margin-top:.4em;max-width:60ch">
+        애초에 실과제 관리가 아닌, 파트원의 <strong style="color:var(--ink)">업무 외 성장 과제</strong>를 퀘스트로 만들어 <strong style="color:var(--ink)">개인 또는 파티</strong>로 수행하며 개인의 성장을 도모하기 위해 출발.
+      </p>
 
-      <div class="grid r d4" style="grid-template-columns:repeat(4,1fr);margin-top:1.7em">
-        <div class="sticker lift" style="--rot:-2.5deg"><div class="kpi u-coral">진행</div><p class="body" style="margin-top:.4em">현황을 보드에서 즉시 파악</p></div>
-        <div class="sticker lift" style="--rot:1.5deg"><div class="kpi u-teal">담당</div><p class="body" style="margin-top:.4em">책임자가 명확하게 보인다</p></div>
-        <div class="sticker lift" style="--rot:-1deg"><div class="kpi u-mustard">일정</div><p class="body" style="margin-top:.4em">마감과 타임라인 추적</p></div>
-        <div class="sticker lift" style="--rot:2deg"><div class="kpi">우선</div><p class="body" style="margin-top:.4em">중요도 기준 정렬</p></div>
+      <div class="row r d4" style="flex-wrap:wrap;margin-top:1em;gap:.65em .9em">
+        <span class="sticker lift" style="--rot:-3deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--coral)"></span>AI 활용</span>
+        <span class="sticker lift" style="--rot:2deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--teal)"></span>밸런스 QA</span>
+        <span class="sticker lift" style="--rot:-1.5deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--mustard)"></span>데이터 분석</span>
+        <span class="sticker lift" style="--rot:2.5deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--teal)"></span>지식 내재화</span>
+        <span class="sticker lift" style="--rot:-2deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--coral)"></span>개발 지원</span>
+        <span class="sticker lift" style="--rot:1.5deg;padding:.5em .9em;font-weight:700"><span class="qd" style="background:var(--mustard)"></span>토론</span>
       </div>
 
-      <p class="lead r d5" style="margin-top:1.4em;max-width:52ch">
-        QA 경험과 운영 노하우를 <strong style="color:var(--ink)">개인 자산이 아닌 조직 자산</strong>으로 전환하는 기반.
+      <div class="sticker r d5" style="margin-top:1.2em;--rot:-.5deg;width:100%">
+        <h3 class="h3" style="color:var(--mute);font-size:clamp(13px,1.15vw,17px)">Quest Board — 진행 현황 · 담당자 · 일정 · 우선순위를 한눈에</h3>
+        <div class="row" style="margin-top:.7em;gap:.7em">
+          <span class="qtile" style="background:var(--coral-tint)">진행 현황</span>
+          <span class="qtile" style="background:var(--teal-tint)">담당자</span>
+          <span class="qtile" style="background:var(--mustard-tint)">일정</span>
+          <span class="qtile">우선순위</span>
+        </div>
+      </div>
+
+      <p class="lead r d6" style="margin-top:1em;max-width:62ch">
+        나아가 실과제·Action Item 관리까지 확장 — QA 경험과 노하우를 <strong style="color:var(--ink)">개인이 아닌 조직 자산</strong>으로.
       </p>
     </div>
   </section>
