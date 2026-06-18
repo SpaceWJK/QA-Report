@@ -248,9 +248,51 @@
   }
   .q-item.good { border-color: var(--ok); }
   .q-item.bad  { border-color: #FCA5A5; opacity: .8; }
-  .q-text { font-size: 13px; font-family: monospace; color: var(--text); flex: 1; word-break: break-all; }
+  .q-content { flex: 1; min-width: 0; }
+  .q-text { font-size: 13px; font-family: monospace; color: var(--text); word-break: break-all; display: block; }
   .q-item.bad .q-text { color: var(--text-dim); text-decoration: line-through; }
   .q-hint { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  /* action buttons */
+  .q-actions { display: flex; gap: 4px; flex-shrink: 0; align-items: flex-start; }
+  .q-btn {
+    background: var(--surface); border: 1.5px solid #CCCAC4;
+    color: var(--text-muted); font-size: 11px; padding: 3px 9px;
+    border-radius: 4px; cursor: pointer; white-space: nowrap;
+    box-shadow: 2px 2px 0 #CCCAC4;
+    transition: all .1s; font-family: inherit; font-weight: 700; line-height: 1.5;
+  }
+  .q-btn:hover { border-color: var(--text); color: var(--text); box-shadow: 2px 2px 0 var(--text); }
+  .q-btn.copied { background: #ECFDF5; color: var(--ok); border-color: var(--ok); box-shadow: 2px 2px 0 #14532D; }
+  .q-btn.edit-btn, .q-btn.del-btn { opacity: 0; pointer-events: none; transition: opacity .15s, border-color .1s, color .1s, box-shadow .1s; }
+  .q-item:hover .q-btn.edit-btn, .q-item:hover .q-btn.del-btn { opacity: 1; pointer-events: auto; }
+  .q-btn.edit-btn:hover { border-color: var(--wiki); color: var(--wiki); box-shadow: 2px 2px 0 var(--wiki-dark); }
+  .q-btn.del-btn:hover  { border-color: #DC2626; color: #DC2626; box-shadow: 2px 2px 0 #991B1B; }
+  .q-btn.save-btn   { border-color: var(--ok); color: var(--ok); box-shadow: 2px 2px 0 var(--gdi-dark); }
+  .q-btn.save-btn:hover { background: #ECFDF5; }
+  .q-item.editing .q-actions .edit-btn,
+  .q-item.editing .q-actions .del-btn { display: none; }
+
+  /* inline edit input */
+  .q-edit-input {
+    width: 100%; font-size: 13px; font-family: monospace; color: var(--text);
+    background: var(--surface); border: 1.5px solid var(--wiki);
+    border-radius: 4px; padding: 2px 8px; outline: none;
+    box-shadow: 2px 2px 0 var(--wiki-dark);
+  }
+
+  /* add example button */
+  .add-example-btn {
+    display: flex; align-items: center; gap: 7px;
+    width: 100%; margin-top: 6px; padding: 8px 14px;
+    background: var(--surface); border: 1.5px dashed #CCCAC4;
+    color: var(--text-dim); font-size: 12px; font-weight: 700;
+    border-radius: var(--radius-sm); cursor: pointer; font-family: inherit;
+    transition: all .1s;
+  }
+  .add-example-btn:hover { border-color: var(--ok); color: var(--ok); background: #F0FDF4; border-style: solid; }
+
+  /* legacy – kept for bad items that still use old markup */
   .copy-btn {
     background: var(--surface); border: 1.5px solid #CCCAC4;
     color: var(--text-muted); font-size: 11px; padding: 3px 9px;
@@ -543,7 +585,7 @@
             </ul>
           </div>
         </div>
-        <div class="examples-title" id="wiki-ex">✅ 활용 예시 (클릭하면 복사됩니다)</div>
+        <div class="examples-title" id="wiki-ex">✅ 활용 예시 — 호버 후 수정·삭제 가능</div>
         <div class="q-item good"><span class="q-text">/wiki 에픽세븐 6월에 발생한 핫픽스가 총 몇 건이고 몇 개의 이슈가 수정되었어?</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
         <div class="q-item good"><span class="q-text">/wiki 카제나 가장 최근 핫픽스 날짜와 수정된 내용 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
         <div class="q-item good"><span class="q-text">/wiki 이번 주 서비스기술위원회 주요 이슈 요약해줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
@@ -861,33 +903,222 @@
 </div>
 
 <script>
-function copy(btn) {
-  const text = btn.closest('.q-item').querySelector('.q-text').textContent.trim();
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓ 복사됨';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
+// ── Storage ──────────────────────────────────────────────
+const STORE_KEY = 'sb-guide-v1';
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {edits:{}, deleted:[], custom:[]}; }
+  catch { return {edits:{}, deleted:[], custom:[]}; }
+}
+function saveStore(s) { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+
+// ── Section detection ────────────────────────────────────
+function getSection(el) {
+  const card = el.closest('.cmd-card');
+  if (!card) return 'misc';
+  for (const s of ['wiki','jira','gdi','biskit']) {
+    if (card.classList.contains('cmd-card-' + s)) return s;
+  }
+  return 'misc';
+}
+
+// ── Build action buttons ─────────────────────────────────
+function makeActions(item) {
+  const wrap = document.createElement('div');
+  wrap.className = 'q-actions';
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'q-btn copy-btn'; copyBtn.textContent = '복사';
+  copyBtn.onclick = () => {
+    const t = item.querySelector('.q-text').textContent.trim();
+    navigator.clipboard.writeText(t).then(() => {
+      copyBtn.textContent = '✓ 복사됨'; copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = '복사'; copyBtn.classList.remove('copied'); }, 1500);
+    });
+  };
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'q-btn edit-btn'; editBtn.textContent = '✏️'; editBtn.title = '수정';
+  editBtn.onclick = () => startEdit(item);
+
+  const delBtn = document.createElement('button');
+  delBtn.className = 'q-btn del-btn'; delBtn.textContent = '✕'; delBtn.title = '삭제';
+  delBtn.onclick = () => deleteItem(item);
+
+  wrap.append(copyBtn, editBtn, delBtn);
+  return wrap;
+}
+
+// ── Transform existing default items ────────────────────
+function initItems() {
+  const store = loadStore();
+  const cnt = {wiki:0, jira:0, gdi:0, biskit:0, misc:0};
+
+  document.querySelectorAll('.q-item.good').forEach(item => {
+    const sec = getSection(item);
+    const id = sec + '-' + (cnt[sec] !== undefined ? cnt[sec]++ : 0);
+    item.dataset.id = id;
+
+    // Remove early (deleted defaults)
+    if (store.deleted.includes(id)) { item.remove(); return; }
+
+    // Remove legacy inline copy-btn
+    item.querySelector('button.copy-btn')?.remove();
+
+    // Wrap text + hint into .q-content if needed
+    if (!item.querySelector('.q-content')) {
+      const textEl = item.querySelector('.q-text');
+      const hintEl = item.querySelector('.q-hint');
+      const content = document.createElement('div');
+      content.className = 'q-content';
+      if (textEl) content.appendChild(textEl);
+      if (hintEl) content.appendChild(hintEl);
+      item.insertBefore(content, item.firstChild);
+    }
+
+    // Apply stored text edit
+    if (store.edits[id]) item.querySelector('.q-text').textContent = store.edits[id];
+
+    item.appendChild(makeActions(item));
+  });
+
+  // Re-render custom examples
+  store.custom.forEach(c => renderCustomItem(c.section, c.text, c.id));
+
+  // Add "예시 추가" button per section
+  ['wiki','jira','gdi','biskit'].forEach(insertAddBtn);
+}
+
+// ── Inline edit ──────────────────────────────────────────
+function startEdit(item) {
+  item.classList.add('editing');
+  const textEl = item.querySelector('.q-text');
+  const origText = textEl.textContent;
+
+  const input = document.createElement('input');
+  input.type = 'text'; input.className = 'q-edit-input'; input.value = origText;
+  textEl.replaceWith(input);
+  input.focus(); input.select();
+
+  const actions = item.querySelector('.q-actions');
+  actions.innerHTML = '';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'q-btn save-btn'; saveBtn.textContent = '저장';
+  saveBtn.onclick = () => commitEdit(item, input, origText, true);
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'q-btn cancel-btn'; cancelBtn.textContent = '취소';
+  cancelBtn.onclick = () => commitEdit(item, input, origText, false);
+
+  actions.append(saveBtn, cancelBtn);
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  commitEdit(item, input, origText, true);
+    if (e.key === 'Escape') commitEdit(item, input, origText, false);
   });
 }
 
+function commitEdit(item, input, origText, doSave) {
+  item.classList.remove('editing');
+  const finalText = doSave ? (input.value.trim() || origText) : origText;
+
+  const newSpan = document.createElement('span');
+  newSpan.className = 'q-text'; newSpan.textContent = finalText;
+  input.replaceWith(newSpan);
+
+  const actions = item.querySelector('.q-actions');
+  actions.replaceWith(makeActions(item));
+
+  if (doSave) {
+    const store = loadStore();
+    const id = item.dataset.id;
+    if (id.startsWith('custom-')) {
+      const c = store.custom.find(x => x.id === id);
+      if (c) c.text = finalText;
+    } else {
+      store.edits[id] = finalText;
+    }
+    saveStore(store);
+  }
+}
+
+// ── Delete ───────────────────────────────────────────────
+function deleteItem(item) {
+  const store = loadStore();
+  const id = item.dataset.id;
+  if (id.startsWith('custom-')) {
+    store.custom = store.custom.filter(c => c.id !== id);
+  } else {
+    if (!store.deleted.includes(id)) store.deleted.push(id);
+  }
+  saveStore(store);
+  item.style.transition = 'opacity .15s, transform .15s';
+  item.style.opacity = '0'; item.style.transform = 'translateX(8px)';
+  setTimeout(() => item.remove(), 160);
+}
+
+// ── Add custom example ───────────────────────────────────
+let _cid = Date.now();
+
+function renderCustomItem(sec, text, id) {
+  const body = document.querySelector('.cmd-card-' + sec + ' .cmd-card-body');
+  if (!body) return null;
+  const item = document.createElement('div');
+  item.className = 'q-item good'; item.dataset.id = id;
+  const content = document.createElement('div'); content.className = 'q-content';
+  const span = document.createElement('span'); span.className = 'q-text'; span.textContent = text;
+  content.appendChild(span); item.appendChild(content); item.appendChild(makeActions(item));
+  const addBtn = body.querySelector('.add-example-btn');
+  const badWrap = body.querySelector('.bad-group');
+  body.insertBefore(item, addBtn || badWrap || null);
+  return item;
+}
+
+function addExample(sec) {
+  const id = 'custom-' + (++_cid);
+  const store = loadStore();
+  store.custom.push({id, section: sec, text: ''});
+  saveStore(store);
+  const item = renderCustomItem(sec, '', id);
+  if (item) setTimeout(() => startEdit(item), 30);
+}
+
+function insertAddBtn(sec) {
+  const body = document.querySelector('.cmd-card-' + sec + ' .cmd-card-body');
+  if (!body) return;
+  const btn = document.createElement('button');
+  btn.className = 'add-example-btn';
+  btn.innerHTML = '<span style="font-size:15px;line-height:1;">＋</span> 예시 추가';
+  btn.onclick = () => addExample(sec);
+  const badWrap = body.querySelector('.bad-group');
+  body.insertBefore(btn, badWrap || null);
+}
+
+// ── Mark bad-example wrappers so insertBefore works ─────
+function markBadGroups() {
+  document.querySelectorAll('.cmd-card-body [style*="margin-top:14px"]').forEach(el => {
+    el.classList.add('bad-group');
+  });
+}
+
+// ── Nav/scroll ───────────────────────────────────────────
 function goto(id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-
-const sections = ['overview','howto','wiki','jira','gdi','biskit','games','scenarios','caution'];
+const _sections = ['overview','howto','wiki','jira','gdi','biskit','games','scenarios','caution'];
 window.addEventListener('scroll', () => {
   let cur = '';
-  sections.forEach(id => {
+  _sections.forEach(id => {
     const el = document.getElementById(id);
     if (el && window.scrollY >= el.offsetTop - 100) cur = id;
   });
   document.querySelectorAll('.nav-item').forEach(n => {
-    const fn = n.getAttribute('onclick') || '';
-    n.classList.toggle('active', fn.includes(`'${cur}'`));
+    n.classList.toggle('active', (n.getAttribute('onclick') || '').includes("'" + cur + "'"));
   });
-}, { passive: true });
+}, {passive: true});
 
+// ── Search ────────────────────────────────────────────────
 function doSearch(q) {
   q = q.trim().toLowerCase();
   if (!q) {
@@ -900,10 +1131,21 @@ function doSearch(q) {
     el.classList.toggle('hidden', !t.includes(q) && !h.includes(q));
   });
   document.querySelectorAll('.game-row').forEach(el => {
-    const t = (el.querySelector('.game-q')?.textContent || '').toLowerCase();
-    el.classList.toggle('hidden', !t.includes(q));
+    el.classList.toggle('hidden', !(el.querySelector('.game-q')?.textContent || '').toLowerCase().includes(q));
   });
 }
+
+// ── Legacy copy (bad items still use onclick="copy(this)") ──
+function copy(btn) {
+  const t = btn.closest('.q-item').querySelector('.q-text').textContent.trim();
+  navigator.clipboard.writeText(t).then(() => {
+    btn.textContent = '✓ 복사됨'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// ── Boot ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => { markBadGroups(); initItems(); });
 </script>
 </body>
 </html>
