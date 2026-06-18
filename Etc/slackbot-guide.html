@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>슬랙봇 활용 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #1A1A1A;
+    --text: #1A1A1A;
+    --text-muted: #555;
+    --text-dim: #888;
+
+    --wiki: #2563EB;
+    --wiki-light: #EFF6FF;
+    --wiki-dark: #1D4ED8;
+    --jira: #D97706;
+    --jira-light: #FFFBEB;
+    --jira-dark: #B45309;
+    --gdi: #059669;
+    --gdi-light: #ECFDF5;
+    --gdi-dark: #047857;
+    --biskit: #7C3AED;
+    --biskit-light: #F5F3FF;
+    --biskit-dark: #6D28D9;
+
+    --ok: #16A34A;
+    --warn: #CA8A04;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --s: 4px; /* shadow offset */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Pretendard', -apple-system, 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── Sticker primitives ── */
+  .stk { border: 2px solid var(--border); box-shadow: var(--s) var(--s) 0 var(--border); border-radius: var(--radius); }
+  .stk-wiki   { border-color: var(--wiki);   box-shadow: var(--s) var(--s) 0 var(--wiki-dark); }
+  .stk-jira   { border-color: var(--jira);   box-shadow: var(--s) var(--s) 0 var(--jira-dark); }
+  .stk-gdi    { border-color: var(--gdi);    box-shadow: var(--s) var(--s) 0 var(--gdi-dark); }
+  .stk-biskit { border-color: var(--biskit); box-shadow: var(--s) var(--s) 0 var(--biskit-dark); }
+
+  /* ── Layout ── */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 220px; min-width: 220px;
+    background: #EEEAE2;
+    border-right: 2px solid var(--border);
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+    padding: 24px 0;
+    flex-direction: column;
+    display: flex;
+  }
+  .sidebar-logo {
+    padding: 0 18px 18px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .sidebar-logo .logo-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--text); color: #fff;
+    font-size: 12px; font-weight: 800;
+    padding: 5px 10px; border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .sidebar-logo .sub { font-size: 11px; color: var(--text-dim); }
+  .nav-label {
+    font-size: 9px; font-weight: 800; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    padding: 10px 18px 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 18px;
+    font-size: 12px; color: var(--text-muted);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all .1s;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(0,0,0,.05); border-left-color: var(--text-dim); }
+  .nav-item.active { color: var(--text); font-weight: 700; border-left-color: var(--wiki); background: rgba(37,99,235,.06); }
+
+  .badge {
+    font-size: 10px; font-weight: 800; padding: 2px 7px;
+    border-radius: 4px; font-family: monospace;
+    border: 1.5px solid; white-space: nowrap;
+  }
+  .badge-wiki   { background: var(--wiki-light);   color: var(--wiki);   border-color: var(--wiki); }
+  .badge-jira   { background: var(--jira-light);   color: var(--jira);   border-color: var(--jira); }
+  .badge-gdi    { background: var(--gdi-light);    color: var(--gdi);    border-color: var(--gdi); }
+  .badge-biskit { background: var(--biskit-light); color: var(--biskit); border-color: var(--biskit); }
+
+  .main { flex: 1; padding: 40px 48px; max-width: 980px; }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--text); color: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 6px 6px 0 #555;
+    padding: 40px 44px; margin-bottom: 40px;
+    position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: '🤖';
+    position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+    font-size: 80px; opacity: .12; pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 10px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; color: #aaa; margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 28px; font-weight: 900; letter-spacing: -.8px;
+    line-height: 1.25; margin-bottom: 10px;
+  }
+  .hero p { color: #bbb; font-size: 13px; max-width: 520px; }
+  .hero-commands { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .cmd-pill {
+    display: inline-flex; align-items: center;
+    padding: 6px 16px; border-radius: 6px;
+    font-size: 13px; font-weight: 800; font-family: monospace;
+    border: 2px solid;
+  }
+  .cmd-pill-wiki   { border-color: var(--wiki);   color: var(--wiki);   background: rgba(37,99,235,.18); }
+  .cmd-pill-jira   { border-color: var(--jira);   color: var(--jira);   background: rgba(217,119,6,.18); }
+  .cmd-pill-gdi    { border-color: var(--gdi);    color: var(--gdi);    background: rgba(5,150,105,.18); }
+  .cmd-pill-biskit { border-color: var(--biskit); color: var(--biskit); background: rgba(124,58,237,.18); }
+
+  /* ── Section ── */
+  .section { margin-bottom: 56px; scroll-margin-top: 24px; }
+  .section-title {
+    font-size: 18px; font-weight: 900; letter-spacing: -.5px;
+    margin-bottom: 4px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-desc { color: var(--text-muted); font-size: 13px; margin-bottom: 22px; }
+
+  /* ── Coverage Matrix ── */
+  .matrix-wrap { overflow-x: auto; }
+  .matrix {
+    width: 100%; border-collapse: collapse;
+    border: 2px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  .matrix th, .matrix td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid #E5E5E0; font-size: 13px;
+  }
+  .matrix th {
+    background: var(--text); color: #fff;
+    font-weight: 800; font-size: 11px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .matrix td { background: var(--surface); }
+  .matrix tr:last-child td { border-bottom: none; }
+  .matrix tr:hover td { background: #F9F7F3; }
+  .matrix td:first-child { font-weight: 700; }
+  .cell {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 4px;
+    border: 1.5px solid; cursor: default; position: relative;
+  }
+  .cell-ok   { background: #ECFDF5; color: var(--ok);   border-color: var(--ok); }
+  .cell-warn { background: #FFFBEB; color: var(--warn); border-color: var(--warn); }
+  .cell-none { background: #F3F4F6; color: #6B7280;     border-color: #D1D5DB; }
+  .cell[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%);
+    background: var(--text); color: #fff; border: 1px solid #555;
+    font-size: 11px; font-weight: 400;
+    padding: 7px 11px; border-radius: 6px;
+    white-space: nowrap; z-index: 99;
+    pointer-events: none; box-shadow: 2px 2px 0 #555;
+  }
+
+  /* ── Command Cards ── */
+  .cmd-card {
+    border: 2px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; margin-bottom: 24px;
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  .cmd-card-header {
+    padding: 18px 22px;
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .cmd-card-header h3 { font-size: 16px; font-weight: 900; }
+  .cmd-card-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .cmd-card-body { padding: 22px; background: var(--surface); }
+
+  .cmd-icon {
+    width: 42px; height: 42px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; border: 2px solid;
+  }
+  .cmd-card-wiki   { border-color: var(--wiki);   box-shadow: 4px 4px 0 var(--wiki-dark); }
+  .cmd-card-jira   { border-color: var(--jira);   box-shadow: 4px 4px 0 var(--jira-dark); }
+  .cmd-card-gdi    { border-color: var(--gdi);    box-shadow: 4px 4px 0 var(--gdi-dark); }
+  .cmd-card-biskit { border-color: var(--biskit); box-shadow: 4px 4px 0 var(--biskit-dark); }
+  .cmd-card-wiki   .cmd-card-header { background: var(--wiki-light); }
+  .cmd-card-jira   .cmd-card-header { background: var(--jira-light); }
+  .cmd-card-gdi    .cmd-card-header { background: var(--gdi-light); }
+  .cmd-card-biskit .cmd-card-header { background: var(--biskit-light); }
+  .cmd-card-wiki   .cmd-icon { background: var(--wiki-light); color: var(--wiki); border-color: var(--wiki); }
+  .cmd-card-jira   .cmd-icon { background: var(--jira-light); color: var(--jira); border-color: var(--jira); }
+  .cmd-card-gdi    .cmd-icon { background: var(--gdi-light);  color: var(--gdi);  border-color: var(--gdi); }
+  .cmd-card-biskit .cmd-icon { background: var(--biskit-light); color: var(--biskit); border-color: var(--biskit); }
+
+  /* ── Info Grid ── */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .info-block {
+    background: var(--bg); border-radius: var(--radius-sm);
+    padding: 14px 16px; border: 1.5px solid #DEDAD2;
+  }
+  .info-block-label {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--text-dim); margin-bottom: 8px;
+  }
+  .info-block ul { list-style: none; }
+  .info-block li { font-size: 12px; color: var(--text-muted); padding: 2px 0; }
+  .info-block li::before { content: "▸"; margin-right: 6px; color: var(--text-dim); font-size: 9px; }
+
+  /* ── Examples ── */
+  .examples-title {
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--text-dim); margin-bottom: 10px;
+  }
+  .q-item {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+    background: var(--bg); border-radius: var(--radius-sm);
+    padding: 10px 14px; margin-bottom: 6px;
+    border: 1.5px solid; cursor: default;
+  }
+  .q-item.good { border-color: var(--ok); }
+  .q-item.bad  { border-color: #FCA5A5; opacity: .8; }
+  .q-text { font-size: 13px; font-family: monospace; color: var(--text); flex: 1; word-break: break-all; }
+  .q-item.bad .q-text { color: var(--text-dim); text-decoration: line-through; }
+  .q-hint { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .copy-btn {
+    background: var(--surface); border: 1.5px solid #CCCAC4;
+    color: var(--text-muted); font-size: 11px; padding: 3px 9px;
+    border-radius: 4px; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    box-shadow: 2px 2px 0 #CCCAC4;
+    transition: all .1s; font-family: inherit; font-weight: 700;
+  }
+  .copy-btn:hover { border-color: var(--text); color: var(--text); box-shadow: 2px 2px 0 var(--text); }
+  .copy-btn.copied { background: #ECFDF5; color: var(--ok); border-color: var(--ok); box-shadow: 2px 2px 0 #14532D; }
+
+  /* ── Quick Ref ── */
+  .quick-ref {
+    background: var(--surface); padding: 24px; margin-bottom: 32px;
+    border: 2px solid var(--border); border-radius: var(--radius);
+    box-shadow: 4px 4px 0 var(--border);
+  }
+  .quick-ref-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 18px; }
+  .qr-card {
+    border: 2px solid; border-radius: var(--radius-sm); padding: 14px; box-shadow: 3px 3px 0;
+  }
+  .qr-card-wiki   { border-color: var(--wiki);   background: var(--wiki-light);   box-shadow: 3px 3px 0 var(--wiki-dark); }
+  .qr-card-jira   { border-color: var(--jira);   background: var(--jira-light);   box-shadow: 3px 3px 0 var(--jira-dark); }
+  .qr-card-gdi    { border-color: var(--gdi);    background: var(--gdi-light);    box-shadow: 3px 3px 0 var(--gdi-dark); }
+  .qr-card-biskit { border-color: var(--biskit); background: var(--biskit-light); box-shadow: 3px 3px 0 var(--biskit-dark); }
+  .qr-cmd { font-size: 14px; font-weight: 900; font-family: monospace; margin-bottom: 6px; }
+  .qr-wiki { color: var(--wiki); } .qr-jira { color: var(--jira); }
+  .qr-gdi  { color: var(--gdi);  } .qr-biskit { color: var(--biskit); }
+  .qr-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── Game Grid ── */
+  .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .game-card {
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  .game-card h4 { font-size: 14px; font-weight: 900; margin-bottom: 4px; }
+  .game-card .game-sub {
+    font-size: 11px; color: var(--text-dim);
+    margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #E5E5E0;
+  }
+  .game-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid #F0EDE8; }
+  .game-row:last-child { border-bottom: none; }
+  .game-cmd {
+    font-size: 10px; font-weight: 800; font-family: monospace;
+    padding: 2px 6px; border-radius: 4px; white-space: nowrap;
+    flex-shrink: 0; margin-top: 2px; border: 1.5px solid;
+  }
+  .gc-wiki   { background: var(--wiki-light);   color: var(--wiki);   border-color: var(--wiki); }
+  .gc-jira   { background: var(--jira-light);   color: var(--jira);   border-color: var(--jira); }
+  .gc-gdi    { background: var(--gdi-light);    color: var(--gdi);    border-color: var(--gdi); }
+  .gc-biskit { background: var(--biskit-light); color: var(--biskit); border-color: var(--biskit); }
+  .game-q { font-size: 12px; color: var(--text-muted); }
+
+  /* ── Scenario ── */
+  .scenario {
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  .scenario h4 { font-size: 13px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .scenario-steps { list-style: none; counter-reset: step; }
+  .scenario-steps li {
+    counter-increment: step;
+    display: flex; align-items: flex-start; gap: 10px; padding: 6px 0;
+  }
+  .scenario-steps li::before {
+    content: counter(step);
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: var(--text); color: #fff;
+    font-size: 10px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .scenario-steps li code {
+    font-family: monospace; font-size: 12px;
+    background: var(--bg); padding: 2px 8px; border-radius: 4px;
+    color: var(--text); border: 1px solid #DEDAD2;
+  }
+
+  /* ── Caution ── */
+  .caution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .caution-item {
+    background: #FFF8F8; border: 2px solid #FCA5A5;
+    border-radius: var(--radius-sm); padding: 14px 16px;
+    box-shadow: 3px 3px 0 #FCA5A5;
+  }
+  .caution-item h5 { font-size: 12px; font-weight: 800; color: #DC2626; margin-bottom: 6px; }
+  .caution-item p { font-size: 12px; color: #666; }
+
+  /* ── Search ── */
+  .search-wrap { margin-bottom: 32px; }
+  .search-input {
+    width: 100%; padding: 12px 18px;
+    background: var(--surface); border: 2px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text); font-size: 14px;
+    outline: none; font-family: inherit;
+    box-shadow: 3px 3px 0 var(--border); transition: box-shadow .1s;
+  }
+  .search-input:focus { border-color: var(--wiki); box-shadow: 3px 3px 0 var(--wiki-dark); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 2px dashed #CCCAC4; margin: 32px 0; }
+
+  /* ── Info box ── */
+  .info-box {
+    border: 1.5px solid; border-radius: var(--radius-sm);
+    padding: 12px 16px; margin-bottom: 16px; font-size: 12px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; padding: 12px; }
+    .main { padding: 24px 20px; }
+    .info-grid, .game-grid, .caution-grid, .quick-ref-grid { grid-template-columns: 1fr; }
+    .hero::after { display: none; }
+  }
+
+  .hl { background: rgba(37,99,235,.18); border-radius: 2px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-badge">🤖 Slack Bot</div>
+    <div class="sub">4개 명령어 활용 레퍼런스</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">시작하기</div>
+    <div class="nav-item" onclick="goto('overview')">📊 전체 커버리지</div>
+    <div class="nav-item" onclick="goto('howto')">💡 사용 방법</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">명령어</div>
+    <div class="nav-item" onclick="goto('wiki')"><span class="badge badge-wiki">/wiki</span>&nbsp;내부 지식</div>
+    <div class="nav-item" onclick="goto('jira')"><span class="badge badge-jira">/jira</span>&nbsp;이슈 트래킹</div>
+    <div class="nav-item" onclick="goto('gdi')"><span class="badge badge-gdi">/gdi</span>&nbsp;기획서·데이터</div>
+    <div class="nav-item" onclick="goto('biskit')"><span class="badge badge-biskit">/biskit</span>&nbsp;지표·감성</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">게임별</div>
+    <div class="nav-item" onclick="goto('games')">🎮 게임별 가이드</div>
+    <div class="nav-item" onclick="goto('scenarios')">🔀 실무 시나리오</div>
+    <div class="nav-item" onclick="goto('caution')">⚠️ 한계·주의사항</div>
+  </div>
+</nav>
+
+<!-- ── Main ── -->
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Slack Bot 활용 가이드 · 2026</div>
+    <h1>무엇을 알고 싶나요?<br>어느 명령어로 물어볼지 알려드립니다.</h1>
+    <p>에픽세븐 · 카오스제로나이트메어 · 로드나인 · 로드나인 아시아<br>Wiki · JIRA · GDI · BISKIT 4개 시스템 연결</p>
+    <div class="hero-commands">
+      <span class="cmd-pill cmd-pill-wiki">/wiki</span>
+      <span class="cmd-pill cmd-pill-jira">/jira</span>
+      <span class="cmd-pill cmd-pill-gdi">/gdi</span>
+      <span class="cmd-pill cmd-pill-biskit">/biskit</span>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="search-wrap">
+    <input class="search-input" id="search" placeholder="🔍  질문 예시 검색 — 예: 핫픽스, DAU, 기획서, 리텐션..." oninput="doSearch(this.value)">
+  </div>
+
+  <!-- How to -->
+  <section class="section" id="howto">
+    <div class="section-title">💡 사용 방법</div>
+    <div class="section-desc">슬랙에서 <strong>/명령어</strong> + 스페이스 + 자연어 질문 입력</div>
+    <div class="quick-ref">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">슬랙 입력창 예시</div>
+      <div style="background:var(--bg);border:1.5px solid #DEDAD2;border-radius:8px;padding:14px 18px;font-family:monospace;font-size:13px;color:var(--text);margin:12px 0 0;">
+        <span style="color:var(--wiki);font-weight:800;">/wiki</span>&nbsp;<span style="color:var(--text-muted);">에픽세븐 6월에 발생한 핫픽스가 총 몇 건이고 몇 개의 이슈가 수정되었어?</span>
+      </div>
+      <div class="quick-ref-grid">
+        <div class="qr-card qr-card-wiki">
+          <div class="qr-cmd qr-wiki">/wiki</div>
+          <div class="qr-desc">핫픽스 이력·QA·서기위·점검 일정·인프라·보안 운영 지식</div>
+        </div>
+        <div class="qr-card qr-card-jira">
+          <div class="qr-cmd qr-jira">/jira</div>
+          <div class="qr-desc">버그 목록·이슈 상태·빌드 일정·담당자·이슈키 직접 조회</div>
+        </div>
+        <div class="qr-card qr-card-gdi">
+          <div class="qr-cmd qr-gdi">/gdi</div>
+          <div class="qr-desc">기획서·패치노트·캐릭터 사양서·게임 원본 데이터 테이블 (카제나 특화)</div>
+        </div>
+        <div class="qr-card qr-card-biskit">
+          <div class="qr-cmd qr-biskit">/biskit</div>
+          <div class="qr-desc">실시간 동접·DAU·리텐션·커뮤니티 긍부정 감성 분석</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coverage Matrix -->
+  <section class="section" id="overview">
+    <div class="section-title">📊 게임 × 시스템 커버리지</div>
+    <div class="section-desc">셀에 마우스를 올리면 상세 설명 및 대안 명령어를 안내합니다.</div>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>게임</th>
+            <th><span style="color:#93C5FD">/wiki</span></th>
+            <th><span style="color:#FCD34D">/jira</span></th>
+            <th><span style="color:#6EE7B7">/gdi</span></th>
+            <th><span style="color:#C4B5FD">/biskit</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⚔️ 에픽세븐</td>
+            <td><span class="cell cell-ok" data-tip="~11,400건 페이지. 핫픽스·QA·서기위 최다 보유">🟢 풍부</span></td>
+            <td><span class="cell cell-ok" data-tip="GEP 프로젝트 12,000건+ 이슈. 현행 버그 트래킹">🟢 풍부 (GEP)</span></td>
+            <td><span class="cell cell-warn" data-tip="TSV 게임 데이터 테이블만 있음 (기획서·pptx 없음). /wiki 참고">🟡 TSV만</span></td>
+            <td><span class="cell cell-ok" data-tip="DAU·마케팅 ROAS(15개국)·커뮤니티 감성">🟢 풍부</span></td>
+          </tr>
+          <tr>
+            <td>🌌 카오스제로나이트메어</td>
+            <td><span class="cell cell-ok" data-tip="핫픽스 이력·QA Weekly·서기위·보안점검 풍부">🟢 풍부</span></td>
+            <td><span class="cell cell-ok" data-tip="GCZ(버그 3K건) + CBOCZN(운영·빌드·SDK). 이원 구조">🟢 풍부 (GCZ/CBOCZN)</span></td>
+            <td><span class="cell cell-ok" data-tip="xlsx(기획서)·pptx·TSV 전부 보유. 3,114개 파일. 가장 풍부">🟢 풍부 (전체)</span></td>
+            <td><span class="cell cell-ok" data-tip="리텐션 D1~D28·인게임 경제(크리스탈)·콘텐츠·커뮤니티 감성">🟢 풍부</span></td>
+          </tr>
+          <tr>
+            <td>⚒️ 로드나인</td>
+            <td><span class="cell cell-ok" data-tip="핫픽스 히스토리·업데이트 시나리오·QA 결과물 풍부">🟢 풍부</span></td>
+            <td><span class="cell cell-ok" data-tip="LDN 프로젝트 3,849건. 컴포넌트 30개+ 세분화">🟢 풍부 (LDN)</span></td>
+            <td><span class="cell cell-none" data-tip="현재 GDI 미인덱싱. /wiki 또는 /jira 사용">⚫ 없음</span></td>
+            <td><span class="cell cell-warn" data-tip="CCU 실시간 + 커뮤니티 감성만. DAU 전용 지표 없음">🟡 CCU·커뮤니티</span></td>
+          </tr>
+          <tr>
+            <td>🌏 로드나인 아시아</td>
+            <td><span class="cell cell-ok" data-tip="베트남 런칭 문서·마켓 QA·SDK 모니터링 풍부">🟢 풍부</span></td>
+            <td><span class="cell cell-warn" data-tip="LNA 프로젝트. 로드나인 본서버 대비 이슈 수 적음">🟡 있음 (LNA)</span></td>
+            <td><span class="cell cell-none" data-tip="현재 GDI 미인덱싱. /wiki 또는 /jira 사용">⚫ 없음</span></td>
+            <td><span class="cell cell-warn" data-tip="CCU + 사전등록(국가별·채널별) + 커뮤니티. DAU 없음">🟡 CCU·사전등록</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- /wiki -->
+  <section class="section" id="wiki">
+    <div class="section-title"><span style="color:var(--wiki)">/wiki</span> — Confluence 내부 지식</div>
+    <div class="section-desc">팀이 쌓아온 운영 기록, QA 산출물, 핫픽스 이력, 기술 문서를 검색합니다.</div>
+    <div class="cmd-card cmd-card-wiki">
+      <div class="cmd-card-header">
+        <div class="cmd-icon">📖</div>
+        <div>
+          <h3>/wiki</h3>
+          <p>Confluence Wiki — 핫픽스·QA·서기위·점검·인프라·보안</p>
+        </div>
+      </div>
+      <div class="cmd-card-body">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-block-label">주요 데이터 종류</div>
+            <ul>
+              <li>핫픽스 이력 (게임별 연간 누적)</li>
+              <li>서비스기술위원회 주간회의 (전 게임)</li>
+              <li>QA Weekly / Daily Report / Sign-off</li>
+              <li>업데이트 오픈 시나리오·점검 일정</li>
+              <li>마켓 리뷰 결과 (Apple/Google/Meta)</li>
+              <li>보안 점검 결과</li>
+              <li>인프라·DB 운영 이슈</li>
+            </ul>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">핵심 페이지 ID (직접 참조)</div>
+            <ul>
+              <li>카제나 Hotfix 이슈 2026: <code style="color:var(--wiki);background:#EFF6FF;padding:1px 5px;border-radius:3px;">650589587</code></li>
+              <li>로드나인 핫픽스 이력 2026: <code style="color:var(--wiki);background:#EFF6FF;padding:1px 5px;border-radius:3px;">686863288</code></li>
+              <li>로드나인 아시아 핫픽스 이력: <code style="color:var(--wiki);background:#EFF6FF;padding:1px 5px;border-radius:3px;">686870717</code></li>
+              <li>주요 스페이스: PTL, SGPQA, SGPQAResult</li>
+              <li>게임 전용 스페이스 없음 → 게임명 명시 필수</li>
+            </ul>
+          </div>
+        </div>
+        <div class="examples-title" id="wiki-ex">✅ 활용 예시 (클릭하면 복사됩니다)</div>
+        <div class="q-item good"><span class="q-text">/wiki 에픽세븐 6월에 발생한 핫픽스가 총 몇 건이고 몇 개의 이슈가 수정되었어?</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 카제나 가장 최근 핫픽스 날짜와 수정된 내용 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 이번 주 서비스기술위원회 주요 이슈 요약해줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 로드나인 아시아 베트남 런칭 QA 이슈 현황</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 에픽세븐 이번 주 QA Weekly 결과</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 로드나인 아시아 최신 Apple 마켓 리뷰 통과 여부</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 카제나 보안 점검 최신 결과</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/wiki 에픽세븐 6월 17일 업데이트 점검 일정</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div style="margin-top:14px;">
+          <div class="examples-title">❌ 이런 질문은 다른 명령어로</div>
+          <div class="q-item bad"><span class="q-text">/wiki 에픽세븐 패치 기획서</span><span class="q-hint">→ /gdi 사용 (기획 문서는 GDI에 있음)</span></div>
+          <div class="q-item bad"><span class="q-text">/wiki 에픽세븐 DAU 수치</span><span class="q-hint">→ /biskit 사용 (지표 데이터는 BISKIT에 있음)</span></div>
+          <div class="q-item bad"><span class="q-text">/wiki 카제나 미해결 버그 목록</span><span class="q-hint">→ /jira 사용 (이슈 트래킹은 JIRA에 있음)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- /jira -->
+  <section class="section" id="jira">
+    <div class="section-title"><span style="color:var(--jira)">/jira</span> — 이슈 · 버그 트래킹</div>
+    <div class="section-desc">게임별 버그, 운영 이슈, 빌드 일정을 조회합니다. 이슈 키 직접 입력도 가능합니다.</div>
+    <div class="cmd-card cmd-card-jira">
+      <div class="cmd-card-header">
+        <div class="cmd-icon">🐛</div>
+        <div>
+          <h3>/jira</h3>
+          <p>JIRA — 버그·이슈·빌드일정·담당자·이슈키 직접조회</p>
+        </div>
+      </div>
+      <div class="cmd-card-body">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-block-label">게임별 프로젝트 키</div>
+            <ul>
+              <li>에픽세븐 버그: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">GEP</code> (~12,050건)</li>
+              <li>에픽세븐 구버전: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">EP7</code></li>
+              <li>카제나 버그: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">GCZ</code> (~2,981건)</li>
+              <li>카제나 운영/빌드: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">CBOCZN</code></li>
+              <li>로드나인 버그: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">LDN</code> (~3,849건)</li>
+              <li>로드나인 아시아: <code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">LNA</code></li>
+            </ul>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">이슈 제목 패턴</div>
+            <ul>
+              <li><code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">[QA X.X.X]</code> QA 환경 발견 버그</li>
+              <li><code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">[Live X.X.X]</code> 라이브 서비스 버그</li>
+              <li><code style="color:var(--jira);background:#FFFBEB;padding:1px 5px;border-radius:3px;">[카제나][빌드][0617]</code> 빌드 일정</li>
+              <li>우선순위: Blocker &gt; Critical &gt; Major &gt; Minor</li>
+              <li>상태: TE Review → 진행중 → Resolve → 닫힘</li>
+            </ul>
+          </div>
+        </div>
+        <div class="examples-title" id="jira-ex">✅ 활용 예시</div>
+        <div class="q-item good"><span class="q-text">/jira 카제나 6월에 생성된 이슈 개수 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 에픽세븐 현재 미해결 Critical 이상 버그 목록</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira GEP-12051</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 로드나인 오늘 신규 등록된 버그</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 카제나 이번 주 핫픽스 진행 중인 작업</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 로드나인 스킬 컴포넌트 관련 미해결 버그</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 에픽세븐 1.0.967 버전 QA 이슈 목록</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 로드나인 담당자 없는 미해결 이슈</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/jira 카제나 Android SDK 관련 작업 현황</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- /gdi -->
+  <section class="section" id="gdi">
+    <div class="section-title"><span style="color:var(--gdi)">/gdi</span> — 기획서 · 게임 데이터 테이블</div>
+    <div class="section-desc">게임 기획서, 패치노트, 캐릭터 사양서, 원본 데이터 테이블을 검색합니다. 현재 카제나 데이터가 가장 풍부합니다.</div>
+    <div class="cmd-card cmd-card-gdi">
+      <div class="cmd-card-header">
+        <div class="cmd-icon">📂</div>
+        <div>
+          <h3>/gdi</h3>
+          <p>GDI — 기획서(xlsx·pptx)·게임 데이터 테이블(tsv)</p>
+        </div>
+      </div>
+      <div class="cmd-card-body">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-block-label">게임별 커버리지</div>
+            <ul>
+              <li>카오스제로나이트메어: xlsx·pptx·TSV 전부 ✅</li>
+              <li>에픽세븐: TSV 게임 데이터만 ⚠️</li>
+              <li>로드나인: 미인덱싱 ❌</li>
+              <li>로드나인 아시아: 미인덱싱 ❌</li>
+            </ul>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">파일 종류</div>
+            <ul>
+              <li>xlsx: 패치노트·캐릭터 사양서·QA 사양서·밸런스</li>
+              <li>pptx: 기능 기획서·UI 플로우·작업 근거 문서</li>
+              <li>tsv: 스킬·스테이지·드랍·미션·재화 원본 테이블</li>
+            </ul>
+          </div>
+        </div>
+        <div class="info-box" style="background:var(--gdi-light);border-color:var(--gdi);color:var(--text-muted);">
+          💡 <strong style="color:var(--gdi)">카제나 파일 명명 규칙</strong> — <code style="color:var(--gdi);background:rgba(5,150,105,.08);padding:1px 6px;border-radius:3px;">#이슈번호 작업자이름 - 작업내용.xlsx</code> 형식. 캐릭터명·작업자명·이슈번호로 검색 가능.
+        </div>
+        <div class="examples-title" id="gdi-ex">✅ 활용 예시</div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 6월 17일 타겟 업데이트의 주요 기획서 항목이나 업데이트될 컨텐츠 및 기능들 정리해줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 나인 캐릭터 사양서 내용 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 최신 패치노트 주요 변경사항</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 시즌 2 전투원 밸런스 수정 리스트</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 포텐셜 노드 데이터 테이블</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 에픽세븐 드랍 테이블 구조</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/gdi 카제나 튜토리얼 관련 기획서 있어?</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div style="margin-top:14px;">
+          <div class="examples-title">❌ 이런 질문은 다른 명령어로</div>
+          <div class="q-item bad"><span class="q-text">/gdi 로드나인 기획서</span><span class="q-hint">→ 미인덱싱. /wiki 또는 /jira 사용</span></div>
+          <div class="q-item bad"><span class="q-text">/gdi 에픽세븐 패치노트 기획서</span><span class="q-hint">→ 에픽세븐 기획 문서 없음. TSV만 가능</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- /biskit -->
+  <section class="section" id="biskit">
+    <div class="section-title"><span style="color:var(--biskit)">/biskit</span> — 실시간 지표 · 커뮤니티 감성</div>
+    <div class="section-desc">동접, DAU, 리텐션, 커뮤니티 긍부정 감성 분석 데이터를 조회합니다.</div>
+    <div class="cmd-card cmd-card-biskit">
+      <div class="cmd-card-header">
+        <div class="cmd-icon">📈</div>
+        <div>
+          <h3>/biskit</h3>
+          <p>BISKIT — 실시간 동접·DAU·리텐션·마케팅 ROAS·커뮤니티 감성</p>
+        </div>
+      </div>
+      <div class="cmd-card-body">
+        <div class="info-grid">
+          <div class="info-block">
+            <div class="info-block-label">공통 지표 (4개 게임)</div>
+            <ul>
+              <li>실시간 동접 (CCU) — 5분 단위</li>
+              <li>커뮤니티 긍/중/부정 비율 (일별)</li>
+              <li>커뮤니티 키워드 랭킹·순위 변동</li>
+              <li>LLM 자동 여론 요약</li>
+              <li>기간 비교 분석 (전주 대비 등)</li>
+            </ul>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label">게임별 특화 지표</div>
+            <ul>
+              <li>에픽세븐: DAU·마케팅 ROAS (15개국)</li>
+              <li>카제나: 리텐션 D1~D28·크리스탈 경제·콘텐츠 플레이</li>
+              <li>로드나인: CCU + 커뮤니티만</li>
+              <li>로드나인 아시아: CCU + 사전등록 국가별</li>
+            </ul>
+          </div>
+        </div>
+        <div class="info-box" style="background:#FFF8F8;border-color:#FCA5A5;color:#666;">
+          ⚠️ <strong style="color:#DC2626;">매출·ARPU 지표 조회 불가</strong> — 현재 권한 범위에 포함되지 않습니다. 매출 관련 질문은 담당자에게 문의하세요.
+        </div>
+        <div class="examples-title" id="biskit-ex">✅ 활용 예시</div>
+        <div class="q-item good"><span class="q-text">/biskit 카제나 6월 1주차 커뮤니티 유저들의 긍정, 부정, 중립 동향 비율 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 에픽세븐 오늘 DAU 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 로드나인 지금 동접 몇 명이야</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 카제나 D7 리텐션 최근 추이 보여줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 에픽세븐 이번 달 한국 캠페인 D7 ROAS</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 카제나 크리스탈 유료/무료 소모 현황</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 로드나인 아시아 국가별 사전 등록자 수</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 에픽세븐 이번 주 커뮤니티 부정 키워드 상위 5개</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div class="q-item good"><span class="q-text">/biskit 카제나 튜토리얼 이탈 구간 알려줘</span><button class="copy-btn" onclick="copy(this)">복사</button></div>
+        <div style="margin-top:14px;">
+          <div class="examples-title">❌ 이런 질문은 주의</div>
+          <div class="q-item bad"><span class="q-text">/biskit 로드나인 DAU</span><span class="q-hint">→ CCU만 있음. DAU 전용 지표 없음</span></div>
+          <div class="q-item bad"><span class="q-text">/biskit 에픽세븐 매출</span><span class="q-hint">→ 매출 조회 권한 없음</span></div>
+          <div class="q-item bad"><span class="q-text">/biskit 에픽세븐 D7 리텐션</span><span class="q-hint">→ 에픽세븐 리텐션 지표 없음</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- Game Pages -->
+  <section class="section" id="games">
+    <div class="section-title">🎮 게임별 추천 질문</div>
+    <div class="section-desc">각 게임에서 자주 쓰는 질문 패턴을 정리했습니다.</div>
+    <div class="game-grid">
+      <div class="game-card">
+        <h4>⚔️ 에픽세븐</h4>
+        <div class="game-sub">JIRA: GEP · BISKIT: DAU·ROAS·커뮤니티</div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">에픽세븐 6월 핫픽스 총 몇 건?</span></div>
+        <div class="game-row"><span class="game-cmd gc-jira">/jira</span><span class="game-q">에픽세븐 미해결 Critical 버그 목록</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">에픽세븐 오늘 DAU</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">에픽세븐 이번 달 한국 D7 ROAS</span></div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">이번 주 서기위 에픽세븐 이슈 요약</span></div>
+        <div class="game-row"><span class="game-cmd gc-gdi">/gdi</span><span class="game-q">에픽세븐 드랍 테이블 구조</span></div>
+      </div>
+      <div class="game-card">
+        <h4>🌌 카오스제로나이트메어</h4>
+        <div class="game-sub">JIRA: GCZ·CBOCZN · GDI: 전체 · BISKIT: 경제·리텐션</div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">카제나 가장 최근 핫픽스 날짜</span></div>
+        <div class="game-row"><span class="game-cmd gc-gdi">/gdi</span><span class="game-q">카제나 6월 17일 업데이트 기획서</span></div>
+        <div class="game-row"><span class="game-cmd gc-jira">/jira</span><span class="game-q">카제나 이번 주 핫픽스 작업 현황</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">카제나 D7 리텐션 최근 추이</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">카제나 크리스탈 유료 소모 현황</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">카제나 커뮤니티 긍부정 동향</span></div>
+      </div>
+      <div class="game-card">
+        <h4>⚒️ 로드나인</h4>
+        <div class="game-sub">JIRA: LDN (컴포넌트 30+) · GDI 없음 · BISKIT: CCU·커뮤니티</div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">로드나인 가장 최근 핫픽스 내용</span></div>
+        <div class="game-row"><span class="game-cmd gc-jira">/jira</span><span class="game-q">로드나인 오늘 신규 버그</span></div>
+        <div class="game-row"><span class="game-cmd gc-jira">/jira</span><span class="game-q">로드나인 스킬 관련 미해결 버그</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">로드나인 지금 동접</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">로드나인 이번 주 커뮤니티 키워드</span></div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">로드나인 최근 업데이트 오픈 시나리오</span></div>
+      </div>
+      <div class="game-card">
+        <h4>🌏 로드나인 아시아</h4>
+        <div class="game-sub">JIRA: LNA · GDI 없음 · BISKIT: CCU·사전등록</div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">로드나인 아시아 최근 핫픽스</span></div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">로드나인 아시아 베트남 런칭 QA 이슈</span></div>
+        <div class="game-row"><span class="game-cmd gc-jira">/jira</span><span class="game-q">LNA 현재 미해결 버그</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">로드나인 아시아 지금 동접</span></div>
+        <div class="game-row"><span class="game-cmd gc-biskit">/biskit</span><span class="game-q">로드나인 아시아 국가별 사전 등록자 수</span></div>
+        <div class="game-row"><span class="game-cmd gc-wiki">/wiki</span><span class="game-q">로드나인 아시아 마켓 리뷰 현황</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scenarios -->
+  <section class="section" id="scenarios">
+    <div class="section-title">🔀 실무 활용 시나리오</div>
+    <div class="section-desc">업무 상황별 명령어 조합 가이드입니다.</div>
+
+    <div class="scenario">
+      <h4>🔴 업데이트 직후 서비스 상태 점검</h4>
+      <ul class="scenario-steps">
+        <li><code>/biskit 에픽세븐 오늘 vs 어제 동접 비교</code> — 업데이트 전후 동접 확인</li>
+        <li><code>/biskit 에픽세븐 오늘 커뮤니티 부정 게시글 급증 여부</code> — 여론 이상 감지</li>
+        <li><code>/jira GEP 오늘 신규 Critical/Blocker 버그</code> — 긴급 버그 확인</li>
+        <li><code>/wiki 에픽세븐 오늘 서기위 이슈 요약</code> — 운영팀 대응 현황</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h4>📋 카제나 신규 기능 QA 전 기획서 확인</h4>
+      <ul class="scenario-steps">
+        <li><code>/gdi 카제나 [기능명] 기획서</code> — 기능 기획 내용 확인</li>
+        <li><code>/gdi 카제나 [기능명] QA 사양서</code> — QA 체크리스트 확인</li>
+        <li><code>/jira CBOCZN 해당 빌드 점검 일정</code> — 배포 일정 확인</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h4>📉 커뮤니티 부정 여론 급증 원인 파악</h4>
+      <ul class="scenario-steps">
+        <li><code>/biskit [게임] 이번 주 부정 키워드 상위 5개</code> — 이슈 키워드 파악</li>
+        <li><code>/biskit [게임] 전주 대비 커뮤니티 여론 변화</code> — 변화 시점 확인</li>
+        <li><code>/jira [프로젝트] 해당 키워드 관련 최근 라이브 버그</code> — 연관 버그 확인</li>
+        <li><code>/wiki [게임] 최근 핫픽스·업데이트 내역</code> — 원인 이벤트 탐색</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h4>🚀 로드나인 아시아 신규 국가 런칭 준비 현황</h4>
+      <ul class="scenario-steps">
+        <li><code>/wiki 로드나인 아시아 [국가] 런칭 오픈 시나리오</code> — 배포 타임라인</li>
+        <li><code>/wiki 로드나인 아시아 마켓 리뷰 현황</code> — 스토어 승인 상태</li>
+        <li><code>/biskit 로드나인 아시아 [국가] 사전 등록 수</code> — 사전 유저 현황</li>
+        <li><code>/jira LNA 런칭 관련 미해결 이슈</code> — 블로커 이슈 확인</li>
+      </ul>
+    </div>
+
+    <div class="scenario">
+      <h4>📊 에픽세븐 마케팅 캠페인 성과 확인</h4>
+      <ul class="scenario-steps">
+        <li><code>/biskit 에픽세븐 이번 달 한국 D7 ROAS</code> — 핵심 마케팅 지표</li>
+        <li><code>/biskit 에픽세븐 신규 유저 수 추이</code> — 모객 성과 확인</li>
+        <li><code>/biskit 에픽세븐 국가별 캠페인 ROAS 비교</code> — 국가별 효율 비교</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Caution -->
+  <section class="section" id="caution">
+    <div class="section-title">⚠️ 한계 및 주의사항</div>
+    <div class="section-desc">조회가 안 되거나 다른 명령어를 써야 하는 경우입니다.</div>
+    <div class="caution-grid">
+      <div class="caution-item">
+        <h5>GDI 로드나인 / 로드나인 아시아</h5>
+        <p>현재 미인덱싱. /wiki, /jira로 대체하세요.</p>
+      </div>
+      <div class="caution-item">
+        <h5>GDI 에픽세븐 기획 문서</h5>
+        <p>TSV 데이터 테이블만 있음. 기획서·패치노트 조회 불가.</p>
+      </div>
+      <div class="caution-item">
+        <h5>BISKIT 매출·ARPU 지표</h5>
+        <p>권한 범위에 미포함. 모든 게임 매출 조회 불가.</p>
+      </div>
+      <div class="caution-item">
+        <h5>BISKIT 로드나인 DAU</h5>
+        <p>CCU 실시간 지표만 제공. DAU 전용 데이터 없음.</p>
+      </div>
+      <div class="caution-item">
+        <h5>BISKIT 에픽세븐 리텐션</h5>
+        <p>에픽세븐 리텐션 지표 없음. 카제나에서만 조회 가능.</p>
+      </div>
+      <div class="caution-item">
+        <h5>Wiki 검색 시 게임명 필수</h5>
+        <p>게임 전용 스페이스 없음. 반드시 "에픽세븐", "카제나" 등 게임명 포함해서 질문하세요.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+function copy(btn) {
+  const text = btn.closest('.q-item').querySelector('.q-text').textContent.trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ 복사됨';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function goto(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const sections = ['overview','howto','wiki','jira','gdi','biskit','games','scenarios','caution'];
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    const fn = n.getAttribute('onclick') || '';
+    n.classList.toggle('active', fn.includes(`'${cur}'`));
+  });
+}, { passive: true });
+
+function doSearch(q) {
+  q = q.trim().toLowerCase();
+  if (!q) {
+    document.querySelectorAll('.q-item, .game-row').forEach(el => el.classList.remove('hidden'));
+    return;
+  }
+  document.querySelectorAll('.q-item').forEach(el => {
+    const t = (el.querySelector('.q-text')?.textContent || '').toLowerCase();
+    const h = (el.querySelector('.q-hint')?.textContent || '').toLowerCase();
+    el.classList.toggle('hidden', !t.includes(q) && !h.includes(q));
+  });
+  document.querySelectorAll('.game-row').forEach(el => {
+    const t = (el.querySelector('.game-q')?.textContent || '').toLowerCase();
+    el.classList.toggle('hidden', !t.includes(q));
+  });
+}
+</script>
+</body>
+</html>
