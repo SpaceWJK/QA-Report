@@ -928,12 +928,23 @@ function makeActions(item) {
 
   const copyBtn = document.createElement('button');
   copyBtn.className = 'q-btn copy-btn'; copyBtn.textContent = '복사';
-  copyBtn.onclick = () => {
+  copyBtn.onclick = (e) => {
+    e.stopPropagation();
     const t = item.querySelector('.q-text').textContent.trim();
-    navigator.clipboard.writeText(t).then(() => {
+    const done = () => {
       copyBtn.textContent = '✓ 복사됨'; copyBtn.classList.add('copied');
       setTimeout(() => { copyBtn.textContent = '복사'; copyBtn.classList.remove('copied'); }, 1500);
-    });
+    };
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = t; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand('copy'); done(); } catch(_) {}
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t).then(done).catch(fallback);
+    } else { fallback(); }
   };
 
   const editBtn = document.createElement('button');
@@ -1138,10 +1149,19 @@ function doSearch(q) {
 // ── Legacy copy (bad items still use onclick="copy(this)") ──
 function copy(btn) {
   const t = btn.closest('.q-item').querySelector('.q-text').textContent.trim();
-  navigator.clipboard.writeText(t).then(() => {
+  const done = () => {
     btn.textContent = '✓ 복사됨'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 1500);
-  });
+  };
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = t; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); done(); } catch(_) {}
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done).catch(fallback); }
+  else { fallback(); }
 }
 
 // ── Boot ─────────────────────────────────────────────────
