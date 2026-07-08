@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>QM-Quest · 사용 가이드</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f7f4ed;--ink:#1a1612;--mute:#7a7062;--accent:#b8503a;--rule:#d4c8b3}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Inter',sans-serif;word-break:keep-all;overflow:hidden}
+
+/* ===== Horizontal slide magazine ===== */
+.deck{display:flex;height:100vh;width:100vw;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.deck::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100vw;width:100vw;height:100vh;scroll-snap-align:start;overflow-y:auto;overflow-x:hidden;padding:clamp(28px,4vw,64px) clamp(20px,4vw,72px) 96px;position:relative}
+.slide::-webkit-scrollbar{width:6px}
+.slide::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
+
+/* ===== Masthead (repeats atop every slide, condensed) ===== */
+.mast{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;padding-bottom:14px;border-bottom:3px double var(--ink);margin-bottom:28px}
+.mast-l{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;line-height:1}
+.mast-l em{color:var(--accent);font-style:italic}
+.mast-c{text-align:center;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
+.mast-r{font-size:10.5px;letter-spacing:.18em;color:var(--mute);text-align:right}
+@media(max-width:640px){.mast{grid-template-columns:1fr;text-align:left;gap:6px}.mast-c,.mast-r{text-align:left}}
+
+/* ===== Cover slide ===== */
+.hero{display:grid;grid-template-columns:2fr 1fr;gap:clamp(20px,3vw,40px);margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--rule)}
+.hero-l h1{font-family:'Newsreader',serif;font-size:clamp(36px,6vw,76px);font-weight:700;line-height:1.05;letter-spacing:-.025em;margin-bottom:16px}
+.hero-l h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.hero-l .lede{font-family:'Newsreader',serif;font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:#3d3528;max-width:640px}
+.hero-l .lede::first-letter{font-size:3.1em;float:left;line-height:.9;font-weight:700;padding:6px 10px 0 0;color:var(--accent);font-style:italic}
+.hero-r{border-left:1px solid var(--rule);padding-left:clamp(16px,2vw,28px)}
+.hero-r .label{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.hero-r .stat{font-family:'Newsreader',serif;font-size:42px;font-weight:700;line-height:1;margin-bottom:4px}
+.hero-r .stat-d{font-size:12.5px;color:var(--mute);margin-bottom:20px}
+@media(max-width:840px){.hero{grid-template-columns:1fr}.hero-r{border-left:none;border-top:1px solid var(--rule);padding-left:0;padding-top:20px}}
+
+/* ===== Section header ===== */
+.section-h{font-family:'Newsreader',serif;font-size:clamp(26px,3.2vw,42px);font-weight:700;font-style:italic;margin:0 0 22px;display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:14px}
+.section-h .badge{font-family:'Inter',sans-serif;font-style:normal;font-size:11px;color:var(--mute);letter-spacing:.2em;text-transform:uppercase}
+.section-sub{font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:var(--mute);margin:-14px 0 26px}
+
+/* ===== Grid / cards (concept cards, TOC, etc) ===== */
+.grid{display:grid;gap:clamp(14px,2vw,24px) clamp(18px,2.5vw,32px);grid-template-columns:repeat(4,1fr)}
+.grid.g2{grid-template-columns:repeat(2,1fr)}
+.grid.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.grid.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr!important}}
+
+.card{position:relative;padding-top:16px;border-top:1px solid var(--ink);display:flex;flex-direction:column}
+.card-num{font-family:'Newsreader',serif;font-style:italic;font-size:12px;color:var(--accent);margin-bottom:6px;letter-spacing:.05em}
+.card .nm{font-family:'Newsreader',serif;font-size:clamp(18px,2vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.01em;margin-bottom:8px}
+.card .desc{font-size:13.5px;line-height:1.6;color:#3d3528}
+
+/* ===== TOC ===== */
+.toc-item{display:flex;align-items:baseline;gap:14px;padding:14px 4px;border-bottom:1px solid var(--rule);cursor:pointer;transition:opacity .15s}
+.toc-item:hover{opacity:.6}
+.toc-item .tn{font-family:'Newsreader',serif;font-style:italic;color:var(--accent);font-size:14px;width:28px;flex:none}
+.toc-item .tt{font-family:'Newsreader',serif;font-size:19px;font-weight:700;flex:1}
+.toc-item .td{font-size:12.5px;color:var(--mute)}
+
+/* ===== Shot (screenshot) ===== */
+.shot-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(20px,3vw,40px);align-items:start}
+@media(max-width:980px){.shot-wrap{grid-template-columns:1fr}}
+.shot{width:100%;max-width:100%;border:1px solid var(--rule);border-radius:6px;box-shadow:0 4px 18px rgba(26,22,18,.08)}
+.cap{font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:13px;margin-top:10px}
+.dolist{list-style:none;margin-top:4px}
+.dolist li{position:relative;padding:9px 0 9px 22px;font-size:14px;line-height:1.6;border-bottom:1px dashed var(--rule)}
+.dolist li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-weight:700}
+.tip{margin-top:18px;padding:14px 16px;background:#efe8d8;border-left:3px solid var(--accent);font-size:13.5px;line-height:1.6}
+.tip b{color:var(--accent)}
+
+/* ===== Table ===== */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 22px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:2px solid var(--ink)}
+td.c{text-align:center}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px;border:1px solid rgba(0,0,0,.12)}
+.badge-pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;color:#fff}
+
+/* ===== Flow diagram ===== */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 26px;font-size:13px}
+.flow .fs{padding:8px 14px;border:1px solid var(--ink);border-radius:20px;font-weight:600;white-space:nowrap}
+.flow .arrow{color:var(--accent);font-size:16px}
+.flow .fs.warn{border-color:#b8503a;color:#b8503a}
+.flow .fs.mute{border-style:dashed;color:var(--mute);border-color:var(--rule)}
+
+.qa{margin-bottom:20px;padding-bottom:18px;border-bottom:1px dashed var(--rule)}
+.qa .q{font-family:'Newsreader',serif;font-weight:700;font-style:italic;font-size:16.5px;margin-bottom:6px}
+.qa .q::before{content:"Q. ";color:var(--accent)}
+.qa .a{font-size:14px;line-height:1.65;color:#3d3528;padding-left:18px}
+
+/* ===== Nav arrows / indicator ===== */
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--bg);border:none;font-size:18px;cursor:pointer;z-index:60;display:flex;align-items:center;justify-content:center;opacity:.85;transition:opacity .15s}
+.nav-btn:hover{opacity:1}
+.nav-btn.prev{left:16px}
+.nav-btn.next{right:16px}
+.nav-btn:disabled{opacity:.2;cursor:default}
+
+.pagebar{position:fixed;left:0;right:0;bottom:14px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:60;pointer-events:none}
+.pagebar .cnt{font-family:'Inter',monospace;font-size:11px;letter-spacing:.1em;color:var(--mute);background:rgba(247,244,237,.85);padding:3px 10px;border-radius:10px;pointer-events:auto}
+.dots{display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:center;max-width:90vw;padding:0 8px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--rule);border:none;cursor:pointer;transition:all .15s}
+.dot.on{background:var(--accent);width:18px;border-radius:4px}
+
+footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rule);text-align:center;font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:13px}
+.finale{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.finale .mk{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(30px,4vw,54px);margin-bottom:14px}
+.finale p{color:var(--mute);font-size:14px;margin-bottom:6px}
+
+/* ===== Mobile fallback: vertical scroll doc ===== */
+@media(max-width:840px){
+  body{overflow:auto}
+  .deck{display:block;height:auto;width:auto;overflow:visible;scroll-snap-type:none}
+  .slide{width:auto;height:auto;overflow:visible;scroll-snap-align:none;padding:22px 16px 60px;border-bottom:3px double var(--rule)}
+  .nav-btn{display:none}
+  .pagebar{display:none}
+}
+</style></head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ============ 1. 표지 ============ -->
+<section class="slide" id="s1" data-title="표지">
+  <div class="mast">
+    <div class="mast-l">QM-Quest<em>.</em></div>
+    <div class="mast-c">사용 가이드 · USER GUIDE</div>
+    <div class="mast-r">VOL. 01 · 2026.07</div>
+  </div>
+  <div class="hero">
+    <div class="hero-l">
+      <h1>QA 업무를<br><em>퀘스트</em>처럼 관리하기</h1>
+      <p class="lede">퀘스트를 깨듯 업무를 완료하는 QA 업무 관리 서비스, QM-Quest입니다. 팀원은 업무를 "퀘스트"로 생성하고 진행하며, 완료할 때마다 포인트가 쌓여 등급이 오릅니다. 이 가이드는 처음 이용하는 분도 화면을 따라가며 바로 시작할 수 있도록 구성했습니다.</p>
+    </div>
+    <div class="hero-r">
+      <div class="label">▸ Numbers</div>
+      <div class="stat">9</div>
+      <div class="stat-d">사이드바 메뉴</div>
+      <div class="label">▸ Roles</div>
+      <div class="stat">4</div>
+      <div class="stat-d">역할 (관리자·매니저·멤버·뷰어)</div>
+      <div class="label">▸ Themes</div>
+      <div class="stat">5</div>
+      <div class="stat-d">테마 (기본·픽셀·사이버펑크 외)</div>
+    </div>
+  </div>
+  <p style="font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:14px">→ 오른쪽으로 넘겨서 목차부터 확인해 보세요. 키보드 ← → 로도 이동할 수 있어요.</p>
+</section>
+
+<!-- ============ 2. 목차 ============ -->
+<section class="slide" id="s2" data-title="목차">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">CONTENTS</div><div class="mast-r">02 / 17</div></div>
+  <div class="section-h">목차 <span class="badge">Table of Contents</span></div>
+  <div id="toc-list"></div>
+</section>
+
+<!-- ============ 3. QM-Quest란? ============ -->
+<section class="slide" id="s3" data-title="QM-Quest란?">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">INTRODUCTION</div><div class="mast-r">03 / 17</div></div>
+  <div class="section-h">QM-Quest란? <span class="badge">Core Concepts</span></div>
+  <p class="section-sub">처음 보면 낯선 용어 4개만 알면, 나머지는 자연스럽게 이해돼요.</p>
+  <div class="grid">
+    <div class="card"><div class="card-num">No. 01</div><div class="nm">퀘스트<br><small style="font-weight:400;color:var(--mute);font-size:13px">Quest</small></div><div class="desc">우리가 흔히 말하는 "업무" 한 건입니다. 제목·마감일·담당자(파티장)를 가지고, 진행률이 0%에서 100%까지 올라갑니다.</div></div>
+    <div class="card"><div class="card-num">No. 02</div><div class="nm">에피소드<br><small style="font-weight:400;color:var(--mute);font-size:13px">Episode</small></div><div class="desc">여러 퀘스트를 묶는 상위 단위입니다. 프로젝트나 캠페인처럼, 관련된 업무들을 하나로 모아 진행 상황을 함께 봅니다.</div></div>
+    <div class="card"><div class="card-num">No. 03</div><div class="nm">길드<br><small style="font-weight:400;color:var(--mute);font-size:13px">Guild</small></div><div class="desc">팀 단위 그룹입니다. 소속 멤버가 퀘스트를 완료하면 포인트가 쌓여 길드 등급이 올라가고, 다른 길드와 랭킹으로 경쟁합니다.</div></div>
+    <div class="card"><div class="card-num">No. 04</div><div class="nm">파티장<br><small style="font-weight:400;color:var(--mute);font-size:13px">Leader</small></div><div class="desc">퀘스트를 실제로 책임지는 사람입니다. 진행률 업데이트, 완료 요청 등 퀘스트의 핵심 조작은 파티장(또는 관리자·매니저)만 할 수 있어요.</div></div>
+  </div>
+  <div class="tip"><b>비유로 정리하면</b> — "퀘스트=내가 해야 할 업무", "에피소드=업무들을 묶은 프로젝트", "길드=우리 팀"이라고 생각하시면 됩니다. 업무를 완료할 때마다 포인트를 얻고, 등급이 오르는 게임 같은 경험을 QA 업무에 그대로 적용한 서비스예요.</div>
+</section>
+
+<!-- ============ 4. 시작하기 ============ -->
+<section class="slide" id="s4" data-title="시작하기">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">GETTING STARTED</div><div class="mast-r">04 / 17</div></div>
+  <div class="section-h">시작하기 <span class="badge">Login &amp; Approval</span></div>
+  <div class="grid g3">
+    <div class="card"><div class="card-num">Step 01</div><div class="nm">로그인</div><div class="desc">이름과 비밀번호로 로그인합니다. 계정이 없다면 가입 신청을 먼저 진행하세요.</div></div>
+    <div class="card"><div class="card-num">Step 02</div><div class="nm">승인 대기</div><div class="desc">가입 신청 후에는 관리자의 승인이 필요합니다. 승인 전까지는 로그인이 제한될 수 있어요 — 조급해하지 않으셔도 됩니다.</div></div>
+    <div class="card"><div class="card-num">Step 03</div><div class="nm">이용 시작</div><div class="desc">관리자가 승인하면 바로 이용 가능합니다. 이때 역할(관리자/매니저/멤버/뷰어)이 함께 부여됩니다.</div></div>
+  </div>
+  <div class="flow">
+    <span class="fs">가입 신청</span><span class="arrow">→</span>
+    <span class="fs warn">관리자 승인 대기</span><span class="arrow">→</span>
+    <span class="fs">승인 완료 · 역할 부여</span><span class="arrow">→</span>
+    <span class="fs">로그인 &amp; 이용</span>
+  </div>
+  <div class="tip"><b>내 역할이 궁금하다면</b> — 우측 상단 프로필 또는 <em>설정</em> 메뉴에서 확인할 수 있어요. 역할에 따라 보이는 메뉴와 할 수 있는 조작이 달라지니, 헷갈리면 13페이지 "권한 안내"를 참고하세요.</div>
+</section>
+
+<!-- ============ 5. 대시보드 ============ -->
+<section class="slide" id="s5" data-title="대시보드">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">DASHBOARD</div><div class="mast-r">05 / 17</div></div>
+  <div class="section-h">대시보드 <span class="badge">Home</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/01-dashboard.png" alt="대시보드 화면" loading="lazy"><p class="cap">로그인 후 가장 먼저 보이는 화면 — 전체 퀘스트 운영 현황을 한눈에 확인합니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 확인할 수 있는 것</p>
+      <ul class="dolist">
+        <li>KPI 카드 6장 — 진행중/완료 퀘스트 수, 평균 진행률, 위험 퀘스트, 마감 임박, 활성 길드 수</li>
+        <li>Health(건강도) 분포 도넛 — 정상(초록)/정체(노랑)/위험(빨강) 비율과 위험 퀘스트 리스트</li>
+        <li>이번 달 마감 예정 퀘스트 리스트</li>
+        <li>에피소드별 진행률과 길드 랭킹 Top 순위</li>
+        <li>최근 활동(Activity) 피드</li>
+      </ul>
+      <div class="tip"><b>헷갈리기 쉬운 점</b> — 위험/마감임박 리스트를 클릭하면 대시보드에 머무는 게 아니라 <em>Quest 보드</em>로 이동해 해당 퀘스트 상세가 열립니다. "여기서 바로 상세를 본다"고 생각하지 말고, 클릭하면 화면이 전환된다는 걸 기억하세요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. Quest 보드 ============ -->
+<section class="slide" id="s6" data-title="Quest 보드">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">QUEST BOARD</div><div class="mast-r">06 / 17</div></div>
+  <div class="section-h">Quest 보드 <span class="badge">Quest &gt; Board</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/02-quest.png" alt="Quest 보드 화면" loading="lazy"><p class="cap">전체 퀘스트를 표 형태로 확인하고, 새 퀘스트를 만드는 곳입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">할 수 있는 일</p>
+      <ul class="dolist">
+        <li>퀘스트 목록 확인 — 상태·제목·유형·우선순위·진행률·마감일·파티장 등을 컬럼으로 표시</li>
+        <li>그룹 보기(에피소드별 묶음) / 평면 보기 전환</li>
+        <li>퀘스트 행을 클릭하면 우측에 상세 패널이 열림</li>
+        <li>상단 "퀘스트 생성" 탭에서 새 퀘스트 등록 — 프로젝트/제목/파티장/마감일은 필수 입력</li>
+      </ul>
+      <div class="tip"><b>참고</b> — 뷰어(VIEWER) 역할은 퀘스트를 조회만 할 수 있고, 생성 버튼을 눌러도 서버에서 차단됩니다. 화면 폭이 좁아지면 유형·우선순위 등 일부 컬럼이 자동으로 숨겨져요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. 퀘스트 라이프사이클 ============ -->
+<section class="slide" id="s7" data-title="퀘스트 라이프사이클">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">QUEST LIFECYCLE</div><div class="mast-r">07 / 17</div></div>
+  <div class="section-h">퀘스트 라이프사이클 <span class="badge">Status &amp; Flow</span></div>
+  <p class="section-sub">퀘스트는 아래 9가지 상태 중 하나를 가지며, 정해진 순서로만 이동합니다.</p>
+  <table>
+    <tr><th>상태</th><th>한글 라벨</th><th>게임 라벨</th><th>의미</th></tr>
+    <tr><td><span class="swatch" style="background:#57534E"></span>DRAFT</td><td>초안</td><td>Quest Draft</td><td>생성됨, 아직 승인 전</td></tr>
+    <tr><td><span class="swatch" style="background:#16A34A"></span>ACTIVE</td><td>진행</td><td>Quest Active</td><td>승인되어 진행 중</td></tr>
+    <tr><td><span class="swatch" style="background:#D97706"></span>COMPLETE_WAIT</td><td>검증</td><td>Clear Pending</td><td>완료 요청 후 관리자 검증 대기</td></tr>
+    <tr><td><span class="swatch" style="background:#2563EB"></span>COMPLETED</td><td>완료</td><td>Quest Clear!</td><td>완료 승인됨</td></tr>
+    <tr><td><span class="swatch" style="background:#DC2626"></span>FAILED</td><td>실패</td><td>Quest Failed</td><td>마감 초과로 자동 실패</td></tr>
+    <tr><td><span class="swatch" style="background:#D97706"></span>RETRY_WAIT</td><td>재시도</td><td>Retry Pending</td><td>재도전 요청 후 승인 대기</td></tr>
+    <tr><td><span class="swatch" style="background:#991B1B"></span>REJECTED</td><td>반려</td><td>Quest Rejected</td><td>관리자가 승인 거부</td></tr>
+    <tr><td><span class="swatch" style="background:#7C3AED"></span>POSTPONE</td><td>보류</td><td>Quest Hold</td><td>일시 중지</td></tr>
+    <tr><td><span class="swatch" style="background:#92400E"></span>DROP</td><td>중단</td><td>Quest Dropped</td><td>영구 중단 (종결 상태)</td></tr>
+  </table>
+  <div class="flow">
+    <span class="fs">생성(초안)</span><span class="arrow">→</span><span class="fs">승인·진행</span><span class="arrow">→</span><span class="fs">완료요청</span><span class="arrow">→</span><span class="fs">검증</span><span class="arrow">→</span><span class="fs">완료</span>
+  </div>
+  <div class="flow">
+    <span class="fs mute">마감 초과</span><span class="arrow">→</span><span class="fs warn">실패</span><span class="arrow">→</span><span class="fs mute">재도전 요청</span><span class="arrow">→</span><span class="fs">진행 복귀</span>
+  </div>
+  <div class="tip"><b>"완료 요청" 버튼이 안 눌려요</b> — 진행률만 100%로는 부족합니다. 서브퀘스트가 있으면 <em>모든 서브퀘스트가 완료 상태</em>여야 하고, 서브퀘스트가 없으면 <em>진행률 100% + 진행 메모(내용) 작성</em>이 함께 필요해요. 완료 요청은 파티장만 할 수 있습니다.</div>
+</section>
+
+<!-- ============ 8. Episode ============ -->
+<section class="slide" id="s8" data-title="Episode">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">EPISODE</div><div class="mast-r">08 / 17</div></div>
+  <div class="section-h">Episode <span class="badge">Quest &gt; Episode</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/03-episode.png" alt="Episode 화면" loading="lazy"><p class="cap">여러 퀘스트를 묶는 "업무 묶음" 단위를 관리하는 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 할 수 있는 일</p>
+      <ul class="dolist">
+        <li>에피소드 보드에서 진행 상황과 소속 퀘스트 확인</li>
+        <li>에피소드 상태 확인 — 진행 중 / 검증 / 완료 / 보류 / 중단 (5종)</li>
+        <li>에피소드 생성 탭 진입 (단, 생성 권한은 매니저 이상)</li>
+      </ul>
+      <div class="tip"><b>헷갈리기 쉬운 점</b> — "에피소드 생성" 버튼이 화면에 보이더라도, 일반 멤버 계정으로는 실제 생성이 되지 않습니다. 에피소드 생성·수정·삭제는 <b>매니저(QA_MANAGER) 또는 관리자(ADMIN)</b>만 가능해요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. Monitor ============ -->
+<section class="slide" id="s9" data-title="Monitor">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">MONITOR</div><div class="mast-r">09 / 17</div></div>
+  <div class="section-h">Monitor <span class="badge">Quest &gt; Monitor</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/04-monitor.png" alt="Monitor 화면" loading="lazy"><p class="cap">주의가 필요한 퀘스트만 모아서 보는 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 확인할 수 있는 것</p>
+      <ul class="dolist">
+        <li>마감 임박 퀘스트 리스트 (D-N 배지)</li>
+        <li>위험(danger) 퀘스트 — 블로커가 있고 오래 방치된 건</li>
+        <li>실패(failed) 퀘스트 — 마감을 넘겨 자동 실패 처리된 건</li>
+        <li>기간 탭(주간/월간/분기) 전환 및 항목 클릭 시 해당 퀘스트 상세로 이동</li>
+      </ul>
+      <div class="tip"><b>팁</b> — 팀 회의 전에 이 화면을 먼저 열어보면, 오늘 챙겨야 할 퀘스트를 빠르게 파악할 수 있어요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. Guild Hall & Guilds ============ -->
+<section class="slide" id="s10" data-title="Guild Hall & Guilds">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">GUILD</div><div class="mast-r">10 / 17</div></div>
+  <div class="section-h">Guild Hall &amp; Guilds <span class="badge">Team Ranking</span></div>
+  <div class="shot-wrap">
+    <div>
+      <img class="shot" src="img/05-guild-hall.png" alt="Guild Hall 화면" loading="lazy" style="margin-bottom:14px">
+      <img class="shot" src="img/06-guilds.png" alt="Guilds 목록 화면" loading="lazy">
+      <p class="cap">위: Guild Hall(랭킹 대시보드) · 아래: Guilds(길드 목록/창설)</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 할 수 있는 일</p>
+      <ul class="dolist">
+        <li>Guild Hall — 길드 랭킹, 등급 분포, 성장 추이를 그래프로 확인</li>
+        <li>Guilds — 전체 길드 목록 조회, 길드 창설 탭 진입</li>
+        <li>길드는 팀 단위 그룹으로, 소속 멤버의 퀘스트 완료 포인트가 쌓여 길드 등급이 올라갑니다</li>
+      </ul>
+      <div class="tip"><b>알아두면 좋은 점</b> — 한 사람이 소속될 수 있는 길드는 최대 3개까지입니다. Guild Hall은 독립적인 랭킹 대시보드로, Guilds 목록 화면과는 별개로 동작해요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. Members ============ -->
+<section class="slide" id="s11" data-title="Members">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">MEMBERS</div><div class="mast-r">11 / 17</div></div>
+  <div class="section-h">Members <span class="badge">Team Directory</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/07-members.png" alt="Members 화면" loading="lazy"><p class="cap">조직도 기준으로 전체 멤버를 조회하는 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 확인할 수 있는 것</p>
+      <ul class="dolist">
+        <li>조직(부서)별 멤버 요약 카드 및 검색·필터</li>
+        <li>멤버를 클릭하면 상세 패널이 열려 개인 포인트, 진행 중인 퀘스트, 소속 길드를 확인 가능</li>
+        <li>개인 포인트는 이번 달 획득분과 총합을 게이지바로 확인</li>
+      </ul>
+      <div class="tip"><b>참고</b> — 월간 포인트에는 25점 캡(상한)이 있어서, 이번 달 게이지가 가득 찼다면 더 완료해도 포인트가 추가되지 않아요. 다음 달에 다시 채워집니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. 포인트 & 등급 ============ -->
+<section class="slide" id="s12" data-title="포인트 & 등급">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">POINTS &amp; GRADES</div><div class="mast-r">12 / 17</div></div>
+  <div class="section-h">포인트 &amp; 등급 <span class="badge">Gamification</span></div>
+  <p class="section-sub">퀘스트를 완료하면 역할과 유형에 따라 포인트를 얻고, 누적 포인트로 등급이 올라갑니다.</p>
+  <div class="grid g2">
+    <div>
+      <table>
+        <tr><th>퀘스트 유형</th><th class="c">포인트</th></tr>
+        <tr><td>길드 퀘스트 (파티장)</td><td class="c">4pt</td></tr>
+        <tr><td>길드 퀘스트 (멤버)</td><td class="c">3pt</td></tr>
+        <tr><td>메인 퀘스트 (파티장)</td><td class="c">3pt</td></tr>
+        <tr><td>메인 퀘스트 (멤버)</td><td class="c">2pt</td></tr>
+      </table>
+      <p style="font-size:13px;color:var(--mute);margin-top:-12px">※ 월간 포인트 캡: 25pt</p>
+    </div>
+    <div>
+      <table>
+        <tr><th>개인 등급</th><th class="c">임계값</th></tr>
+        <tr><td><span class="swatch" style="background:#9E9E9E"></span>견습 탐색자</td><td class="c">0pt</td></tr>
+        <tr><td><span class="swatch" style="background:#4CAF50"></span>버그 사냥꾼</td><td class="c">10pt</td></tr>
+        <tr><td><span class="swatch" style="background:#2196F3"></span>품질 수호자</td><td class="c">24pt</td></tr>
+        <tr><td><span class="swatch" style="background:#9C27B0"></span>정밀 감찰관</td><td class="c">45pt</td></tr>
+        <tr><td><span class="swatch" style="background:#FF9800"></span>결함 파괴자</td><td class="c">75pt</td></tr>
+        <tr><td><span class="swatch" style="background:#FFD700"></span>심판의 현자</td><td class="c">120pt</td></tr>
+        <tr><td><span class="swatch" style="background:linear-gradient(90deg,#f4c46b,#e46a6a)"></span>전설의 검증자</td><td class="c">150pt</td></tr>
+      </table>
+    </div>
+  </div>
+  <table>
+    <tr><th>길드 등급</th><th class="c">임계값</th></tr>
+    <tr><td><span class="swatch" style="background:#78909C"></span>신생 결사</td><td class="c">0pt</td></tr>
+    <tr><td><span class="swatch" style="background:#26A69A"></span>탐사 기단</td><td class="c">12pt</td></tr>
+    <tr><td><span class="swatch" style="background:#5C6BC0"></span>정예 토벌대</td><td class="c">30pt</td></tr>
+    <tr><td><span class="swatch" style="background:#AB47BC"></span>왕립 근위단</td><td class="c">60pt</td></tr>
+    <tr><td><span class="swatch" style="background:linear-gradient(90deg,#e8c766,#c98a2e)"></span>불멸의 기사단</td><td class="c">100pt</td></tr>
+  </table>
+  <div class="tip"><b>Health(건강도) 신호등이란?</b> — 각 퀘스트 상단에 표시되는 초록/노랑/빨강 배지입니다. <b>초록</b>은 정상 진행, <b>노랑</b>은 30일 이상 업데이트가 없거나 진행이 정체된 상태, <b>빨강</b>은 블로커(막힌 이유)가 있고 오래 방치된 위험 상태를 뜻해요. 단, 생성한 지 30일 이내인 퀘스트는 항상 초록으로 표시됩니다.</div>
+</section>
+
+<!-- ============ 13. 권한 안내 ============ -->
+<section class="slide" id="s13" data-title="권한 안내">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">PERMISSIONS</div><div class="mast-r">13 / 17</div></div>
+  <div class="section-h">권한 안내 <span class="badge">Role Matrix</span></div>
+  <p class="section-sub">역할에 따라 보이는 메뉴와 할 수 있는 조작이 다릅니다. "내가 못 하는 게 정상"인 경우를 미리 알아두세요.</p>
+  <table>
+    <tr><th>기능</th><th class="c">관리자</th><th class="c">매니저</th><th class="c">멤버</th><th class="c">뷰어</th></tr>
+    <tr><td>퀘스트 조회</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td></tr>
+    <tr><td>퀘스트 생성</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td></tr>
+    <tr><td>퀘스트 진행/완료요청 (본인이 파티장인 경우)</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td></tr>
+    <tr><td>에피소드 생성/관리</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>퀘스트 관리자 승인/반려</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>Guild/Member 관리자 탭</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>회원 관리 (승인/역할변경)</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>월간 보고서 확정</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>설정 (테마/알림 개인설정)</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td></tr>
+  </table>
+  <div class="tip"><b>뷰어(VIEWER)이신가요?</b> — 뷰어는 모든 화면을 조회할 수 있지만, 생성·수정 버튼은 눌러도 서버에서 막힙니다. 이는 오류가 아니라 의도된 읽기 전용 권한이에요. 권한이 필요하면 관리자에게 역할 변경을 요청하세요.</div>
+</section>
+
+<!-- ============ 14. 관리자 메뉴 ============ -->
+<section class="slide" id="s14" data-title="관리자 메뉴">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">ADMIN</div><div class="mast-r">14 / 17</div></div>
+  <div class="section-h">관리자 메뉴 <span class="badge">Admin Panel</span></div>
+  <p class="section-sub">매니저 이상 역할에게만 사이드바에 "관리자" 그룹이 노출됩니다. 총 7개 탭으로 구성됩니다.</p>
+  <div class="grid g2" style="margin-bottom:24px">
+    <div class="card"><div class="card-num">매니저도 접근 가능</div><div class="nm" style="font-size:17px">요청 승인 · 월간 보고서<br>Quest 관리 · Episode 관리</div><div class="desc">승인 대기 항목 처리, 보고서 열람/코멘트, 퀘스트·에피소드 상태 워크플로 처리가 가능합니다.</div></div>
+    <div class="card"><div class="card-num">관리자(ADMIN) 전용</div><div class="nm" style="font-size:17px">회원 관리 · Guild 관리<br>Member 관리</div><div class="desc">사용자 승인/역할변경/삭제, 길드·멤버 관리자 기능은 관리자만 접근할 수 있습니다.</div></div>
+  </div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/09-admin-approvals.png" alt="요청 승인 탭" loading="lazy"><p class="cap">요청 승인 탭 — 대기 중인 승인 요청을 처리합니다.</p></div>
+    <div><img class="shot" src="img/11-admin-quest.png" alt="Quest 관리 탭" loading="lazy"><p class="cap">Quest 관리 탭 — 승인/반려/완료승인/연장·재도전 승인 등을 처리합니다.</p></div>
+  </div>
+  <div class="tip"><b>참고</b> — 매니저 계정으로 <em>회원 관리</em> 탭에 직접 진입하면 자동으로 <em>요청 승인</em> 탭으로 이동합니다. 오류가 아니라 권한에 따른 정상 동작이에요.</div>
+</section>
+
+<!-- ============ 15. 설정 ============ -->
+<section class="slide" id="s15" data-title="설정">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">SETTINGS</div><div class="mast-r">15 / 17</div></div>
+  <div class="section-h">설정 <span class="badge">Preferences</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/13-settings.png" alt="설정 화면" loading="lazy"><p class="cap">알림, 테마, 비밀번호를 관리하는 개인 설정 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 할 수 있는 일</p>
+      <ul class="dolist">
+        <li>알림 설정 — 퀘스트 활동/시스템 알림 켜고 끄기</li>
+        <li>테마 변경 — 아래 5종 중 선택</li>
+        <li>비밀번호 변경</li>
+      </ul>
+      <table style="margin-top:14px">
+        <tr><th>테마</th><th>분위기</th></tr>
+        <tr><td><span class="swatch" style="background:#3b82f6"></span>기본</td><td>슬레이트 다크 (현재 운영 테마)</td></tr>
+        <tr><td><span class="swatch" style="background:#355d17"></span>픽셀 게임</td><td>농장 톤 픽셀 아트</td></tr>
+        <tr><td><span class="swatch" style="background:#ec4899"></span>사이버 펑크</td><td>인디고 + 마젠타 + 네온 시안</td></tr>
+        <tr><td><span class="swatch" style="background:#c9a24b"></span>중세 판타지</td><td>다크 월넛 길드홀 + 금박</td></tr>
+        <tr><td><span class="swatch" style="background:#2e8b6f"></span>무협 무림</td><td>먹빛 + 화선지 + 비취/주사 인장</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. FAQ ============ -->
+<section class="slide" id="s16" data-title="FAQ / 팁">
+  <div class="mast"><div class="mast-l">QM-Quest<em>.</em></div><div class="mast-c">FAQ</div><div class="mast-r">16 / 17</div></div>
+  <div class="section-h">FAQ / 팁 <span class="badge">자주 헷갈리는 것들</span></div>
+  <div class="grid g2">
+    <div>
+      <div class="qa"><div class="q">완료 요청 버튼이 안 눌러져요.</div><div class="a">진행률 100% 외에 진행 메모 작성이 필요합니다(서브퀘스트가 없는 경우). 서브퀘스트가 있다면 전부 완료 상태여야 해요.</div></div>
+      <div class="qa"><div class="q">에피소드를 만들려는데 반영이 안 돼요.</div><div class="a">에피소드 생성은 매니저 이상만 가능합니다. 일반 멤버 계정에서는 서버가 거부합니다.</div></div>
+      <div class="qa"><div class="q">대시보드에서 위험 퀘스트를 클릭했더니 다른 화면으로 넘어가요.</div><div class="a">정상 동작이에요. 대시보드는 요약만 보여주고, 상세 확인·조작은 Quest 보드에서 이루어집니다.</div></div>
+      <div class="qa"><div class="q">포인트를 얻었는데 이번 달 총합이 그대로예요.</div><div class="a">월간 포인트 캡(25pt)에 도달했을 수 있어요. 초과분은 반영되지 않고 다음 달에 다시 쌓입니다.</div></div>
+    </div>
+    <div>
+      <div class="qa"><div class="q">퀘스트 상태가 갑자기 "실패"로 바뀌었어요.</div><div class="a">마감일이 지나면 시스템이 자동으로 진행 중 퀘스트를 실패로 전환합니다. 재도전 요청을 통해 다시 진행할 수 있어요.</div></div>
+      <div class="qa"><div class="q">반려된 퀘스트를 방치하면 어떻게 되나요?</div><div class="a">반려 상태로 5일이 지나면 자동으로 "중단(DROP)"으로 전환됩니다. 빠르게 재제출하거나 확인이 필요해요.</div></div>
+      <div class="qa"><div class="q">회원 관리 탭이 안 보여요.</div><div class="a">회원 관리는 관리자(ADMIN) 전용입니다. 매니저 계정에는 노출되지 않아요.</div></div>
+      <div class="qa"><div class="q">길드에 여러 개 가입할 수 있나요?</div><div class="a">네, 최대 3개까지 동시에 소속될 수 있습니다.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. 마지막 페이지 ============ -->
+<section class="slide" id="s17" data-title="마지막">
+  <div class="finale">
+    <div style="font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:12px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:18px">End of Guide</div>
+    <div class="mk">QM-Quest<em style="color:var(--accent)">.</em></div>
+    <p>궁금한 점은 팀 관리자에게 문의해 주세요.</p>
+    <p>이 가이드는 QM-Quest 서비스 구조 조사 결과를 바탕으로 작성되었습니다.</p>
+    <p style="margin-top:24px;font-size:12px;letter-spacing:.15em">VOL. 01 · 2026.07 · USER GUIDE</p>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<button class="nav-btn prev" id="btnPrev" aria-label="이전">←</button>
+<button class="nav-btn next" id="btnNext" aria-label="다음">→</button>
+<div class="pagebar">
+  <div class="dots" id="dots"></div>
+  <div class="cnt" id="cnt">1 / 17</div>
+</div>
+
+<script>
+const deck=document.getElementById('deck');
+const slides=Array.from(document.querySelectorAll('.slide'));
+const dotsWrap=document.getElementById('dots');
+const cnt=document.getElementById('cnt');
+const btnPrev=document.getElementById('btnPrev');
+const btnNext=document.getElementById('btnNext');
+
+// TOC data
+const toc=[
+  {n:'01',t:'표지',d:'서비스 한 줄 소개'},
+  {n:'03',t:'QM-Quest란?',d:'핵심 개념 4가지'},
+  {n:'04',t:'시작하기',d:'로그인 · 가입 승인'},
+  {n:'05',t:'대시보드',d:'운영 현황 한눈에 보기'},
+  {n:'06',t:'Quest 보드',d:'퀘스트 목록 · 생성'},
+  {n:'07',t:'퀘스트 라이프사이클',d:'상태 9종 · 흐름도'},
+  {n:'08',t:'Episode',d:'업무 묶음 관리'},
+  {n:'09',t:'Monitor',d:'마감임박 · 위험 · 실패'},
+  {n:'10',t:'Guild Hall & Guilds',d:'팀 랭킹 · 길드 목록'},
+  {n:'11',t:'Members',d:'조직도 기반 멤버 조회'},
+  {n:'12',t:'포인트 & 등급',d:'게임화 요소 전체 표'},
+  {n:'13',t:'권한 안내',d:'4역할 매트릭스'},
+  {n:'14',t:'관리자 메뉴',d:'7개 탭 개요'},
+  {n:'15',t:'설정',d:'알림 · 테마 · 비밀번호'},
+  {n:'16',t:'FAQ / 팁',d:'헷갈리는 점 모음'},
+  {n:'17',t:'마지막 페이지',d:'문의 안내'}
+];
+document.getElementById('toc-list').innerHTML=toc.map((it,i)=>{
+  const idx=slides.findIndex(s=>s.dataset.title===it.t);
+  return `<div class="toc-item" data-idx="${idx}"><span class="tn">${it.n}</span><span class="tt">${it.t}</span><span class="td">${it.d}</span></div>`;
+}).join('');
+
+// dots
+slides.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.className='dot'; d.dataset.idx=i;
+  d.addEventListener('click',()=>goTo(i));
+  dotsWrap.appendChild(d);
+});
+const dots=Array.from(dotsWrap.children);
+
+function isMobile(){return window.innerWidth<=840}
+
+function currentIndex(){
+  if(isMobile()) return -1;
+  const w=deck.clientWidth;
+  return Math.round(deck.scrollLeft/w);
+}
+function updateUI(){
+  if(isMobile()) return;
+  const i=currentIndex();
+  dots.forEach((d,idx)=>d.classList.toggle('on',idx===i));
+  cnt.textContent=`${i+1} / ${slides.length}`;
+  btnPrev.disabled=i<=0;
+  btnNext.disabled=i>=slides.length-1;
+}
+function goTo(i){
+  if(isMobile()){
+    slides[i].scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  i=Math.max(0,Math.min(slides.length-1,i));
+  deck.scrollTo({left:i*deck.clientWidth,behavior:'smooth'});
+}
+btnPrev.addEventListener('click',()=>goTo(currentIndex()-1));
+btnNext.addEventListener('click',()=>goTo(currentIndex()+1));
+deck.addEventListener('scroll',()=>{clearTimeout(deck._t);deck._t=setTimeout(updateUI,80)});
+window.addEventListener('resize',()=>{clearTimeout(window._rt);window._rt=setTimeout(updateUI,120)});
+document.addEventListener('keydown',e=>{
+  if(isMobile())return;
+  if(e.key==='ArrowRight')goTo(currentIndex()+1);
+  if(e.key==='ArrowLeft')goTo(currentIndex()-1);
+});
+document.getElementById('toc-list').addEventListener('click',e=>{
+  const item=e.target.closest('.toc-item');
+  if(item) goTo(parseInt(item.dataset.idx,10));
+});
+updateUI();
+</script>
+</body></html>
