@@ -137,13 +137,13 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
     <div class="hero-r">
       <div class="label">▸ Tabs</div>
       <div class="stat">6</div>
-      <div class="stat-d">상단 탭 (+ 숨김 1개, GS-1 전용)</div>
+      <div class="stat-d">상단 탭</div>
       <div class="label">▸ Projects</div>
-      <div class="stat">6</div>
-      <div class="stat-d">게임 프로젝트 (Epicseven · ChaosZero Nightmare 등)</div>
+      <div class="stat">9</div>
+      <div class="stat-d">게임 프로젝트 (준비 중 포함, Epicseven · ChaosZero Nightmare 등)</div>
       <div class="label">▸ Data Sources</div>
-      <div class="stat">7</div>
-      <div class="stat-d">데이터 소스 종류 (JIRA·QA·REPORT·OPS·DEVICE·QUEST·USER)</div>
+      <div class="stat">6</div>
+      <div class="stat-d">데이터 소스 종류 (JIRA·QA·REPORT·OPS·DEVICE·USER)</div>
     </div>
   </div>
   <p style="font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:14px">→ 오른쪽으로 넘겨서 목차부터 확인해 보세요. 키보드 ← → 로도 이동할 수 있어요.</p>
@@ -186,7 +186,7 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
     <span class="fs">③ 기간/추가 필터로 좁히기</span><span class="arrow">→</span>
     <span class="fs">④ 카드·차트·테이블 확인</span>
   </div>
-  <div class="tip"><b>우상단 고정 요소</b> — 모든 탭에서 우상단에 서비스 이동 런처(⊞), GS-1 버튼, GS-2 버튼(준비 중, 비활성)이 항상 표시됩니다. GS-1은 비밀번호 입력 시 숨겨진 QUEST 탭이 나타나는 진입점입니다.</div>
+  <div class="tip"><b>우상단 고정 요소</b> — 모든 탭에서 우상단에 서비스 이동 런처(⊞)가 항상 표시됩니다.</div>
 </section>
 
 <!-- ============ 5. JIRA 탭 ============ -->
@@ -197,7 +197,7 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
     <div>
       <img class="shot" src="img/01-jira-lordnine-monthly.png" alt="JIRA 탭 - Lordnine 월간" loading="lazy" style="margin-bottom:14px">
       <img class="shot" src="img/02-jira-scroll.png" alt="JIRA 탭 - 이슈 테이블 스크롤" loading="lazy">
-      <p class="cap">위: 요약 카드 · 이슈 추이 · 분포 차트 · 아래: 이슈 테이블(검색·필터·페이지네이션)</p>
+      <p class="cap">위: 요약 카드 · 이슈 추이 · 분포 차트 · 아래: 이슈 목록(우선순위·상태 필터 + 페이지네이션)</p>
     </div>
     <div>
       <p style="font-size:14px;margin-bottom:8px;font-weight:600">화면 구성 (위→아래)</p>
@@ -251,7 +251,7 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
     <div>
       <img class="shot" src="img/04-qa-chaoszero.png" alt="QA 탭 - ChaosZero Nightmare" loading="lazy" style="margin-bottom:14px">
       <img class="shot" src="img/05-qa-scroll.png" alt="QA 탭 - 차트 스크롤" loading="lazy">
-      <p class="cap">위: 헤더 메트릭 · Stat Block · 아래: 업데이트/핫픽스 등 차트 영역</p>
+      <p class="cap">위: 헤더 메트릭 · Stat Block · 아래: 커뮤니티 이슈(AI Insight) 등 하단 차트 영역</p>
     </div>
     <div>
       <p style="font-size:14px;margin-bottom:8px;font-weight:600">화면 구성</p>
@@ -275,21 +275,37 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
 <section class="slide" id="s8" data-title="REPORT 탭">
   <div class="mast"><div class="mast-l">QA-Dashboard<em>.</em></div><div class="mast-c">REPORT</div><div class="mast-r">08 / 14</div></div>
   <div class="section-h">REPORT 탭 <span class="badge">Service Quality · Update Analysis</span></div>
+  <p class="section-sub">한 화면에서 "서비스 품질 리포트"와 "업데이트 분석 리포트" 두 종류를 세그먼트 탭으로 전환하며 확인합니다.</p>
   <div class="shot-wrap">
-    <div><img class="shot" src="img/06-report-epicseven.png" alt="REPORT 탭 - Epicseven" loading="lazy"><p class="cap">서비스 품질 리포트 / 업데이트 분석 리포트를 세그먼트 탭으로 전환합니다.</p></div>
     <div>
-      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이용 가능 게임 — 현재 2종만 제공</p>
+      <img class="shot" src="img/06-report-epicseven.png" alt="REPORT 탭 - 서비스 품질 리포트" loading="lazy" style="margin-bottom:14px">
+      <img class="shot" src="img/11-report-update-analysis.png" alt="REPORT 탭 - 업데이트 분석 리포트" loading="lazy">
+      <p class="cap">위: 서비스 품질 리포트(등급 · S1~S4 지표) · 아래: 업데이트 분석 리포트(OVERVIEW 핵심요약)</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">① 서비스 품질 리포트 — 무엇을 평가하나요</p>
+      <ul class="dolist">
+        <li>업데이트(차수)마다 이슈 검출률·빌드 완성도·안정성·유저 반응(BISKIT)을 종합해 <b>A~D 등급</b>으로 산출</li>
+        <li>S1 요약(이슈/빌드/QA 리스크) · S2 유저 동향(BISKIT 감성분석) · S3 지표 추이 · S4 등급 평가(compositeScore + breakdown) 4개 섹션으로 구성</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">② 업데이트 분석 리포트 — 구성 섹션</p>
+      <ul class="dolist">
+        <li>OVERVIEW(핵심요약) — AU 변화율 · NRU 변화율, PRE/POST 비교 기간, 결론 신호를 한 화면에 요약</li>
+        <li>하단 네비게이션으로 섹션 전환: 핵심요약 → 참여 분석 → (게임별) 트래픽·경제·PVP 또는 가챠 → 콘텐츠·교란요인 → 결론</li>
+        <li>교란요인(이벤트/버그 등 외부 변수)과 한계점(limitations), 참고 데이터셋 출처도 함께 표기</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">이용 가능 게임 — 현재 2종만 제공</p>
       <ul class="dolist">
         <li>활성(클릭 가능): Epicseven, ChaosZero Nightmare</li>
         <li>나머지 프로젝트는 회색으로 표시되며 클릭 불가</li>
       </ul>
       <p style="font-size:14px;margin:14px 0 8px;font-weight:600">조작 순서</p>
       <ul class="dolist">
-        <li>① 좌측에서 게임 클릭(2종만 가능) → ② 하단 Archive 목록에서 날짜 클릭</li>
-        <li>③ 헤더 가운데 "서비스 품질" / "업데이트 분석" 세그먼트로 전환(데이터 없는 쪽은 비활성)</li>
-        <li>④ 필요 시 "Report 저장" 버튼으로 HTML 파일 다운로드</li>
+        <li>① 좌측에서 게임 클릭(2종만 가능) → ② 좌측 하단 Archive(날짜별 과거 리포트 목록)에서 날짜 클릭해 과거 리포트 열람</li>
+        <li>③ 헤더 가운데 "서비스 품질" / "업데이트 분석" 세그먼트로 전환(해당 날짜에 데이터 없는 쪽은 비활성)</li>
+        <li>④ 필요 시 "Report 저장" 버튼으로 현재 보고 있는 리포트를 HTML 파일로 다운로드</li>
       </ul>
-      <div class="tip"><b>완성도 지시자</b> — 헤더 우측 점 표시(품질 리포트 4개 / 분석 리포트 5개)로 데이터 완성도를 확인할 수 있습니다. 녹색=완성, 주황=일부 누락, 빨강=핵심 데이터 미충족. 정합성 검수가 완료되지 않으면 "Report 저장" 버튼이 비활성화됩니다.</div>
+      <div class="tip"><b>완성도 지시자</b> — 헤더 우측 점 표시(품질 리포트 4개 / 분석 리포트 섹션 수만큼)로 데이터 완성도를 확인할 수 있습니다. 녹색=완성, 주황=일부 누락, 빨강=핵심 데이터 미충족. 정합성 검수가 완료되지 않으면 "Report 저장" 버튼이 비활성화됩니다.</div>
     </div>
   </div>
 </section>
@@ -379,7 +395,6 @@ footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rul
     <tr><td>REPORT</td><td>업데이트(차수)별로 축적된 서비스 품질 리포트(등급 A~D)와 업데이트 분석 리포트(참여/가챠/콘텐츠) 아카이브</td></tr>
     <tr><td>OPS</td><td>서비스 장애(인시던트) 및 핫픽스 배포 이력 — 심각도, 복구 시간(MTTR), 발생 추이</td></tr>
     <tr><td>DEVICE</td><td>사내 테스트용 디바이스 재고 현황 및 대여 신청/승인 워크플로우</td></tr>
-    <tr><td>QUEST <span style="color:var(--mute)">(GS-1 전용)</span></td><td>길드/에피소드/멤버 등 운영 콘텐츠 관리용 자체 게시판 형태 데이터</td></tr>
     <tr><td>USER</td><td>커뮤니티·SNS 게시글을 크롤링해 언어권·권역별로 집계한 유저 반응 데이터. 감정분석/토픽 추출 결과 포함</td></tr>
   </table>
   <div class="tip"><b>업데이트 주기</b> — 각 데이터는 실시간이 아니라 주기적으로 수집·집계됩니다. 최신 이슈나 게시글이 화면에 바로 나타나지 않을 수 있으니, 급한 확인은 원본 시스템(JIRA 등)도 함께 참고하세요.</div>
