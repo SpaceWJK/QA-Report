@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>QA Workflow · 사용 가이드</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f7f4ed;--ink:#1a1612;--mute:#7a7062;--accent:#b8503a;--rule:#d4c8b3}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:'Pretendard','Inter',sans-serif;word-break:keep-all;overflow:hidden}
+
+/* ===== Horizontal slide magazine ===== */
+.deck{display:flex;height:100vh;width:100vw;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.deck::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100vw;width:100vw;height:100vh;scroll-snap-align:start;overflow-y:auto;overflow-x:hidden;padding:clamp(28px,4vw,64px) clamp(20px,4vw,72px) 96px;position:relative}
+.slide::-webkit-scrollbar{width:6px}
+.slide::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
+
+/* ===== Masthead (repeats atop every slide, condensed) ===== */
+.mast{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;padding-bottom:14px;border-bottom:3px double var(--ink);margin-bottom:28px}
+.mast-l{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;line-height:1}
+.mast-l em{color:var(--accent);font-style:italic}
+.mast-c{text-align:center;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--mute)}
+.mast-r{font-size:10.5px;letter-spacing:.18em;color:var(--mute);text-align:right}
+@media(max-width:640px){.mast{grid-template-columns:1fr;text-align:left;gap:6px}.mast-c,.mast-r{text-align:left}}
+
+/* ===== Cover slide ===== */
+.hero{display:grid;grid-template-columns:2fr 1fr;gap:clamp(20px,3vw,40px);margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--rule)}
+.hero-l h1{font-family:'Newsreader',serif;font-size:clamp(36px,6vw,76px);font-weight:700;line-height:1.05;letter-spacing:-.025em;margin-bottom:16px}
+.hero-l h1 em{font-style:italic;font-weight:400;color:var(--accent)}
+.hero-l .lede{font-family:'Newsreader',serif;font-size:clamp(16px,1.3vw,19px);line-height:1.6;color:#3d3528;max-width:640px}
+.hero-l .lede::first-letter{font-size:3.1em;float:left;line-height:.9;font-weight:700;padding:6px 10px 0 0;color:var(--accent);font-style:italic}
+.hero-r{border-left:1px solid var(--rule);padding-left:clamp(16px,2vw,28px)}
+.hero-r .label{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px}
+.hero-r .stat{font-family:'Newsreader',serif;font-size:42px;font-weight:700;line-height:1;margin-bottom:4px}
+.hero-r .stat-d{font-size:12.5px;color:var(--mute);margin-bottom:20px}
+@media(max-width:840px){.hero{grid-template-columns:1fr}.hero-r{border-left:none;border-top:1px solid var(--rule);padding-left:0;padding-top:20px}}
+
+/* ===== Section header ===== */
+.section-h{font-family:'Newsreader',serif;font-size:clamp(26px,3.2vw,42px);font-weight:700;font-style:italic;margin:0 0 22px;display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--rule);padding-bottom:14px}
+.section-h .badge{font-family:'Inter',sans-serif;font-style:normal;font-size:11px;color:var(--mute);letter-spacing:.2em;text-transform:uppercase}
+.section-sub{font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:var(--mute);margin:-14px 0 26px}
+
+/* ===== Grid / cards (concept cards, TOC, etc) ===== */
+.grid{display:grid;gap:clamp(14px,2vw,24px) clamp(18px,2.5vw,32px);grid-template-columns:repeat(4,1fr)}
+.grid.g2{grid-template-columns:repeat(2,1fr)}
+.grid.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.grid.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid{grid-template-columns:1fr!important}}
+
+.card{position:relative;padding-top:16px;border-top:1px solid var(--ink);display:flex;flex-direction:column}
+.card-num{font-family:'Newsreader',serif;font-style:italic;font-size:12px;color:var(--accent);margin-bottom:6px;letter-spacing:.05em}
+.card .nm{font-family:'Newsreader',serif;font-size:clamp(18px,2vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.01em;margin-bottom:8px}
+.card .desc{font-size:13.5px;line-height:1.6;color:#3d3528}
+
+/* ===== TOC ===== */
+.toc-item{display:flex;align-items:baseline;gap:14px;padding:14px 4px;border-bottom:1px solid var(--rule);cursor:pointer;transition:opacity .15s}
+.toc-item:hover{opacity:.6}
+.toc-item .tn{font-family:'Newsreader',serif;font-style:italic;color:var(--accent);font-size:14px;width:28px;flex:none}
+.toc-item .tt{font-family:'Newsreader',serif;font-size:19px;font-weight:700;flex:1}
+.toc-item .td{font-size:12.5px;color:var(--mute)}
+
+/* ===== Shot (screenshot) ===== */
+.shot-wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(20px,3vw,40px);align-items:start}
+@media(max-width:980px){.shot-wrap{grid-template-columns:1fr}}
+.shot{width:100%;max-width:100%;border:1px solid var(--rule);border-radius:6px;box-shadow:0 4px 18px rgba(26,22,18,.08)}
+.cap{font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:13px;margin-top:10px}
+.dolist{list-style:none;margin-top:4px}
+.dolist li{position:relative;padding:9px 0 9px 22px;font-size:14px;line-height:1.6;border-bottom:1px dashed var(--rule)}
+.dolist li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-weight:700}
+.tip{margin-top:18px;padding:14px 16px;background:#efe8d8;border-left:3px solid var(--accent);font-size:13.5px;line-height:1.6}
+.tip b{color:var(--accent)}
+
+/* ===== Table ===== */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 22px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:2px solid var(--ink)}
+td.c{text-align:center}
+.swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px;border:1px solid rgba(0,0,0,.12)}
+.badge-pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;color:#fff}
+
+/* ===== Flow diagram ===== */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:18px 0 26px;font-size:13px}
+.flow .fs{padding:8px 14px;border:1px solid var(--ink);border-radius:20px;font-weight:600;white-space:nowrap}
+.flow .arrow{color:var(--accent);font-size:16px}
+.flow .fs.warn{border-color:#b8503a;color:#b8503a}
+.flow .fs.mute{border-style:dashed;color:var(--mute);border-color:var(--rule)}
+
+.qa{margin-bottom:20px;padding-bottom:18px;border-bottom:1px dashed var(--rule)}
+.qa .q{font-family:'Newsreader',serif;font-weight:700;font-style:italic;font-size:16.5px;margin-bottom:6px}
+.qa .q::before{content:"Q. ";color:var(--accent)}
+.qa .a{font-size:14px;line-height:1.65;color:#3d3528;padding-left:18px}
+
+/* ===== Nav arrows / indicator ===== */
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--bg);border:none;font-size:18px;cursor:pointer;z-index:60;display:flex;align-items:center;justify-content:center;opacity:.85;transition:opacity .15s}
+.nav-btn:hover{opacity:1}
+.nav-btn.prev{left:16px}
+.nav-btn.next{right:16px}
+.nav-btn:disabled{opacity:.2;cursor:default}
+
+.pagebar{position:fixed;left:0;right:0;bottom:14px;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:60;pointer-events:none}
+.pagebar .cnt{font-family:'Inter',monospace;font-size:11px;letter-spacing:.1em;color:var(--mute);background:rgba(247,244,237,.85);padding:3px 10px;border-radius:10px;pointer-events:auto}
+.dots{display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:center;max-width:90vw;padding:0 8px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--rule);border:none;cursor:pointer;transition:all .15s}
+.dot.on{background:var(--accent);width:18px;border-radius:4px}
+
+footer.pg-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--rule);text-align:center;font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:13px}
+.finale{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.finale .mk{font-family:'Newsreader',serif;font-weight:700;font-size:clamp(30px,4vw,54px);margin-bottom:14px}
+.finale p{color:var(--mute);font-size:14px;margin-bottom:6px}
+
+/* ===== Mobile fallback: vertical scroll doc ===== */
+@media(max-width:840px){
+  body{overflow:auto}
+  .deck{display:block;height:auto;width:auto;overflow:visible;scroll-snap-type:none}
+  .slide{width:auto;height:auto;overflow:visible;scroll-snap-align:none;padding:22px 16px 60px;border-bottom:3px double var(--rule)}
+  .nav-btn{display:none}
+  .pagebar{display:none}
+}
+</style></head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ============ 1. 표지 ============ -->
+<section class="slide" id="s1" data-title="표지">
+  <div class="mast">
+    <div class="mast-l">QA Workflow<em>.</em></div>
+    <div class="mast-c">사용 가이드 · USER GUIDE</div>
+    <div class="mast-r">VOL. 01 · 2026.07</div>
+  </div>
+  <div class="hero">
+    <div class="hero-l">
+      <h1>QA 업무의 하루를<br><em>한 화면</em>에서</h1>
+      <p class="lede">하루의 QA 업무를 한 화면에서 관리하는 실무 도구, QA Workflow입니다. 프로젝트-빌드-일감을 하나의 흐름으로 연결하고, 대시보드 한 화면에서 오늘 챙겨야 할 일과 팀 상태를 확인할 수 있습니다. 이 가이드는 처음 이용하는 분도 화면을 따라가며 바로 시작할 수 있도록 구성했습니다.</p>
+    </div>
+    <div class="hero-r">
+      <div class="label">▸ Menus</div>
+      <div class="stat">12</div>
+      <div class="stat-d">사이드바 메뉴</div>
+      <div class="label">▸ Roles</div>
+      <div class="stat">4</div>
+      <div class="stat-d">역할 (관리자·매니저·멤버·뷰어)</div>
+      <div class="label">▸ QA Stages</div>
+      <div class="stat">8</div>
+      <div class="stat-d">QA 진행 8단계</div>
+      <div class="label">▸ Themes</div>
+      <div class="stat">4</div>
+      <div class="stat-d">테마 (기본·의료모니터·픽셀·네온)</div>
+    </div>
+  </div>
+  <p style="font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:14px">→ 오른쪽으로 넘겨서 목차부터 확인해 보세요. 키보드 ← → 로도 이동할 수 있어요.</p>
+</section>
+
+<!-- ============ 2. 목차 ============ -->
+<section class="slide" id="s2" data-title="목차">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">CONTENTS</div><div class="mast-r">02 / 21</div></div>
+  <div class="section-h">목차 <span class="badge">Table of Contents</span></div>
+  <div id="toc-list"></div>
+</section>
+
+<!-- ============ 3. QA Workflow란? ============ -->
+<section class="slide" id="s3" data-title="QA Workflow란?">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">INTRODUCTION</div><div class="mast-r">03 / 21</div></div>
+  <div class="section-h">QA Workflow란? <span class="badge">Core Concepts</span></div>
+  <p class="section-sub">처음 보면 낯선 용어 4개만 알면, 나머지는 자연스럽게 이해돼요.</p>
+  <div class="grid">
+    <div class="card"><div class="card-num">No. 01</div><div class="nm">프로젝트<br><small style="font-weight:400;color:var(--mute);font-size:13px">Project</small></div><div class="desc">게임 하나에 해당하는 최상위 단위입니다. 팀 소속(PQA1 등)을 가지며, 그 안에서 빌드와 일감이 관리됩니다.</div></div>
+    <div class="card"><div class="card-num">No. 02</div><div class="nm">빌드<br><small style="font-weight:400;color:var(--mute);font-size:13px">Build = 수급 차수</small></div><div class="desc">개발팀으로부터 받은 "수급 차수"입니다. 예: "3", "3-1". 정기 업데이트(UPDATE)와 긴급 수정(HOTFIX) 두 목적이 있고, 8가지 상태를 거쳐 배포됩니다.</div></div>
+    <div class="card"><div class="card-num">No. 03</div><div class="nm">일감<br><small style="font-weight:400;color:var(--mute);font-size:13px">Task</small></div><div class="desc">실제로 수행하는 QA 업무 한 건입니다. 담당자·테스터·진행률·타이머를 가지며, 필요 시 특정 빌드에 연결됩니다.</div></div>
+    <div class="card"><div class="card-num">No. 04</div><div class="nm">이슈<br><small style="font-weight:400;color:var(--mute);font-size:13px">Issue</small></div><div class="desc">JIRA에 등록된 버그·이슈를 읽기 전용으로 조회하는 화면에서 다루는 대상입니다. 일감 내부의 "이슈" 항목과는 다른 개념이니 혼동하지 마세요.</div></div>
+  </div>
+  <div class="tip"><b>가장 중요한 구분</b> — "빌드=수급 차수"는 개발팀에서 QA팀으로 넘어오는 물리적인 버전 묶음이고, "일감"은 QA팀이 그 안에서 실제로 처리하는 업무 단위입니다. 빌드 하나에 여러 일감이 연결될 수 있고, 아직 빌드가 없는 "예정 일감"도 존재합니다.</div>
+</section>
+
+<!-- ============ 4. 시작하기 ============ -->
+<section class="slide" id="s4" data-title="시작하기">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">GETTING STARTED</div><div class="mast-r">04 / 21</div></div>
+  <div class="section-h">시작하기 <span class="badge">Login &amp; Approval</span></div>
+  <div class="grid g3">
+    <div class="card"><div class="card-num">Step 01</div><div class="nm">로그인</div><div class="desc">이름과 비밀번호로 로그인합니다(이메일 아님). 계정이 없다면 가입 신청을 먼저 진행하세요.</div></div>
+    <div class="card"><div class="card-num">Step 02</div><div class="nm">승인 대기</div><div class="desc">가입 신청 후에는 관리자의 승인이 필요합니다. 승인 전까지는 로그인이 제한돼요 — 조급해하지 않으셔도 됩니다.</div></div>
+    <div class="card"><div class="card-num">Step 03</div><div class="nm">이용 시작</div><div class="desc">관리자가 승인하면 바로 이용 가능합니다. 이때 역할(관리자/매니저/멤버/뷰어)이 함께 부여됩니다.</div></div>
+  </div>
+  <div class="flow">
+    <span class="fs">가입 신청</span><span class="arrow">→</span>
+    <span class="fs warn">관리자 승인 대기</span><span class="arrow">→</span>
+    <span class="fs">승인 완료 · 역할 부여</span><span class="arrow">→</span>
+    <span class="fs">로그인 &amp; 이용</span>
+  </div>
+  
+  <div class="tip"><b>내 역할이 궁금하다면</b> — 설정 메뉴에서 확인할 수 있어요. 역할에 따라 보이는 메뉴와 할 수 있는 조작이 달라지니, 헷갈리면 19페이지 "권한 안내"를 참고하세요.</div>
+</section>
+
+<!-- ============ 5. 대시보드 ============ -->
+<section class="slide" id="s5" data-title="대시보드">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">DASHBOARD</div><div class="mast-r">05 / 21</div></div>
+  <div class="section-h">대시보드 <span class="badge">Home</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/01-dashboard.png" alt="대시보드 화면" loading="lazy"><p class="cap">로그인 후 가장 먼저 보이는 화면 — 전체 QA 운영 현황을 한눈에 확인합니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 확인할 수 있는 것</p>
+      <ul class="dolist">
+        <li>KPI 카드 — 총 프로젝트 수, 총 일감 수, 진행중 일감 수, 지연 일감 수, 오늘 마감 일감 수, 결근 인원 수</li>
+        <li>프로젝트 건강도 리스트 + 위험 일감 테이블</li>
+        <li>팀 상태 요약 + 오늘 일정 위젯</li>
+        <li>상단 팀 필터로 팀별 데이터 필터링</li>
+      </ul>
+      <div class="tip"><b>헷갈리기 쉬운 점</b> — KPI의 "총 일감"은 완료/취소된 일감을 제외한 <em>활성</em> 일감 수입니다. 전체 등록 일감 수가 아니에요. "결근 인원"도 휴가+자리비움 세부항목+퇴근 상태를 모두 합산한 값입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. 프로젝트 ============ -->
+<section class="slide" id="s6" data-title="프로젝트">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">PROJECT</div><div class="mast-r">06 / 21</div></div>
+  <div class="section-h">프로젝트 <span class="badge">Kanban · Timeline · Builds</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/02-projects.png" alt="프로젝트 상세 화면" loading="lazy"><p class="cap">프로젝트 상세 화면 — 리스트/칸반/타임라인 탭과 목적 필터로 일감을 조회합니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">목적 필터 4종</p>
+      <ul class="dolist">
+        <li><b>ALL</b> — 가장 최근 업데이트 차수에 연결된 일감 + 아직 빌드에 연결 안 된 예정 일감</li>
+        <li><b>BUILDS</b> — 빌드 자체 목록/칸반/타임라인</li>
+        <li><b>PENDING</b> — 어떤 빌드에도 연결되지 않은 일감만</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">추가 요소</p>
+      <ul class="dolist">
+        <li>마켓 검수 상태 카드(App Review Status) — 스토어 심사 진행 단계 표시</li>
+        <li>빌드 QA 8단계 진행 HUD — 현재 UPDATE 빌드가 어느 단계인지 요약</li>
+      </ul>
+      <div class="tip"><b>"예정 일감"이란</b> — 아직 빌드가 배정되지 않은 일감입니다. 빌드가 수급되면 자동으로 해당 차수에 흡수되어 ALL 탭에 나타나요. 프로젝트 생성/수정은 관리자·매니저만 가능합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. 빌드 관리 ============ -->
+<section class="slide" id="s7" data-title="빌드 관리">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">BUILD</div><div class="mast-r">07 / 21</div></div>
+  <div class="section-h">빌드 관리 <span class="badge">Build = 수급 차수</span></div>
+  <div class="shot-wrap">
+    <div>
+      <img class="shot" src="img/03-builds.png" alt="빌드 목록 화면" loading="lazy" style="margin-bottom:14px">
+      <img class="shot" src="img/15-build-new.png" alt="빌드 생성 폼" loading="lazy">
+      <p class="cap">위: 빌드 목록 · 아래: 빌드 생성 폼(관리자·매니저 전용)</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">빌드 개념</p>
+      <ul class="dolist">
+        <li>buildOrder("3", "3-1" 등)로 차수를 표시, purpose는 정기 업데이트(UPDATE) / 긴급 수정(HOTFIX)</li>
+        <li>생성/수정/삭제/상태변경은 관리자·매니저만 가능</li>
+        <li>버전 관리(APP/CDN/SERVER/DB/ETC, iOS/AOS/PC), TC 엑셀 업로드로 통계 자동 채움</li>
+        <li>핫픽스 빌드끼리는 서로 링크로 그룹핑 가능</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">빌드 상태 8단계</p>
+      <table style="font-size:12.5px">
+        <tr><th>상태</th><th>의미</th></tr>
+        <tr><td>RECEIVED</td><td>수급</td></tr>
+        <tr><td>TESTING</td><td>테스트중</td></tr>
+        <tr><td>COMPLETION_PENDING</td><td>완료대기</td></tr>
+        <tr><td>TEST_DONE</td><td>테스트완료</td></tr>
+        <tr><td>APPROVED</td><td>승인</td></tr>
+        <tr><td>RELEASED</td><td>배포완료(종결)</td></tr>
+        <tr><td>REJECTED / DISCARDED</td><td>반려 / 폐기(종결)</td></tr>
+      </table>
+      <div class="tip"><b>주의</b> — 빌드 상태 변경 버튼은 일반 멤버에게는 보이지 않거나 비활성입니다. TEST_DONE으로 넘길 때는 확인 모달이, REJECTED로 넘길 때는 반려 사유 입력이 필수예요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. 빌드 QA 진행 8단계 ============ -->
+<section class="slide" id="s8" data-title="빌드 QA 진행 8단계">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">QA STAGE HUD</div><div class="mast-r">08 / 21</div></div>
+  <div class="section-h">빌드 QA 진행 8단계 <span class="badge">QaStage HUD</span></div>
+  <p class="section-sub">빌드 <em>상태</em>(위 페이지의 8상태)와는 완전히 별개인, UPDATE 빌드 전용의 진행 단계입니다. 반드시 구분해 이해하세요.</p>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/16-build-detail.png" alt="빌드 상세 - QA 8단계 HUD" loading="lazy"><p class="cap">빌드 상세 화면의 QA 진행 8단계 HUD</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">8단계</p>
+      <div class="flow">
+        <span class="fs">1.기획서수급</span><span class="arrow">→</span>
+        <span class="fs">2.빌드수급</span><span class="arrow">→</span>
+        <span class="fs">3.기획리뷰</span><span class="arrow">→</span>
+        <span class="fs">4.TC작성</span>
+      </div>
+      <div class="flow">
+        <span class="fs">5.TEST수행</span><span class="arrow">→</span>
+        <span class="fs">6.TEST완료</span><span class="arrow">→</span>
+        <span class="fs">7.결과리포트</span><span class="arrow">→</span>
+        <span class="fs">8.빌드배포</span>
+      </div>
+      <ul class="dolist">
+        <li>전진(다음 단계로)/후진(되돌리기) 버튼으로만 이동 — 임의 단계 점프 불가</li>
+        <li>기록은 이벤트 로그(append-only)로 쌓이며, 현재 단계는 이벤트를 재생해서 계산됩니다</li>
+        <li>조회는 전원 가능, 전진/후진 조작은 관리자·매니저·멤버 가능(뷰어 제외)</li>
+      </ul>
+      <div class="tip"><b>왜 헷갈리나요</b> — "빌드 상태"(RECEIVED→TESTING→…→RELEASED)는 빌드 자체의 승인 워크플로이고, "QA 8단계"는 그 안에서 QA팀이 실제로 밟는 실무 절차 체크리스트입니다. 두 트랙은 함께 움직이지만 서로 다른 값이에요. 예를 들어 빌드 상태가 TESTING이어도 QA 8단계는 아직 3단계(기획리뷰)일 수 있습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. 일감 관리 ============ -->
+<section class="slide" id="s9" data-title="일감 관리">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">TASK</div><div class="mast-r">09 / 21</div></div>
+  <div class="section-h">일감 관리 <span class="badge">Task</span></div>
+  <div class="shot-wrap">
+    <div>
+      <img class="shot" src="img/04-tasks.png" alt="일감 목록 화면" loading="lazy" style="margin-bottom:14px">
+      <img class="shot" src="img/14-task-new.png" alt="일감 생성 폼" loading="lazy">
+      <p class="cap">위: 일감 목록(필터·검색) · 아래: 일감 생성 폼</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">목록 화면</p>
+      <ul class="dolist">
+        <li>필터: 프로젝트/상태/우선순위/월간, 검색은 디바운스 300ms</li>
+        <li>URL 쿼리로 "지연만"(riskLevel=OVERDUE), "오늘마감"(dueToday=true) 등 특수 필터 진입 가능 — 대시보드 카드 클릭 시 이 방식으로 이동</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">생성 폼 필드</p>
+      <ul class="dolist">
+        <li>제목/설명/프로젝트/담당자/우선순위/상태/시작일/마감일/메모</li>
+        <li>테스트종류 반복입력, 기획리뷰 반복입력, 테스터(다중 선택)</li>
+        <li>연결 빌드 타겟 및 빌드 선택(선택 입력)</li>
+      </ul>
+      <div class="tip"><b>상태 전이</b> — 대기(PENDING) → 진행(IN_PROGRESS) → 완료(DONE), 중간에 보류(ON_HOLD)/중단(CANCELED)도 가능합니다. 조회는 전원, 생성·수정·삭제·타이머는 뷰어를 제외한 전원 가능해요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10. 타이머 ============ -->
+<section class="slide" id="s10" data-title="타이머">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">TIMER</div><div class="mast-r">10 / 21</div></div>
+  <div class="section-h">타이머 <span class="badge">Task Detail &gt; Timer</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/17-task-detail.png" alt="일감 상세 - 타이머" loading="lazy"><p class="cap">일감 상세 화면 — 타이머 및 진행 갭 분석 영역</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">기본 조작</p>
+      <ul class="dolist">
+        <li>시작/정지 버튼으로 작업 시간 자동 누적</li>
+        <li>정지 시 소요 시간(duration)이 자동 계산되어 기록</li>
+        <li>수동 시간 보정 — 누락·오기록 시 시/분 단위로 증가·감소 가능(감소 시 누적 부족하면 실패)</li>
+        <li>관리자·매니저·멤버 전원 사용 가능(뷰어 제외)</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">진행 갭 & 필요 속도</p>
+      <ul class="dolist">
+        <li>실제 진행률 vs 기대 진행률(경과일 비율)을 비교해 자동 산출되는 지표 — 직접 입력하지 않음</li>
+        <li>"진행 갭"이 음수면 지연, "필요 속도"는 남은 기간 내 100% 달성에 필요한 일일 진행률</li>
+      </ul>
+      <div class="tip"><b>대시보드와의 연결</b> — 이 갭이 커지면 위험도(RiskLevel)가 자동으로 올라가고, 대시보드의 "위험 일감 테이블"에 노출됩니다. 타이머를 켜두는 것만으로 위험도가 낮아지지 않는다는 점 참고하세요 — 실제 진행률 갱신이 함께 필요합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11. 이슈 조회 ============ -->
+<section class="slide" id="s11" data-title="이슈 조회">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">ISSUES (JIRA)</div><div class="mast-r">11 / 21</div></div>
+  <div class="section-h">이슈 조회 <span class="badge">JIRA · Read-only</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/05-issues.png" alt="이슈 조회 화면" loading="lazy"><p class="cap">JIRA 이슈를 읽기 전용으로 조회하는 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">조작 순서</p>
+      <ul class="dolist">
+        <li>프로젝트 칩(JIRA 매핑된 프로젝트만 노출) 선택</li>
+        <li>필터(우선순위/상태/유형/환경/기간)로 좁히기</li>
+        <li>이슈 키 클릭 → JIRA 원본 페이지가 새 탭으로 열림</li>
+        <li>페이지네이션 50건 단위</li>
+      </ul>
+      <div class="tip"><b>헷갈리기 쉬운 점</b> — 이 화면에는 쓰기 기능이 전혀 없습니다(조회 전용). 프로젝트를 선택하지 않으면 팀 필터로 좁혀진 전체 매핑 프로젝트가 대상이 되고, "JIRA 매핑된 프로젝트가 없습니다"라는 안내가 뜨면 그 프로젝트는 아직 JIRA 연동이 안 된 것입니다. 일감 상세의 "이슈"와는 다른 별개 모델이니 혼동 주의하세요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12. QA Tool ============ -->
+<section class="slide" id="s12" data-title="QA Tool">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">QA TOOL</div><div class="mast-r">12 / 21</div></div>
+  <div class="section-h">QA Tool <span class="badge">Jenkins · TestRail</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/06-qa-tool.png" alt="QA Tool 화면" loading="lazy"><p class="cap">Jenkins/TestRail 연동 도구 모음 — 프로젝트 선택이 먼저 필요합니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">탭 구성</p>
+      <ul class="dolist">
+        <li>버전 체크, 서버 시간 — 전원 이용 가능</li>
+        <li><b>CDN 패치, 서버 배포</b> — 관리자·매니저만(설정된 Jenkins 프로젝트에 한함)</li>
+        <li>즐겨찾기 탭 — jobPrefix가 'epic' 또는 'czn'인 프로젝트만 노출</li>
+        <li>TestRail 탭 — 프로젝트 선택 시 항상 노출(매핑 없으면 탭 내부에 안내)</li>
+      </ul>
+      <div class="tip"><b>주의</b> — Jenkins 설정이 없는 프로젝트는 버전체크/서버시간/CDN패치/서버배포 탭 자체가 노출되지 않습니다. 프로젝트를 먼저 선택해야 탭이 나타나요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13. 기록 ============ -->
+<section class="slide" id="s13" data-title="기록">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">HISTORY</div><div class="mast-r">13 / 21</div></div>
+  <div class="section-h">기록 <span class="badge">History &amp; Trend</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/07-history.png" alt="기록 화면" loading="lazy"><p class="cap">프로젝트별 히스토리 요약과 트렌드 차트를 확인하는 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 할 수 있는 일</p>
+      <ul class="dolist">
+        <li>리스트 뷰 — 프로젝트별 히스토리 요약 카드</li>
+        <li>트렌드 뷰(?view=trend) — 월간 또는 업데이트차수(단일 프로젝트 선택 시) 단위 차트</li>
+        <li>상세 모달에서 빌드/이슈/리소스 상세 확인</li>
+        <li>설정 &gt; 데이터 관리에서 Excel 동기화 및 CSV 내보내기(38컬럼) — 관리자·매니저 전용</li>
+      </ul>
+      <div class="tip"><b>참고</b> — 동기화 실행 버튼은 관리자·매니저에게만 보입니다. 일반 조회는 전원 가능해요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14. 캘린더 ============ -->
+<section class="slide" id="s14" data-title="캘린더">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">CALENDAR</div><div class="mast-r">14 / 21</div></div>
+  <div class="section-h">캘린더 <span class="badge">Monthly · Gantt</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/08-calendar.png" alt="캘린더 화면" loading="lazy"><p class="cap">월간 캘린더와 간트 타임라인, 두 가지 보기 방식을 제공합니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">이 화면에서 할 수 있는 일</p>
+      <ul class="dolist">
+        <li>개인 일정(휴가/출장/반차/재택/회의/기타)과 프로젝트 일감 일정을 토글로 개별 표시/숨김</li>
+        <li>날짜 클릭 또는 일정 클릭 → 일정 생성/수정 모달 오픈</li>
+        <li>프로젝트 필터(다중 선택) 지원</li>
+      </ul>
+      <div class="tip"><b>참고</b> — 일정 쓰기(생성/수정)는 관리자·매니저·멤버 가능(뷰어 제외). 조회는 전원 가능합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15. 팀원 현황 & 픽셀 오피스 ============ -->
+<section class="slide" id="s15" data-title="팀원 현황 & 픽셀 오피스">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">TEAM &amp; PIXEL OFFICE</div><div class="mast-r">15 / 21</div></div>
+  <div class="section-h">팀원 현황 &amp; 픽셀 오피스 <span class="badge">Team Status</span></div>
+  <div class="shot-wrap">
+    <div>
+      <img class="shot" src="img/09-team.png" alt="팀원 현황 화면" loading="lazy" style="margin-bottom:14px">
+      <img class="shot" src="img/10-pixel-office.png" alt="픽셀 오피스 화면" loading="lazy">
+      <p class="cap">위: 팀원 현황(멤버 카드·상태보드·워크로드) · 아래: Meta Office(픽셀 오피스)</p>
+    </div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">팀원 현황</p>
+      <ul class="dolist">
+        <li>멤버 카드 그리드 + 상태보드 + 워크로드 패널</li>
+        <li>상태(14종) 필터, 팀 필터, 프로젝트 필터</li>
+        <li>정렬 우선순위: 근무중 &gt; 회의중 &gt; 자리비움 &gt; 외근 &gt; 반차 &gt; 휴가 &gt; 출장 &gt; 퇴근</li>
+        <li>본인 상태 변경은 관리자·매니저·멤버 가능</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">Meta Office(픽셀 오피스)</p>
+      <ul class="dolist">
+        <li>"Meta Office" 버튼으로 진입하는 픽셀 아트 화면</li>
+        <li>실시간 근무중 인원수 배지 표시</li>
+      </ul>
+      <div class="tip"><b>참고</b> — 출근하지 않은 사용자는 클라이언트에서 "퇴근"으로 표시가 오버라이드됩니다. 실제 상태와 다르게 보일 수 있어요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 16. 근태 관리 ============ -->
+<section class="slide" id="s16" data-title="근태 관리">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">ATTENDANCE</div><div class="mast-r">16 / 21</div></div>
+  <div class="section-h">근태 관리 <span class="badge">Monthly · Personal · Project</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/11-attendance.png" alt="근태 관리 화면" loading="lazy"><p class="cap">월간 근무시간 / 개인별 상세 / 프로젝트별 소요시간, 3개 탭으로 구성됩니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">근태 종류</p>
+      <ul class="dolist">
+        <li>휴가 / 반차 / 재택 / 출장 / 외근 등을 등록해 근무 상태에 반영</li>
+        <li>본인 근태 정정 요청은 전원 가능</li>
+        <li>정정 승인/반려는 <b>관리자(ADMIN) 전용</b>(관리자 본인 요청은 즉시 승인 처리)</li>
+      </ul>
+      <div class="tip"><b>알아두면 좋은 점</b> — 2026-05-25 이후 "추가 근무 수당" 관련 기능은 완전히 제거되었습니다. 월간 총 근무시간은 본인 또는 관리자가 직접 입력하는 방식이며, 별도 출퇴근 체크(태깅) 시스템은 더 이상 사용하지 않습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 17. 설정 ============ -->
+<section class="slide" id="s17" data-title="설정">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">SETTINGS</div><div class="mast-r">17 / 21</div></div>
+  <div class="section-h">설정 <span class="badge">Preferences</span></div>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/12-settings.png" alt="설정 화면" loading="lazy"><p class="cap">접이식 카드 5종으로 구성된 개인/관리 설정 화면입니다.</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">카드 구성</p>
+      <ul class="dolist">
+        <li>알림 설정 — 카테고리별(내 일감/빌드/회의/시스템/관리자) 인앱+브라우저 알림 토글. 관리자 항목은 관리자·매니저만 노출</li>
+        <li>테마 설정 — 아래 4종 중 선택, 즉시 적용 + 브라우저 로컬 저장(본인 전용)</li>
+        <li>공지사항 관리 — <b>관리자 전용</b>. 헤더 마퀴 텍스트/활성화/흐름속도 설정</li>
+        <li>데이터 관리 — 동기화 및 CSV 내보내기, 관리자·매니저만 실행 가능</li>
+        <li>시스템 정보 — 버전/핵심기능 안내(읽기 전용)</li>
+      </ul>
+      <table style="margin-top:14px">
+        <tr><th>테마</th><th>분위기</th></tr>
+        <tr><td><span class="swatch" style="background:#3b82f6"></span>기본</td><td>Slate 다크</td></tr>
+        <tr><td><span class="swatch" style="background:#0ea5e9"></span>Neural Grid</td><td>의료모니터 느낌(set1)</td></tr>
+        <tr><td><span class="swatch" style="background:#355d17"></span>Pixel Office</td><td>픽셀 아트(set2)</td></tr>
+        <tr><td><span class="swatch" style="background:#ec4899"></span>Silicon Valley Cyberpunk</td><td>네온(set3)</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18. 관리자 ============ -->
+<section class="slide" id="s18" data-title="관리자">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">ADMIN</div><div class="mast-r">18 / 21</div></div>
+  <div class="section-h">관리자 <span class="badge">Members &amp; Approvals</span></div>
+  <p class="section-sub">"관리자" 메뉴는 <b>관리자(ADMIN) 역할에게만</b> 사이드바에 노출됩니다.</p>
+  <div class="shot-wrap">
+    <div><img class="shot" src="img/13-admin.png" alt="관리자 화면" loading="lazy"><p class="cap">회원 관리 / 요청 승인, 2개 탭으로 구성됩니다(URL ?tab=approvals로 딥링크 가능).</p></div>
+    <div>
+      <p style="font-size:14px;margin-bottom:8px;font-weight:600">회원 관리 탭</p>
+      <ul class="dolist">
+        <li>가입 대기 승인/거절</li>
+        <li>전체 회원 역할 변경(관리자/매니저/멤버/뷰어), 소속팀 수정</li>
+        <li>담당 프로젝트 토글, 비밀번호 초기화, 비활성화</li>
+        <li>완전 삭제 — 삭제 시 할당된 일감은 자동으로 미할당 상태로 전환됨</li>
+      </ul>
+      <p style="font-size:14px;margin:14px 0 8px;font-weight:600">요청 승인 탭</p>
+      <ul class="dolist">
+        <li>근태 정정 요청 승인/반려 처리(추정 — 관리자 전용)</li>
+      </ul>
+      <div class="tip"><b>주의</b> — 이 메뉴 전체가 서버에서도 관리자 권한으로 강제되므로, 매니저 계정으로는 API 직접 호출로도 접근이 불가능합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 19. 권한 안내 ============ -->
+<section class="slide" id="s19" data-title="권한 안내">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">PERMISSIONS</div><div class="mast-r">19 / 21</div></div>
+  <div class="section-h">권한 안내 <span class="badge">Role Matrix</span></div>
+  <p class="section-sub">역할에 따라 보이는 메뉴와 할 수 있는 조작이 다릅니다. "내가 못 하는 게 정상"인 경우를 미리 알아두세요.</p>
+  <table>
+    <tr><th>기능</th><th class="c">관리자</th><th class="c">매니저</th><th class="c">멤버</th><th class="c">뷰어</th></tr>
+    <tr><td>조회 전반 (프로젝트/빌드/일감/이슈)</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td></tr>
+    <tr><td>프로젝트 생성/수정</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>빌드 생성/수정/삭제/상태변경</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>빌드-일감 연결 / QA 8단계 전진·후진</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td></tr>
+    <tr><td>일감 생성/수정/삭제 · 타이머</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td></tr>
+    <tr><td>캘린더/근태/팀상태 쓰기</td><td class="c">✅</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td></tr>
+    <tr><td>QA Tool CDN패치/서버배포</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>기록 동기화 / 데이터 관리 실행</td><td class="c">✅</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>기록 백필(backfill)</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>공지사항 관리 / 회원 관리</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+    <tr><td>근태 정정 승인</td><td class="c">✅</td><td class="c">❌</td><td class="c">❌</td><td class="c">❌</td></tr>
+  </table>
+  <div class="tip"><b>뷰어(VIEWER)이신가요?</b> — 뷰어는 모든 화면을 조회할 수 있지만, 쓰기 작업은 모두 서버에서 차단됩니다. 이는 오류가 아니라 의도된 읽기 전용 권한이에요. 권한이 필요하면 관리자에게 역할 변경을 요청하세요.</div>
+</section>
+
+<!-- ============ 20. FAQ ============ -->
+<section class="slide" id="s20" data-title="FAQ / 팁">
+  <div class="mast"><div class="mast-l">QA Workflow<em>.</em></div><div class="mast-c">FAQ</div><div class="mast-r">20 / 21</div></div>
+  <div class="section-h">FAQ / 팁 <span class="badge">자주 헷갈리는 것들</span></div>
+  <div class="grid g2">
+    <div>
+      <div class="qa"><div class="q">빌드 상태와 QA 8단계가 다르게 보여요. 버그인가요?</div><div class="a">아닙니다. 빌드 상태(RECEIVED~RELEASED)와 QA 진행 8단계(기획서수급~빌드배포)는 완전히 다른 두 트랙입니다. 두 값은 각자 독립적으로 전진합니다.</div></div>
+      <div class="qa"><div class="q">타이머를 켜뒀는데 위험도가 안 낮아져요.</div><div class="a">타이머는 시간을 누적할 뿐, 위험도는 실제 진행률 대비 기대 진행률(진행 갭)로 계산됩니다. 진행률을 직접 갱신해야 위험도가 반영돼요.</div></div>
+      <div class="qa"><div class="q">빌드 상태 변경 버튼이 안 보여요.</div><div class="a">빌드 상태변경은 관리자·매니저 전용입니다. 일반 멤버 계정에는 버튼이 노출되지 않거나 비활성 처리됩니다.</div></div>
+      <div class="qa"><div class="q">로그아웃하면 자동으로 "퇴근" 처리되나요?</div><div class="a">네, 로그아웃 시 서버에서 best-effort로 퇴근 처리를 시도합니다. 실패해도 로그아웃 자체는 정상 진행돼요.</div></div>
+      <div class="qa"><div class="q">"이슈 조회" 메뉴와 일감 상세의 "이슈"는 같은 건가요?</div><div class="a">다릅니다. 사이드바 "이슈 조회"는 JIRA 이슈를 읽기 전용으로 보여주는 화면이고, 일감 내부의 "이슈"는 별개의 QA Workflow 자체 모델입니다.</div></div>
+    </div>
+    <div>
+      <div class="qa"><div class="q">뷰어(VIEWER) 계정으로 로그인했는데 버튼을 눌러도 반응이 없어요.</div><div class="a">정상입니다. 뷰어는 모든 쓰기 작업에서 배제된 조회 전용 역할입니다. 서버에서 차단하기 때문에 프론트에서 눌러도 반영되지 않아요.</div></div>
+      <div class="qa"><div class="q">일감이 어떤 빌드에도 안 보여요.</div><div class="a">아직 빌드에 연결되지 않은 "예정 일감"일 수 있습니다. 프로젝트 상세의 PENDING 필터에서 확인해 보세요. 빌드가 수급되면 자동으로 연결될 수 있습니다.</div></div>
+      <div class="qa"><div class="q">근태 정정을 요청했는데 언제 반영되나요?</div><div class="a">본인이 관리자가 아니라면 관리자 승인이 필요합니다. 관리자 본인의 요청은 즉시 승인 처리됩니다.</div></div>
+      <div class="qa"><div class="q">테마를 바꿨는데 다른 팀원 화면에도 적용되나요?</div><div class="a">아니요. 테마는 브라우저 로컬 저장이라 본인 화면에만 적용되고, 다른 사용자에게는 영향이 없습니다.</div></div>
+      <div class="qa"><div class="q">QA Tool에서 CDN패치/서버배포 탭이 안 보여요.</div><div class="a">두 가지를 확인하세요 — 첫째, 프로젝트에 Jenkins 설정이 되어 있는지. 둘째, 본인 역할이 관리자·매니저인지(멤버·뷰어는 노출되지 않음).</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 21. 마지막 페이지 ============ -->
+<section class="slide" id="s21" data-title="마지막">
+  <div class="finale">
+    <div style="font-family:'Newsreader',serif;font-style:italic;color:var(--mute);font-size:12px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:18px">End of Guide</div>
+    <div class="mk">QA Workflow<em style="color:var(--accent)">.</em></div>
+    <p>궁금한 점은 팀 관리자에게 문의해 주세요.</p>
+    <p>이 가이드는 QA Workflow 서비스 구조 조사 결과를 바탕으로 작성되었습니다.</p>
+    <p style="margin-top:24px;font-size:12px;letter-spacing:.15em">VOL. 01 · 2026.07 · USER GUIDE</p>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<button class="nav-btn prev" id="btnPrev" aria-label="이전">←</button>
+<button class="nav-btn next" id="btnNext" aria-label="다음">→</button>
+<div class="pagebar">
+  <div class="dots" id="dots"></div>
+  <div class="cnt" id="cnt">1 / 21</div>
+</div>
+
+<script>
+const deck=document.getElementById('deck');
+const slides=Array.from(document.querySelectorAll('.slide'));
+const dotsWrap=document.getElementById('dots');
+const cnt=document.getElementById('cnt');
+const btnPrev=document.getElementById('btnPrev');
+const btnNext=document.getElementById('btnNext');
+
+// TOC data
+const toc=[
+  {n:'01',t:'표지',d:'서비스 한 줄 소개'},
+  {n:'03',t:'QA Workflow란?',d:'핵심 개념 4가지'},
+  {n:'04',t:'시작하기',d:'로그인 · 가입 승인'},
+  {n:'05',t:'대시보드',d:'운영 현황 한눈에 보기'},
+  {n:'06',t:'프로젝트',d:'칸반 · 타임라인 · 빌드 탭'},
+  {n:'07',t:'빌드 관리',d:'수급 차수 · 상태 8종'},
+  {n:'08',t:'빌드 QA 진행 8단계',d:'QaStage HUD'},
+  {n:'09',t:'일감 관리',d:'목록 · 생성 · 필터'},
+  {n:'10',t:'타이머',d:'시작/정지 · 진행 갭'},
+  {n:'11',t:'이슈 조회',d:'JIRA 연동 읽기 전용'},
+  {n:'12',t:'QA Tool',d:'Jenkins · TestRail'},
+  {n:'13',t:'기록',d:'히스토리 · 트렌드'},
+  {n:'14',t:'캘린더',d:'월간 · 간트'},
+  {n:'15',t:'팀원 현황 & 픽셀 오피스',d:'상태 · Meta Office'},
+  {n:'16',t:'근태 관리',d:'월간 · 개인 · 정정승인'},
+  {n:'17',t:'설정',d:'알림 · 테마 · 공지'},
+  {n:'18',t:'관리자',d:'회원관리 · 요청승인'},
+  {n:'19',t:'권한 안내',d:'4역할 매트릭스'},
+  {n:'20',t:'FAQ / 팁',d:'헷갈리는 점 모음'},
+  {n:'21',t:'마지막 페이지',d:'문의 안내'}
+];
+document.getElementById('toc-list').innerHTML=toc.map((it,i)=>{
+  const idx=slides.findIndex(s=>s.dataset.title===it.t);
+  return `<div class="toc-item" data-idx="${idx}"><span class="tn">${it.n}</span><span class="tt">${it.t}</span><span class="td">${it.d}</span></div>`;
+}).join('');
+
+// dots
+slides.forEach((s,i)=>{
+  const d=document.createElement('button');
+  d.className='dot'; d.dataset.idx=i;
+  d.addEventListener('click',()=>goTo(i));
+  dotsWrap.appendChild(d);
+});
+const dots=Array.from(dotsWrap.children);
+
+function isMobile(){return window.innerWidth<=840}
+
+function currentIndex(){
+  if(isMobile()) return -1;
+  const w=deck.clientWidth;
+  return Math.round(deck.scrollLeft/w);
+}
+function updateUI(){
+  if(isMobile()) return;
+  const i=currentIndex();
+  dots.forEach((d,idx)=>d.classList.toggle('on',idx===i));
+  cnt.textContent=`${i+1} / ${slides.length}`;
+  btnPrev.disabled=i<=0;
+  btnNext.disabled=i>=slides.length-1;
+}
+function goTo(i){
+  if(isMobile()){
+    slides[i].scrollIntoView({behavior:'smooth'});
+    return;
+  }
+  i=Math.max(0,Math.min(slides.length-1,i));
+  deck.scrollTo({left:i*deck.clientWidth,behavior:'smooth'});
+}
+btnPrev.addEventListener('click',()=>goTo(currentIndex()-1));
+btnNext.addEventListener('click',()=>goTo(currentIndex()+1));
+deck.addEventListener('scroll',()=>{clearTimeout(deck._t);deck._t=setTimeout(updateUI,80)});
+window.addEventListener('resize',()=>{clearTimeout(window._rt);window._rt=setTimeout(updateUI,120)});
+document.addEventListener('keydown',e=>{
+  if(isMobile())return;
+  if(e.key==='ArrowRight')goTo(currentIndex()+1);
+  if(e.key==='ArrowLeft')goTo(currentIndex()-1);
+});
+document.getElementById('toc-list').addEventListener('click',e=>{
+  const item=e.target.closest('.toc-item');
+  if(item) goTo(parseInt(item.dataset.idx,10));
+});
+updateUI();
+</script>
+</body></html>
