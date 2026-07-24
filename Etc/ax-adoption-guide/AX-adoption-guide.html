@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>그래서, AX가 대체 뭔데!?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css">
+<style>
+:root{
+  --bg:#f7f4ed; --ink:#1a1612; --body:#332920;
+  --mute:#6e6456;            /* t-responsive 원본 #7a7062을 소형 본문 WCAG 4.5:1 충족 위해 조정 */
+  --accent:#b8503a;          /* 대형 텍스트·보더·배경 틴트 전용 (3:1 기준 충족) */
+  --accent-dk:#96432f;       /* 소형 라벨(eyebrow/th/번호) 전용 — 4.5:1 확보 */
+  --rule:#d4c8b3;
+  --surface:#ece6d8;
+  --good:#3a6b4f; --warn:#9a6a1f; --bad:#8a2a2a;
+  --frame:#11100e; --frame-text:#efece6; --frame-mute:#9e9384;
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'Pretendard Variable','Pretendard','Inter',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--frame);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow:hidden;word-break:keep-all;overflow-wrap:break-word;}
+.deck{position:fixed;inset:0;display:flex;flex-direction:column;}
+.stage{flex:1;position:relative;overflow:hidden;}
+.progress{position:absolute;top:0;left:0;height:2px;background:var(--accent);transition:width .4s;z-index:5;}
+.track{display:flex;height:100%;transition:transform .5s cubic-bezier(.7,0,.2,1);}
+.slide{min-width:100%;height:100%;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:42px 6vw 64px;animation:fadeUp .55s ease both;}
+.nowrap{display:inline-block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){.slide{animation:none}.track{transition:none}}
+
+.s-band{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);padding-bottom:9px;margin-bottom:22px;}
+.s-band .brand{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--accent-dk);}
+.s-band .sec{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);}
+.eyebrow{display:block;font-size:13px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--accent-dk);margin-bottom:12px;}
+h2.title{font-family:var(--serif);font-weight:700;font-size:clamp(25px,2.9vw,38px);line-height:1.18;margin-bottom:17px;}
+h2.title em{font-style:italic;color:var(--accent);}
+.lead{font-size:17.5px;line-height:1.66;color:var(--body);max-width:74ch;border-left:3px solid var(--accent);padding-left:16px;margin-bottom:18px;}
+p{font-size:17px;line-height:1.65;margin-bottom:10px;color:var(--body);max-width:80ch;}
+strong{color:var(--ink);font-weight:700;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;align-items:start;}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 26px;align-items:start;}
+@media(max-width:900px){.cols,.cols3{grid-template-columns:1fr;gap:18px 0;}}
+h3{font-family:var(--serif);font-size:19px;font-weight:600;margin:14px 0 7px;}
+h4{font-size:15px;font-weight:700;color:var(--accent-dk);margin:0 0 8px;letter-spacing:.02em;}
+ul{list-style:none;margin:0 0 12px;}
+li{position:relative;padding-left:18px;margin-bottom:8px;font-size:17px;line-height:1.55;color:var(--body);}
+li::before{content:'—';position:absolute;left:0;color:var(--accent);}
+table{width:100%;border-collapse:collapse;margin:0 0 13px;font-size:15.5px;}
+th{text-align:left;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);font-weight:700;border-bottom:1.5px solid var(--ink);padding:8px 10px;}
+th.acc{color:var(--accent-dk);}
+td{padding:8px 10px;border-bottom:1px solid var(--rule);color:var(--body);vertical-align:top;line-height:1.5;}
+td:first-child{color:var(--ink);font-weight:600;white-space:nowrap;}
+tr:hover td{background:var(--surface);}
+.note{border-left:3px solid var(--accent);background:rgba(184,80,58,.06);padding:12px 16px;font-size:15px;line-height:1.55;margin:8px 0 0;color:var(--body);}
+.note.warn{border-color:var(--warn);background:rgba(154,106,31,.08);}
+.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;background:#26221d;color:#e8e2d8;padding:15px 19px;border-radius:5px;margin:6px 0;white-space:pre;overflow-x:auto;overflow-y:visible;flex-shrink:0;line-height:1.62;}
+.idx{columns:2;column-gap:40px;}
+@media(max-width:900px){.idx{columns:1;}}
+.idx .row{break-inside:avoid;display:flex;gap:11px;padding:7px 0;border-bottom:1px solid var(--rule);align-items:baseline;cursor:pointer;}
+.idx .row:hover{background:var(--surface);}
+.idx .row .nn{font-family:var(--serif);font-style:italic;color:var(--accent-dk);font-size:15px;min-width:26px;}
+.idx .row .tt{font-size:15.5px;color:var(--body);}
+.step{border-top:3px solid var(--accent);padding-top:14px;}
+.step .n{font-family:var(--serif);font-style:italic;color:var(--accent-dk);font-size:28px;display:block;margin-bottom:6px;}
+.cols3-lg{gap:24px 30px;}
+.cols3-lg h4{font-size:16.5px;}
+.pivot{margin-top:44px;padding-top:26px;font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.6vw,42px);line-height:1.32;color:var(--ink);}
+.pivot em{font-style:italic;color:var(--accent);}
+.pivot .cap{display:block;font-family:var(--sans);font-weight:400;font-size:15px;color:var(--mute);margin-top:12px;}
+.condcard{border-top:3px solid var(--accent);padding-top:14px;}
+.condcard .ex{font-size:14.5px;line-height:1.5;color:var(--mute);border-top:1px solid var(--rule);margin-top:14px;padding-top:11px;}
+.chips-lg .chip{font-size:19px;padding:9px 22px;}
+.pullquote{font-family:var(--serif);font-style:italic;font-weight:600;font-size:clamp(24px,3.2vw,34px);line-height:1.42;color:var(--ink);border-left:3px solid var(--accent);padding:2px 0 2px 22px;margin:22px 0 4px;max-width:68ch;}
+.pullquote em{color:var(--accent);}
+.col-neg{border-left:3px solid var(--bad);padding-left:14px;}
+.col-pos{border-left:3px solid var(--good);padding-left:14px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px 10px;margin:4px 0 14px;}
+.chip{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink);border:1px solid var(--rule);border-radius:20px;padding:5px 14px;background:var(--surface);}
+.credit{margin-top:auto;padding-top:22px;font-size:15px;color:var(--mute);text-align:right;}
+
+.art{display:block;max-width:100%;height:auto;border:1px solid var(--rule);}
+.art-cover{max-height:172px;width:auto;margin:0 auto 22px;}
+.art-side{max-width:280px;}
+.art-wide{max-width:400px;max-height:195px;object-fit:contain;margin:2px 0 4px;}
+figure{margin:0;}
+figcaption{font-size:13px;color:var(--mute);margin-top:6px;}
+
+.flow4{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:2px 0 16px;}
+.fnode{font-family:var(--serif);font-style:italic;font-size:16.5px;border:1.5px solid var(--rule);border-radius:20px;padding:6px 16px;color:var(--ink);background:var(--bg);}
+.fnode.is-now{border-color:var(--accent);color:var(--accent-dk);font-weight:700;}
+.farrow{color:var(--mute);font-size:16px;}
+@media(max-width:900px){.flow4{gap:4px}}
+
+.jcurve-wrap{margin:2px 0 4px;max-width:640px;}
+.jcurve-wrap svg{display:block;width:100%;height:auto;max-height:150px;}
+
+/* 슬라이드 9 전용 — 기업명 필 태그 대체 (인라인 텍스트 + 얇은 밑줄) */
+.co-list{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink);display:inline-block;align-self:flex-start;border-bottom:1px solid var(--accent);padding-bottom:5px;margin:4px 0 16px;}
+
+/* 슬라이드 10 전용 — 좌측 표 첫 행과 우측 일러스트 상단 정렬 */
+.debt-grid img{margin-top:22px;}
+
+/* 슬라이드 15 전용 — 좌측 텍스트 블록을 우측 일러스트 세로 중앙에 정렬 */
+.org-grid{align-items:center;}
+
+/* 슬라이드 16 전용 — 다크 솔리드 박스 대신 테라코타 세로 보더 콜아웃 (.codeblk와 분리) */
+.nightlog{border-left:4px solid var(--accent);padding:2px 0 2px 20px;margin:4px 0;}
+.nightlog .lbl{font-family:var(--serif);font-style:italic;font-weight:600;font-size:16px;color:var(--accent-dk);margin-bottom:10px;}
+.nightlog ul{margin:0 0 10px;}
+.nightlog .num{color:var(--accent-dk);font-weight:700;font-size:17.5px;}
+.nightlog .foot{font-size:14.5px;color:var(--mute);border-top:1px solid var(--rule);padding-top:9px;}
+
+.cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#ece6d8 0%,var(--bg) 55%);}
+.cover .kick{font-size:15.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-dk);margin-bottom:30px;}
+.cover h1{font-family:var(--serif);font-weight:700;font-size:clamp(44px,8vw,98px);line-height:1.05;letter-spacing:-.015em;margin-bottom:28px;}
+.cover h1 .it{font-style:italic;color:var(--accent);}
+.cover .sub{font-size:22px;color:var(--mute);max-width:52ch;margin-bottom:52px;line-height:1.58;}
+.cover .meta{display:flex;gap:44px;border-top:1px solid var(--rule);padding-top:22px;flex-wrap:wrap;}
+.cover .meta .l{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--mute);margin-bottom:4px;}
+.cover .meta .v{font-size:18px;font-weight:600;color:var(--ink);}
+
+.controls{height:60px;background:var(--frame);border-top:1px solid #2a2722;display:flex;align-items:center;padding:0 18px;gap:14px;color:var(--frame-mute);}
+.controls .ttl{font-size:13px;letter-spacing:.05em;color:var(--frame-mute);flex:1;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.controls .pager{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--frame-text);min-width:60px;text-align:right;}
+.controls button{width:44px;height:44px;border:1px solid #3a3631;background:transparent;color:var(--frame-text);font-size:19px;cursor:pointer;border-radius:50%;transition:background .15s,border-color .15s;}
+.controls button:hover:not(:disabled){background:var(--accent);border-color:var(--accent);}
+.controls button:disabled{opacity:.3;cursor:not-allowed;}
+.hint{position:fixed;bottom:68px;right:16px;font-size:13px;color:var(--frame-mute);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+@media(max-width:900px){.slide{padding:30px 5vw 56px;}.hint{display:none;}}
+@media(max-width:480px){.art-wide{max-height:150px;}.art-cover{max-height:120px;}.codeblk{white-space:pre-wrap;font-size:13.5px;}}
+</style>
+</head>
+<body>
+<div class="deck">
+  <div class="stage"><div class="progress" id="prog" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div><div class="track" id="track"></div></div>
+  <div class="controls">
+    <div class="ttl" id="ttl"></div>
+    <button id="first" onclick="go(0)" aria-label="첫 슬라이드로">«</button>
+    <button id="prev" onclick="move(-1)" aria-label="이전 슬라이드">‹</button>
+    <div class="pager"><span id="cur">1</span> / <span id="tot"></span></div>
+    <button id="next" onclick="move(1)" aria-label="다음 슬라이드">›</button>
+    <button id="last" onclick="go(S.length-1)" aria-label="마지막 슬라이드로">»</button>
+  </div>
+</div>
+<div class="hint">← → 키 이동 · 목차 클릭 이동</div>
+<script>
+const S=[];function add(t,h){S.push({t,h});}
+function band(sec){return `<div class="s-band"><span class="brand">AX 도입 가이드</span><span class="sec">${sec}</span></div>`;}
+
+/* 1 표지 */
+add("표지",`<div class="slide cover">
+  <div class="kick">AI가 좋다는 건 이제 다들 안다.</div>
+  <h1>그래서, <span class="it">AX가 대체 뭔데!?</span></h1>
+  <div class="sub">뭐가 좋다는 건지, 뭘 어떻게 하라는 건지 — 속 시원하게 정리했습니다.</div>
+  <div class="meta">
+    <div><div class="l">구성</div><div class="v">4막 · 18장</div></div>
+    <div><div class="l">Written by</div><div class="v">Woozi</div></div>
+  </div>
+</div>`);
+
+/* 2 목차 */
+add("목차",`<div class="slide">
+  <span class="eyebrow">목차</span>
+  <h2 class="title">이 가이드가 <em>다루는 순서</em></h2>
+  <div class="idx" id="toc"></div>
+  <div class="note">1막 방향은 옳다 → 2막 왜 기대만큼 안 되는가 → 3막 그래서, 순서가 있다 → 4막 그 끝에 있는 것.</div>
+</div>`);
+
+/* 2.5 AX가 뭐길래? */
+add("AX가 뭐길래?",`<div class="slide">
+  ${band("Act 0 · What Is AX")}
+  <span class="eyebrow">본격적으로 들어가기 전에 · AX가 뭐길래?</span>
+  <h2 class="title">AX는 도구가 아니라 <em>일하는 방식</em>을 바꾸는 것</h2>
+  <div class="lead">한 줄 정의 — <strong>AX(AI Transformation)</strong>는 "AI 도구를 사주는 것"(구독·계정 지급)이 아니라, "일하는 <span class="nowrap">방식 자체를</span> AI와 함께 다시 짜는 것"입니다.</div>
+  <div class="cols">
+    <div class="col-neg">
+      <h4>도구 도입 — AX 아님</h4>
+      <ul>
+        <li>AI 서비스를 구독하고 계정을 나눠줍니다.</li>
+        <li>기존 업무 틀은 그대로 두고, 그 위에 도구만 하나 더 얹습니다.</li>
+      </ul>
+    </div>
+    <div class="col-pos">
+      <h4>방식 전환 — 진짜 AX</h4>
+      <ul>
+        <li>일이 오가는 경로(입력과 출력) 자체를 다시 설계합니다.</li>
+        <li>일하는 순서, 역할 분담, 검증 방식까지 함께 바꿉니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">비유하자면 — DX(디지털 전환)가 "종이 문서를 시스템으로" 바꿔 도구를 바꾼 단계였다면, AX는 그다음 단계로 일의 구조 자체를 바꿉니다.</div>
+</div>`);
+
+/* 3 되돌릴 수 없는 변화 */
+add("되돌릴 수 없는 변화",`<div class="slide">
+  ${band("Act 1 · No Way Back")}
+  <span class="eyebrow">1막. 맞습니다, AI는 사야 합니다 · 되돌릴 수 없는 변화</span>
+  <h2 class="title">라이터를 알아버린 사람은 <em>부싯돌로 못 돌아갑니다</em></h2>
+  <img class="art art-wide" src="assets/lighter-flint.png" alt="왼쪽은 부싯돌을 부딪혀 불꽃을 내려는 손, 오른쪽은 라이터로 손쉽게 불을 켠 손을 나란히 비교한 일러스트">
+  <div class="cols">
+    <div>
+      <h4>비유 하나</h4>
+      <ul>
+        <li>손으로 나무를 비벼 불을 붙이던 사람도, 라이터를 한 번 써 보면 다시 부싯돌로 <span class="nowrap">돌아가지 못합니다.</span></li>
+        <li>AI로 일해 본 사람도 마찬가지입니다 — 한 번 편한 걸 알면, 이전 방식으로는 <span class="nowrap">못 돌아갑니다.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>지금 우리 주변에서</h4>
+      <ul>
+        <li>회사와 사회 전체에서 이미 변화가 진행 중입니다.</li>
+        <li>AI로 생산성을 크게 올릴 수 있다는 걸 다들 알면서도, 예전 방식만 쓰는 게 오히려 <span class="nowrap">불안한 분위기입니다</span> — 개인도 조직도 똑같이 이 조바심(FOMO)을 느낍니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">그래서 이 가이드의 출발점은 "도입해야 하나 말아야 하나"가 아니라 "어떻게 해야 제대로 되나"입니다. 방향 자체는 이미 옳습니다.</div>
+</div>`);
+
+/* 4 우리가 흔히 하는 기대 */
+add("우리가 흔히 하는 기대",`<div class="slide">
+  ${band("Act 1 · The Common Expectation")}
+  <span class="eyebrow">1막. 맞습니다, AI는 사야 합니다 · 우리가 흔히 하는 기대</span>
+  <h2 class="title">계정 주면 → 생산성 오르고 → <em>비용도 준다?</em></h2>
+  <div class="cols3 cols3-lg">
+    <div class="step"><span class="n">01</span><h4>계정 지급</h4><p>여러 곳에서 잘 알려진 AI 도구를 회사 전체에 도입합니다.</p></div>
+    <div class="step"><span class="n">02</span><h4>교육 · 전담팀 구성</h4><p>외부 강사를 불러 교육하고, 사내에 AI 전담팀(TF)을 만듭니다.</p></div>
+    <div class="step"><span class="n">03</span><h4>기대하는 결과</h4><p>이만큼 했으니 생산성은 오르고, 비용은 자연히 줄어들 거라 기대합니다.</p></div>
+  </div>
+  <div class="pivot">이 기대, <em>어디서부터 어긋나는 걸까요?</em><span class="cap">2막에서 그 이유를 하나씩 짚어봅니다.</span></div>
+</div>`);
+
+/* 5 모두가 겪는 5단계 */
+add("모두가 겪는 5단계",`<div class="slide">
+  ${band("Act 2 · The Common Stages")}
+  <span class="eyebrow">2막. 왜 다들 기대만큼 안 되는가 · 모두가 겪는 5단계</span>
+  <h2 class="title">환호에서 의구심까지, <em>패턴은 비슷합니다</em></h2>
+  <div class="flow4" role="img" aria-label="환호에서 정체, 신남을 거쳐 의구심으로 이어지는 4단계 흐름">
+    <div class="fnode">환호</div><span class="farrow">→</span>
+    <div class="fnode">정체</div><span class="farrow">→</span>
+    <div class="fnode">신남</div><span class="farrow">→</span>
+    <div class="fnode is-now">의구심</div>
+  </div>
+  <table>
+    <tr><th>단계</th><th>겉으로 보이는 모습</th><th class="acc">실제로 일어나는 일</th></tr>
+    <tr><td>환호</td><td>계약·교육·전담팀 구성</td><td>다른 회사의 성공 사례에 이끌려 다 함께 신나게 시작</td></tr>
+    <tr><td>정체</td><td>계정을 줘도 잘 안 씀</td><td>특히 개발 업무가 아닌 동료일수록 사용이 잘 늘지 않음</td></tr>
+    <tr><td>신남</td><td>사내 시스템 연결 · 해커톤</td><td>업무 도구와 연결되고 사례가 퍼지며 사용이 크게 늘어남</td></tr>
+    <tr><td>의구심</td><td>"그런데 뭔가 기대에 못 미친다"</td><td>체감 속도는 조금 올랐는데, 확신이 서지 않는 시기</td></tr>
+  </table>
+  <div class="note">많은 조직이 이 순서를 그대로 밟습니다. 우리가 지금 어느 단계에 있는지 가늠해보는 것부터 시작해도 좋습니다.</div>
+</div>`);
+
+/* 6 성적표의 배신 */
+add("성적표의 배신",`<div class="slide">
+  ${band("Act 2 · The Report Card")}
+  <span class="eyebrow">2막 · 성적표의 배신</span>
+  <h2 class="title">체감 개선은 <em>10~20%</em>, 기대는 훨씬 컸습니다</h2>
+  <div class="cols">
+    <div>
+      <h4>체감으로 확인된 것들</h4>
+      <ul>
+        <li>개발 속도 체감 개선은 대략 10~20% 수준에 그칩니다.</li>
+        <li>품질이 낮은 AI 산출물("AI Slop")이 사내에 조금씩 쌓이기 시작합니다.</li>
+        <li>검토 없이 나간 결과물이 실제 장애나 잘못된 판단으로 이어진 사례도 등장합니다.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>그래서 벌어지는 일</h4>
+      <table>
+        <tr><th>단계</th><th class="acc">결과</th></tr>
+        <tr><td>사고 발생</td><td>AI 사용 정책을 강하게 되돌림(롤백)</td></tr>
+        <tr><td>롤백 이후</td><td>해당 조직의 전환이 약 6개월 정체</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note warn">구글 클라우드가 운영하는 개발 생산성 조사(DORA 리포트)도 같은 패턴을 확인했습니다. 우리 조직만의 문제가 아니라는 뜻입니다.</div>
+</div>`);
+
+/* 7 J-커브의 구덩이 */
+add("J-커브의 구덩이",`<div class="slide">
+  ${band("Act 2 · The J-Curve Dip")}
+  <span class="eyebrow">2막 · J-커브의 구덩이</span>
+  <h2 class="title">도입 직후 성과가 <em>떨어지는 건 정상</em>입니다</h2>
+  <div class="jcurve-wrap">
+    <svg viewBox="0 0 620 142" role="img" aria-label="도입 시점부터 성과가 일시적으로 하락해 구덩이를 지난 뒤, 다시 원래 수준을 넘어 크게 상승하는 J자형 곡선 그래프. 하락 구간의 원인은 학습 곡선, 검증세, 파이프라인 적응 세 가지.">
+      <line x1="26" y1="82" x2="596" y2="82" stroke="#d4c8b3" stroke-width="1.5" stroke-dasharray="4 5"/>
+      <text x="26" y="70" font-size="10.5" fill="#6e6456" font-family="Pretendard Variable,Pretendard,sans-serif">도입 시점의 성과 수준</text>
+      <path d="M26,82 C126,89 172,122 234,122 C296,122 336,89 376,82 Z" fill="#b8503a" opacity=".12"/>
+      <path d="M26,82 C126,89 172,122 234,122 C296,122 336,89 376,82 C458,68 528,36 596,18" fill="none" stroke="#b8503a" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="26" cy="82" r="4" fill="#1a1612"/>
+      <text x="26" y="98" font-size="10.5" fill="#6e6456" font-family="Pretendard Variable,Pretendard,sans-serif">도입 시점</text>
+      <line x1="130" y1="103" x2="130" y2="112" stroke="#96432f" stroke-width="1.5"/>
+      <text x="130" y="124" font-size="11" fill="#1a1612" font-weight="700" text-anchor="middle" font-family="Newsreader,Georgia,serif" font-style="italic">①</text>
+      <line x1="234" y1="122" x2="234" y2="112" stroke="#96432f" stroke-width="1.5"/>
+      <text x="234" y="124" font-size="11" fill="#1a1612" font-weight="700" text-anchor="middle" font-family="Newsreader,Georgia,serif" font-style="italic">②</text>
+      <line x1="320" y1="108" x2="320" y2="101" stroke="#96432f" stroke-width="1.5"/>
+      <text x="320" y="124" font-size="11" fill="#1a1612" font-weight="700" text-anchor="middle" font-family="Newsreader,Georgia,serif" font-style="italic">③</text>
+      <text x="234" y="138" font-size="11.5" fill="#1a1612" font-weight="700" text-anchor="middle">구덩이</text>
+      <circle cx="376" cy="82" r="4" fill="#b8503a"/>
+      <text x="376" y="98" font-size="10.5" fill="#6e6456" text-anchor="middle" font-family="Pretendard Variable,Pretendard,sans-serif">다시 원래 수준</text>
+      <text x="594" y="15" font-size="12.5" fill="#96432f" font-weight="700" text-anchor="end" font-family="Newsreader,Georgia,serif" font-style="italic">이후 크게 상승</text>
+    </svg>
+  </div>
+  <div class="lead">도입 시점부터 한동안 가치가 오히려 줄어드는 구간(구덩이)을 지나야, 이후 크게 늘어나는 J자 모양 곡선이 나타납니다. 이 구덩이를 만드는 원인은 크게 세 가지입니다.</div>
+  <div class="cols3">
+    <div><h4>① 학습 곡선</h4><p>AI 사용법 자체를 익히는 데 시간이 듭니다.</p></div>
+    <div><h4>② 검증세(Verification Tax)</h4><p>AI가 한 일을 확인하고 확신하는 데 드는 새로운 시간 비용입니다 — 도입 전엔 눈에 안 <span class="nowrap">보이던 비용입니다.</span></p></div>
+    <div><h4>③ 파이프라인 적응</h4><p>기존 업무 방식을 AI에 맞게 다시 짜는 데 시간이 걸립니다.</p></div>
+  </div>
+  <div class="note">구덩이는 실패가 아니라 정상 구간입니다. 이 구간을 버텨야 이후에 진짜 이륙(성과 확장)이 옵니다.</div>
+</div>`);
+
+/* 8 성급한 감원의 청구서 */
+add("성급한 감원의 청구서",`<div class="slide">
+  ${band("Act 2 · The Layoff Bill")}
+  <span class="eyebrow">2막 · 성급한 감원의 청구서</span>
+  <h2 class="title">줄였다가 <em>더 비싸게 다시 불렀다</em></h2>
+  <p>AI만 믿고 사람을 먼저 줄인 조직들 중 다수가, 결국 그 사람들을 더 높은 조건으로 다시 채용했습니다. 아래는 이런 사례로 실제 거론된 회사들입니다.</p>
+  <p class="co-list">Google · Salesforce · Duolingo · Klarna · CNET</p>
+  <blockquote class="pullquote">"아직까지는 사람 머리가 <em>암묵지</em>의 제일 좋은 저장장치였다"</blockquote>
+  <div class="note">왜일까요? 사람이 조직을 떠나면, 그 사람 머릿속에만 있던 "왜 이렇게 하기로 했는지"도 함께 나갑니다.</div>
+</div>`);
+
+/* 9 쌓이는 부채 3종 */
+add("쌓이는 부채 3종",`<div class="slide">
+  ${band("Act 2 · Three Debts")}
+  <span class="eyebrow">2막 · 쌓이는 부채 3종</span>
+  <h2 class="title">기술부채 → 인지부채 → <em>의도부채</em></h2>
+  <div class="cols debt-grid">
+    <div>
+      <table>
+        <tr><th>부채</th><th class="acc">쉬운 설명</th></tr>
+        <tr><td>기술부채</td><td>관리되지 않은 산출물(주로 코드)이 쌓여 다음 작업을 더디게 만드는 것 — 원래도 <span class="nowrap">있던 개념입니다.</span></td></tr>
+        <tr><td>인지부채</td><td>AI가 만든 결과를 사람이 제대로 이해하지 못한 채 그대로 유통되는 것 — "<span class="nowrap">이해를 포기한</span> 채 다음 사람에게 넘기는" 상태입니다.</td></tr>
+        <tr><td>의도부채</td><td>결과물은 남아 있지만 "왜 이렇게 만들었는지" 이유 자체가 사라지는 것입니다.</td></tr>
+      </table>
+    </div>
+    <div>
+      <img class="art art-side" src="assets/debt-stack.png" alt="사람 옆에 검정·회색·주황 블록 3개가 위태롭게 쌓여 기울어진 일러스트 — 기술부채·인지부채·의도부채가 쌓여가는 모습">
+    </div>
+  </div>
+  <div class="note">한 시뮬레이션(James Shore)에 따르면, 이 부채들에 제대로 대응하지 않으면 도입 후 5~19개월 안에 조직의 개발 속도가 오히려 도입 전보다 나빠질 수 있습니다.</div>
+</div>`);
+
+/* 10 1단계 — 계정이 아니라 연결 */
+add("1단계 — 계정이 아니라 연결",`<div class="slide">
+  ${band("Act 3 · Step 1, Connection")}
+  <span class="eyebrow">3막. 그래서, 순서가 있습니다 · 1단계 — 계정이 아니라 연결</span>
+  <h2 class="title">먼저 <em>연결</em>부터, 그다음에 계정입니다</h2>
+  <div class="lead">옛날에 회사가 처음 컴퓨터를 들였을 때를 떠올려보면, 진짜 효과는 컴퓨터를 얹는 것 자체가 아니라 업무 <span class="nowrap">방식 자체를</span> 다시 짜는 데서 나왔습니다. AI도 마찬가지입니다.</div>
+  <div class="cols">
+    <div>
+      <h4>계정만 줬을 때 막히는 지점</h4>
+      <ul>
+        <li>입력(Input) — 우리 팀의 최신 맥락을 AI에게 매번 손으로 넣어줘야 합니다.</li>
+        <li>출력(Output) — AI가 낸 결과를 원래 쓰던 도구에 다시 손으로 옮겨 담아야 합니다.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>먼저 해야 할 것</h4>
+      <ul>
+        <li>계정 지급보다 사내 시스템(메신저·문서·업무 도구)과의 실질적 연결이 먼저입니다.</li>
+        <li>도구만 얹지 말고, 일하는 파이프라인 자체를 다시 설계합니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">연결이 되고 나서야 비로소, 개발 업무가 아닌 동료들의 실제 사용이 늘어나기 시작합니다.</div>
+</div>`);
+
+/* 11 2단계 — 사례로 전파 */
+add("2단계 — 사례로 전파",`<div class="slide">
+  ${band("Act 3 · Step 2, Spread by Example")}
+  <span class="eyebrow">3막 · 2단계 — 사례로 전파</span>
+  <h2 class="title">사람은 <em>따라 하며</em> 배웁니다</h2>
+  <div class="cols">
+    <div>
+      <h4>실제로 효과 있었던 방식</h4>
+      <ul>
+        <li>해커톤처럼, 실제 사례를 짧은 시간에 여러 사람이 함께 보는 자리가 중요합니다.</li>
+        <li>사람은 남이 하는 걸 보며 따라 하는 존재입니다 — 사례를 널리 보여주는 것 자체가 <span class="nowrap">확산의 동력입니다.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>지표를 바꿔야 하는 시점</h4>
+      <ul>
+        <li>초기에는 사용량(Input, 예: 얼마나 자주 썼는지)으로 진행 상황을 체감해도 괜찮습니다.</li>
+        <li>하지만 후기에는 반드시 성과(Output, 실제로 무엇이 좋아졌는지) 중심 지표로 옮겨가야 합니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">사용량 숫자만 계속 확인하고 있으면, 정작 성과 없이 사용량만 늘리는 부작용이 생깁니다. 지표를 옮겨 타는 타이밍을 놓치지 않아야 합니다.</div>
+</div>`);
+
+/* 12 3단계 — AI가 일할 수 있는 회사 */
+add("3단계 — AI가 일할 수 있는 회사",`<div class="slide">
+  ${band("Act 3 · Step 3, AI-Ready Company")}
+  <span class="eyebrow">3막 · 3단계 — AI가 일할 수 있는 회사</span>
+  <h2 class="title">세 가지 조건이 <em>갖춰져야</em> 합니다</h2>
+  <div class="cols3 cols3-lg">
+    <div class="condcard"><h4>① Queryable</h4><p><em>물어볼 수 있는 데이터.</em> 회의·자료·작은 결정까지 기록으로 남아, AI가 검색하고 참조할 수 있는 상태입니다.</p><p class="ex">예 — 지난 회의에서 왜 그렇게 정했는지, AI에게 물으면 바로 답이 나오는 상태</p></div>
+    <div class="condcard"><h4>② Closed loop</h4><p><em>닫힌 순환.</em> 지난 시도의 결과가 다시 다음 시도의 입력이 되어 순환하는 구조입니다.</p><p class="ex">예 — 지난 시도가 왜 안 됐는지가, 다음 시도에 자동으로 반영되는 상태</p></div>
+    <div class="condcard"><h4>③ Self-improving</h4><p><em>스스로 나아지는 구조.</em> 이 순환을 통해 매번 더 나은 시도를 반복하는 상태입니다.</p><p class="ex">예 — 같은 실수를 반복하지 않고, 시도할수록 조금씩 더 나아지는 상태</p></div>
+  </div>
+  <div class="note">세 조건이 말은 쉬워도 실제로 갖추기는 쉽지 않습니다. 하지만 이게 갖춰진 다음에야, 계정을 나눠주는 것 이상의 변화가 시작됩니다.</div>
+</div>`);
+
+/* 13 4단계 — 검증 체계 구축 */
+add("4단계 — 검증 체계 구축",`<div class="slide">
+  ${band("Act 3 · Step 4, Build Verification")}
+  <span class="eyebrow">3막 · 4단계 — 검증 체계 구축</span>
+  <h2 class="title">사람의 일이 '만들기'에서 <em>'검증하기'</em>로</h2>
+  <div class="cols">
+    <div>
+      <h4>검증을 나누는 3단계</h4>
+      <table>
+        <tr><th>유형</th><th class="acc">쉬운 설명</th></tr>
+        <tr><td>이진 검증</td><td>기능이 되는지 안 되는지, O·X로 확인</td></tr>
+        <tr><td>정량 검증</td><td>처리 속도·걸리는 시간처럼 숫자로 측정</td></tr>
+        <tr><td>정성 검증</td><td>숫자로 딱 떨어지지 않는 것 — 보통 다른 AI에게 "전문가라고 생각하고 평가해봐"라고 시켜 점수를 매김</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>왜 전문가가 필요한가</h4>
+      <ul>
+        <li>좋은 검증 기준을 세우려면 그 업무를 깊이 아는 사람이 필요합니다.</li>
+        <li>무언가를 만드는 능력과, 좋고 나쁨을 가려내는 안목은 서로 다른 능력입니다.</li>
+        <li>서로 다른 관점의 AI를 여럿 붙여, 교차로 검증하게 하는 방식도 함께 씁니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">검증 체계는 전문가만 제대로 만들 수 있습니다. 이것이 바로 다음 막에서 이야기할 '전문성'의 새로운 의미입니다.</div>
+</div>`);
+
+/* 14 조직도가 이렇게 바뀝니다 */
+add("조직도가 이렇게 바뀝니다",`<div class="slide">
+  ${band("Act 4 · The Org Chart Shifts")}
+  <span class="eyebrow">4막. 그 끝에 있는 것 · 조직도가 이렇게 바뀝니다</span>
+  <h2 class="title">관리만 하던 시니어가 <em>다시 실무로</em></h2>
+  <div class="cols org-grid">
+    <div>
+      <h4>예전 모습</h4>
+      <ul>
+        <li>시니어는 여러 주니어를 관리하는 역할에 머무릅니다.</li>
+        <li>일의 크기는 관리하는 사람 수에 비례해 커집니다.</li>
+      </ul>
+      <h4>달라지는 모습</h4>
+      <ul>
+        <li>시니어가 다시 실무를 직접 맡습니다.</li>
+        <li>AI 에이전트를 동료이자 부하로 함께 두고 일합니다.</li>
+        <li>일 전체를 보던 주니어는 곧바로 시니어급 역할로 올라갑니다.</li>
+      </ul>
+    </div>
+    <div>
+      <img class="art art-side" src="assets/org-leverage.png" alt="사람 한 명을 중심으로 노트북·문서·도구를 각각 다루는 AI 에이전트 8명이 둘러싼 일러스트 — 동료이자 부하가 된 AI 에이전트들">
+    </div>
+  </div>
+  <div class="note">핵심은 사람을 줄이는 게 아니라, 한 사람이 감당하는 일의 크기가 커지는 것입니다.</div>
+</div>`);
+
+/* 15 AI는 잠들지 않는다 */
+add("AI는 잠들지 않는다",`<div class="slide">
+  ${band("Act 4 · AI Never Sleeps")}
+  <span class="eyebrow">4막 · AI는 잠들지 않는다</span>
+  <h2 class="title">우리가 잘 때도, <em>실험은 계속됩니다</em></h2>
+  <div class="cols">
+    <div>
+      <p>실제로 있었던 자동 연구 사례입니다. 검증 체계가 믿을 만하면, 사람이 자는 동안에도 일이 진행될 수 있다는 것을 보여줍니다.</p>
+      <div class="nightlog">
+        <div class="lbl">하룻밤 자동 연구 실사례</div>
+        <ul>
+          <li>실험 <span class="num">45건</span>을 스스로 설계·실행·판정</li>
+          <li>정확도(GAUC) <span class="num">0.7665 → 0.8063</span> 개선</li>
+          <li>자원(VRAM) 사용량 <span class="num">56%</span> 절감</li>
+        </ul>
+        <div class="foot">→ 같은 인원으로 몇 배 많은 실험량을 감당</div>
+      </div>
+    </div>
+    <div>
+      <img class="art art-side" src="assets/night-work.png" alt="달이 뜬 밤, 책상 위 컴퓨터 화면에 실험 도구 아이콘이 떠 있는 일러스트 — 사람 없이도 밤새 돌아가는 자동 실험실">
+    </div>
+  </div>
+  <div class="note">다음 날 아침, 사람은 결과만 확인하면 됩니다. 24시간 돌아가는 것은 AI, 그 경계를 정하고 다듬는 것은 사람입니다.</div>
+</div>`);
+
+/* 16 성과의 기준을 바꾸자 */
+add("성과의 기준을 바꾸자",`<div class="slide">
+  ${band("Act 4 · Change the Yardstick")}
+  <span class="eyebrow">4막 · 성과의 기준을 바꾸자</span>
+  <h2 class="title">KPI는 <em>생산량에서 검증량</em>으로</h2>
+  <div class="cols">
+    <div>
+      <h4>달라지는 기준</h4>
+      <table>
+        <tr><th>예전 기준</th><th class="acc">앞으로 기준</th></tr>
+        <tr><td>얼마나 많이 만들었나</td><td>얼마나 잘 검증했나, 검증 구조를 얼마나 잘 갖췄나</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>사람에게 남는 3가지</h4>
+      <ul>
+        <li><strong>옳은 가치 판단</strong> — 무엇이 맞는 방향인지 정하는 몫</li>
+        <li><strong>지지받는 취향</strong> — 여러 선택지 중 무엇을 고를지 정하는 안목</li>
+        <li><strong>납득되는 책임</strong> — 결과에 대해 실제로 책임질 수 있는 존재</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">AI가 손발을 대신해도, 이 세 가지는 여전히 사람의 몫입니다.</div>
+</div>`);
+
+/* 17 결론 — AX 성공 공식 */
+add("결론 — AX 성공 공식",`<div class="slide">
+  ${band("Act 4 · The Success Formula")}
+  <span class="eyebrow">4막 · 결론 — AX 성공 공식</span>
+  <h2 class="title">인력 감축이 아니라 <em>같은 사람이 더 크게</em></h2>
+  <div class="cols">
+    <div class="col-neg">
+      <h4>흔들리는 길</h4>
+      <ul>
+        <li>도구만 얹고 업무 방식은 그대로 둡니다.</li>
+        <li>사용량 숫자만 확인하고 성과는 들여다보지 않습니다.</li>
+        <li>검증 없이 속도만 추구합니다.</li>
+      </ul>
+    </div>
+    <div class="col-pos">
+      <h4>단단한 길</h4>
+      <ul>
+        <li>같은 사람들이</li>
+        <li>더 많은 일을</li>
+        <li>더 정확하고 빠르게 해냅니다.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="codeblk">우리 조직 자가진단
+ □ 사내 시스템과 실질적으로 연결됐나
+ □ 성공 사례가 자연스럽게 퍼지고 있나
+ □ 지표가 사용량이 아니라 성과(Output) 중심인가
+ □ 우리만의 검증 체계를 갖추고 있나
+ □ 초반의 구덩이(성과 저하 구간)를 버틸 계획이 있나</div>
+  <div class="note">이 다섯 가지에 "예"라고 답할 수 있다면, 이미 올바른 순서로 가고 있는 것입니다.</div>
+  <div class="credit">참고 자료: AI시대의 전문성 (하용호/인프런)</div>
+</div>`);
+
+function josaRo(word){
+  const last=word.trim().slice(-1);
+  const code=last.charCodeAt(0)-0xAC00;
+  if(code<0||code>11171)return '로';
+  const jong=code%28;
+  return (jong===0||jong===8)?'로':'으로';
+}
+const track=document.getElementById('track');
+track.innerHTML=S.map(s=>s.h).join('');
+document.getElementById('tot').textContent=S.length;
+const toc=document.getElementById('toc');
+if(toc){toc.innerHTML=S.map((s,idx)=>idx<2?'':`<div class="row" onclick="go(${idx})" tabindex="0" role="button" aria-label="${s.t}${josaRo(s.t)} 이동" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go(${idx});}"><span class="nn">${String(idx-1).padStart(2,'0')}</span><span class="tt">${s.t}</span></div>`).join('');}
+let i=0;
+function r(){
+  track.style.transform=`translateX(-${i*100}%)`;
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('ttl').textContent=S[i].t;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===S.length-1;
+  document.getElementById('first').disabled=i===0;
+  document.getElementById('last').disabled=i===S.length-1;
+  const pct=((i+1)/S.length*100);
+  const prog=document.getElementById('prog');
+  prog.style.width=pct+'%';
+  prog.setAttribute('aria-valuenow',Math.round(pct));
+  const sl=track.children[i]; if(sl) sl.scrollTop=0;
+}
+function move(d){const n=i+d; if(n>=0&&n<S.length){i=n;r();}}
+function go(n){if(n>=0&&n<S.length){i=n;r();}}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown')move(1);
+  else if(e.key==='ArrowLeft'||e.key==='PageUp')move(-1);
+  else if(e.key==='Home'){i=0;r();}
+  else if(e.key==='End'){i=S.length-1;r();}
+});
+r();
+</script>
+</body>
+</html>
