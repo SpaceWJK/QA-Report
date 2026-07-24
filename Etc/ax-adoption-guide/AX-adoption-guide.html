@@ -58,7 +58,6 @@ td:first-child{color:var(--ink);font-weight:600;white-space:nowrap;}
 tr:hover td{background:var(--surface);}
 .note{border-left:3px solid var(--accent);background:rgba(184,80,58,.06);padding:12px 16px;font-size:15px;line-height:1.55;margin:8px 0 0;color:var(--body);}
 .note.warn{border-color:var(--warn);background:rgba(154,106,31,.08);}
-.codeblk{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;background:#26221d;color:#e8e2d8;padding:15px 19px;border-radius:5px;margin:6px 0;white-space:pre;overflow-x:auto;overflow-y:visible;flex-shrink:0;line-height:1.62;}
 .idx{columns:2;column-gap:40px;}
 @media(max-width:900px){.idx{columns:1;}}
 .idx .row{break-inside:avoid;display:flex;gap:11px;padding:7px 0;border-bottom:1px solid var(--rule);align-items:baseline;cursor:pointer;}
@@ -108,12 +107,19 @@ figcaption{font-size:13px;color:var(--mute);margin-top:6px;}
 /* 슬라이드 15 전용 — 좌측 텍스트 블록을 우측 일러스트 세로 중앙에 정렬 */
 .org-grid{align-items:center;}
 
-/* 슬라이드 16 전용 — 다크 솔리드 박스 대신 테라코타 세로 보더 콜아웃 (.codeblk와 분리) */
+/* 슬라이드 16 전용 — 다크 솔리드 박스 대신 테라코타 세로 보더 콜아웃 */
 .nightlog{border-left:4px solid var(--accent);padding:2px 0 2px 20px;margin:4px 0;}
 .nightlog .lbl{font-family:var(--serif);font-style:italic;font-weight:600;font-size:16px;color:var(--accent-dk);margin-bottom:10px;}
 .nightlog ul{margin:0 0 10px;}
 .nightlog .num{color:var(--accent-dk);font-weight:700;font-size:17.5px;}
 .nightlog .foot{font-size:14.5px;color:var(--mute);border-top:1px solid var(--rule);padding-top:9px;}
+
+/* 슬라이드 18(결론) 전용 — 자가진단 체크리스트. .nightlog와 동일 계열(테라코타 좌측 보더)로 구 다크박스(.codeblk) 대체 */
+.selfcheck{border-left:4px solid var(--accent);padding:2px 0 2px 20px;margin:6px 0;}
+.selfcheck .lbl{font-family:var(--serif);font-style:italic;font-weight:600;font-size:16px;color:var(--accent-dk);margin-bottom:10px;}
+.selfcheck ul{margin:0;}
+.selfcheck li{position:relative;padding-left:22px;margin-bottom:7px;font-size:15px;line-height:1.55;color:var(--body);}
+.selfcheck li::before{content:'□';position:absolute;left:0;color:var(--accent-dk);font-weight:700;}
 
 .cover{justify-content:center;background:radial-gradient(120% 90% at 80% 12%,#ece6d8 0%,var(--bg) 55%);}
 .cover .kick{font-size:15.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-dk);margin-bottom:30px;}
@@ -133,7 +139,7 @@ figcaption{font-size:13px;color:var(--mute);margin-top:6px;}
 .hint{position:fixed;bottom:68px;right:16px;font-size:13px;color:var(--frame-mute);}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 @media(max-width:900px){.slide{padding:30px 5vw 56px;}.hint{display:none;}}
-@media(max-width:480px){.art-wide{max-height:150px;}.art-cover{max-height:120px;}.codeblk{white-space:pre-wrap;font-size:13.5px;}}
+@media(max-width:480px){.art-wide{max-height:150px;}.art-cover{max-height:120px;}}
 </style>
 </head>
 <body>
@@ -536,12 +542,16 @@ add("결론 — AX 성공 공식",`<div class="slide">
       </ul>
     </div>
   </div>
-  <div class="codeblk">우리 조직 자가진단
- □ 사내 시스템과 실질적으로 연결됐나
- □ 성공 사례가 자연스럽게 퍼지고 있나
- □ 지표가 사용량이 아니라 성과(Output) 중심인가
- □ 우리만의 검증 체계를 갖추고 있나
- □ 초반의 구덩이(성과 저하 구간)를 버틸 계획이 있나</div>
+  <div class="selfcheck">
+    <div class="lbl">우리 조직 자가진단</div>
+    <ul>
+      <li>사내 시스템과 실질적으로 연결됐나</li>
+      <li>성공 사례가 자연스럽게 퍼지고 있나</li>
+      <li>지표가 사용량이 아니라 성과(Output) 중심인가</li>
+      <li>우리만의 검증 체계를 갖추고 있나</li>
+      <li>초반의 구덩이(성과 저하 구간)를 버틸 계획이 있나</li>
+    </ul>
+  </div>
   <div class="note">이 다섯 가지에 "예"라고 답할 수 있다면, 이미 올바른 순서로 가고 있는 것입니다.</div>
   <div class="credit">참고 자료: AI시대의 전문성 (하용호/인프런)</div>
 </div>`);
