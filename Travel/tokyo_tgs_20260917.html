@@ -619,7 +619,7 @@
     <p class="section-sub">클릭하면 완료 표시가 저장됩니다 (새로고침해도 유지). 카테고리 제목을 클릭하면 접고 펼 수 있습니다.</p>
     <div class="checklist-cats">
       <div class="checklist-cat" data-cat-id="cat-docs">
-        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-docs-body">
+        <button type="button" class="cat-header" aria-expanded="false" aria-controls="cat-docs-body">
           <span class="cat-title">📄 서류</span>
           <span class="cat-progress" data-cat-progress>0/6</span>
           <span class="cat-arrow" aria-hidden="true">▾</span>
@@ -636,7 +636,7 @@
         </div>
       </div>
       <div class="checklist-cat" data-cat-id="cat-items">
-        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-items-body">
+        <button type="button" class="cat-header" aria-expanded="false" aria-controls="cat-items-body">
           <span class="cat-title">🎒 여행 필수품</span>
           <span class="cat-progress" data-cat-progress>0/9</span>
           <span class="cat-arrow" aria-hidden="true">▾</span>
@@ -656,7 +656,7 @@
         </div>
       </div>
       <div class="checklist-cat" data-cat-id="cat-etc">
-        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-etc-body">
+        <button type="button" class="cat-header" aria-expanded="false" aria-controls="cat-etc-body">
           <span class="cat-title">📌 기타</span>
           <span class="cat-progress" data-cat-progress>0/8</span>
           <span class="cat-arrow" aria-hidden="true">▾</span>
@@ -1763,7 +1763,7 @@
       var body = document.getElementById(header.getAttribute('aria-controls'));
       if (!body) return;
 
-      var expanded = catId && state.hasOwnProperty(catId) ? !!state[catId] : true;
+      var expanded = catId && state.hasOwnProperty(catId) ? !!state[catId] : false;
       setExpanded(header, body, expanded, true);
 
       header.addEventListener('click', function () {
