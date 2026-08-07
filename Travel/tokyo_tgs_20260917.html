@@ -1,0 +1,2173 @@
+<!--
+  플레이스홀더 교체 방법 (5줄 요약)
+  1. 텍스트: "[플레이스홀더]"로 표시된 문구를 실제 정보로 교체 (검색: "[" 로 grep 하면 전부 찾힘).
+  2. 이미지: .img-ph 요소 바로 위 HTML 주석에 <img src="실제경로" alt="설명"> 예시가 있음 — 주석 해제 후 .img-ph div 삭제.
+  3. 표/카드 반복 항목: 기존 1개 블록을 복사(Ctrl+C/V)해서 개수만 늘리면 스타일 자동 적용됨.
+  4. 예산 표의 data-jpy 속성값을 실제 엔화 금액으로 바꾸면 원화가 자동 재계산됨 (JS 로직 그대로 재사용).
+  5. 체크리스트 항목 추가 시 <li class="check-item"> 블록을 복사하고 data-id 값만 고유하게 바꾸면 localStorage 저장이 자동 적용됨.
+-->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOKYO 2026 — TGS Business Trip</title>
+<style>
+  :root {
+    --color-primary: #2C5282;
+    --color-primary-light: #EBF4FF;
+    --color-vacation: #2F855A;
+    --color-vacation-light: #E6FFFA;
+    --color-return: #718096;
+    --color-return-light: #EDF2F7;
+    --color-accent: #F56565;
+    --color-accent-light: #FFF5F5;
+    --color-background: #F7FAFC;
+    --color-card-bg: #FFFFFF;
+    --color-text: #2D3748;
+    /* WCAG AA 자가검증: 원 토큰 #718096(text-light)은 백색 배경 대비 4.01:1로 본문(4.5:1) 미달 확인
+       → #4A5568로 조정(대비 7.53:1). --color-return(#718096)은 대형/굵은 텍스트(h2 컬러바 등, 3:1 기준 4.01:1 통과) 용도로만 사용 */
+    --color-text-light: #4A5568;
+    --color-border: #E2E8F0;
+    --shadow-card: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -2px rgba(0,0,0,.04);
+    /* 헤더 컬러바/히어로 전용 고정 토큰 — 항상 흰 텍스트를 얹으므로 테마와 무관하게 어두운 값 유지
+       (다크모드에서 --color-primary 등을 밝게 조정하면 흰 텍스트 대비가 깨지는 문제를 이 분리로 차단) */
+    --color-primary-bar: #2C5282;
+    --color-vacation-bar: #2F855A;
+    --color-return-bar: #4A5568;
+    --color-neutral-bar: #4A5568;
+    --color-accent-bar-1: #C53030;
+    --color-accent-bar-2: #9B2C2C;
+    /* pill-personal 텍스트: 라이트모드 옅은 그린 배경 위 --color-vacation(#2F855A)는 대비 4.33:1로
+       WCAG AA(4.5:1) 미달 실측 → 텍스트 전용 진한 그린으로 분리, 다크모드는 기존 --color-vacation 유지(대비 5.8:1 확인) */
+    --color-vacation-strong: #22543D;
+    /* krw-amount 텍스트: 라이트모드에서 --color-accent(#F56565)를 흰 배경 위 텍스트로 쓰면 3.03:1로 AA 미달
+       → 텍스트 전용 진한 레드로 분리, 다크모드는 --color-accent(#FC8181, 대비 5.8:1) 유지 */
+    --color-accent-text: #C53030;
+    /* 도쿄 배경 이미지 (Master 재작업 지시 2026-08-07) — Unsplash 직링크, w=1920&q=75로 용량 제어.
+       실사진 교체 시 이 두 url()만 바꾸면 전체 반영됨.
+       body: 신주쿠 가부키초 네온 야경(Photo by Jezael Melgoza, Unsplash) / hero: 시부야 스크램블 교차로(Photo by Andre Benz, Unsplash) */
+    --bg-photo-body: url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=1920&q=75');
+    --bg-photo-hero: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1920&q=75');
+    /* body 오버레이(라이트=밝게, 카드가 떠 보이도록) — url() 로드 실패 시 이 그라데이션만 남아 기존 단색과 유사하게 보임(폴백) */
+    --bg-overlay-body: linear-gradient(180deg, rgba(247,250,252,.90) 0%, rgba(235,244,255,.86) 100%);
+    /* hero 오버레이 — 흰 텍스트 대비 유지 목적, *-bar 토큰과 동일하게 테마 불변 고정값 */
+    --bg-overlay-hero: linear-gradient(135deg, rgba(44,82,130,.80) 0%, rgba(47,133,90,.80) 100%);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-primary: #63B3ED;
+      --color-primary-light: #1A365D;
+      --color-vacation: #68D391;
+      --color-vacation-light: #1C4532;
+      --color-return: #A0AEC0;
+      --color-return-light: #2D3748;
+      --color-accent: #FC8181;
+      --color-accent-light: #3B1818;
+      --color-background: #171923;
+      --color-card-bg: #232B3B;
+      --color-text: #F7FAFC;
+      --color-text-light: #CBD5E0;
+      --color-border: #3A445A;
+      --shadow-card: 0 4px 6px -1px rgba(0,0,0,.4), 0 2px 4px -2px rgba(0,0,0,.3);
+      --color-vacation-strong: #68D391;
+      --color-accent-text: #FC8181;
+      /* 다크모드: 어두운 오버레이 — 야경 사진이 더 살아나도록 채도/밝기 낮춤 */
+      --bg-overlay-body: linear-gradient(180deg, rgba(15,17,26,.82) 0%, rgba(23,25,35,.76) 100%);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --color-primary: #63B3ED;
+    --color-primary-light: #1A365D;
+    --color-vacation: #68D391;
+    --color-vacation-light: #1C4532;
+    --color-return: #A0AEC0;
+    --color-return-light: #2D3748;
+    --color-accent: #FC8181;
+    --color-accent-light: #3B1818;
+    --color-background: #171923;
+    --color-card-bg: #232B3B;
+    --color-text: #F7FAFC;
+    --color-text-light: #CBD5E0;
+    --color-border: #3A445A;
+    --shadow-card: 0 4px 6px -1px rgba(0,0,0,.4), 0 2px 4px -2px rgba(0,0,0,.3);
+    --color-vacation-strong: #68D391;
+    --color-accent-text: #FC8181;
+    --bg-overlay-body: linear-gradient(180deg, rgba(15,17,26,.82) 0%, rgba(23,25,35,.76) 100%);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    /* 도쿄 배경 이미지: background-color(항상 렌더)를 최하단 폴백으로 두고, 위에 오버레이+사진을 겹침.
+       url() 로드 실패 시 사진 레이어만 투명해져 사라지고 오버레이(반투명 그라데이션)+배경색만 남아
+       레이아웃/가독성 붕괴 없이 기존 단색톤과 유사하게 보임(요구 3 폴백 설계) */
+    background-color: var(--color-background);
+    background-image: var(--bg-overlay-body), var(--bg-photo-body);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    color: var(--color-text);
+    font-family: 'Pretendard Variable', Pretendard, 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+    line-height: 1.6;
+    transition: background-color .25s ease, color .25s ease;
+  }
+  a { color: var(--color-primary); }
+  img { max-width: 100%; display: block; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
+
+  /* ---------- Sticky Nav ---------- */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: color-mix(in srgb, var(--color-card-bg) 85%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-inner {
+    display: flex; align-items: center; gap: .5rem;
+    max-width: 1080px; margin: 0 auto; padding: .6rem 1.25rem;
+    overflow-x: auto; scrollbar-width: thin;
+  }
+  .nav-inner a {
+    flex: 0 0 auto;
+    font-size: .82rem; font-weight: 600; text-decoration: none;
+    color: var(--color-text-light);
+    padding: .4rem .7rem; border-radius: 999px; white-space: nowrap;
+  }
+  .nav-inner a:hover, .nav-inner a:focus-visible { background: var(--color-primary-light); color: var(--color-primary); outline: none; }
+  .theme-toggle {
+    margin-left: auto; flex: 0 0 auto;
+    border: 1px solid var(--color-border); background: var(--color-card-bg);
+    color: var(--color-text); border-radius: 999px; padding: .4rem .8rem;
+    font-size: .82rem; font-weight: 600; cursor: pointer;
+  }
+  .theme-toggle:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+  main { padding: 1.5rem 0 4rem; }
+
+  /* ---------- Hero ---------- */
+  /* 히어로/뱃지: --color-primary·--color-vacation은 다크모드에서 밝은 파스텔로 바뀌므로(링크·텍스트용 설계)
+     흰 텍스트를 얹는 이 영역은 테마 불변 고정 토큰(*-bar)만 사용 — 손상 없는 AA 대비 유지 */
+  .hero {
+    text-align: center; padding: 3rem 1.25rem 2.5rem;
+    /* 도쿄 스카이라인 사진 + 컬러 오버레이 합성. background-color는 url() 실패 시 폴백(기존 블루-그린 톤 유지) */
+    background-color: var(--color-primary-bar);
+    background-image: var(--bg-overlay-hero), var(--bg-photo-hero);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    color: #fff;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 0 0 .5rem; letter-spacing: .02em; }
+  .hero .dates { font-size: 1.05rem; margin-bottom: 1.25rem; }
+  .dday-box {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.35);
+    border-radius: 16px; padding: .9rem 2rem; margin-bottom: 1.5rem;
+  }
+  .dday-box .num { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .dday-box .label { font-size: .8rem; margin-top: .25rem; }
+  .phase-badges { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; }
+  .phase-badge {
+    font-size: .82rem; font-weight: 700; padding: .4rem .9rem; border-radius: 999px;
+    background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.4);
+  }
+
+  /* ---------- Section Card ---------- */
+  .section-card {
+    background: var(--color-card-bg); border-radius: 16px; box-shadow: var(--shadow-card);
+    padding: 2.5rem; margin: 2rem auto; scroll-margin-top: 4.5rem;
+  }
+  .section-card h2 {
+    color: #fff; padding: .75rem 1.5rem; margin: -2.5rem -2.5rem 2rem;
+    border-radius: 16px 16px 0 0; font-size: 1.4rem; display: flex; align-items: center; gap: .5rem;
+  }
+  .section-card.phase-business h2 { background: var(--color-primary-bar); }
+  .section-card.phase-vacation h2 { background: var(--color-vacation-bar); }
+  .section-card.phase-return h2 { background: var(--color-return-bar); }
+  .section-card.phase-neutral h2 { background: var(--color-neutral-bar); }
+  .section-sub { color: var(--color-text-light); font-size: .92rem; margin: -1rem 0 1.5rem; }
+
+  /* ---------- Day1 timeline strip (overview) ---------- */
+  .day-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: .9rem; }
+  .day-card {
+    border-radius: 12px; padding: 1rem .8rem; text-align: center; border: 2px solid transparent;
+    background: var(--color-background);
+  }
+  .day-card.phase-business { border-color: var(--color-primary); }
+  .day-card.phase-vacation { border-color: var(--color-vacation); }
+  .day-card.phase-return { border-color: var(--color-return); }
+  .day-card .d-num { font-size: .72rem; font-weight: 700; color: var(--color-text-light); }
+  .day-card .d-date { font-size: 1.05rem; font-weight: 800; margin: .2rem 0; }
+  .day-card .d-dow { font-size: .78rem; color: var(--color-text-light); }
+  .day-card .d-summary { font-size: .8rem; margin-top: .5rem; line-height: 1.4; }
+
+  /* ---------- Badges / Pills ---------- */
+  .pill {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .74rem; font-weight: 700; padding: .22rem .6rem; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill-business { background: var(--color-primary-light); color: var(--color-primary); }
+  .pill-personal { background: var(--color-vacation-light); color: var(--color-vacation-strong); }
+
+  /* ---------- Checklist ---------- */
+  .checklist-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; align-items: start; }
+  .checklist-cat { border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; }
+  .checklist-cat h3 { font-size: 1rem; margin: 0 0 .6rem; color: var(--color-primary); }
+  .cat-header {
+    width: 100%; display: flex; align-items: center; gap: .6rem; text-align: left;
+    background: none; border: none; cursor: pointer; padding: .9rem 1rem; font: inherit; color: var(--color-text);
+  }
+  .cat-header:hover { background: var(--color-background); }
+  .cat-header:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .cat-header .cat-title { font-size: 1rem; font-weight: 700; color: var(--color-primary); flex: 1; }
+  .cat-header .cat-progress {
+    font-size: .78rem; font-weight: 700; color: var(--color-text-light); background: var(--color-background);
+    padding: .15rem .55rem; border-radius: 999px; white-space: nowrap;
+  }
+  .cat-header .cat-arrow { display: inline-block; transition: transform .25s ease; font-size: .85rem; color: var(--color-text-light); }
+  .cat-header[aria-expanded="false"] .cat-arrow { transform: rotate(-90deg); }
+  .cat-body { overflow: hidden; max-height: 0; transition: max-height .3s ease; padding: 0 1rem; }
+  .cat-body.is-open { padding: 0 1rem 1rem; }
+  .check-list { list-style: none; margin: 0; padding: 0; }
+  .check-item { margin-bottom: .5rem; }
+  .check-item label {
+    display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; font-size: .92rem;
+    padding: .3rem .2rem; border-radius: 8px;
+  }
+  .check-item label:hover { background: var(--color-background); }
+  .check-item input[type="checkbox"] { margin-top: .2rem; width: 1.05rem; height: 1.05rem; accent-color: var(--color-primary); flex-shrink: 0; }
+  .check-item input[type="checkbox"]:checked + span { text-decoration: line-through; color: var(--color-text-light); }
+  .checklist-progress { margin-top: 1.5rem; font-size: .85rem; color: var(--color-text-light); }
+  .progress-track { height: 8px; border-radius: 999px; background: var(--color-border); overflow: hidden; margin-top: .4rem; }
+  .progress-fill { height: 100%; background: var(--color-vacation); width: 0%; transition: width .3s ease; }
+
+  /* ---------- Numbered steps ---------- */
+  ol.steps { padding-left: 1.4rem; }
+  ol.steps li { margin-bottom: .6rem; }
+
+  /* ---------- Tables ---------- */
+  .table-wrap { overflow-x: auto; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 480px; }
+  thead th {
+    background: var(--color-background); color: var(--color-text-light);
+    text-align: left; padding: .65rem .8rem; font-weight: 700; border-bottom: 2px solid var(--color-border);
+    white-space: nowrap;
+  }
+  tbody td { padding: .65rem .8rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.time, th.time { font-weight: 700; color: var(--color-primary); white-space: nowrap; }
+  td.location a { text-decoration: none; }
+  td.location a::after { content: " 🗺️"; font-size: .8rem; }
+  td.price { font-weight: 700; white-space: nowrap; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; gap: .5rem; border-bottom: 2px solid var(--color-border); margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    background: none; border: none; padding: .7rem 1.1rem; font-size: .92rem; font-weight: 700;
+    color: var(--color-text-light); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px;
+  }
+  .tab-btn[aria-selected="true"] { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .tab-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .tab-panel[hidden] { display: none; }
+
+  /* ---------- Lodging cards ---------- */
+  .lodging-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .lodging-card { border: 1px solid var(--color-border); border-radius: 14px; padding: 1.4rem; }
+  .lodging-card h3 { margin: .6rem 0 .3rem; font-size: 1.05rem; }
+  .lodging-card .dates { font-size: .85rem; color: var(--color-text-light); margin-bottom: .6rem; }
+  .lodging-card dl { display: grid; grid-template-columns: 72px 1fr; gap: .35rem .6rem; font-size: .88rem; margin: 0; }
+  .lodging-card dt { color: var(--color-text-light); }
+  .lodging-card dd { margin: 0; }
+
+  /* ---------- Image placeholder ---------- */
+  .img-ph {
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; color: #fff; flex-shrink: 0;
+  }
+  .img-ph.grad-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .img-ph.grad-2 { background: linear-gradient(135deg, #f6ad55, #ed64a6); }
+  .img-ph.grad-3 { background: linear-gradient(135deg, #4fd1c5, #319795); }
+  .img-ph.grad-4 { background: linear-gradient(135deg, #fc8181, #d53f8c); }
+  .img-ph.grad-5 { background: linear-gradient(135deg, #63b3ed, #2c5282); }
+  .img-ph.grad-6 { background: linear-gradient(135deg, #68d391, #2f855a); }
+
+  /* ---------- Restaurant cards ---------- */
+  .restaurant-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.2rem; margin-bottom: 1.5rem; }
+  .restaurant-card {
+    display: grid; grid-template-columns: 120px 1fr; gap: 1rem; align-items: start;
+    border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem; position: relative;
+  }
+  .food-photo-wrap { width: 120px; height: 120px; border-radius: 10px; overflow: hidden; position: relative; flex-shrink: 0; }
+  .food-photo-wrap .food-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .food-photo-wrap .img-ph { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+  .restaurant-card .reco-badge {
+    position: absolute; top: -.5rem; right: 1rem; font-size: .72rem; font-weight: 700;
+    background: var(--color-accent-bar-1); color: #fff; padding: .25rem .6rem; border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+  }
+  .restaurant-card h3 { margin: 0 0 .15rem; font-size: 1.02rem; }
+  .restaurant-card h3 .jp-name { display: block; font-size: .76rem; font-weight: 400; color: var(--color-text-light); margin-top: .1rem; }
+  .restaurant-card .genre { font-size: .78rem; color: var(--color-text-light); margin-bottom: .4rem; }
+  .restaurant-card .why-line { font-size: .84rem; margin: 0 0 .5rem; font-style: italic; color: var(--color-text); }
+  .restaurant-card .desc { font-size: .85rem; margin: 0 0 .3rem; }
+  .restaurant-card .link-row { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: .3rem; }
+  .restaurant-card .maplink, .restaurant-card .tabelog-link { font-size: .8rem; text-decoration: none; white-space: nowrap; }
+  .restaurant-card .r-detail {
+    display: grid; grid-template-columns: 44px 1fr; gap: .3rem .6rem; font-size: .82rem;
+    margin: 0 0 .6rem;
+  }
+  .restaurant-card .r-detail dt { color: var(--color-text-light); font-weight: 700; }
+  .restaurant-card .r-detail dd { margin: 0; }
+  .food-group-label { margin: 0 0 1rem; font-size: 1.05rem; color: var(--color-primary); }
+
+  /* ---------- Course option cards (19일 선택형 코스) ---------- */
+  .course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+  .course-card { border: 1px solid var(--color-border); border-radius: 14px; padding: 1.2rem; }
+  .course-card h4 { margin: 0 0 .6rem; font-size: 1rem; color: var(--color-primary); }
+  .course-card.not-adopted { opacity: .55; }
+  .course-badge.confirmed { background: var(--color-vacation-light); color: var(--color-vacation-strong); }
+  .course-badge.not-adopted-tag { background: var(--color-background); color: var(--color-text-light); }
+  .course-spots { margin: 0 0 .7rem; padding-left: 1.1rem; font-size: .88rem; }
+  .course-spots li { margin-bottom: .3rem; }
+  .course-meta { font-size: .8rem; color: var(--color-text-light); margin-bottom: .6rem; }
+  .course-badge {
+    display: inline-flex; align-items: center; gap: .3rem; font-size: .76rem; font-weight: 700;
+    padding: .3rem .65rem; border-radius: 999px;
+  }
+  .course-badge.recommend { background: var(--color-vacation-light); color: var(--color-vacation-strong); }
+  .course-badge.caution { background: var(--color-accent-light); color: var(--color-accent-text); }
+  .sight-group-label { margin: 0 0 1rem; font-size: 1.05rem; color: var(--color-primary); }
+
+  /* ---------- Sightseeing cards ---------- */
+  .sight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+  .sight-card { border: 1px solid var(--color-border); border-radius: 14px; overflow: hidden; }
+  .sight-card .img-ph { width: 100%; height: 120px; border-radius: 0; }
+  .sight-card .body { padding: 1rem; }
+  .sight-card h3 { margin: 0 0 .3rem; font-size: .98rem; }
+  .sight-card p { margin: 0 0 .4rem; font-size: .85rem; color: var(--color-text-light); }
+
+  /* ---------- Budget ---------- */
+  .budget-summary-box {
+    border: 1px dashed var(--color-border); border-radius: 12px; padding: 1.2rem 1.4rem;
+    background: var(--color-background); margin-bottom: 1.5rem; font-size: .88rem; color: var(--color-text-light);
+  }
+  .budget-summary-box h3 { margin: 0 0 .5rem; font-size: .92rem; color: var(--color-text); }
+  .budget-summary-box ul { margin: 0; padding-left: 1.2rem; }
+  .personal-total-box {
+    background: linear-gradient(135deg, var(--color-accent-bar-1) 0%, var(--color-accent-bar-2) 100%);
+    color: #fff; border-radius: 16px; padding: 1.8rem; text-align: center; margin-bottom: 1.8rem;
+  }
+  .personal-total-box .label { font-size: .9rem; margin-bottom: .3rem; }
+  .personal-total-box .amount { font-size: 2.4rem; font-weight: 800; }
+  .personal-total-box .sub { font-size: .8rem; margin-top: .4rem; }
+  .bar-row { display: flex; align-items: center; gap: .7rem; margin-bottom: .55rem; font-size: .85rem; }
+  .bar-row .bar-label { flex: 0 0 84px; color: var(--color-text-light); }
+  .bar-row .bar-track { flex: 1; height: 10px; border-radius: 999px; background: var(--color-border); overflow: hidden; }
+  .bar-row .bar-fill { height: 100%; background: var(--color-vacation); }
+  .bar-row .bar-pct { flex: 0 0 42px; text-align: right; font-weight: 700; }
+  .fx-box {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; margin: 1.5rem 0;
+    padding: 1rem 1.2rem; border-radius: 12px; background: var(--color-primary-light);
+  }
+  .fx-box label { font-size: .88rem; font-weight: 700; color: var(--color-primary); }
+  .fx-box input {
+    width: 100px; padding: .4rem .6rem; border: 1px solid var(--color-border); border-radius: 8px;
+    font-size: .9rem; background: var(--color-card-bg); color: var(--color-text);
+  }
+  .fx-box .fx-note { font-size: .78rem; color: var(--color-text-light); }
+  .krw-amount { color: var(--color-accent-text); font-weight: 700; }
+
+  /* ---------- Manner table ---------- */
+  .manner-cell-ok::before { content: "✅ "; }
+  .manner-cell-ng::before { content: "🚫 "; }
+
+  /* ---------- Route detail button + modal ---------- */
+  .route-detail-btn {
+    border: 1px solid var(--color-primary); background: var(--color-primary-light); color: var(--color-primary);
+    padding: .3rem .7rem; border-radius: 999px; font-size: .78rem; font-weight: 700; cursor: pointer; white-space: nowrap;
+  }
+  .route-detail-btn:hover { background: var(--color-primary); color: #fff; }
+  .route-detail-btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .route-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000;
+    display: flex; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .route-modal-overlay[hidden] { display: none; }
+  .route-modal {
+    background: var(--color-card-bg); color: var(--color-text); border-radius: 16px;
+    max-width: 480px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 1.6rem;
+    box-shadow: 0 20px 40px -8px rgba(0,0,0,.35); position: relative;
+  }
+  .route-modal-close {
+    position: absolute; top: .8rem; right: .8rem; width: 2rem; height: 2rem; border-radius: 999px;
+    border: 1px solid var(--color-border); background: var(--color-background); color: var(--color-text);
+    font-size: 1rem; line-height: 1; cursor: pointer;
+  }
+  .route-modal-close:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .route-modal h4 { margin: 0 .5rem .3rem 0; font-size: 1.05rem; color: var(--color-primary); padding-right: 2rem; }
+  .route-modal .route-note { font-size: .82rem; color: var(--color-text-light); margin: 0 0 1rem; }
+  .route-steps { list-style: none; margin: 0 0 1rem; padding: 0; counter-reset: step; }
+  .route-steps li {
+    counter-increment: step; padding: .55rem 0 .55rem 2rem; position: relative; font-size: .9rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+  .route-steps li:last-child { border-bottom: none; }
+  .route-steps li::before {
+    content: counter(step); position: absolute; left: 0; top: .5rem;
+    width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--color-primary-light); color: var(--color-primary);
+    font-size: .78rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  }
+  .route-suica-badge {
+    display: inline-flex; align-items: center; gap: .3rem; font-size: .8rem; font-weight: 700;
+    padding: .3rem .7rem; border-radius: 999px; background: var(--color-vacation-light); color: var(--color-vacation-strong);
+  }
+  .route-suica-badge.warn { background: var(--color-accent-light); color: var(--color-accent-text); }
+  @media (max-width: 480px) {
+    .route-modal-overlay { padding: 0; align-items: flex-end; }
+    .route-modal { max-width: 100%; width: 100%; border-radius: 16px 16px 0 0; max-height: 90vh; }
+  }
+
+  /* ---------- Info box (TGS 참관 안내) ---------- */
+  .info-box {
+    border-left: 4px solid var(--color-primary); background: var(--color-primary-light);
+    border-radius: 10px; padding: 1rem 1.3rem; margin: 0 0 1.2rem; font-size: .88rem;
+  }
+  .info-box h4 { margin: 0 0 .5rem; font-size: .95rem; color: var(--color-primary); }
+  .info-box ol { margin: 0; padding-left: 1.2rem; }
+  .info-box li { margin-bottom: .25rem; }
+  .info-box p { margin: 0; }
+
+  /* ---------- Warning box (실버위크 등 주의사항) ---------- */
+  .warning-box {
+    border-left: 4px solid var(--color-accent); background: var(--color-accent-light);
+    border-radius: 10px; padding: 1rem 1.3rem; margin: 0 0 1.2rem; font-size: .88rem;
+  }
+  .warning-box h4 { margin: 0 0 .5rem; font-size: .95rem; color: var(--color-accent-text); }
+  .warning-box p { margin: 0; }
+  .warning-box ul { margin: 0 0 .6rem; padding-left: 1.2rem; }
+  .warning-box li { margin-bottom: .3rem; }
+
+  /* ---------- Nightlife cards (혼술) ---------- */
+  .nightlife-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.2rem; }
+  .nightlife-card { border: 1px solid var(--color-border); border-radius: 12px; padding: 1rem; position: relative; }
+  .nightlife-card h3 { margin: 0 0 .15rem; font-size: .96rem; }
+  .nightlife-card h3 .jp-name { display: block; font-size: .75rem; font-weight: 400; color: var(--color-text-light); margin-top: .1rem; }
+  .nightlife-card .genre { font-size: .78rem; color: var(--color-text-light); margin-bottom: .4rem; }
+  .nightlife-card .desc { font-size: .85rem; margin: 0 0 .5rem; }
+  .nightlife-card .maplink { font-size: .8rem; text-decoration: none; }
+
+  /* ---------- TGS Work Notes ---------- */
+  .notes-actions { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.2rem; }
+  .notes-actions button {
+    border: 1px solid var(--color-border); background: var(--color-card-bg); color: var(--color-text);
+    padding: .5rem 1rem; border-radius: 8px; font-size: .85rem; font-weight: 700; cursor: pointer;
+  }
+  .notes-actions button:hover { background: var(--color-primary-light); color: var(--color-primary); }
+  .notes-actions button:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .notes-status { font-size: .8rem; color: var(--color-vacation-strong); font-weight: 700; }
+  .note-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  .note-field label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: .4rem; color: var(--color-primary); }
+  .note-field textarea {
+    width: 100%; min-height: 120px; resize: vertical; font-size: 16px; line-height: 1.5;
+    padding: .7rem .8rem; border: 1px solid var(--color-border); border-radius: 8px;
+    background: var(--color-card-bg); color: var(--color-text); font-family: inherit; box-sizing: border-box;
+  }
+  .note-field textarea:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+  .note-field .saved-at { font-size: .75rem; color: var(--color-text-light); margin-top: .3rem; min-height: 1.1em; }
+  .note-field .note-clear {
+    margin-top: .3rem; font-size: .78rem; background: none; border: none; color: var(--color-text-light);
+    text-decoration: underline; cursor: pointer; padding: 0;
+  }
+  @media (max-width: 768px) { .note-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Tips ---------- */
+  .tips-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .8rem; }
+  .tips-list li {
+    padding: .9rem 1.1rem; border-radius: 10px; background: var(--color-background);
+    font-size: .9rem; border-left: 4px solid var(--color-primary);
+  }
+
+  footer { text-align: center; font-size: .8rem; color: var(--color-text-light); padding: 2rem 1.25rem 3rem; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 768px) {
+    .section-card { padding: 1.6rem; margin: 1.25rem auto; }
+    .section-card h2 { margin: -1.6rem -1.6rem 1.5rem; padding: .65rem 1.2rem; font-size: 1.2rem; }
+    .day-strip { grid-template-columns: repeat(5, minmax(110px,1fr)); overflow-x: auto; }
+    .lodging-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.6rem; }
+    /* iOS Safari가 background-attachment:fixed 미지원 → 모바일에서 scroll로 강등 (요구 4) */
+    body { background-attachment: scroll, scroll; }
+  }
+  @media (max-width: 480px) {
+    .wrap { padding: 0 .9rem; }
+    .day-strip { grid-template-columns: repeat(5, minmax(96px,1fr)); }
+    .restaurant-card { grid-template-columns: 72px 1fr; }
+    .restaurant-card .img-ph { width: 72px; height: 72px; font-size: 1.3rem; }
+    .dday-box .num { font-size: 1.7rem; }
+    .personal-total-box .amount { font-size: 1.9rem; }
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    .nav-bar, .theme-toggle { display: none !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .section-card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; margin: 0 0 1rem; }
+    .section-card h2 { color: #000 !important; background: #eee !important; }
+    .img-ph { background: #eee !important; color: #666 !important; }
+    a { color: #000; }
+  }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-bar" aria-label="섹션 이동">
+  <div class="nav-inner">
+    <a href="#overview">개요</a>
+    <a href="#checklist">체크리스트</a>
+    <a href="#flight">항공/입국</a>
+    <a href="#transport">교통</a>
+    <a href="#lodging">숙박</a>
+    <a href="#itinerary">일정</a>
+    <a href="#notes">메모</a>
+    <a href="#food">맛집</a>
+    <a href="#nightlife">혼술</a>
+    <a href="#sightseeing">관광</a>
+    <a href="#budget">예산</a>
+    <a href="#payment">결제/통신</a>
+    <a href="#phrases">여행 회화</a>
+    <a href="#emergency">비상연락</a>
+    <a href="#tips">꿀팁</a>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="다크모드 전환">🌙 다크모드</button>
+  </div>
+</nav>
+
+<!-- ============ Section 0: Hero ============ -->
+<header class="hero">
+  <h1>TOKYO 2026 — TGS Business Trip</h1>
+  <p class="dates">2026.09.16 (수) — 09.20 (일) · 4박 5일</p>
+  <div class="dday-box">
+    <span class="num" id="ddayNum">D-40</span>
+    <span class="label" id="ddayLabel">여행까지</span>
+  </div>
+  <div class="phase-badges">
+    <span class="phase-badge">🏢 TGS 2일 (9/17-18)</span>
+    <span class="phase-badge">🌴 자유 (9/16 저녁 · 9/19)</span>
+    <span class="phase-badge">✈️ 복귀 (9/20)</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ Section 1: 여행 개요 ============ -->
+  <section class="section-card phase-neutral" id="overview">
+    <h2>🗺️ 여행 개요</h2>
+    <p class="section-sub">출장(TGS 9/17-18) + 도착일·휴가일 자유시간 하이브리드. 비용 주체는 페이즈별로 분리됩니다.</p>
+    <div class="warning-box">
+      <h4>🔴 실버위크 겹침 주의</h4>
+      <p>9/19(토)~9/23(수) 일본 5일 연휴(실버위크) 시작과 겹칩니다 — 9/21 경로의 날, 9/22 국민의 휴일, 9/23 추분. 19일 광역 이동, 20일 공항 혼잡, 숙소 요금 상승에 주의하세요.</p>
+    </div>
+    <div class="day-strip">
+      <div class="day-card phase-vacation">
+        <div class="d-num">DAY 1</div>
+        <div class="d-date">9/16</div>
+        <div class="d-dow">수요일</div>
+        <div class="d-summary">✈️ 김포→하네다 · 저녁 자유</div>
+      </div>
+      <div class="day-card phase-business">
+        <div class="d-num">DAY 2</div>
+        <div class="d-date">9/17</div>
+        <div class="d-dow">목요일</div>
+        <div class="d-summary">🏢 TGS 비즈니스 데이 참관 (마쿠하리 멧세)</div>
+      </div>
+      <div class="day-card phase-business">
+        <div class="d-num">DAY 3</div>
+        <div class="d-date">9/18</div>
+        <div class="d-dow">금요일</div>
+        <div class="d-summary">🏢 TGS 비즈니스 데이 2일차</div>
+      </div>
+      <div class="day-card phase-vacation">
+        <div class="d-num">DAY 4</div>
+        <div class="d-date">9/19</div>
+        <div class="d-dow">토요일</div>
+        <div class="d-summary">🌴 [플레이스홀더] 관광/쇼핑</div>
+      </div>
+      <div class="day-card phase-return">
+        <div class="d-num">DAY 5</div>
+        <div class="d-date">9/20</div>
+        <div class="d-dow">일요일</div>
+        <div class="d-summary">✈️ 하네다→김포 복귀</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 2: 사전 준비 체크리스트 ============ -->
+  <section class="section-card phase-neutral" id="checklist">
+    <h2>✅ 사전 준비 체크리스트</h2>
+    <p class="section-sub">클릭하면 완료 표시가 저장됩니다 (새로고침해도 유지). 카테고리 제목을 클릭하면 접고 펼 수 있습니다.</p>
+    <div class="checklist-cats">
+      <div class="checklist-cat" data-cat-id="cat-docs">
+        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-docs-body">
+          <span class="cat-title">📄 서류</span>
+          <span class="cat-progress" data-cat-progress>0/6</span>
+          <span class="cat-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="cat-body" id="cat-docs-body">
+          <ul class="check-list">
+            <li class="check-item"><label><input type="checkbox" data-id="doc-passport"><span>여권 유효기간 확인 (6개월 이상)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-vjw"><span>Visit Japan Web 등록 완료</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-eventregist"><span>🔴 EventRegist 방문자 등록 (전달받은 코드, 무료) — <a href="https://eventregist.com/e/tgs2026biz" target="_blank" rel="noopener">eventregist.com/e/tgs2026biz</a> · Forum 세션 청강 자격 확보용 (출전사 배지만으로는 Forum 청강 미보장) — 마감 9/16 23:59, 출발 당일! 미리 완료</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-eticket"><span>e티켓 PDF(QR) 출력</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-namecard"><span>명함 넉넉히 (파티·매칭 상담 포함 15장+)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-badge-confirm"><span>출전사 배지 수령 방법·정식 명칭 콜리그 확인</span></label></li>
+          </ul>
+        </div>
+      </div>
+      <div class="checklist-cat" data-cat-id="cat-items">
+        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-items-body">
+          <span class="cat-title">🎒 여행 필수품</span>
+          <span class="cat-progress" data-cat-progress>0/9</span>
+          <span class="cat-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="cat-body" id="cat-items-body">
+          <ul class="check-list">
+            <li class="check-item"><label><input type="checkbox" data-id="item-esim"><span>eSIM (출국 전 QR 등록)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-powerbank"><span>보조배터리</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-multitap"><span>멀티탭·충전 케이블</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-adapter"><span>돼지코 어댑터 (일본 A타입 플러그)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-suica"><span>Suica 잔액 확인 (보유 실물카드) — 부족하면 역 발매기에서 충전</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-cash"><span>엔화 현금 ¥110,000 지참 확인</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-travelog"><span>트래블로그 카드 + 충전 잔액 ¥158,000 확인</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-meds"><span>상비약 (두통약·소화제·밴드)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="item-umbrella"><span>접이식 우산 (9월 태풍철)</span></label></li>
+          </ul>
+        </div>
+      </div>
+      <div class="checklist-cat" data-cat-id="cat-etc">
+        <button type="button" class="cat-header" aria-expanded="true" aria-controls="cat-etc-body">
+          <span class="cat-title">📌 기타</span>
+          <span class="cat-progress" data-cat-progress>0/8</span>
+          <span class="cat-arrow" aria-hidden="true">▾</span>
+        </button>
+        <div class="cat-body" id="cat-etc-body">
+          <ul class="check-list">
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-matching"><span>Business Matching 사전 상담 예약 (시스템 가동 중 — 사전 예약 가능)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-forum"><span>Forum 세션 추가 신청 — 9월 초 타임테이블 공개 후</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-recorder"><span>보이스 레코더 앱 준비</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-invoice"><span>체크아웃 시 인보이스 수령 (도시세 정산용)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-checkout-move"><span>18일 아침 회사 숙소 체크아웃 — 짐 위탁 동선 숙지 (08:30 미츠이 가든 시오도메 사전 위탁)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-shibuyasky"><span>시부야 스카이 사전 예약 (일몰 슬롯 조기 매진)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-teamlab"><span>팀랩 보더리스 예약 (18일 저녁 옵션 선택 시)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-gimpo-parking-done"><span>주차 예약 완료 (국내선 제2주차장, 예약번호 1834HH0004) — 당일 2층 예약존 입구로 진입</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="checklist-progress">
+      <span id="checkProgressText">0 / 23 완료</span>
+      <div class="progress-track"><div class="progress-fill" id="checkProgressFill"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ Section 3: 항공/입국 ============ -->
+  <section class="section-card phase-business" id="flight">
+    <h2>✈️ 항공 / 입국</h2>
+    <p class="section-sub">김포공항 자차 이동 — 13:30 입차 목표 (출발 2시간 15분 전)</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>구분</th><th>항공편</th><th>출발</th><th>도착</th><th>비용 주체</th></tr></thead>
+        <tbody>
+          <tr><td>가는 편</td><td>OZ1045</td><td>김포(GMP) 9/16 15:45</td><td>하네다(HND) 9/16 17:50</td><td><span class="pill pill-business">🏢 출장비</span></td></tr>
+          <tr><td>오는 편</td><td>OZ1075</td><td>하네다(HND) 9/20 12:05</td><td>김포(GMP) 9/20 14:25</td><td><span class="pill pill-business">🏢 출장비</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Visit Japan Web 등록 절차</h3>
+    <ol class="steps">
+      <li>Visit Japan Web 사이트/앱에서 계정 생성</li>
+      <li>여권 정보 및 항공편 정보 입력</li>
+      <li>입국심사(Disembarkation) + 세관신고(Customs) QR 사전 등록</li>
+      <li>등록 완료 QR코드 스크린샷 저장 (오프라인 대비)</li>
+      <li>[플레이스홀더] 출장 동행자 인원 등록 여부 확인</li>
+    </ol>
+
+    <h3>하네다 입국 흐름</h3>
+    <ol class="steps">
+      <li>착륙 후 입국심사장 이동 → Visit Japan Web QR 제시</li>
+      <li>수하물 수취</li>
+      <li>세관 신고 QR 제시 → 통과</li>
+      <li>[플레이스홀더] 공항 내 Suica/eSIM 수령 부스 방문 (사전 예약 시)</li>
+    </ol>
+
+    <div class="info-box">
+      <h4>🎫 TGS 비즈니스 데이 등록 (출전사 배지)</h4>
+      <p>출전사 배지 — 전 기간 입장·전용 입구 (콜리그 전달 기준). EventRegist 방문자 등록은 Forum 세션 청강 자격 확보용으로 별도 진행 — <a href="https://eventregist.com/e/tgs2026biz" target="_blank" rel="noopener">eventregist.com/e/tgs2026biz</a> · 공식 티켓 페이지: <a href="https://tgs.cesa.or.jp/2026/en/ticket?business" target="_blank" rel="noopener">tgs.cesa.or.jp/2026/en/ticket</a> · 등록 마감 9/16 23:59 (출발 당일)</p>
+    </div>
+  </section>
+
+  <!-- ============ Section 4: 교통 (탭) ============ -->
+  <section class="section-card phase-neutral" id="transport">
+    <h2>🚃 교통</h2>
+
+    <h3>하네다 → 도심 옵션 비교</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>노선</th><th>소요시간</th><th>요금</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td>도쿄 모노레일 + JR</td><td>약 30~40분</td><td class="price">¥500~700</td><td>하마마츠초 경유, 환승 필요</td></tr>
+          <tr><td>케이큐(京急) 본선</td><td>약 40~50분</td><td class="price">¥300~600</td><td>시나가와/도심 직결, 환승 적음</td></tr>
+          <tr><td>리무진 버스</td><td>약 45~60분</td><td class="price">¥1,000~1,500</td><td>[플레이스홀더] 숙소 인근 정류장 확인</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Suica (보유 실물카드 사용)</h3>
+    <p>Suica 실물카드 보유 중 — 신규 구매 불필요. 잔액 확인 후 부족하면 역 발매기에서 현금/카드로 충전만 하면 됨. 위 표의 노선 모두 Suica 탭 이용 가능(대부분 IC 결제 지원).</p>
+
+    <div class="tabs" role="tablist" aria-label="기간별 교통 안내">
+      <button class="tab-btn" role="tab" id="tab-biz" aria-selected="true" aria-controls="panel-biz">TGS 기간 (9/17-18)</button>
+      <button class="tab-btn" role="tab" id="tab-vac" aria-selected="false" aria-controls="panel-vac" tabindex="-1">자유 일정 (9/16·9/19-20)</button>
+    </div>
+    <div class="tab-panel" id="panel-biz" role="tabpanel" aria-labelledby="tab-biz">
+      <p>숙소 ↔ TGS 행사장(마쿠하리 메세) 간 이동 위주. [플레이스홀더] 게이요선(京葉線) 또는 셔틀버스 이용 경로.</p>
+      <ul>
+        <li>[플레이스홀더] 숙소 → 카이힌마쿠하리역: 도보/전철 OO분</li>
+        <li>[플레이스홀더] 행사장 셔틀버스 시간표 확인</li>
+      </ul>
+    </div>
+    <div class="tab-panel" id="panel-vac" role="tabpanel" aria-labelledby="tab-vac" hidden>
+      <p>도심 관광 위주 동선. Suica로 지하철/JR 자유롭게 환승. [플레이스홀더] 도쿄 1일권 구매 고려.</p>
+      <ul>
+        <li>[플레이스홀더] 휴식 숙소 → 주요 관광지 대표 노선</li>
+        <li>[플레이스홀더] 나리타/하네다 복귀 교통편 예약</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Section 5: 숙박 ============ -->
+  <section class="section-card phase-neutral" id="lodging">
+    <h2>🏨 숙박</h2>
+    <p class="section-sub">2박씩 비용 주체가 다름 — 9/16-18은 회사 예약(출장비), 9/18-20은 개인 부담. 아래 2숙소 구성은 예약 확정 전 플레이스홀더.</p>
+    <div class="lodging-grid">
+      <div class="lodging-card">
+        <span class="pill pill-business">🏢 출장비</span>
+        <h3>출장 숙소 9/16-18 (2박)</h3>
+        <div class="dates">체크인 9/16 · 체크아웃 9/18</div>
+        <dl>
+          <dt>상태</dt><dd>회사 숙소: 도쿄 도심 (확정 시 상세 갱신)</dd>
+          <dt>위치</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=%5B%ED%94%8C%EB%9E%98%EC%9D%B4%EC%8A%A4%ED%99%80%EB%8D%94%5D%20%EC%B6%9C%EC%9E%A5%20%EC%88%99%EC%86%8C" target="_blank" rel="noopener">지도에서 보기 🗺️</a></dd>
+          <dt>메모</dt><dd>TGS 행사장 접근성 우선 선정 (마쿠하리 인근)</dd>
+        </dl>
+      </div>
+      <div class="lodging-card">
+        <span class="pill pill-personal">💳 개인</span>
+        <h3>미츠이 가든 호텔 시오도메 이탈리아가이 <span style="font-size:.78em;font-weight:400;color:var(--color-text-light)">(三井ガーデンホテル汐留イタリア街)</span></h3>
+        <div class="dates">체크인 9/18 · 체크아웃 9/20 (2박)</div>
+        <dl>
+          <dt>위치</dt><dd>미나토구 시오도메 — JR 신바시역 도보 ~7분 / 도영 오에도선 시오도메역 도보 ~5분 / 하마마츠초 도보권 · <a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">지도에서 보기 🗺️</a></dd>
+          <dt>요금</dt><dd>2박 ₩562,309 — 국내 원화 사전 결제 완료</dd>
+          <dt>메모</dt><dd>체크아웃 시 도시세(객실요금 5%) 현지 선납 → 인보이스 증빙으로 실비 정산. 실버위크 연휴(9/19~23) 겹침 — 예약 완료로 리스크 해소됨</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 6: 일자별 일정 ============ -->
+  <section class="section-card phase-neutral" id="itinerary">
+    <h2>📅 일자별 일정</h2>
+
+    <h3 style="color:var(--color-vacation)">Day 1 · 9/16 (수) — ✈️ 자유 (도착일 저녁)</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">17:50 하네다 도착 → 입국심사·수하물 → 숙소 이동·체크인까지 마치면 19:30경 — 낮 시간대 일정을 넣을 물리적 여유가 없어 저녁 자유 일정만 편성.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
+        <tbody>
+          <tr><td class="time">13:30</td><td>자차 출발 → 김포공항 국내선 제2주차장 입차 (주차타워 2층 예약존)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td><button type="button" class="route-detail-btn" data-route="gimpo-parking">상세</button></td><td class="price">💳 개인</td></tr>
+          <tr><td class="time">13:40</td><td>국제선 터미널 이동 (무료 순환셔틀 or 도보 10-15분)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">14:00-15:45</td><td>체크인 · 출국 수속</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">15:45</td><td>김포공항 출발 (OZ1045)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">🏢</td></tr>
+          <tr><td class="time">17:50</td><td>하네다 도착</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%ED%95%98%EB%8B%A4%EB%8B%A4%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">하네다공항</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">17:50-18:40</td><td>입국심사 · 수하물 수취</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%ED%95%98%EB%8B%A4%EB%8B%A4%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">하네다공항</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">18:40-19:30</td><td>숙소 이동</td><td class="location">회사 숙소: 도쿄 도심 (확정 시 상세 갱신)</td><td><button type="button" class="route-detail-btn" data-route="hnd-to-tokyo">상세</button></td><td class="price">🏢</td></tr>
+          <tr><td class="time">19:30</td><td>체크인 · 짐 보관</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price">🏢</td></tr>
+          <tr><td class="time">20:00</td><td>긴자 노미코지 야마기시 (추천 — 새벽 2시까지 영업, 도착 지연에도 안전. 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E5%91%91%E5%B0%8F%E8%B7%AF%E3%82%84%E3%81%BE%E5%B2%B8" target="_blank" rel="noopener">긴자 노미코지 야마기시</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--color-primary)">Day 2 · 9/17 (목) — 🏢 출장 (TGS Day 1)</h3>
+    <div class="info-box">
+      <h4>🎯 TGS 참관 목적 — 구경이 아니라 의사결정 제안 3건 수집</h4>
+      <ol>
+        <li>① AX/DX 달성 기업 사례 인사이트 → 조직 도입 검토</li>
+        <li>② QA 외주시장 AI 전환 실태 vs 사내 포지션 점검</li>
+        <li>③ 경쟁사 데모 품질 관찰 → 차기 출품 QA 체크리스트</li>
+      </ol>
+      <p style="margin-top:.5rem">※ Forum 세션은 주로 일본어 진행, 국제회의장에서 개최.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">비고</th></tr></thead>
+        <tbody>
+          <tr><td class="time">08:30</td><td>숙소 출발 → 마쿠하리 멧세</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td><button type="button" class="route-detail-btn" data-route="tokyo-to-kaihin">상세</button></td><td class="price"><span class="pill pill-business">🏢 교통</span> 전용 입구 — 대기줄 없음</td></tr>
+          <tr><td class="time">10:00-10:30</td><td>입장(비즈니스 데이 배지) · 홀 배치 파악 · Smilegate 부스 방문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">자사 기준점</td></tr>
+          <tr><td class="time">10:30-12:30</td><td><strong>AI Technology Pavilion</strong> 집중 정찰 — AX/DX 사례 수집·질문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ①</td></tr>
+          <tr><td class="time">12:30-13:30</td><td>점심 (12시 전후 피크 회피)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">13:30-14:30</td><td>TGS Forum 세션 [타임테이블 9월 초 공개 후 확정 — 플레이스홀더]</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ①</td></tr>
+          <tr><td class="time">14:30-15:30</td><td>Business Solution Area — QA 벤더 AI 전환 실태</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ②</td></tr>
+          <tr><td class="time">15:30-16:30</td><td>경쟁사 부스 데모 품질 관찰(넥슨 마비노기모바일 등) + All Accessibility Area</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ③</td></tr>
+          <tr><td class="time">16:30-17:00</td><td>당일 메모 구조화 — 보고서 3제안 골격에 매핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서</td></tr>
+          <tr><td class="time">17:00~</td><td>도쿄 시내 복귀 · 저녁: 만텐즈시 마루노우치 (추천 — 도쿄역 5분. 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">만텐즈시 마루노우치</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-tokyo">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--color-primary)">Day 3 · 9/18 (금) — 🏢 출장 (TGS Day 2)</h3>
+    <div class="info-box">
+      <h4>📌 18일 한정 프로그램 집중일 · 체크아웃-체크인 겹치는 날</h4>
+      <p style="margin:0 0 .5rem">Forum AI 세션 2건("Creative Generative AI", AI 번역엔진)은 <strong>18일에만</strong> 개최 — 17일은 팔로업, 18일은 신규 세션으로 이틀을 나눠 커버.</p>
+      <p style="margin:0 0 .5rem">※ Forum 세션은 국제회의장에서 진행 · 주로 일본어 진행 · 사전 신청 필수 — 신청 절차는 타임테이블 공개(9월 초) 후 확인.</p>
+      <p style="margin:0">🧳 이날은 회사 숙소 체크아웃 + 개인 숙소 체크인이 겹쳐 짐을 온종일 들고 다닐 수 없음 — 아래 08:00 행에서 미츠이 가든 시오도메에 짐을 먼저 맡긴다(체크인 전 짐 보관은 호텔 표준 무료 서비스). 대안으로 도쿄역 대형 코인로커(¥600-800)도 가능하나 실버위크 전날이라 만실 위험이 있어 호텔 위탁을 권장.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">비고</th></tr></thead>
+        <tbody>
+          <tr><td class="time">08:00</td><td>회사 숙소 체크아웃 (짐 지참) → 신바시 이동</td><td class="location">회사 숙소: 도쿄 도심 (확정 시 상세 갱신)</td><td><button type="button" class="route-detail-btn" data-route="checkout-to-tgs">상세</button></td><td class="price">🏢 교통</td></tr>
+          <tr><td class="time">08:30</td><td>미츠이 가든 시오도메에 짐 사전 위탁 (체크인 전 무료 보관)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">08:40-10:00</td><td>신바시 → 도쿄역 → 게이요선 → TGS 도착</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td><button type="button" class="route-detail-btn" data-route="tokyo-to-kaihin">상세</button></td><td class="price"><span class="pill pill-business">🏢 교통</span></td></tr>
+          <tr><td class="time">10:00-12:00</td><td>Business Matching 사전 예약 상담 + 미커버 부스 재방문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">17일 수확 후속</td></tr>
+          <tr><td class="time">12:00-12:30</td><td>점심 (간단히)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">12:30-13:30</td><td>Forum: "Distribution Strategies to Improve Game Business Profitability" (선택)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">확정 세션</td></tr>
+          <tr><td class="time">13:30-14:00</td><td><strong>Forum: "Creative Generative AI — 개인 노하우의 조직 자산화"</strong></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">★ 핵심 — 보고서 ①</td></tr>
+          <tr><td class="time">14:00-15:00</td><td><strong>Forum: AI 번역엔진 세션</strong> ("No AI could translate Momotaro as Thor")</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">LQA 연관</td></tr>
+          <tr><td class="time">15:00-16:30</td><td>Business Solution Area 잔여 커버 + 수집 자료·명함 정리</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ②</td></tr>
+          <tr><td class="time">16:30-17:00</td><td>이틀치 메모 통합 — 보고서 3제안 골격 매핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서</td></tr>
+          <tr><td class="time">17:00-18:00</td><td>회장 내 휴게 공간에서 이틀치 메모 최종 정리</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price">보고서</td></tr>
+          <tr><td class="time">18:00-20:00</td><td>International Party (네트워킹 — 명함 다수 지참)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price">[출전사 자격 참석]</td></tr>
+          <tr><td class="time">20:00~</td><td>TGS → 신바시 → 숙소 체크인 (위탁 짐 수령)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-shiodome">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">체크인 후</td><td>옵션: 팀랩 보더리스(아자부다이 힐즈, 사전 예약) or 시바공원·도쿄타워 야경 산책</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%20Azabudai" target="_blank" rel="noopener">팀랩 보더리스</a> · <a href="https://www.google.com/maps/search/?api=1&query=%E8%8A%9D%E5%85%AC%E5%9C%92%20%E5%A2%97%E4%B8%8A%E5%AF%BA" target="_blank" rel="noopener">시바공원</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">저녁식사</td><td>긴자 카츠카미 (추천 — 신바시 도보권, 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E3%81%8B%E3%81%A4%E3%81%8B%E3%81%BF" target="_blank" rel="noopener">긴자 카츠카미</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--color-vacation)">Day 4 · 9/19 (토) — 🌴 휴식 (코스 A 확정)</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">※ TGS 퍼블릭 데이 첫날 + 실버위크(9/19~23) 연휴 첫날과 겹쳐 마쿠하리 방면·광역 이동 모두 대혼잡 예상 — <strong>코스 A(도쿄 도심 클래식) 확정</strong>. B/C안은 관광 섹션에 참고용으로 유지.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
+        <tbody>
+          <tr><td class="time">08:00</td><td>숙소 출발</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-asakusa">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">08:40</td><td>센소지 · 나카미세 (실버위크 인파 몰리기 전 도착)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">센소지</a></td><td>-</td><td class="price">무료</td></tr>
+          <tr><td class="time">11:00</td><td>다이코쿠야 텐푸라 본점 점심 (오픈 직후 — 피크 회피) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 점심</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">다이코쿠야 텐푸라 본점</a></td><td>-</td><td class="price">¥2,000대</td></tr>
+          <tr><td class="time">12:30</td><td>우에노공원 · 아메요코 (긴자선 아사쿠사→우에노)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Ameyoko" target="_blank" rel="noopener">우에노공원·아메요코</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">15:30</td><td>시부야 이동(야마노테) — 스크램블 교차로 · 쇼핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing" target="_blank" rel="noopener">시부야 스크램블</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">17:30</td><td>스미비야키 유지 저녁 (사전 네트예약 필요 — 당일 15시 이후 전화 불가) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 저녁</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">스미비야키 유지</a></td><td>-</td><td class="price">¥6,000-7,999</td></tr>
+          <tr><td class="time">19:30</td><td>시부야 스카이 야경 (사전 예약 슬롯 필수 — 일몰 슬롯 조기 매진)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Sky" target="_blank" rel="noopener">시부야 스카이</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">21:30</td><td>숙소 복귀 (야마노테→신바시)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shibuya-to-shiodome">상세</button></td><td class="price">-</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--color-return)">Day 5 · 9/20 (일) — ✈️ 복귀</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">실버위크 연휴 혼잡 감안 — 시오도메 숙소 07:45 출발 → 하네다 T3 09:00-09:15 도착(국제선 통상 출발 2.5~3시간 전 권고) → 12:05 출발. 오전 별도 일정 없음.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
+        <tbody>
+          <tr><td class="time">07:45</td><td>시오도메 숙소 출발 (실버위크 혼잡 대비 앞당김)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-hnd">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">09:00-09:15</td><td>하네다공항 T3 도착 · 수속</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%ED%95%98%EB%8B%A4%EB%8B%A4%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">하네다공항</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">12:05</td><td>하네다 출발 (OZ1075)</td><td class="location">-</td><td>-</td><td class="price">🏢</td></tr>
+          <tr><td class="time">14:25</td><td>김포 국제선 도착 → 국내선 제2주차장 이동 → ~15:00 출차 (예약번호 1834HH0004, 잔액 정산) → 자차 귀가</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">💳 개인</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ Section 6.5: TGS 워크 노트 ============ -->
+  <section class="section-card phase-neutral" id="notes">
+    <h2>📝 TGS 워크 노트</h2>
+    <p class="section-sub">메모는 이 브라우저(기기)에만 저장됩니다 — 현장 종료 시 내보내기로 백업하세요.</p>
+    <div class="notes-actions">
+      <button type="button" id="notesCopyBtn">📋 전체 복사</button>
+      <button type="button" id="notesDownloadBtn">⬇ .md 다운로드</button>
+      <span class="notes-status" id="notesStatus" role="status" aria-live="polite"></span>
+    </div>
+    <div class="note-grid">
+      <div class="note-field">
+        <label for="note1">① AX/DX 사례 수집</label>
+        <textarea id="note1" placeholder="회사명 / 무엇을 자동화·전환했나 / 우리 조직 적용 아이디어"></textarea>
+        <div class="saved-at" id="note1SavedAt"></div>
+        <button type="button" class="note-clear" data-clear-target="note1">이 칸 지우기</button>
+      </div>
+      <div class="note-field">
+        <label for="note2">② QA 벤더·시장 포지션</label>
+        <textarea id="note2" placeholder="벤더명 / AI 전환 수준 / 우리 내제화 대비 판정"></textarea>
+        <div class="saved-at" id="note2SavedAt"></div>
+        <button type="button" class="note-clear" data-clear-target="note2">이 칸 지우기</button>
+      </div>
+      <div class="note-field">
+        <label for="note3">③ 데모 품질 관찰</label>
+        <textarea id="note3" placeholder="부스/타이틀 / 크래시·프리징·대기열 / 체크리스트 후보"></textarea>
+        <div class="saved-at" id="note3SavedAt"></div>
+        <button type="button" class="note-clear" data-clear-target="note3">이 칸 지우기</button>
+      </div>
+      <div class="note-field">
+        <label for="note4">④ 자유 메모</label>
+        <textarea id="note4" placeholder="기타 인사이트, 네트워킹, 후속 액션"></textarea>
+        <div class="saved-at" id="note4SavedAt"></div>
+        <button type="button" class="note-clear" data-clear-target="note4">이 칸 지우기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 7: 맛집 가이드 ============ -->
+  <section class="section-card phase-neutral" id="food">
+    <h2>🍣 맛집 가이드</h2>
+    <p class="section-sub">주로 9/16 저녁(도쿄역·긴자 권) + 9/19 관광 동선에 활용 — TGS 기간(9/17-18)은 마쿠하리 인근 위주로 대체. 피크 회피 전략 포함 — 평점은 타베로그 2026-08 기준.</p>
+
+    <h3 class="food-group-label">🏙️ 도쿄역·긴자 권 (16~18일 저녁)</h3>
+    <div class="restaurant-grid">
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 17일 저녁</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=70" alt="스시 오마카세 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-1" role="img" aria-label="스시 맛집 이미지 폴백" style="display:none">🍣</div>
+        </div>
+        <div>
+          <h3>만텐즈시 마루노우치<span class="jp-name">まんてん鮨 丸の内</span></h3>
+          <div class="genre">스시 · 타베로그 3.62</div>
+          <p class="why-line">도쿄역 5분 가성비 오마카세 — 게이요선 복귀 동선 정점</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>도쿄역 도보 5분</dd>
+            <dt>예산</dt><dd>저녁 ¥8,000-9,999</dd>
+            <dt>메뉴</dt><dd>오마카세 니기리</dd>
+            <dt>피크</dt><dd>저녁 18시 전 입장 권장 (직장인 밀집)</dd>
+            <dt>예약</dt><dd>네트예약 가능</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=70" alt="야키토리 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-2" role="img" aria-label="야키토리 맛집 이미지 폴백" style="display:none">🍢</div>
+        </div>
+        <div>
+          <h3>긴자 버드랜드<span class="jp-name">銀座バードランド</span></h3>
+          <div class="genre">야키토리 · 타베로그 3.60</div>
+          <p class="why-line">미슐랭 별 획득 야키토리 오마카세 — 최고급 꼬치 코스</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 104m</dd>
+            <dt>예산</dt><dd>¥10,000-14,999</dd>
+            <dt>메뉴</dt><dd>미슐랭 야키토리 오마카세</dd>
+            <dt>피크</dt><dd>월·일 정휴, 좌석 소수 — 최소 2주 전 예약 필수</dd>
+            <dt>예약</dt><dd>사전예약 필수</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E3%83%90%E3%83%BC%E3%83%89%E3%83%A9%E3%83%B3%E3%83%89" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E9%8A%80%E5%BA%A7%E3%83%90%E3%83%BC%E3%83%89%E3%83%A9%E3%83%B3%E3%83%89" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 18일 저녁</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&q=70" alt="돈카츠 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-3" role="img" aria-label="돈카츠 맛집 이미지 폴백" style="display:none">🍖</div>
+        </div>
+        <div>
+          <h3>긴자 카츠카미<span class="jp-name">銀座かつかみ</span></h3>
+          <div class="genre">돈카츠 · 타베로그 3.72</div>
+          <p class="why-line">부위별 코스 돈카츠 — 신바시 도보권, 체크인 후 가볍게</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 133m</dd>
+            <dt>예산</dt><dd>저녁 ¥10,000-14,999 · 점심 ¥6,000-7,999</dd>
+            <dt>메뉴</dt><dd>부위별 코스 돈카츠</dd>
+            <dt>피크</dt><dd>저녁 예약 우선 (런치는 별관)</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E3%81%8B%E3%81%A4%E3%81%8B%E3%81%BF" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E9%8A%80%E5%BA%A7%E3%81%8B%E3%81%A4%E3%81%8B%E3%81%BF" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1554502078-ef0fc409efce?w=400&q=70" alt="장어 요리 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-4" role="img" aria-label="우나기 맛집 이미지 폴백" style="display:none">🐟</div>
+        </div>
+        <div>
+          <h3>치쿠요테이 긴자<span class="jp-name">竹葉亭 銀座店</span></h3>
+          <div class="genre">우나기 · 타베로그 3.53</div>
+          <p class="why-line">노포 장어 전문점 — 런치 가성비가 특히 좋음</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 155m</dd>
+            <dt>예산</dt><dd>점심 ¥5,000대</dd>
+            <dt>메뉴</dt><dd>노포 장어</dd>
+            <dt>피크</dt><dd>12시 직후 회피 — 11:30 오픈런 or 14시 이후</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E7%AB%B9%E8%91%89%E4%BA%AD%20%E9%8A%80%E5%BA%A7%E5%BA%97" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E7%AB%B9%E8%91%89%E4%BA%AD%20%E9%8A%80%E5%BA%A7%E5%BA%97" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?w=400&q=70" alt="텐푸라 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-5" role="img" aria-label="텐푸라 맛집 이미지 폴백" style="display:none">🍤</div>
+        </div>
+        <div>
+          <h3>텐푸라 곤도<span class="jp-name">てんぷら 近藤</span></h3>
+          <div class="genre">텐푸라 · 타베로그 3.98</div>
+          <p class="why-line">도쿄 텐푸라 최고봉 — 특별한 저녁에 추천</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 117m</dd>
+            <dt>예산</dt><dd>저녁 ¥20,000-29,999 · 점심 ¥10,000-14,999</dd>
+            <dt>메뉴</dt><dd>도쿄 텐푸라 최고봉</dd>
+            <dt>피크</dt><dd>2부제 — 예약 필수, 워크인 불가</dd>
+            <dt>예약</dt><dd>전화 03-5568-0923</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E3%81%A6%E3%82%93%E3%81%B7%E3%82%89%20%E8%BF%91%E8%97%A4" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E3%81%A6%E3%82%93%E3%81%B7%E3%82%89%20%E8%BF%91%E8%97%A4" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 16일 저녁</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1617196034183-421b4917c92d?w=400&q=70" alt="이자카야 안주 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-6" role="img" aria-label="이자카야 맛집 이미지 폴백" style="display:none">🍶</div>
+        </div>
+        <div>
+          <h3>긴자 노미코지 야마기시<span class="jp-name">銀座呑小路やま岸</span></h3>
+          <div class="genre">이자카야 · 타베로그 3.68</div>
+          <p class="why-line">새벽 2시까지 영업 — 도착 지연에도 안전한 선택</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 357m</dd>
+            <dt>예산</dt><dd>¥15,000-19,999</dd>
+            <dt>메뉴</dt><dd>교토계 이자카야 + 사케</dd>
+            <dt>피크</dt><dd>일 정휴, 평일 18시 직후 혼잡</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E5%91%91%E5%B0%8F%E8%B7%AF%E3%82%84%E3%81%BE%E5%B2%B8" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E9%8A%80%E5%BA%A7%E5%91%91%E5%B0%8F%E8%B7%AF%E3%82%84%E3%81%BE%E5%B2%B8" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=70" alt="소바 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-1" role="img" aria-label="소바 맛집 이미지 폴백" style="display:none">🍜</div>
+        </div>
+        <div>
+          <h3>소바 사스가<span class="jp-name">蕎麦 流石</span></h3>
+          <div class="genre">소바 · 타베로그 3.67</div>
+          <p class="why-line">극세 수타 소바 — 점심은 오픈런 인기, 저녁은 여유</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>히가시긴자역 364m</dd>
+            <dt>예산</dt><dd>저녁 ¥10,000-14,999 · 점심 ¥1,000대</dd>
+            <dt>메뉴</dt><dd>극세 수타 소바</dd>
+            <dt>피크</dt><dd>점심 11:30 오픈런 몰림, 저녁은 여유</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E8%95%8E%E9%BA%A6%20%E6%B5%81%E7%9F%B3" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E8%95%8E%E9%BA%A6%20%E6%B5%81%E7%9F%B3" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=70" alt="야키니쿠 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-2" role="img" aria-label="야키니쿠 맛집 이미지 폴백" style="display:none">🥩</div>
+        </div>
+        <div>
+          <h3>에도 야키니쿠<span class="jp-name">江戸焼肉</span></h3>
+          <div class="genre">야키니쿠 · 타베로그 4.08 · <strong>고가 오마카세</strong></div>
+          <p class="why-line">고가 오마카세 야키니쿠 — 특별한 날 전용</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 182m</dd>
+            <dt>예산</dt><dd>¥40,000-49,999 — 특별한 날용</dd>
+            <dt>메뉴</dt><dd>오마카세 야키니쿠</dd>
+            <dt>피크</dt><dd>수-토만 영업</dd>
+            <dt>예약</dt><dd>사전예약 필수 03-6263-9925</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E6%B1%9F%E6%88%B8%E7%84%BC%E8%82%89" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E6%B1%9F%E6%88%B8%E7%84%BC%E8%82%89" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="food-group-label">🚶 19일 관광 동선 (아사쿠사·시부야·츠키지·츠키시마)</h3>
+    <div class="restaurant-grid">
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 19일 점심</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1580217593608-61931cefc821?w=400&q=70" alt="텐동 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-3" role="img" aria-label="텐동 맛집 이미지 폴백" style="display:none">🍚</div>
+        </div>
+        <div>
+          <h3>다이코쿠야 텐푸라 본점<span class="jp-name">大黒家天麩羅 本店</span></h3>
+          <div class="genre">텐푸라덮밥 · 타베로그 3.49</div>
+          <p class="why-line">노포 텐동 — 아사쿠사 관광 동선에 정확히 위치</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>아사쿠사역 308m</dd>
+            <dt>예산</dt><dd>¥2,000대</dd>
+            <dt>메뉴</dt><dd>노포 텐동</dd>
+            <dt>피크</dt><dd>관광 피크 대기 30분+ — 개점 11:00 직후 노림</dd>
+            <dt>예약</dt><dd>워크인 전용</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1554502078-ef0fc409efce?w=400&q=70" alt="장어 요리 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-4" role="img" aria-label="우나기 맛집 이미지 폴백" style="display:none">🐟</div>
+        </div>
+        <div>
+          <h3>하츠오가와<span class="jp-name">初小川</span></h3>
+          <div class="genre">우나기 · 타베로그 3.72</div>
+          <p class="why-line">아사쿠사 장어 코스 — 영업시간이 짧아 타이밍 주의</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>아사쿠사역 287m</dd>
+            <dt>예산</dt><dd>¥4,000대</dd>
+            <dt>메뉴</dt><dd>장어 코스</dd>
+            <dt>피크</dt><dd>수 정휴, 영업 12-13:30/17-20 라스트오더 주의</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E5%88%9D%E5%B0%8F%E5%B7%9D" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E5%88%9D%E5%B0%8F%E5%B7%9D" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1543353071-087092ec393a?w=400&q=70" alt="카이센동 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-5" role="img" aria-label="스시 맛집 이미지 폴백" style="display:none">🍣</div>
+        </div>
+        <div>
+          <h3>슈토쿠 2호점<span class="jp-name">秀徳 2号店</span></h3>
+          <div class="genre">스시·카이센 · 타베로그 3.61</div>
+          <p class="why-line">츠키지 에도마에 스시 — 시장 관광과 함께 즐기기 좋음</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>츠키지시조역</dd>
+            <dt>예산</dt><dd>저녁 ¥8,000-9,999 · 점심 ¥4,000대</dd>
+            <dt>메뉴</dt><dd>에도마에 스시</dd>
+            <dt>피크</dt><dd>런치 시장 관광객 몰림 — 방문 전 전화 확인 권장</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E7%A7%80%E5%BE%B3%202%E5%8F%B7%E5%BA%97" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E7%A7%80%E5%BE%B3%202%E5%8F%B7%E5%BA%97" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 19일 저녁</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=70" alt="야키니쿠 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-6" role="img" aria-label="야키니쿠 맛집 이미지 폴백" style="display:none">🥩</div>
+        </div>
+        <div>
+          <h3>스미비야키 유지<span class="jp-name">炭火焼 ゆうじ</span></h3>
+          <div class="genre">야키니쿠·호르몬 · 타베로그 4.20</div>
+          <p class="why-line">부속육 코스 야키니쿠 — 시부야 동선의 화룡점정</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>시부야 (신센역 근접)</dd>
+            <dt>예산</dt><dd>¥6,000-7,999</dd>
+            <dt>메뉴</dt><dd>부속육 코스</dd>
+            <dt>피크</dt><dd>일 정휴, 예약 전화는 15시 이후</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1607301405390-d831c242f59b?w=400&q=70" alt="몬자야키 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-1" role="img" aria-label="몬자야키 맛집 이미지 폴백" style="display:none">🍳</div>
+        </div>
+        <div>
+          <h3>츠키시마 몬자 모헤지 본점<span class="jp-name">月島もんじゃ もへじ 本店</span></h3>
+          <div class="genre">몬자야키 · 타베로그 3.55</div>
+          <p class="why-line">츠키시마 명물 몬자야키 — 로컬 감성으로 하루 마무리</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>카치도키역 305m</dd>
+            <dt>예산</dt><dd>¥2,000대</dd>
+            <dt>메뉴</dt><dd>몬자야키</dd>
+            <dt>피크</dt><dd>저녁 러시 19-20시 회피 — 18시 전후 추천</dd>
+            <dt>예약</dt><dd>네트예약</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E6%9C%88%E5%B3%B6%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%82%E3%81%B8%E3%81%98%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E6%9C%88%E5%B3%B6%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%82%E3%81%B8%E3%81%98%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 7.6: 나이트라이프 (혼술) ============ -->
+  <section class="section-card phase-neutral" id="nightlife">
+    <h2>🍸 나이트라이프 (혼술)</h2>
+    <p class="section-sub">숙소(시오도메·신바시) 도보 10분 반경 — 저녁 식사 후 2차 동선. 전부 혼술 가능 검증.</p>
+
+    <h3 class="food-group-label">🏮 이자카야·스탠딩 (신바시·유라쿠초)</h3>
+    <div class="nightlife-grid">
+      <div class="nightlife-card">
+        <span class="reco-badge">⭐ 추천</span>
+        <h3>스탠드바이미<span class="jp-name">STAND BY Mi</span></h3>
+        <div class="genre">와인 스탠딩바 · 타베로그 3.59 (764건)</div>
+        <p class="desc">신바시역 1분. 공식 소개 "혼자서도 즐기는 스탠딩바" — 혼술 명시 환영.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시역 1분</dd>
+          <dt>예산</dt><dd>¥3-4천</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=STAND%20BY%20Mi%20%E6%96%B0%E6%A9%8B" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>노자키 사케텐<span class="jp-name">野崎酒店</span></h3>
+        <div class="genre">사케 바 · 타베로그 3.59 (597건)</div>
+        <p class="desc">카운터 중심 일본주 전문 — 혼자 앉기 편한 구조.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시</dd>
+          <dt>예산</dt><dd>¥5-6천</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E9%87%8E%E5%B4%8E%E9%85%92%E5%BA%97%20%E6%96%B0%E6%A9%8B" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>반파이야 신바시 SL히로바점<span class="jp-name">立呑み晩杯屋</span></h3>
+        <div class="genre">스탠딩 이자카야 · 타베로그 3.19</div>
+        <p class="desc">샐러리맨 혼술 성지 체인 — <strong>¥1-2천 최저가</strong>.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시 SL광장</dd>
+          <dt>예산</dt><dd>¥1-2천</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E7%AB%8B%E5%91%91%E3%81%BF%E6%99%A9%E6%9D%AF%E5%B1%8B%20%E6%96%B0%E6%A9%8BSL%E5%BA%83%E5%A0%B4%E5%BA%97" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>우오노하마에 유라쿠초 산초쿠요코초</h3>
+        <div class="genre">산지직송 이자카야 골목 · 타베로그 3.09</div>
+        <p class="desc">유라쿠초 가드시타(고가철도 아래) 정취 — 골목 전체가 이자카야촌.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>유라쿠초 가드시타</dd>
+          <dt>예산</dt><dd>¥3-4천</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E6%9C%89%E6%A5%BD%E7%94%BA%E7%94%A3%E7%9B%B4%E6%A8%AA%E4%B8%81" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+    </div>
+
+    <h3 class="food-group-label" style="margin-top:1.5rem">🍹 바 (칵테일·위스키)</h3>
+    <div class="nightlife-grid">
+      <div class="nightlife-card">
+        <span class="reco-badge">⭐ 추천</span>
+        <h3>긴자 텐더<span class="jp-name">銀座テンダー</span></h3>
+        <div class="genre">정통 칵테일바 · 타베로그 3.87 (70건)</div>
+        <p class="desc">전설 바텐더 우에다 카즈오의 하드셰이크 — 긴자 정통 바의 정점.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>긴자역 196m</dd>
+          <dt>예산</dt><dd>¥6-8천 + 차지 ¥2,200</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E3%83%86%E3%83%B3%E3%83%80%E3%83%BC" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>산보아 긴자점<span class="jp-name">サンボア 銀座店</span></h3>
+        <div class="genre">위스키·하이볼 노포 · 타베로그 3.79 (492건)</div>
+        <p class="desc">교토 발 위스키 바 체인의 긴자점 — 하이볼 명가.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>긴자역 104m</dd>
+          <dt>예산</dt><dd>차지 미확인 — 입장 전 확인</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E3%82%B5%E3%83%B3%E3%83%9C%E3%82%A2%20%E9%8A%80%E5%BA%A7%E5%BA%97" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>Bar P.M.9</h3>
+        <div class="genre">캐주얼 바 · 타베로그 3.75 (225건)</div>
+        <p class="desc">오센틱보다 편한 분위기 — 부담 없이 들르기 좋음.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시역 166m</dd>
+          <dt>예산</dt><dd>¥4-5천</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Bar%20P.M.9%20%E6%96%B0%E6%A9%8B" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+    </div>
+
+    <h3 class="food-group-label" style="margin-top:1.5rem">💅 걸즈바 (신바시)</h3>
+    <p class="section-sub" style="margin:-.3rem 0 1rem">검증 채널 확인 가능한 곳만 등재 — 평점·검증도 낮음. 아래 안전 수칙 필수.</p>
+    <div class="nightlife-grid">
+      <div class="nightlife-card">
+        <h3>신바시 걸즈하이볼</h3>
+        <div class="genre">걸즈바 · 타베로그 3.01</div>
+        <p class="desc">표기 요금과 실청구가 다를 수 있음 — 입장 전 요금표 확인 필수.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시</dd>
+          <dt>예산</dt><dd>¥3-4천 (표기)</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E6%96%B0%E6%A9%8B%20%E3%82%AC%E3%83%BC%E3%83%AB%E3%82%BA%E3%83%8F%E3%82%A4%E3%83%9C%E3%83%BC%E3%83%AB" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+      <div class="nightlife-card">
+        <h3>걸즈바 카라</h3>
+        <div class="genre">걸즈바 · 타베로그 3.01</div>
+        <p class="desc">요금 미확인 — 반드시 입장 전 확인.</p>
+        <dl class="r-detail">
+          <dt>위치</dt><dd>신바시</dd>
+          <dt>예산</dt><dd>미확인</dd>
+        </dl>
+        <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E3%82%AC%E3%83%BC%E3%83%AB%E3%82%BA%E3%83%90%E3%83%BC%20%E3%82%AB%E3%83%A9%20%E6%96%B0%E6%A9%8B" target="_blank" rel="noopener">구글맵에서 보기 🗺️</a>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <h4>🔴 안전 수칙</h4>
+      <ul>
+        <li>길거리 호객(캐치) 절대 동행 금지 — 바가지 1번 경로</li>
+        <li>요금표 없는 가게 입장 금지 (차지·세트·연장·레이디스 드링크 비용 입장 전 확인)</li>
+        <li>걸즈바: 시간제 세트 자동 연장 주의, 캐스트 드링크 = 손님 부담</li>
+        <li>오토시(자릿세 안주, ¥300-800) = 정상 관행 — 바가지 아님</li>
+      </ul>
+      <p>"차지 있나요?" = チャージ料はありますか (회화 섹션 #8)</p>
+    </div>
+    <p class="section-sub" style="margin-top:1rem">💡 신주쿠 골든가이(혼술 바 성지)는 지하철 20-25분 — 시간 여유 시 옵션</p>
+  </section>
+
+  <!-- ============ Section 8: 관광/볼거리 ============ -->
+  <section class="section-card phase-vacation" id="sightseeing">
+    <h2>🎡 관광 / 볼거리</h2>
+    <p class="section-sub">대상일: 9/16 저녁(도착일) · 9/17-18 저녁(TGS 복귀 후) · 9/19 종일(자유일). ※ 9/19는 TGS 퍼블릭 데이 첫날 + 실버위크 연휴 첫날 겹침 — 마쿠하리 방면·광역 이동 모두 대혼잡 예상, 도쿄 도심 중심 코스 권장.</p>
+
+    <h3 class="sight-group-label">🌙 저녁 산책 (16일 도착일 · 17-18일 TGS 복귀 후)</h3>
+    <div class="sight-grid">
+      <div class="sight-card">
+        <div class="img-ph grad-5" style="height:120px;border-radius:0;" role="img" aria-label="마루노우치 야경 이미지 플레이스홀더">🌃</div>
+        <div class="body">
+          <h3>도쿄역 마루노우치 야경 · 나카도리 산책</h3>
+          <p>20시 이후 숙소 인근에서 가볍게 — 마루노우치 역사(붉은 벽돌 청사) 조명 + 나카도리 가로수길. 무료, 도보 접근.</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%B8%E3%81%AE%E5%86%85%E3%83%8A%E3%82%AB%E9%80%9A%E3%82%8A" target="_blank" rel="noopener">지도 보기 🗺️</a>
+        </div>
+      </div>
+      <div class="sight-card">
+        <div class="img-ph grad-6" style="height:120px;border-radius:0;" role="img" aria-label="긴자 야간 산책 이미지 플레이스홀더">🌆</div>
+        <div class="body">
+          <h3>긴자 야간 산책 (긴자식스 옥상정원)</h3>
+          <p>GINZA SIX 옥상정원에서 도심 야경 조망. 무료 — <strong>폐장시간은 현장에서 재확인 필요</strong>(계절/요일별 변동).</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=GINZA%20SIX%20%E5%B1%8B%E4%B8%8A%E5%BA%AD%E5%9C%92" target="_blank" rel="noopener">지도 보기 🗺️</a>
+        </div>
+      </div>
+      <div class="sight-card">
+        <div class="img-ph grad-2" style="height:120px;border-radius:0;" role="img" aria-label="KITTE 옥상정원 이미지 플레이스홀더">🏙️</div>
+        <div class="body">
+          <h3>KITTE 옥상정원 (도쿄역 직결)</h3>
+          <p>17-18일 TGS 복귀 동선에 편리 — 도쿄역과 직결, 마루노우치 야경 조망대. 무료.</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=KITTE%20%E5%B1%8B%E4%B8%8A%E5%BA%AD%E5%9C%92" target="_blank" rel="noopener">지도 보기 🗺️</a>
+        </div>
+      </div>
+      <div class="sight-card">
+        <div class="img-ph grad-4" style="height:120px;border-radius:0;" role="img" aria-label="시바공원 도쿄타워 야경 이미지 플레이스홀더">🗼</div>
+        <div class="body">
+          <h3>시바공원 · 조조지 — 도쿄타워 야경</h3>
+          <p>18-19일 저녁 산책 후보 — 시오도메 숙소에서 도보~한 정거장 거리. 무료(공원·경내), 도쿄타워 조명 조망.</p>
+          <a href="https://www.google.com/maps/search/?api=1&query=%E8%8A%9D%E5%85%AC%E5%9C%92%20%E5%A2%97%E4%B8%8A%E5%AF%BA" target="_blank" rel="noopener">지도 보기 🗺️</a>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sight-group-label" style="margin-top:2rem">🗺️ 19일 종일 — 코스 A 확정 (B/C는 참고용)</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">실버위크(9/19~23) 첫날과 겹쳐 광역 이동 혼잡 위험 판단 결과 <strong>코스 A로 확정</strong> — 시간대별 상세는 일정 섹션 Day 4 참조. B/C안은 미채택.</p>
+    <div class="course-grid">
+      <div class="course-card">
+        <h4>A. 도쿄 도심 클래식 <span class="course-badge confirmed">✅ 확정</span></h4>
+        <ol class="course-spots">
+          <li>센소지 · 나카미세</li>
+          <li>우에노공원 · 아메요코</li>
+          <li>시부야 스크램블 · 시부야 스카이</li>
+        </ol>
+        <div class="course-meta">전 구간 Suica 이용 · 구간 간 이동 짧음</div>
+        <span class="course-badge recommend">✅ 실버위크 혼잡 회피 관점 추천</span>
+      </div>
+      <div class="course-card not-adopted">
+        <h4>B. 요코하마 <span class="course-badge not-adopted-tag">미채택</span></h4>
+        <ol class="course-spots">
+          <li>미나토미라이21</li>
+          <li>랜드마크타워</li>
+          <li>아카렌가 창고</li>
+          <li>차이나타운</li>
+        </ol>
+        <div class="course-meta">도쿄역에서 약 25-30분</div>
+      </div>
+      <div class="course-card not-adopted">
+        <h4>C. 가마쿠라 · 에노시마 <span class="course-badge not-adopted-tag">미채택</span></h4>
+        <ol class="course-spots">
+          <li>고토쿠인 대불</li>
+          <li>츠루가오카하치만구</li>
+          <li>코마치도리</li>
+          <li>에노덴 승차</li>
+          <li>에노시마</li>
+        </ol>
+        <div class="course-meta">편도 약 1시간 · 에노덴 Suica OK</div>
+        <span class="course-badge caution">⚠️ 실버위크 혼잡·열차 지연 리스크</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Section 9: 예산 ============ -->
+  <section class="section-card phase-neutral" id="budget">
+    <h2>💰 예산</h2>
+
+    <div class="budget-summary-box">
+      <h3>🏢 출장비 커버 항목 (참고용)</h3>
+      <ul>
+        <li>항공권 전체 (왕복)</li>
+        <li>숙박 2박 (9/16-18, 회사 예약) — 박당 35만원 한도(성수기 최대 52.5만원)</li>
+        <li>일비 15만원/일 × 5일(숙박 4박+1) = <strong>75만원</strong> 지급 — 식비·교통 실질 커버</li>
+        <li>여행자보험 — 출장신청서 기반 자동 가입, 개별 가입 불요</li>
+      </ul>
+      <p style="margin:.6rem 0 0;font-size:.82rem">※ 도쿄 도시세(객실요금 5%)는 현지 개인 선납 후 인보이스 증빙으로 실비 정산.</p>
+    </div>
+
+    <div class="personal-total-box">
+      <div class="label">💳 개인 부담 예상 총액</div>
+      <div class="amount" id="personalTotalKrw">₩ 0</div>
+      <div class="sub" id="personalTotalBreakdown">원화 지출(국내) ₩0 + 현지 지출(환산) ₩0</div>
+    </div>
+
+    <div class="budget-summary-box">
+      <h3>💴 보유 자금 (현지 지출용)</h3>
+      <ul>
+        <li>트래블로그 카드 충전 잔액: ¥158,000</li>
+        <li>현금: ¥110,000</li>
+      </ul>
+      <p style="margin:.6rem 0 0;font-weight:700;color:var(--color-text)">합계 ¥268,000 — 현지 지출(식비·교통·쇼핑·입장료) 예상 <span id="fundsLocalSpend">¥0</span> 대비 잔여 <span id="fundsRemaining">¥0</span></p>
+      <p style="margin:.3rem 0 0;font-size:.82rem">※ 개인 숙소 사전 결제(원화, 아래)는 이 자금과 무관 — 국내에서 별도 결제.</p>
+    </div>
+
+    <h3>원화 지출 (국내 · 환율 미적용)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th><th>금액 (원화)</th></tr></thead>
+        <tbody>
+          <tr><td>개인 숙소 2박</td><td>9/18-20 · 미츠이 가든 호텔 시오도메 이탈리아가이 · 국내 원화 사전 결제 완료</td><td class="price prepay-item" id="prepayLodgingKrw" data-krw="562309">₩562,309</td></tr>
+          <tr><td>김포공항 주차</td><td>국내선 제2주차장 예약 완료 (예약번호 1834HH0004, 9/16 14:00~9/20 15:00) · 보증금 ₩10,000 선결제 완료, 잔액 현장 정산</td><td class="price prepay-item" id="prepayParkingKrw" data-krw="51000">₩51,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="section-sub" style="margin:.3rem 0 1.2rem">체크아웃 시 도시세(객실요금 5%)는 별도 현지 선납 → 인보이스 증빙으로 실비 정산 (아래 현지 지출과도 무관)</p>
+
+    <div class="fx-box">
+      <label for="fxRate">환율 (100엔 = 원):</label>
+      <input type="number" id="fxRate" value="930" min="1" step="1">
+      <span class="fx-note">기본값 100엔≈930원 근사치 — 실제 환율로 수정 가능 (아래 현지 지출 표에만 적용, 사전 결제는 불변)</span>
+    </div>
+
+    <h3>현지 지출 (엔화 · 환율 자동 계산)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>항목</th><th>내용</th><th>엔화</th><th>원화 (자동계산)</th></tr></thead>
+        <tbody>
+          <tr class="recalc-item"><td>식비</td><td>4박 5일 식사비</td><td><span class="jpy-amount" data-jpy="16000">¥16,000</span></td><td><span class="krw-amount" data-target="krw-food">₩0</span></td></tr>
+          <tr class="recalc-item"><td>교통</td><td>Suica 충전, 리무진버스 등</td><td><span class="jpy-amount" data-jpy="6000">¥6,000</span></td><td><span class="krw-amount" data-target="krw-transport">₩0</span></td></tr>
+          <tr class="recalc-item"><td>쇼핑</td><td>[플레이스홀더] 기념품/개인 쇼핑</td><td><span class="jpy-amount" data-jpy="10000">¥10,000</span></td><td><span class="krw-amount" data-target="krw-shopping">₩0</span></td></tr>
+          <tr class="recalc-item"><td>입장료</td><td>관광지/전시 입장료</td><td><span class="jpy-amount" data-jpy="3000">¥3,000</span></td><td><span class="krw-amount" data-target="krw-entry">₩0</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>항목별 비중 (현지 지출)</h3>
+    <div id="budgetBars">
+      <div class="bar-row"><span class="bar-label">식비</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-jpy="16000"></div></div><span class="bar-pct">0%</span></div>
+      <div class="bar-row"><span class="bar-label">교통</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-jpy="6000"></div></div><span class="bar-pct">0%</span></div>
+      <div class="bar-row"><span class="bar-label">쇼핑</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-jpy="10000"></div></div><span class="bar-pct">0%</span></div>
+      <div class="bar-row"><span class="bar-label">입장료</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-jpy="3000"></div></div><span class="bar-pct">0%</span></div>
+    </div>
+  </section>
+
+  <!-- ============ Section 10: 결제/통신 ============ -->
+  <section class="section-card phase-neutral" id="payment">
+    <h2>💳 결제 / 통신</h2>
+    <h3>카드/현금 전략</h3>
+    <ul>
+      <li><strong>메인 결제: 트래블로그 카드</strong>(하나카드, 엔화 충전식 체크카드) 우선 사용 — 충전 잔액 ¥158,000. 컨택리스(Visa/Master 터치) 지원, 일본 대부분 매장에서 IC 카드 결제 가능</li>
+      <li><strong>현금 ¥110,000</strong> 별도 소지 — 현금 전용 식당·소규모 점포·신사 등 카드 미지원처 대비. Suica 충전도 현금으로 가능</li>
+      <li>보유 자금 상세·잔여 커버리지 계산은 예산 섹션 참조</li>
+    </ul>
+    <h3>eSIM 안내</h3>
+    <ul>
+      <li>출국 전 eSIM 구매 및 QR 설치 (Wi-Fi 환경에서 사전 설치 권장)</li>
+      <li>[플레이스홀더] 통신사/요금제 확정 시 기재</li>
+      <li>도착 즉시 데이터 활성화 확인</li>
+    </ul>
+  </section>
+
+  <!-- ============ Section 11: 여행 회화 ============ -->
+  <section class="section-card phase-neutral" id="phrases">
+    <h2>🗣️ 여행 회화</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>한국어</th><th>일본어</th><th>발음</th></tr></thead>
+        <tbody>
+          <tr><td>영어 되나요?</td><td>英語は話せますか？</td><td>에이고와 하나세마스카</td></tr>
+          <tr><td>계산해 주세요</td><td>お会計お願いします</td><td>오카이케이 오네가이시마스</td></tr>
+          <tr><td>예약했어요</td><td>予約しています</td><td>요야쿠시테이마스</td></tr>
+          <tr><td>도와주세요</td><td>助けてください</td><td>타스케테쿠다사이</td></tr>
+          <tr><td>천천히 말해주세요</td><td>ゆっくり話してください</td><td>육쿠리 하나시테쿠다사이</td></tr>
+          <tr><td>예약한 OO입니다</td><td>予約した○○です</td><td>요야쿠시타 OO데스</td></tr>
+          <tr><td>혼자인데 카운터 자리 있나요?</td><td>一人ですが、カウンター席空いてますか？</td><td>히토리데스가 카운타-세키 아이테마스카</td></tr>
+          <tr><td>자릿세(차지) 있나요?</td><td>チャージ料はありますか？</td><td>차-지료와 아리마스카</td></tr>
+          <tr><td>추천 메뉴가 뭐예요?</td><td>おすすめは何ですか？</td><td>오스스메와 난데스카</td></tr>
+          <tr><td>이거 하나 더 주세요</td><td>これ、もう一つください</td><td>코레 모- 히토츠 쿠다사이</td></tr>
+          <tr><td>카드로 계산되나요?</td><td>カードで払えますか？</td><td>카-도데 하라에마스카</td></tr>
+          <tr><td>영수증(인보이스) 주세요</td><td>領収書をください</td><td>료-슈-쇼오 쿠다사이</td></tr>
+          <tr><td>짐 맡길 수 있나요?</td><td>荷物を預かってもらえますか？</td><td>니모츠오 아즈캇테 모라에마스카</td></tr>
+          <tr><td>몇 시까지 영업하나요?</td><td>何時までですか？</td><td>난지마데 데스카</td></tr>
+          <tr><td>포장 되나요?</td><td>持ち帰りできますか？</td><td>모치카에리 데키마스카</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="section-sub" style="margin-top:1rem">💡 #8 자릿세(차지) 확인은 혼술 바가지 방지 핵심 · #12 영수증은 도시세 실비 정산용 · #13 짐 맡기기는 18일 짐 위탁 시 사용</p>
+  </section>
+
+  <!-- ============ Section 12: 비상 대응 ============ -->
+  <section class="section-card phase-neutral" id="emergency">
+    <h2>🚨 비상 대응</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>상황</th><th>연락처</th><th>메모</th></tr></thead>
+        <tbody>
+          <tr><td>주일본 대한민국 대사관</td><td>+81-3-3452-7611</td><td>영사 콜센터: +82-2-3210-0404 (유료 상담)</td></tr>
+          <tr><td>경찰</td><td>110</td><td>범죄/도난/분실 신고</td></tr>
+          <tr><td>구급/화재</td><td>119</td><td>응급 상황</td></tr>
+          <tr><td>카드 분실 (해외이용 정지)</td><td>[플레이스홀더] 카드사 고객센터</td><td>카드 뒷면 번호 사전에 메모/사진 보관</td></tr>
+          <tr><td>여권 분실</td><td>대사관 방문 접수</td><td>여권 사본 별도 보관 권장</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>🌏 지진 대응</h3>
+    <div class="info-box">
+      <h4>사전 준비</h4>
+      <p>앱 <strong>"Safety tips"</strong>(일본 관광청 공식, 긴급지진속보 다국어 푸시) + <strong>"NHK WORLD-JAPAN"</strong> 설치 권장. 호텔 체크인 시 비상구 위치 미리 확인.</p>
+    </div>
+    <div class="info-box">
+      <h4>📡 실시간 지진 정보</h4>
+      <ul style="margin:0 0 .6rem;padding-left:1.2rem">
+        <li><strong>일본 기상청(JMA) 영어 페이지</strong> — 지진 속보 공식 소스, 진도·진원 실시간: <a href="https://www.jma.go.jp/bosai/map.html#lang=en" target="_blank" rel="noopener">jma.go.jp/bosai/map.html</a></li>
+        <li><strong>NERV 방재 앱</strong>(특務機関NERV) — 일본에서 가장 빠른 축의 재난 푸시 앱. X(트위터) <a href="https://twitter.com/UN_NERV" target="_blank" rel="noopener">@UN_NERV</a> 계정도 동일 속보 제공</li>
+        <li><strong>Yahoo! 防災速報 앱</strong> — 지역 등록형 재난 푸시 (일본어)</li>
+      </ul>
+      <p style="margin:0">Safety tips=외국인용 다국어 안내 / NERV·JMA=속보 속도 — 역할이 다르므로 둘 다 설치 권장.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>상황</th><th>OK / NG</th></tr></thead>
+        <tbody>
+          <tr><td>실내 — 테이블 아래로 대피, 흔들림 멈춘 후 이동</td><td class="manner-cell-ok">출구 확보 후 대피</td></tr>
+          <tr><td>실내 — 흔들리는 동안 엘리베이터 이용</td><td class="manner-cell-ng">엘리베이터 금지, 계단 이용</td></tr>
+          <tr><td>전철 안 — 손잡이 꼭 잡고 승무원 지시 따르기</td><td class="manner-cell-ok">임의 하차·이동 자제</td></tr>
+          <tr><td>전철 안 — 선로로 임의 진입</td><td class="manner-cell-ng">절대 금지, 승무원 지시 대기</td></tr>
+          <tr><td>호텔 — 문 열어두고 신발 신은 채 대기</td><td class="manner-cell-ok">문 개방으로 갇힘 방지</td></tr>
+          <tr><td>쓰나미 — 해안가에서 흔들림 느끼면 즉시 고지대로</td><td class="manner-cell-ok">공식 안내 기다리지 않고 즉시 대피</td></tr>
+          <tr><td>TGS 중 발생 시 — 임의로 출구 향해 뛰기</td><td class="manner-cell-ng">회장(마쿠하리 멧세, 해안 매립지) 안내에 따라 상층부 대피</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:.85rem;color:var(--color-text-light)">재해용 전언판(가족·지인 안전 확인): <a href="https://www.web171.jp" target="_blank" rel="noopener">web171.jp</a> · 영사콜센터: +82-2-3210-0404</p>
+  </section>
+
+  <!-- ============ Section 13: 꿀팁 ============ -->
+  <section class="section-card phase-neutral" id="tips">
+    <h2>💡 꿀팁</h2>
+    <ul class="tips-list">
+      <li>🔴 TGS 공식 확인: 도쿄 도심·하네다공항 어느 쪽에서도 마쿠하리 직행버스는 없음 — <strong>JR 게이요선(도쿄역 환승)이 유일한 실질 루트</strong>. <strong>카이힌마쿠하리역</strong> 하차 (신설 마쿠하리토요즈미역은 도보 20-30분, 비권장)</li>
+      <li>[플레이스홀더] 편의점 ATM에서 해외카드 인출 가능 (세븐일레븐/패밀리마트)</li>
+      <li>[플레이스홀더] 우천 대비 접이식 우산 상시 소지 (9월은 비 자주 옴)</li>
+      <li>[플레이스홀더] Google Maps 오프라인 지역 다운로드 미리 해두기</li>
+      <li>[플레이스홀더] TGS 기간 숙소/교통 가격 급등 — 예약 서두르기</li>
+      <li>[플레이스홀더] 개인 짐과 출장 짐 분리 포장 (체크인 날짜 다름)</li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- ============ 이동 상세 모달 ============ -->
+<div class="route-modal-overlay" id="routeModalOverlay" hidden>
+  <div class="route-modal" role="dialog" aria-modal="true" aria-labelledby="routeModalTitle">
+    <button type="button" class="route-modal-close" id="routeModalClose" aria-label="닫기">✕</button>
+    <h4 id="routeModalTitle">이동 상세</h4>
+    <p class="route-note" id="routeModalNote"></p>
+    <div id="routeModalBadge"></div>
+    <ol class="route-steps" id="routeModalSteps"></ol>
+  </div>
+</div>
+
+<footer>
+  <p>이 문서는 단일 HTML 파일입니다. 콘텐츠 확정 시 상단 주석의 교체 가이드를 참고하세요.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- 1. 다크모드 토글 ---------- */
+  var root = document.documentElement;
+  var themeToggle = document.getElementById('themeToggle');
+
+  function getEffectiveTheme() {
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    themeToggle.textContent = theme === 'dark' ? '☀️ 라이트모드' : '🌙 다크모드';
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? '라이트모드로 전환' : '다크모드로 전환');
+  }
+
+  var initialTheme = getEffectiveTheme();
+  applyTheme(initialTheme);
+
+  themeToggle.addEventListener('click', function () {
+    var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  /* ---------- 2. D-day 카운트다운 ---------- */
+  (function () {
+    var TRIP_START = new Date(2026, 8, 16); // 월은 0-index → 8=9월. 일정 변경(2026-08-07): 9/16 출발
+    var TRIP_END = new Date(2026, 8, 20);
+    var numEl = document.getElementById('ddayNum');
+    var labelEl = document.getElementById('ddayLabel');
+
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    var msPerDay = 24 * 60 * 60 * 1000;
+
+    if (today < TRIP_START) {
+      var diff = Math.ceil((TRIP_START - today) / msPerDay);
+      numEl.textContent = 'D-' + diff;
+      labelEl.textContent = '여행까지';
+    } else if (today >= TRIP_START && today <= TRIP_END) {
+      var dayNum = Math.floor((today - TRIP_START) / msPerDay) + 1;
+      numEl.textContent = 'Day ' + dayNum;
+      labelEl.textContent = '여행 중';
+    } else {
+      numEl.textContent = '완료';
+      labelEl.textContent = '여행이 종료되었습니다';
+    }
+  })();
+
+  /* ---------- 3. 체크리스트 localStorage ---------- */
+  (function () {
+    var STORAGE_KEY = 'tokyo-tgs-checklist';
+    var checkboxes = Array.prototype.slice.call(document.querySelectorAll('.check-item input[type="checkbox"]'));
+    var progressText = document.getElementById('checkProgressText');
+    var progressFill = document.getElementById('checkProgressFill');
+
+    function loadState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    }
+
+    function saveState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    var catEls = Array.prototype.slice.call(document.querySelectorAll('.checklist-cat'));
+
+    function updateProgress() {
+      var checked = checkboxes.filter(function (cb) { return cb.checked; }).length;
+      var total = checkboxes.length;
+      progressText.textContent = checked + ' / ' + total + ' 완료';
+      progressFill.style.width = total > 0 ? Math.round((checked / total) * 100) + '%' : '0%';
+
+      catEls.forEach(function (cat) {
+        var boxes = Array.prototype.slice.call(cat.querySelectorAll('input[type="checkbox"]'));
+        var catChecked = boxes.filter(function (cb) { return cb.checked; }).length;
+        var badge = cat.querySelector('[data-cat-progress]');
+        if (badge) badge.textContent = catChecked + '/' + boxes.length;
+      });
+    }
+
+    var state = loadState();
+    checkboxes.forEach(function (cb) {
+      var id = cb.getAttribute('data-id');
+      if (state[id]) cb.checked = true;
+      cb.addEventListener('change', function () {
+        var s = loadState();
+        s[id] = cb.checked;
+        saveState(s);
+        updateProgress();
+      });
+    });
+    updateProgress();
+  })();
+
+  /* ---------- 3.5 체크리스트 아코디언 (펼침 상태 별도 localStorage) ---------- */
+  (function () {
+    var STORAGE_KEY = 'tokyo-tgs-checklist-expand';
+
+    function loadState() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    }
+    function saveState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    var state = loadState();
+    var headers = Array.prototype.slice.call(document.querySelectorAll('.cat-header'));
+
+    headers.forEach(function (header) {
+      var cat = header.closest('.checklist-cat');
+      var catId = cat ? cat.getAttribute('data-cat-id') : null;
+      var body = document.getElementById(header.getAttribute('aria-controls'));
+      if (!body) return;
+
+      var expanded = catId && state.hasOwnProperty(catId) ? !!state[catId] : true;
+      setExpanded(header, body, expanded, true);
+
+      header.addEventListener('click', function () {
+        var next = header.getAttribute('aria-expanded') !== 'true';
+        setExpanded(header, body, next, false);
+        if (catId) {
+          var s = loadState();
+          s[catId] = next;
+          saveState(s);
+        }
+      });
+    });
+
+    function setExpanded(header, body, expanded, isInit) {
+      header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (expanded) {
+        body.classList.add('is-open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.classList.remove('is-open');
+        body.style.maxHeight = '0px';
+      }
+      // 체크박스 상태 변경(진행률 뱃지 갱신)으로 내부 높이가 바뀌어도 펼친 상태면 다시 맞춤
+      if (expanded && !isInit) {
+        setTimeout(function () { body.style.maxHeight = body.scrollHeight + 'px'; }, 50);
+      }
+    }
+  })();
+
+  /* ---------- 4. 탭 컴포넌트 ---------- */
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () { activateTab(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var idx = tabs.indexOf(tab);
+        if (e.key === 'ArrowRight') { e.preventDefault(); activateTab(tabs[(idx + 1) % tabs.length]); tabs[(idx + 1) % tabs.length].focus(); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); var p = (idx - 1 + tabs.length) % tabs.length; activateTab(tabs[p]); tabs[p].focus(); }
+      });
+    });
+
+    function activateTab(target) {
+      tabs.forEach(function (tab) {
+        var selected = tab === target;
+        tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+        tab.tabIndex = selected ? 0 : -1;
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !selected;
+      });
+    }
+  })();
+
+  /* ---------- 5. 환율 자동 계산 + 보유 자금 커버리지 ---------- */
+  (function () {
+    var HELD_FUNDS_JPY = 268000; // 트래블로그 카드 충전 ¥158,000 + 현금 ¥110,000 (현지 지출용, 사전 결제 숙박과 무관)
+
+    var fxInput = document.getElementById('fxRate');
+    var krwSpans = Array.prototype.slice.call(document.querySelectorAll('.krw-amount'));
+    var barFills = Array.prototype.slice.call(document.querySelectorAll('#budgetBars .bar-fill'));
+    var personalTotalEl = document.getElementById('personalTotalKrw');
+    var breakdownEl = document.getElementById('personalTotalBreakdown');
+    var prepayEls = Array.prototype.slice.call(document.querySelectorAll('.prepay-item'));
+    var fundsLocalSpendEl = document.getElementById('fundsLocalSpend');
+    var fundsRemainingEl = document.getElementById('fundsRemaining');
+
+    function formatKrw(n) {
+      return '₩ ' + Math.round(n).toLocaleString('ko-KR');
+    }
+    function formatKrwPlain(n) {
+      return '₩' + Math.round(n).toLocaleString('ko-KR');
+    }
+    function formatJpy(n) {
+      return '¥' + Math.round(n).toLocaleString('ko-KR');
+    }
+
+    function recalc() {
+      var rate = parseFloat(fxInput.value);
+      if (isNaN(rate) || rate <= 0) rate = 930;
+      var perYen = rate / 100;
+
+      // 현지 지출(엔화) 표만 환율 재계산 대상 — 사전 결제(원화) 블록은 절대 건드리지 않음
+      var localKrwTotal = 0;
+      var localJpyTotal = 0;
+      krwSpans.forEach(function (span) {
+        var row = span.closest('tr');
+        var jpySpan = row ? row.querySelector('.jpy-amount') : null;
+        var jpy = jpySpan ? parseFloat(jpySpan.getAttribute('data-jpy')) : 0;
+        var krw = jpy * perYen;
+        localJpyTotal += jpy;
+        localKrwTotal += krw;
+        span.textContent = formatKrw(krw);
+      });
+
+      // 원화 지출(국내) — 환율 미적용, 고정값 합산 (숙소 사전결제 + 공항 주차 등)
+      var prepayKrw = 0;
+      prepayEls.forEach(function (el) { prepayKrw += parseFloat(el.getAttribute('data-krw')) || 0; });
+
+      var grandTotal = prepayKrw + localKrwTotal;
+      personalTotalEl.textContent = formatKrw(grandTotal);
+      if (breakdownEl) {
+        breakdownEl.textContent = '원화 지출(국내) ' + formatKrwPlain(prepayKrw) + ' + 현지 지출(환산) ' + formatKrwPlain(localKrwTotal);
+      }
+
+      // 보유 자금(¥268,000) 대비 현지 지출 커버리지 — 사전 결제 숙박비는 포함하지 않음
+      if (fundsLocalSpendEl) fundsLocalSpendEl.textContent = formatJpy(localJpyTotal);
+      if (fundsRemainingEl) fundsRemainingEl.textContent = formatJpy(HELD_FUNDS_JPY - localJpyTotal);
+
+      var sumJpy = 0;
+      barFills.forEach(function (bar) { sumJpy += parseFloat(bar.getAttribute('data-jpy')) || 0; });
+
+      barFills.forEach(function (bar) {
+        var jpy = parseFloat(bar.getAttribute('data-jpy')) || 0;
+        var pct = sumJpy > 0 ? (jpy / sumJpy) * 100 : 0;
+        bar.style.width = pct + '%';
+        var pctLabel = bar.closest('.bar-row').querySelector('.bar-pct');
+        if (pctLabel) pctLabel.textContent = Math.round(pct) + '%';
+      });
+    }
+
+    fxInput.addEventListener('input', recalc);
+    recalc();
+  })();
+
+  /* ---------- 7. 이동 상세 모달 ---------- */
+  (function () {
+    var ROUTES = {
+      'hnd-to-tokyo': {
+        title: '하네다공항 → 도쿄역 (9/16)',
+        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신) — 도쿄역 기준 루트. A안(모노레일) 기준, B안은 참고용.',
+        suica: true,
+        steps: [
+          '하네다공항 T3 국제선 → 도쿄모노레일 승차 (도보 5분)',
+          '모노레일 하마마츠초역까지 (약 15분, ¥500)',
+          '하마마츠초역에서 JR 야마노테선/게이힌토호쿠선 환승 (도보 환승)',
+          '도쿄역까지 (약 10분, ¥160)',
+          '총 소요 약 30분 · 약 ¥660 · [B안] 게이큐선→시나가와→JR 환승 시 약 35분·약 ¥580'
+        ]
+      },
+      'tokyo-to-kaihin': {
+        title: '도쿄역 → 카이힌마쿠하리 (9/17·18)',
+        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신) — 도쿄역 기준 루트. JR 게이요선 쾌속 이용 — 게이요선 승강장은 지하 깊은 곳에 있어 환승 도보 10분 이상 소요 주의.',
+        suica: true,
+        steps: [
+          '도쿄역에서 JR 게이요선 승강장으로 이동 (환승 도보 10분+ — 지하 깊음, 여유 확보)',
+          '게이요선 쾌속 승차 (카이힌마쿠하리 방면)',
+          '카이힌마쿠하리역까지 약 30~40분 · 약 ¥570',
+          '역 개찰구에서 마쿠하리 멧세까지 도보 약 5분'
+        ]
+      },
+      'kaihin-to-tokyo': {
+        title: '카이힌마쿠하리 → 도쿄역 (역방향, 9/17 저녁)',
+        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신) — 도쿄역 기준 루트. 하네다행 노선 위의 "tokyo-to-kaihin" 경로를 그대로 역방향으로 이용.',
+        suica: true,
+        steps: [
+          '마쿠하리 멧세에서 카이힌마쿠하리역까지 도보 약 5분',
+          'JR 게이요선 쾌속 승차 (도쿄 방면)',
+          '도쿄역까지 약 30~40분 · 약 ¥570 (환승 도보 10분+ 여유 확보)'
+        ]
+      },
+      'checkout-to-tgs': {
+        title: '회사 숙소(도쿄 도심) → 미츠이 가든 시오도메 (짐 위탁) → TGS (9/18 아침)',
+        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신). 체크아웃 당일 짐 위탁 통합 루트 — 08:00 체크아웃 기준.',
+        suica: true,
+        steps: [
+          '08:00 회사 숙소 체크아웃 (짐 지참) → 신바시역 방면 이동',
+          '08:30 미츠이 가든 호텔 시오도메 이탈리아가이에 짐 사전 위탁 (체크인 전 무료 보관, 프론트 요청)',
+          '신바시역에서 JR 야마노테선/게이힌토호쿠선 승차 → 도쿄역',
+          '도쿄역에서 JR 게이요선 쾌속 환승 → 카이힌마쿠하리역 (환승 도보 10분+ 여유 확보)',
+          '카이힌마쿠하리역에서 마쿠하리 멧세까지 도보 약 5분 — 10:00 TGS 도착 목표',
+          '대안: 도쿄역 대형 코인로커(¥600-800) — 실버위크 전날 만실 위험 있어 비권장, 호텔 위탁 권장'
+        ]
+      },
+      'kaihin-to-shiodome': {
+        title: '카이힌마쿠하리 → 시오도메 숙소 (9/18 TGS 후)',
+        note: '개인 숙소(미츠이 가든 호텔 시오도메 이탈리아가이) 확정 기준. 아침에 짐을 이미 위탁해두었으므로 이 이동은 빈손 — 도착 즉시 체크인(위탁 짐 수령).',
+        suica: true,
+        steps: [
+          '마쿠하리 멧세에서 카이힌마쿠하리역까지 도보 약 5분',
+          'JR 게이요선 쾌속 승차 → 도쿄역',
+          '도쿄역에서 JR 야마노테선/게이힌토호쿠선 환승 → 신바시역',
+          '신바시역에서 도보 약 7분 → 미츠이 가든 호텔 시오도메 이탈리아가이',
+          '총 소요 약 45-50분 · Suica OK'
+        ]
+      },
+      'shiodome-to-hnd': {
+        title: '시오도메 숙소 → 하네다공항 T3 (9/20)',
+        note: '개인 숙소(미츠이 가든 호텔 시오도메 이탈리아가이) 확정 기준. 실버위크 혼잡 감안 07:45 출발 → 09:00-09:15 도착 플랜(국제선 통상 출발 2.5~3시간 전 권고) — Day 5 표와 동기화.',
+        suica: true,
+        steps: [
+          '[A안] 호텔에서 도보 약 10분 → 하마마츠초역',
+          '[A안] 도쿄모노레일 승차 → 하네다공항 T3 (약 25-30분, Suica OK)',
+          '[B안] 호텔에서 도보 약 7분 → 신바시역',
+          '[B안] 도영 아사쿠사선-게이큐선 직통 승차 → 하네다공항 T3 (약 35분, Suica OK)',
+          '07:45 출발 기준 09:00-09:15 도착 목표 (두 안 모두 여유 확보)'
+        ]
+      },
+      'shiodome-to-asakusa': {
+        title: '시오도메 숙소 → 아사쿠사 (9/19 코스 A)',
+        note: '개인 숙소(미츠이 가든 호텔 시오도메 이탈리아가이) 확정 기준. 오에도선 다이몬역에서 아사쿠사선으로 직통 환승.',
+        suica: true,
+        steps: [
+          '호텔에서 도보 약 5분 → 도영 오에도선 다이몬역',
+          '오에도선 승차 → 신바시역 또는 직통 환승역에서 도영 아사쿠사선으로 환승',
+          '아사쿠사선 승차 → 아사쿠사역',
+          '총 소요 약 25-30분 · Suica OK — 08:00 출발 → 08:40 센소지 도착 목표'
+        ]
+      },
+      'shibuya-to-shiodome': {
+        title: '시부야 → 시오도메 숙소 복귀 (9/19 밤)',
+        note: '개인 숙소(미츠이 가든 호텔 시오도메 이탈리아가이) 확정 기준. 시부야 스카이 관람 후 야마노테선으로 복귀.',
+        suica: true,
+        steps: [
+          '시부야역에서 JR 야마노테선 승차 (신바시 방면)',
+          '신바시역까지 약 15분 · 약 ¥200',
+          '신바시역에서 도보 약 7분 → 미츠이 가든 호텔 시오도메 이탈리아가이',
+          '총 소요 약 25-30분 · Suica OK — 21:30 도착 목표'
+        ]
+      },
+      'gimpo-parking': {
+        title: '김포공항 주차 예약 확정 (자차 이동)',
+        note: '예약번호 1834HH0004 — 국내선 제2주차장 주차타워 2·3층 예약존. 입차 9/16 14:00 / 출차 9/20 15:00 예약(규정상 ±2시간 입차 허용, 정산은 실제 입출차 기준).',
+        suica: null,
+        steps: [
+          '9/16 13:30 자차로 국내선 제2주차장 도착 → 주차타워 2층 예약존 진입 (차량번호 인식, 예약번호 1834HH0004)',
+          '주차 후 국제선 터미널로 이동 — 무료 순환셔틀 또는 도보 10-15분',
+          '총 주차요금 ₩51,000 — 보증금 ₩10,000 선결제 완료, 잔액은 출차 시 현장 정산',
+          '9/20 14:25 국제선 도착 → 국내선 제2주차장으로 이동 → 15:00경 출차, 잔액 정산'
+        ]
+      }
+    };
+
+    var overlay = document.getElementById('routeModalOverlay');
+    var closeBtn = document.getElementById('routeModalClose');
+    var titleEl = document.getElementById('routeModalTitle');
+    var noteEl = document.getElementById('routeModalNote');
+    var badgeEl = document.getElementById('routeModalBadge');
+    var stepsEl = document.getElementById('routeModalSteps');
+    var lastFocused = null;
+
+    function openModal(routeKey) {
+      var route = ROUTES[routeKey];
+      if (!route || !overlay) return;
+      titleEl.textContent = route.title;
+      noteEl.textContent = route.note || '';
+      stepsEl.innerHTML = '';
+      route.steps.forEach(function (step) {
+        var li = document.createElement('li');
+        li.textContent = step;
+        stepsEl.appendChild(li);
+      });
+      if (route.suica === true) {
+        badgeEl.innerHTML = '<span class="route-suica-badge">✅ Suica OK</span>';
+      } else if (route.suica === false) {
+        badgeEl.innerHTML = '<span class="route-suica-badge warn">⚠️ 별도 티켓</span>';
+      } else {
+        badgeEl.innerHTML = '';
+      }
+      lastFocused = document.activeElement;
+      overlay.hidden = false;
+      closeBtn.focus();
+      document.addEventListener('keydown', onKeydown);
+    }
+
+    function closeModal() {
+      if (!overlay || overlay.hidden) return;
+      overlay.hidden = true;
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    }
+
+    function onKeydown(e) {
+      if (e.key === 'Escape') closeModal();
+    }
+
+    Array.prototype.slice.call(document.querySelectorAll('.route-detail-btn')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openModal(btn.getAttribute('data-route'));
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) closeModal();
+      });
+    }
+  })();
+
+  /* ---------- 6. TGS 워크 노트 (자동저장/복사/다운로드) ---------- */
+  (function () {
+    var STORAGE_KEY = 'tokyo-tgs-worknotes'; // 체크리스트(tokyo-tgs-checklist)와 별도 네임스페이스
+    var fields = [
+      { id: 'note1', title: '① AX/DX 사례 수집' },
+      { id: 'note2', title: '② QA 벤더·시장 포지션' },
+      { id: 'note3', title: '③ 데모 품질 관찰' },
+      { id: 'note4', title: '④ 자유 메모' }
+    ];
+
+    function loadState() {
+      try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }
+      catch (e) { return {}; }
+    }
+    function saveState(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function nowTimeStr() {
+      var d = new Date();
+      return pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+
+    var initialState = loadState();
+    var debounceTimers = {};
+
+    fields.forEach(function (f) {
+      var ta = document.getElementById(f.id);
+      var savedAtEl = document.getElementById(f.id + 'SavedAt');
+      if (!ta) return;
+      if (initialState[f.id]) ta.value = initialState[f.id];
+      if (initialState[f.id + '_savedAt']) savedAtEl.textContent = '마지막 저장 ' + initialState[f.id + '_savedAt'];
+
+      ta.addEventListener('input', function () {
+        clearTimeout(debounceTimers[f.id]);
+        debounceTimers[f.id] = setTimeout(function () {
+          var s = loadState();
+          var t = nowTimeStr();
+          s[f.id] = ta.value;
+          s[f.id + '_savedAt'] = t;
+          saveState(s);
+          if (savedAtEl) savedAtEl.textContent = '마지막 저장 ' + t;
+        }, 500);
+      });
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll('.note-clear')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-clear-target');
+        if (!window.confirm('이 칸의 메모를 지울까요? 되돌릴 수 없습니다.')) return;
+        var ta = document.getElementById(id);
+        if (ta) ta.value = '';
+        var s = loadState();
+        delete s[id];
+        delete s[id + '_savedAt'];
+        saveState(s);
+        var savedAtEl = document.getElementById(id + 'SavedAt');
+        if (savedAtEl) savedAtEl.textContent = '';
+      });
+    });
+
+    function buildMarkdown() {
+      return fields.map(function (f) {
+        var ta = document.getElementById(f.id);
+        var val = ta ? ta.value.trim() : '';
+        return '## ' + f.title + '\n\n' + (val || '_(작성 없음)_');
+      }).join('\n\n');
+    }
+
+    function todayStr() {
+      var d = new Date();
+      return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate());
+    }
+
+    var statusEl = document.getElementById('notesStatus');
+    function flashStatus(msg) {
+      if (!statusEl) return;
+      statusEl.textContent = msg;
+      setTimeout(function () { statusEl.textContent = ''; }, 2500);
+    }
+
+    var copyBtn = document.getElementById('notesCopyBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var md = buildMarkdown();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(md).then(function () {
+            flashStatus('✅ 복사 완료');
+          }, function () {
+            flashStatus('⚠ 복사 실패 — 직접 선택해 복사해주세요');
+          });
+        } else {
+          flashStatus('⚠ 이 브라우저는 클립보드 API를 지원하지 않습니다');
+        }
+      });
+    }
+
+    var downloadBtn = document.getElementById('notesDownloadBtn');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', function () {
+        var md = buildMarkdown();
+        var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'TGS2026_노트_' + todayStr() + '.md';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        flashStatus('✅ 다운로드 시작');
+      });
+    }
+  })();
+
+})();
+</script>
+</body>
+</html>
