@@ -333,6 +333,14 @@
   .course-card { border: 1px solid var(--color-border); border-radius: 14px; padding: 1.2rem; }
   .course-card h4 { margin: 0 0 .6rem; font-size: 1rem; color: var(--color-primary); }
   .course-card.not-adopted { opacity: .55; }
+  /* 코스 카드 대표 사진(B/C=단일) / 3분할 스트립(A=구간별 3곳, 고정 비율 CSS Grid) */
+  .course-photo-wrap { width: 100%; height: 130px; border-radius: 10px; overflow: hidden; position: relative; margin-bottom: .8rem; }
+  .course-photo-wrap .course-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .course-photo-wrap .img-ph { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 0; font-size: 1.4rem; }
+  .course-photo-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; margin-bottom: .8rem; }
+  .course-photo-strip .course-photo-cell { border-radius: 8px; overflow: hidden; height: 80px; position: relative; }
+  .course-photo-strip .course-photo-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .course-photo-strip .course-photo-cell .img-ph { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 0; font-size: 1.1rem; }
   .course-badge.confirmed { background: var(--color-vacation-light); color: var(--color-vacation-strong); }
   .course-badge.not-adopted-tag { background: var(--color-background); color: var(--color-text-light); }
   .course-spots { margin: 0 0 .7rem; padding-left: 1.1rem; font-size: .88rem; }
@@ -350,6 +358,9 @@
   .sight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
   .sight-card { border: 1px solid var(--color-border); border-radius: 14px; overflow: hidden; }
   .sight-card .img-ph { width: 100%; height: 120px; border-radius: 0; }
+  .sight-card .sight-photo-wrap { width: 100%; height: 120px; position: relative; overflow: hidden; }
+  .sight-card .sight-photo-wrap .sight-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sight-card .sight-photo-wrap .img-ph { position: absolute; top: 0; left: 0; }
   .sight-card .body { padding: 1rem; }
   .sight-card h3 { margin: 0 0 .3rem; font-size: .98rem; }
   .sight-card p { margin: 0 0 .4rem; font-size: .85rem; color: var(--color-text-light); }
@@ -575,6 +586,7 @@
   <section class="section-card phase-neutral" id="overview">
     <h2>🗺️ 여행 개요</h2>
     <p class="section-sub">출장(TGS 9/17-18) + 도착일·휴가일 자유시간 하이브리드. 비용 주체는 페이즈별로 분리됩니다.</p>
+    <p class="section-sub" style="margin-top:-.8rem">🛏️ 전 일정 기상 11시 기준 설계 (9/20 귀국일만 예외)</p>
     <div class="warning-box">
       <h4>🔴 실버위크 겹침 주의</h4>
       <p>9/19(토)~9/23(수) 일본 5일 연휴(실버위크) 시작과 겹칩니다 — 9/21 경로의 날, 9/22 국민의 휴일, 9/23 추분. 19일 광역 이동, 20일 공항 혼잡, 숙소 요금 상승에 주의하세요.</p>
@@ -667,7 +679,7 @@
             <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-forum"><span>Forum 세션 추가 신청 — 9월 초 타임테이블 공개 후</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-recorder"><span>보이스 레코더 앱 준비</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-invoice"><span>체크아웃 시 인보이스 수령 (도시세 정산용)</span></label></li>
-            <li class="check-item"><label><input type="checkbox" data-id="etc-checkout-move"><span>18일 아침 회사 숙소 체크아웃 — 짐 위탁 동선 숙지 (08:30 미츠이 가든 시오도메 사전 위탁)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="etc-checkout-move"><span>18일 회사 숙소 체크아웃(11:00) — 짐 위탁 동선 숙지 (11:30 미츠이 가든 시오도메 사전 위탁)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-shibuyasky"><span>시부야 스카이 사전 예약 (일몰 슬롯 조기 매진)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-teamlab"><span>팀랩 보더리스 예약 (18일 저녁 옵션 선택 시)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-gimpo-parking-done"><span>주차 예약 완료 (국내선 제2주차장, 예약번호 1834HH0004) — 당일 2층 예약존 입구로 진입</span></label></li>
@@ -795,7 +807,7 @@
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
         <tbody>
-          <tr><td class="time">13:30</td><td>자차 출발 → 김포공항 국내선 제2주차장 입차 (주차타워 2층 예약존)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td><button type="button" class="route-detail-btn" data-route="gimpo-parking">상세</button></td><td class="price">💳 개인</td></tr>
+          <tr><td class="time">11:00-13:30</td><td>자택 출발 → 김포공항 국내선 제2주차장 입차 (주차타워 2층 예약존)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td><button type="button" class="route-detail-btn" data-route="gimpo-parking">상세</button></td><td class="price">💳 개인</td></tr>
           <tr><td class="time">13:40</td><td>국제선 터미널 이동 (무료 순환셔틀 or 도보 10-15분)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">-</td></tr>
           <tr><td class="time">14:00-15:45</td><td>체크인 · 출국 수속</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">-</td></tr>
           <tr><td class="time">15:45</td><td>김포공항 출발 (OZ1045)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">🏢</td></tr>
@@ -822,13 +834,11 @@
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">비고</th></tr></thead>
         <tbody>
-          <tr><td class="time">08:30</td><td>숙소 출발 → 마쿠하리 멧세</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td><button type="button" class="route-detail-btn" data-route="tokyo-to-kaihin">상세</button></td><td class="price"><span class="pill pill-business">🏢 교통</span> 전용 입구 — 대기줄 없음</td></tr>
-          <tr><td class="time">10:00-10:30</td><td>입장(비즈니스 데이 배지) · 홀 배치 파악 · Smilegate 부스 방문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">자사 기준점</td></tr>
-          <tr><td class="time">10:30-12:30</td><td><strong>AI Technology Pavilion</strong> 집중 정찰 — AX/DX 사례 수집·질문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ①</td></tr>
-          <tr><td class="time">12:30-13:30</td><td>점심 (12시 전후 피크 회피)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">13:30-14:30</td><td>TGS Forum 세션 [타임테이블 9월 초 공개 후 확정 — 플레이스홀더]</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ①</td></tr>
+          <tr><td class="time">11:00</td><td>숙소 출발 → 마쿠하리 멧세 (게이요선)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td><button type="button" class="route-detail-btn" data-route="tokyo-to-kaihin">상세</button></td><td class="price"><span class="pill pill-business">🏢 교통</span></td></tr>
+          <tr><td class="time">12:00</td><td>마쿠하리 멧세 도착 · 입장(비즈니스 데이 배지) · 홀 배치 파악 · Smilegate 부스 방문 (점심은 이동 전 간단히 or 회장 내 간식)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">자사 기준점</td></tr>
+          <tr><td class="time">12:00-14:30</td><td><strong>AI Technology Pavilion</strong> 집중 정찰 — AX/DX 사례 수집·질문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ①</td></tr>
           <tr><td class="time">14:30-15:30</td><td>Business Solution Area — QA 벤더 AI 전환 실태</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ②</td></tr>
-          <tr><td class="time">15:30-16:30</td><td>경쟁사 부스 데모 품질 관찰(넥슨 마비노기모바일 등) + All Accessibility Area</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ③</td></tr>
+          <tr><td class="time">15:30-16:30</td><td>자사·경쟁사 부스 데모 품질 관찰(넥슨 마비노기모바일 등) + All Accessibility Area</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ③</td></tr>
           <tr><td class="time">16:30-17:00</td><td>당일 메모 구조화 — 보고서 3제안 골격에 매핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서</td></tr>
           <tr><td class="time">17:00~</td><td>도쿄 시내 복귀 · 저녁: 만텐즈시 마루노우치 (추천 — 도쿄역 5분. 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">만텐즈시 마루노우치</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-tokyo">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
         </tbody>
@@ -840,27 +850,22 @@
       <h4>📌 18일 한정 프로그램 집중일 · 체크아웃-체크인 겹치는 날</h4>
       <p style="margin:0 0 .5rem">Forum AI 세션 2건("Creative Generative AI", AI 번역엔진)은 <strong>18일에만</strong> 개최 — 17일은 팔로업, 18일은 신규 세션으로 이틀을 나눠 커버.</p>
       <p style="margin:0 0 .5rem">※ Forum 세션은 국제회의장에서 진행 · 주로 일본어 진행 · 사전 신청 필수 — 신청 절차는 타임테이블 공개(9월 초) 후 확인.</p>
-      <p style="margin:0">🧳 이날은 회사 숙소 체크아웃 + 개인 숙소 체크인이 겹쳐 짐을 온종일 들고 다닐 수 없음 — 아래 08:00 행에서 미츠이 가든 시오도메에 짐을 먼저 맡긴다(체크인 전 짐 보관은 호텔 표준 무료 서비스). 대안으로 도쿄역 대형 코인로커(¥600-800)도 가능하나 실버위크 전날이라 만실 위험이 있어 호텔 위탁을 권장.</p>
+      <p style="margin:0 0 .5rem">🧳 이날은 회사 숙소 체크아웃 + 개인 숙소 체크인이 겹쳐 짐을 온종일 들고 다닐 수 없음 — 아래 11:00 행에서 미츠이 가든 시오도메에 짐을 먼저 맡긴다(체크인 전 짐 보관은 호텔 표준 무료 서비스). 대안으로 도쿄역 대형 코인로커(¥600-800)도 가능하나 실버위크 전날이라 만실 위험이 있어 호텔 위탁을 권장.</p>
+      <p style="margin:0">⚠️ 체크아웃 11:00 기준 설계 — 회사 숙소 실제 체크아웃 마감이 11시보다 이르면 시간 조정 필요.</p>
     </div>
     <div class="table-wrap">
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">비고</th></tr></thead>
         <tbody>
-          <tr><td class="time">08:00</td><td>회사 숙소 체크아웃 (짐 지참) → 신바시 이동</td><td class="location">회사 숙소: 도쿄 도심 (확정 시 상세 갱신)</td><td><button type="button" class="route-detail-btn" data-route="checkout-to-tgs">상세</button></td><td class="price">🏢 교통</td></tr>
-          <tr><td class="time">08:30</td><td>미츠이 가든 시오도메에 짐 사전 위탁 (체크인 전 무료 보관)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td>-</td><td class="price">-</td></tr>
-          <tr><td class="time">08:40-10:00</td><td>신바시 → 도쿄역 → 게이요선 → TGS 도착</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td><button type="button" class="route-detail-btn" data-route="tokyo-to-kaihin">상세</button></td><td class="price"><span class="pill pill-business">🏢 교통</span></td></tr>
-          <tr><td class="time">10:00-12:00</td><td>Business Matching 사전 예약 상담 + 미커버 부스 재방문</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">17일 수확 후속</td></tr>
-          <tr><td class="time">12:00-12:30</td><td>점심 (간단히)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">12:30-13:30</td><td>Forum: "Distribution Strategies to Improve Game Business Profitability" (선택)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">확정 세션</td></tr>
+          <tr><td class="time">11:00</td><td>회사 숙소 체크아웃 (짐 지참)</td><td class="location">회사 숙소: 도쿄 도심 (확정 시 상세 갱신)</td><td><button type="button" class="route-detail-btn" data-route="checkout-to-tgs">상세</button></td><td class="price">🏢 교통</td></tr>
+          <tr><td class="time">11:30</td><td>미츠이 가든 시오도메에 짐 사전 위탁 (체크인 전 무료 보관)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">12:30</td><td>TGS 도착 — 전일 미커버 부스 팔로업</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price"><span class="pill pill-business">🏢 교통</span> 17일 수확 후속</td></tr>
           <tr><td class="time">13:30-14:00</td><td><strong>Forum: "Creative Generative AI — 개인 노하우의 조직 자산화"</strong></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">★ 핵심 — 보고서 ①</td></tr>
           <tr><td class="time">14:00-15:00</td><td><strong>Forum: AI 번역엔진 세션</strong> ("No AI could translate Momotaro as Thor")</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">LQA 연관</td></tr>
           <tr><td class="time">15:00-16:30</td><td>Business Solution Area 잔여 커버 + 수집 자료·명함 정리</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ②</td></tr>
-          <tr><td class="time">16:30-17:00</td><td>이틀치 메모 통합 — 보고서 3제안 골격 매핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서</td></tr>
-          <tr><td class="time">17:00-18:00</td><td>회장 내 휴게 공간에서 이틀치 메모 최종 정리</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price">보고서</td></tr>
-          <tr><td class="time">18:00-20:00</td><td>International Party (네트워킹 — 명함 다수 지참)</td><td class="location">[플레이스홀더]</td><td>-</td><td class="price">[출전사 자격 참석]</td></tr>
-          <tr><td class="time">20:00~</td><td>TGS → 신바시 → 숙소 체크인 (위탁 짐 수령)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-shiodome">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">체크인 후</td><td>옵션: 팀랩 보더리스(아자부다이 힐즈, 사전 예약) or 시바공원·도쿄타워 야경 산책</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%20Azabudai" target="_blank" rel="noopener">팀랩 보더리스</a> · <a href="https://www.google.com/maps/search/?api=1&query=%E8%8A%9D%E5%85%AC%E5%9C%92%20%E5%A2%97%E4%B8%8A%E5%AF%BA" target="_blank" rel="noopener">시바공원</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">17:00</td><td>TGS → 신바시 → 숙소 체크인 (위탁 짐 수령)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-shiodome">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
           <tr><td class="time">저녁식사</td><td>긴자 카츠카미 (추천 — 신바시 도보권, 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E9%8A%80%E5%BA%A7%E3%81%8B%E3%81%A4%E3%81%8B%E3%81%BF" target="_blank" rel="noopener">긴자 카츠카미</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">옵션</td><td>팀랩 보더리스(아자부다이 힐즈, 사전 예약) or 시바공원·도쿄타워 야경 산책</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=teamLab%20Borderless%20Azabudai" target="_blank" rel="noopener">팀랩 보더리스</a> · <a href="https://www.google.com/maps/search/?api=1&query=%E8%8A%9D%E5%85%AC%E5%9C%92%20%E5%A2%97%E4%B8%8A%E5%AF%BA" target="_blank" rel="noopener">시바공원</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -871,11 +876,12 @@
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
         <tbody>
-          <tr><td class="time">08:00</td><td>숙소 출발</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-asakusa">상세</button></td><td class="price">-</td></tr>
-          <tr><td class="time">08:40</td><td>센소지 · 나카미세 (실버위크 인파 몰리기 전 도착)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">센소지</a></td><td>-</td><td class="price">무료</td></tr>
-          <tr><td class="time">11:00</td><td>다이코쿠야 텐푸라 본점 점심 (오픈 직후 — 피크 회피) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 점심</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">다이코쿠야 텐푸라 본점</a></td><td>-</td><td class="price">¥2,000대</td></tr>
-          <tr><td class="time">12:30</td><td>우에노공원 · 아메요코 (긴자선 아사쿠사→우에노)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Ameyoko" target="_blank" rel="noopener">우에노공원·아메요코</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">15:30</td><td>시부야 이동(야마노테) — 스크램블 교차로 · 쇼핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing" target="_blank" rel="noopener">시부야 스크램블</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">11:00</td><td>숙소 출발</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-asakusa">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">11:45</td><td>아사쿠사 도착</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">아사쿠사</a></td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">11:50</td><td>다이코쿠야 텐푸라 본점 점심 (12시 전 입장 시도 — ⚠️ 실버위크 토요일, 대기 감수) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 점심</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">다이코쿠야 텐푸라 본점</a></td><td>-</td><td class="price">¥2,000대</td></tr>
+          <tr><td class="time">13:00</td><td>센소지 · 나카미세 (⚠️ 낮 시간 인파 정면 — 실버위크 첫날 혼잡 감수)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">센소지</a></td><td>-</td><td class="price">무료</td></tr>
+          <tr><td class="time">14:30</td><td>우에노공원 · 아메요코 (긴자선 아사쿠사→우에노)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Ameyoko" target="_blank" rel="noopener">우에노공원·아메요코</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">16:30</td><td>시부야 이동(야마노테) — 스크램블 교차로 · 쇼핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing" target="_blank" rel="noopener">시부야 스크램블</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
           <tr><td class="time">17:30</td><td>스미비야키 유지 저녁 (사전 네트예약 필요 — 당일 15시 이후 전화 불가) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 저녁</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">스미비야키 유지</a></td><td>-</td><td class="price">¥6,000-7,999</td></tr>
           <tr><td class="time">19:30</td><td>시부야 스카이 야경 (사전 예약 슬롯 필수 — 일몰 슬롯 조기 매진)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Sky" target="_blank" rel="noopener">시부야 스카이</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
           <tr><td class="time">21:30</td><td>숙소 복귀 (야마노테→신바시)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shibuya-to-shiodome">상세</button></td><td class="price">-</td></tr>
@@ -889,7 +895,7 @@
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
         <tbody>
-          <tr><td class="time">07:45</td><td>시오도메 숙소 출발 (실버위크 혼잡 대비 앞당김)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-hnd">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">07:45</td><td>시오도메 숙소 출발 (실버위크 혼잡 대비 앞당김) — ⚠️ 유일한 이른 기상일: 12:05 비행 고정, 전날 일찍 취침 권장</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-hnd">상세</button></td><td class="price">-</td></tr>
           <tr><td class="time">09:00-09:15</td><td>하네다공항 T3 도착 · 수속</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%ED%95%98%EB%8B%A4%EB%8B%A4%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">하네다공항</a></td><td>-</td><td class="price">-</td></tr>
           <tr><td class="time">12:05</td><td>하네다 출발 (OZ1075)</td><td class="location">-</td><td>-</td><td class="price">🏢</td></tr>
           <tr><td class="time">14:25</td><td>김포 국제선 도착 → 국내선 제2주차장 이동 → ~15:00 출차 (예약번호 1834HH0004, 잔액 정산) → 자차 귀가</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%EA%B9%80%ED%8F%AC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD" target="_blank" rel="noopener">김포국제공항</a></td><td>-</td><td class="price">💳 개인</td></tr>
@@ -1345,7 +1351,10 @@
     <h3 class="sight-group-label">🌙 저녁 산책 (16일 도착일 · 17-18일 TGS 복귀 후)</h3>
     <div class="sight-grid">
       <div class="sight-card">
-        <div class="img-ph grad-5" style="height:120px;border-radius:0;" role="img" aria-label="마루노우치 야경 이미지 플레이스홀더">🌃</div>
+        <div class="sight-photo-wrap">
+          <img class="sight-photo" src="https://images.unsplash.com/photo-1514337224818-9787cf717f2a?w=400&q=70" alt="도쿄역 마루노우치 역사 야경 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-5" role="img" aria-label="마루노우치 야경 이미지 폴백" style="display:none">🌃</div>
+        </div>
         <div class="body">
           <h3>도쿄역 마루노우치 야경 · 나카도리 산책</h3>
           <p>20시 이후 숙소 인근에서 가볍게 — 마루노우치 역사(붉은 벽돌 청사) 조명 + 나카도리 가로수길. 무료, 도보 접근.</p>
@@ -1353,7 +1362,10 @@
         </div>
       </div>
       <div class="sight-card">
-        <div class="img-ph grad-6" style="height:120px;border-radius:0;" role="img" aria-label="긴자 야간 산책 이미지 플레이스홀더">🌆</div>
+        <div class="sight-photo-wrap">
+          <img class="sight-photo" src="https://images.unsplash.com/photo-1622767833293-8d1e6878c27f?w=400&q=70" alt="긴자 거리 야경 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-6" role="img" aria-label="긴자 야간 산책 이미지 폴백" style="display:none">🌆</div>
+        </div>
         <div class="body">
           <h3>긴자 야간 산책 (긴자식스 옥상정원)</h3>
           <p>GINZA SIX 옥상정원에서 도심 야경 조망. 무료 — <strong>폐장시간은 현장에서 재확인 필요</strong>(계절/요일별 변동).</p>
@@ -1361,7 +1373,10 @@
         </div>
       </div>
       <div class="sight-card">
-        <div class="img-ph grad-2" style="height:120px;border-radius:0;" role="img" aria-label="KITTE 옥상정원 이미지 플레이스홀더">🏙️</div>
+        <div class="sight-photo-wrap">
+          <img class="sight-photo" src="https://images.unsplash.com/photo-1514337224818-9787cf717f2a?w=400&q=70" alt="도쿄역 마루노우치 역사(KITTE 인접) 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-2" role="img" aria-label="KITTE 옥상정원 이미지 폴백" style="display:none">🏙️</div>
+        </div>
         <div class="body">
           <h3>KITTE 옥상정원 (도쿄역 직결)</h3>
           <p>17-18일 TGS 복귀 동선에 편리 — 도쿄역과 직결, 마루노우치 야경 조망대. 무료.</p>
@@ -1369,7 +1384,10 @@
         </div>
       </div>
       <div class="sight-card">
-        <div class="img-ph grad-4" style="height:120px;border-radius:0;" role="img" aria-label="시바공원 도쿄타워 야경 이미지 플레이스홀더">🗼</div>
+        <div class="sight-photo-wrap">
+          <img class="sight-photo" src="https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=400&q=70" alt="도쿄타워 야경 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-4" role="img" aria-label="시바공원 도쿄타워 야경 이미지 폴백" style="display:none">🗼</div>
+        </div>
         <div class="body">
           <h3>시바공원 · 조조지 — 도쿄타워 야경</h3>
           <p>18-19일 저녁 산책 후보 — 시오도메 숙소에서 도보~한 정거장 거리. 무료(공원·경내), 도쿄타워 조명 조망.</p>
@@ -1383,6 +1401,20 @@
     <div class="course-grid">
       <div class="course-card">
         <h4>A. 도쿄 도심 클래식 <span class="course-badge confirmed">✅ 확정</span></h4>
+        <div class="course-photo-strip">
+          <div class="course-photo-cell">
+            <img src="https://images.unsplash.com/photo-1706813253696-10ee6332edd3?w=400&q=70" alt="센소지 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-ph grad-1" role="img" aria-label="센소지 이미지 폴백" style="display:none">⛩️</div>
+          </div>
+          <div class="course-photo-cell">
+            <img src="https://images.unsplash.com/photo-1558452919-3a47422e2fd0?w=400&q=70" alt="우에노공원 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-ph grad-6" role="img" aria-label="우에노공원 이미지 폴백" style="display:none">🌳</div>
+          </div>
+          <div class="course-photo-cell">
+            <img src="https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=400&q=70" alt="시부야 스크램블 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-ph grad-5" role="img" aria-label="시부야 스크램블 이미지 폴백" style="display:none">🚦</div>
+          </div>
+        </div>
         <ol class="course-spots">
           <li>센소지 · 나카미세</li>
           <li>우에노공원 · 아메요코</li>
@@ -1393,6 +1425,10 @@
       </div>
       <div class="course-card not-adopted">
         <h4>B. 요코하마 <span class="course-badge not-adopted-tag">미채택</span></h4>
+        <div class="course-photo-wrap">
+          <img class="course-photo" src="https://images.unsplash.com/photo-1541850034634-55298d176508?w=400&q=70" alt="요코하마 미나토미라이 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-3" role="img" aria-label="요코하마 미나토미라이 이미지 폴백" style="display:none">🌉</div>
+        </div>
         <ol class="course-spots">
           <li>미나토미라이21</li>
           <li>랜드마크타워</li>
@@ -1403,6 +1439,10 @@
       </div>
       <div class="course-card not-adopted">
         <h4>C. 가마쿠라 · 에노시마 <span class="course-badge not-adopted-tag">미채택</span></h4>
+        <div class="course-photo-wrap">
+          <img class="course-photo" src="https://images.unsplash.com/photo-1689295046186-5a42620047aa?w=400&q=70" alt="가마쿠라 대불 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-4" role="img" aria-label="가마쿠라 대불 이미지 폴백" style="display:none">🗿</div>
+        </div>
         <ol class="course-spots">
           <li>고토쿠인 대불</li>
           <li>츠루가오카하치만구</li>
@@ -1898,15 +1938,15 @@
         ]
       },
       'checkout-to-tgs': {
-        title: '회사 숙소(도쿄 도심) → 미츠이 가든 시오도메 (짐 위탁) → TGS (9/18 아침)',
-        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신). 체크아웃 당일 짐 위탁 통합 루트 — 08:00 체크아웃 기준.',
+        title: '회사 숙소(도쿄 도심) → 미츠이 가든 시오도메 (짐 위탁) → TGS (9/18)',
+        note: '회사 숙소: 도쿄 도심 (확정 시 상세 갱신). 체크아웃 당일 짐 위탁 통합 루트 — 11:00 체크아웃 기준(늦잠형 일정, 회사 숙소 체크아웃 마감이 11시보다 이르면 시간 조정 필요).',
         suica: true,
         steps: [
-          '08:00 회사 숙소 체크아웃 (짐 지참) → 신바시역 방면 이동',
-          '08:30 미츠이 가든 호텔 시오도메 이탈리아가이에 짐 사전 위탁 (체크인 전 무료 보관, 프론트 요청)',
+          '11:00 회사 숙소 체크아웃 (짐 지참) → 신바시역 방면 이동',
+          '11:30 미츠이 가든 호텔 시오도메 이탈리아가이에 짐 사전 위탁 (체크인 전 무료 보관, 프론트 요청)',
           '신바시역에서 JR 야마노테선/게이힌토호쿠선 승차 → 도쿄역',
           '도쿄역에서 JR 게이요선 쾌속 환승 → 카이힌마쿠하리역 (환승 도보 10분+ 여유 확보)',
-          '카이힌마쿠하리역에서 마쿠하리 멧세까지 도보 약 5분 — 10:00 TGS 도착 목표',
+          '카이힌마쿠하리역에서 마쿠하리 멧세까지 도보 약 5분 — 12:30 TGS 도착 목표',
           '대안: 도쿄역 대형 코인로커(¥600-800) — 실버위크 전날 만실 위험 있어 비권장, 호텔 위탁 권장'
         ]
       },
@@ -1942,7 +1982,7 @@
           '호텔에서 도보 약 5분 → 도영 오에도선 다이몬역',
           '오에도선 승차 → 신바시역 또는 직통 환승역에서 도영 아사쿠사선으로 환승',
           '아사쿠사선 승차 → 아사쿠사역',
-          '총 소요 약 25-30분 · Suica OK — 08:00 출발 → 08:40 센소지 도착 목표'
+          '총 소요 약 25-30분 · Suica OK — 11:00 출발 → 11:45 아사쿠사 도착 목표'
         ]
       },
       'shibuya-to-shiodome': {
