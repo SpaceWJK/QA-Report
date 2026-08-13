@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TGS 2026 참관기 — SMILEGATE Field Report (초안)</title>
+<meta name="description" content="TGS 2026(9/16~20) 참관 전 사전 준비용 초안 템플릿. 전사 공유용 — 현장 분위기를 함께 느껴보는 문서. 현장 확인 후 채워질 항목은 placeholder로 표시됨.">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee&family=Black+Han+Sans&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{--ink:#0a0a0a;--paper:#fffaf0;--red:#ff3b30;--blue:#1e88e5;--yellow:#ffd60a}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(circle,rgba(0,0,0,.18) 1.2px,transparent 1.2px);
+  background-size:8px 8px;
+  color:var(--ink);
+  font-family:'Pretendard','Comic Neue',sans-serif;
+  min-height:100vh;
+  word-break:keep-all;
+  overflow-wrap:break-word;
+}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+img{max-width:100%;display:block}
+
+.wrap{max-width:1320px;margin:0 auto;padding:48px 28px 120px}
+
+/* ---- draft banner ---- */
+.draft-banner{
+  background:repeating-linear-gradient(135deg,var(--yellow) 0 14px,#fff2b8 14px 28px);
+  border:3px solid var(--ink);
+  padding:12px 18px;
+  font-family:'Bungee','Black Han Sans',cursive;
+  font-size:12px;
+  letter-spacing:.03em;
+  line-height:1.6;
+  margin-bottom:28px;
+  box-shadow:5px 5px 0 var(--ink);
+}
+.draft-banner strong{display:block;font-size:14px;margin-bottom:4px}
+
+/* ---- cover ---- */
+.title-panel{background:var(--yellow);border:4px solid var(--ink);padding:40px;margin-bottom:24px;box-shadow:10px 10px 0 var(--ink);position:relative;transform:rotate(-1deg)}
+.title-panel::before{content:"GO!!";position:absolute;top:-30px;right:30px;font-family:'Bangers','Black Han Sans',cursive;font-size:44px;color:var(--red);-webkit-text-stroke:3px var(--ink);transform:rotate(8deg);text-shadow:4px 4px 0 var(--ink)}
+.eyebrow{font-family:'Bungee','Black Han Sans',cursive;font-size:13px;letter-spacing:.15em;margin-bottom:14px;display:inline-block;background:var(--ink);color:var(--yellow);padding:5px 12px}
+h1.cover-title{font-family:'Bangers','Black Han Sans',cursive;font-size:clamp(44px,9vw,108px);font-weight:400;line-height:1.02;letter-spacing:.02em;-webkit-text-stroke:3px var(--ink);color:var(--paper);text-shadow:6px 6px 0 var(--ink),11px 11px 0 var(--red)}
+.sub{color:var(--ink);font-size:16px;max-width:640px;line-height:1.55;font-weight:700;margin-top:18px;font-family:'Comic Neue','Pretendard',cursive}
+.meta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.meta-item{background:var(--paper);border:2.5px solid var(--ink);padding:8px 14px;font-family:'Pretendard',sans-serif;font-size:13px;font-weight:700}
+.meta-item span.k{font-family:'Bungee','Black Han Sans',cursive;font-size:10px;letter-spacing:.06em;opacity:.65;display:block;margin-bottom:3px}
+
+/* ---- TOC ---- */
+.toc-nav{margin:0 0 8px}
+.toc-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.toc-nav a{
+  display:inline-block;padding:9px 16px;background:var(--paper);border:3px solid var(--ink);
+  color:var(--ink);font-size:12.5px;font-weight:700;text-decoration:none;
+  font-family:'Bungee','Black Han Sans',cursive;letter-spacing:.03em;box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s,background .1s,color .1s;
+}
+.toc-nav a:hover,.toc-nav a:focus-visible{background:var(--ink);color:var(--yellow);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.toc-nav a:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+
+/* ---- chapter head ---- */
+.chapter-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:64px 0 22px;scroll-margin-top:20px}
+.issue-badge{
+  font-family:'Bungee','Black Han Sans',cursive;background:var(--ink);color:var(--yellow);padding:9px 14px;
+  font-size:12.5px;letter-spacing:.06em;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--red);
+  transform:rotate(-2deg);white-space:nowrap;
+}
+.section-h{
+  font-family:'Bangers','Black Han Sans',cursive;font-size:clamp(28px,4vw,44px);letter-spacing:.03em;
+  -webkit-text-stroke:1.2px var(--ink);background:var(--blue);color:var(--paper);
+  padding:8px 20px;display:inline-block;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);
+  transform:rotate(-.6deg);margin:0;
+}
+.chapter-lede{font-family:'Pretendard',sans-serif;font-size:17px;line-height:1.6;font-weight:600;opacity:.85;max-width:760px;margin:-6px 0 20px}
+
+/* ---- panel / body copy ---- */
+.panel{border:3.5px solid var(--ink);background:var(--paper);padding:26px;box-shadow:8px 8px 0 var(--ink);margin-bottom:24px}
+.panel:nth-of-type(odd){transform:rotate(-.3deg)}
+.panel:nth-of-type(even){transform:rotate(.3deg)}
+.body-copy{font-family:'Pretendard',sans-serif;font-size:17px;line-height:1.8;font-weight:400}
+.body-copy + .body-copy{margin-top:12px}
+.body-copy strong{font-weight:700}
+h3.sub-h{font-family:'Bangers','Black Han Sans',cursive;font-size:22px;letter-spacing:.02em;margin:22px 0 10px;color:var(--ink)}
+h3.sub-h:first-child{margin-top:0}
+
+/* ---- pop / onomatopoeia badge (large-text, ≥3:1 AA) ---- */
+.pop-badge{
+  display:inline-block;font-family:'Bangers','Black Han Sans',cursive;font-size:26px;letter-spacing:.03em;
+  color:#fff;background:var(--red);padding:4px 16px;border:3px solid var(--ink);
+  transform:rotate(-4deg);box-shadow:4px 4px 0 var(--ink);margin:0 0 14px;
+}
+
+/* ---- note (placeholder) ---- */
+.note{background:var(--yellow);border:2.5px solid var(--ink);padding:12px 16px;font-family:'Pretendard',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);margin:14px 0;line-height:1.55;transform:rotate(-.4deg)}
+.note::before{content:"✍ "}
+
+/* ---- bubble (pull-quote) ---- */
+.bubble{background:#fff;border:3px solid var(--ink);border-radius:22px;padding:16px 20px;margin:16px 0 24px;position:relative;font-family:'Pretendard',sans-serif;font-size:15px;font-weight:700;line-height:1.6}
+.bubble::after{content:"";position:absolute;bottom:-14px;left:34px;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:14px solid var(--ink)}
+.bubble::before{content:"";position:absolute;bottom:-10px;left:37px;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:11px solid #fff;z-index:1}
+
+/* ---- comic image slot ---- */
+.comic-slot{
+  border:3px dashed var(--ink);
+  background:repeating-linear-gradient(45deg,rgba(0,0,0,.035) 0 10px,transparent 10px 20px);
+  min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;margin:22px 0;padding:22px;text-align:center;
+}
+.comic-slot .slot-emoji{font-size:34px;line-height:1}
+.comic-slot .slot-label{font-family:'Bungee','Black Han Sans',cursive;font-size:12px;letter-spacing:.06em;opacity:.65}
+.comic-slot .slot-cut-id{font-family:'Bangers','Black Han Sans',cursive;font-size:15px;letter-spacing:.05em;opacity:.5}
+.comic-slot details{margin-top:12px;width:100%;max-width:680px;text-align:left}
+.comic-slot summary{
+  cursor:pointer;font-weight:700;font-family:'Bungee','Black Han Sans',cursive;font-size:11px;letter-spacing:.04em;
+  background:var(--paper);border:2px solid var(--ink);padding:7px 14px;display:inline-block;
+}
+.comic-slot summary:hover,.comic-slot summary:focus-visible{background:var(--ink);color:var(--yellow)}
+.prompt-box{background:#fff;border:2px solid var(--ink);padding:14px 16px;margin-top:8px;line-height:1.6;font-family:'Pretendard',sans-serif;font-size:13px}
+.prompt-box .ko{margin-bottom:8px}
+.prompt-box .en{opacity:.75;font-style:italic}
+.prompt-box .fixed-style{display:block;margin-top:8px;font-size:11.5px;background:var(--yellow);padding:6px 8px;border:1.5px solid var(--ink);font-weight:700;font-style:normal}
+
+/* ---- gallery slot (appendix, real photos — no AI prompt) ---- */
+.gallery-slot{
+  border:3px dashed var(--ink);background:#fff;min-height:170px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;font-family:'Bungee','Black Han Sans',cursive;font-size:11.5px;
+  letter-spacing:.04em;opacity:.7;text-align:center;padding:12px;
+}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:760px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:460px){.gallery-grid{grid-template-columns:1fr}}
+
+/* ---- tables (Forum 세션만 사용) ---- */
+.table-wrap{overflow-x:auto;margin:18px 0}
+.rtable{width:100%;min-width:560px;border-collapse:collapse;background:var(--paper);border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.rtable th{background:var(--ink);color:var(--yellow);font-family:'Bungee','Black Han Sans',cursive;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:11px 12px;text-align:left;border:2px solid var(--ink);white-space:nowrap}
+.rtable td{padding:11px 12px;border:2px solid var(--ink);font-family:'Pretendard',sans-serif;font-size:15px;vertical-align:top;line-height:1.6}
+.rtable tr:nth-child(even) td{background:#fff8ea}
+.rtable td.ph{color:#5c4d33;font-style:italic}
+
+/* ---- card grid (게임 / 경험 카드 공용) ---- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;align-items:start}
+.grid-games{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+@media (min-width:1200px){.grid-games{grid-template-columns:repeat(5,1fr)}}
+.card{position:relative;padding:20px;background:var(--paper);border:3.5px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:all .15s}
+.card:nth-child(2n){background:#e8f4ff}
+.card:nth-child(3n){background:#ffe8e8}
+.card:nth-child(5n){background:#fff5d6}
+.card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.card .rank-pop{position:absolute;top:-16px;right:-10px;background:var(--red);color:#fff;font-family:'Bangers','Black Han Sans',cursive;font-size:22px;padding:4px 12px;border:3px solid var(--ink);transform:rotate(-4deg);box-shadow:3px 3px 0 var(--ink);z-index:2}
+.card .nm{font-family:'Bangers','Black Han Sans',cursive;font-size:22px;letter-spacing:.02em;line-height:1.1}
+.card .by{font-family:'Bungee','Black Han Sans',cursive;font-size:10.5px;opacity:.65;margin-top:4px;letter-spacing:.04em;text-transform:uppercase}
+.card .desc{font-family:'Pretendard',sans-serif;font-size:15.5px;line-height:1.65;margin:10px 0;font-weight:500}
+.card label.demo-check{display:flex;align-items:center;gap:8px;font-family:'Pretendard',sans-serif;font-size:12.5px;font-weight:700;margin-top:10px}
+.card label.demo-check input{width:17px;height:17px;accent-color:var(--blue)}
+.card.mine{background:#d6ffd9 !important}
+.card.mine .rank-pop{background:var(--blue)}
+
+/* ---- 경험 카드 전용 필드 라벨 ---- */
+.card .field{font-family:'Pretendard',sans-serif;font-size:13px;margin-top:6px}
+.card .field .k{font-family:'Bungee','Black Han Sans',cursive;font-size:9.5px;letter-spacing:.05em;opacity:.55;display:block;margin-bottom:2px;text-transform:uppercase}
+
+/* ---- 존/스팟 리스트 (관찰 스케치용) ---- */
+.spot-list{display:flex;flex-direction:column;gap:14px;margin:14px 0}
+.spot-list .spot{border-left:4px solid var(--blue);padding-left:14px}
+.spot-list .spot .spot-title{font-family:'Bangers','Black Han Sans',cursive;font-size:19px;margin-bottom:4px}
+
+/* ---- pointer box (Forum → 별도 보고서) ---- */
+.pointer-box{
+  border:3px solid var(--ink);background:var(--ink);color:var(--paper);padding:16px 18px;
+  font-family:'Pretendard',sans-serif;font-weight:700;font-size:13.5px;line-height:1.6;
+  box-shadow:5px 5px 0 var(--red);margin:18px 0;
+}
+.pointer-box a{color:var(--yellow);text-decoration:underline}
+.pointer-box .k{font-family:'Bungee','Black Han Sans',cursive;font-size:11px;letter-spacing:.05em;display:block;margin-bottom:6px;color:var(--yellow)}
+
+/* ---- footer ---- */
+.foot-wrap{text-align:center;margin-top:90px}
+footer.sig{font-family:'Bangers','Black Han Sans',cursive;font-size:28px;letter-spacing:.04em;background:var(--yellow);padding:14px 36px;display:inline-block;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transform:rotate(1deg)}
+.foot-note{font-family:'Pretendard',sans-serif;font-size:12px;opacity:.6;margin-top:16px}
+
+/* ---- responsive ---- */
+@media (max-width:640px){
+  .wrap{padding:32px 16px 80px}
+  .title-panel{padding:24px}
+  .title-panel::before{font-size:32px;top:-22px;right:16px}
+  .chapter-head{flex-direction:column;align-items:flex-start;gap:10px}
+  .panel{padding:18px}
+}
+
+/* ---- print ---- */
+@media print{
+  body{background:var(--paper) !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .toc-nav,.draft-banner{display:none}
+  .comic-slot,.gallery-slot{border-style:dashed}
+  .card:hover,.toc-nav a:hover{transform:none}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <div class="draft-banner">
+    <strong>🛠 초안 템플릿 — 참관 전 사전 준비 버전</strong>
+    TGS 2026 참관은 9/16(수)~9/20(일) 예정. 전사 공유용 참관기 — "현장이 어땠는지 같이 느껴보는" 톤으로 채운다. 노란 박스가 참관 후 채울 자리.
+  </div>
+
+  <!-- ============ 표지 패널 ============ -->
+  <header class="title-panel" id="cover">
+    <span class="eyebrow">▸ SMILEGATE · TGS 2026 FIELD REPORT</span>
+    <h1 class="cover-title">TGS 2026<br>참관기</h1>
+    <p class="sub">The Longest Five Days of Nonstop Play — 30주년 마쿠하리, 9/16(수)~9/20(일)</p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="k">참관자</span>✍ 현장에서 채우기 — 참관자 이름·소속</div>
+      <div class="meta-item"><span class="k">작성일</span>✍ 현장에서 채우기 — 작성 완료일</div>
+      <div class="meta-item"><span class="k">참관일</span>9/1X (비즈니스 데이) · 행사 전체 기간 9/16~9/20 중 하루</div>
+    </div>
+  </header>
+
+  <figure class="comic-slot" id="cut-01">
+    <span class="slot-emoji" aria-hidden="true">🎨</span>
+    <span class="slot-label">컷 예정 — 표지 삽화</span>
+    <span class="slot-cut-id">CUT #01</span>
+    <figcaption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">표지 만화 컷 이미지 슬롯 — 아직 생성되지 않음</figcaption>
+    <details>
+      <summary>이미지 생성 프롬프트 보기</summary>
+      <div class="prompt-box">
+        <p class="ko">참관자가 마쿠하리 멧세 정문 앞에서 캐리어를 끌고 서있고, 하늘엔 대형 "TGS 2026" 애드벌룬이 떠 있으며, 뒤로 긴 줄이 지평선까지 이어지는 장면.</p>
+        <p class="en" lang="en">Attendee standing before Makuhari Messe's main gate pulling a suitcase, a giant "TGS 2026" balloon floating in the sky, an endless queue stretching to the horizon behind them.</p>
+        <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+      </div>
+    </details>
+    <!-- 이미지 생성 후 <img src="cuts/cut-01.png" alt="표지 삽화 — 마쿠하리 멧세 정문 앞 참관자"> 로 교체 -->
+  </figure>
+
+  <!-- ============ TOC ============ -->
+  <nav class="toc-nav" aria-label="챕터 목차">
+    <ul>
+      <li><a href="#exec">#00 TGS란</a></li>
+      <li><a href="#ch01">#01 비즈니스 데이</a></li>
+      <li><a href="#ch02">#02 전시장 한 바퀴</a></li>
+      <li><a href="#ch03">#03 오픈런 톱10</a></li>
+      <li><a href="#ch04">#04 줄 서서 해봤다</a></li>
+      <li><a href="#ch05">#05 또 다른 얼굴</a></li>
+      <li><a href="#ch06">#06 Forum</a></li>
+      <li><a href="#ch07">#07 마무리</a></li>
+      <li><a href="#appendix">부록</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============ #00 TGS, 어떤 행사인가 ============ -->
+  <section id="exec">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #00</span>
+      <h2 class="section-h">TGS, 어떤 행사인가</h2>
+    </div>
+    <p class="chapter-lede">도쿄게임쇼를 한 번도 안 가본 사람도 이 챕터만 읽으면 감이 잡히도록.</p>
+
+    <div class="panel">
+      <h3 class="sub-h">30주년, 역대 최장 5일</h3>
+      <p class="body-copy">도쿄게임쇼(TGS)는 올해로 30주년을 맞았다. 무대는 지바현 마쿠하리 멧세, 올해 공식 주제는 <strong>"The Longest Five Days of Nonstop Play"</strong>(역대 가장 긴 5일간의 게임 축제) — 이름 그대로 역대 최장인 5일간 열린다. 넥슨·코나미·캡콤·세가·반다이남코·스퀘어에닉스 같은 대형 퍼블리셔부터 수많은 인디 개발사, 글로벌 게이밍 브랜드까지 한 자리에 모인다.</p>
+      <p class="body-copy">운영 방식은 <strong>비즈니스 데이 + 일반 공개일</strong>로 나뉜다. 앞쪽 며칠은 업계 관계자만 들어갈 수 있는 비즈니스 데이, 그 뒤로 일반 관람객에게 열리는 공개일이 이어지는 구조다. 올해는 가족 체험존이 확대되고 다양한 특별 이벤트가 준비돼 있어, 게임 팬뿐 아니라 가족 단위 방문객까지 아우르는 축제로 몸집을 키웠다.</p>
+    </div>
+
+    <h3 class="sub-h">올해 현장 첫인상 3줄</h3>
+    <div class="note">현장에서 채우기 — 도착해서 처음 본 장면, 첫 냄새·소리·인파 규모 같은 감각적인 것부터</div>
+    <div class="note">현장에서 채우기 — 2번째 줄</div>
+    <div class="note">현장에서 채우기 — 3번째 줄</div>
+
+    <figure class="comic-slot" id="cut-02">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — TGS, 어떤 행사인가</span>
+      <span class="slot-cut-id">CUT #02</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">거대한 마쿠하리 멧세 전시홀 입구, "30주년" 기념 현수막 아래로 인파가 밀려들어오는 파노라마 뷰. 참관자가 팜플렛을 손에 들고 두리번거리는 모습.</p>
+          <p class="en" lang="en">Panoramic view of the huge Makuhari Messe exhibition hall entrance, crowds pouring in under a "30th Anniversary" banner. Attendee looking around wide-eyed, pamphlet in hand.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-02.png" alt="TGS 전시홀 입구 삽화 — 인파와 현수막"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #01 비즈니스 데이는 뭐가 다른가 ============ -->
+  <section id="ch01">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #01</span>
+      <h2 class="section-h">비즈니스 데이는 뭐가 다른가</h2>
+    </div>
+    <p class="chapter-lede">이 참관기만 볼 수 있는 장면 — 일반 공개일에는 못 보는 비즈니스 데이의 풍경.</p>
+
+    <div class="panel">
+      <h3 class="sub-h">일반 공개일과 뭐가 다를까</h3>
+      <p class="body-copy">비즈니스 데이는 업계 관계자만 입장하는 며칠이다. 일반 공개일의 그 유명한 긴 줄과 인산인해 대신, 정장 차림 관계자들이 오가고 부스마다 미팅 테이블이 놓인 조금 다른 풍경이 펼쳐진다. 시연 대기도 상대적으로 한산하다고 알려져 있고, 여기저기서 명함을 주고받는 상담 장면도 낯설지 않다. 일반 관람객은 볼 수 없는 이 며칠의 공기를 그대로 담아본다.</p>
+      <p class="body-copy">올해 눈에 띄는 건 2026년 신설된 두 존이다. <strong>AI Technology Pavilion</strong>은 AI 개발툴, 콘텐츠 생성 AI, 캐릭터 AI, 메타 AI 관련 부스가 모인 구역이고, <strong>Business Solution Area</strong>는 개발툴·미들웨어·보안·로컬라이제이션 같은 B2B 부스들이 모인 구역이다. 둘 다 비즈니스 데이 전용이라 일반 공개일엔 볼 수 없다 — 업무 미팅이 아니라 "이런 부스도 있구나" 하는 구경거리로 가볍게 둘러본다.</p>
+    </div>
+
+    <h3 class="sub-h">관찰 기록</h3>
+    <div class="note">현장에서 채우기 — 정장 차림 비율, 시연 줄 길이, 미팅 테이블 풍경 등 일반 공개일과 다르다고 느낀 점</div>
+    <div class="note">현장에서 채우기 — AI Technology Pavilion에서 눈에 띈 부스나 장면 (신기했던 것 위주)</div>
+    <div class="note">현장에서 채우기 — Business Solution Area에서 눈에 띈 부스나 장면</div>
+
+    <figure class="comic-slot" id="cut-03">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 비즈니스 데이</span>
+      <span class="slot-cut-id">CUT #03</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">정장 차림 참관자들 사이, "AI Technology Pavilion" 표지판 앞에서 넥타이를 맨 참관자가 명함을 손에 들고 신기한 듯 두리번거리는 모습. 통로는 비교적 한산하다.</p>
+          <p class="en" lang="en">Among suit-clad attendees, a necktied visitor standing before the "AI Technology Pavilion" signboard, business card in hand, looking around in wonder. The aisle is relatively quiet.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-03.png" alt="비즈니스 데이 삽화 — AI Pavilion 표지판 앞"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #02 전시장 한 바퀴 ============ -->
+  <section id="ch02">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #02</span>
+      <h2 class="section-h">전시장 한 바퀴</h2>
+    </div>
+    <p class="chapter-lede">존마다 완전히 다른 얼굴 — 대형 부스부터 인디존, 배려 전시까지 발 닿는 대로.</p>
+    <span class="pop-badge">WOW!</span>
+
+    <div class="spot-list">
+      <div class="spot">
+        <div class="spot-title">대형 부스 — 스케일의 압도</div>
+        <p class="body-copy">넥슨·코나미·캡콤·세가·반다이남코·스퀘어에닉스 같은 대형 퍼블리셔 부스는 매년 무대 연출 자체가 볼거리다. 초대형 스크린, 실물 크기 조형물, 조명 연출까지 — 게임을 안 하는 사람도 그냥 구경만으로 압도되는 구역.</p>
+        <div class="note">현장에서 채우기 — 가장 스케일이 컸던 부스, 어떤 연출이 인상적이었는지</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">SELECTED INDIE 80 — 작지만 단단한</div>
+        <p class="body-copy">대형 부스와 대비되는 아기자기한 인디 게임존. 개발자가 직접 부스를 지키며 자기 게임을 설명하는 경우가 많아, 큰 회사 부스와는 다른 밀도의 대화가 오간다.</p>
+        <div class="note">현장에서 채우기 — 눈에 띄었던 인디 게임, 개발자와 나눈 대화 한 토막</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">All Accessibility Area — 다양한 게이머를 위한 배려</div>
+        <p class="body-copy">색약, 자막, 조작 대체 등 더 많은 사람이 게임을 즐길 수 있도록 하는 배려가 한자리에 모인 존. 평소엔 잘 안 보이던 디테일들이 이렇게 모아놓으니 새삼 눈에 들어온다.</p>
+        <div class="note">현장에서 채우기 — 인상적이었던 배려 사례나 장치</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">패밀리 게임파크 — 온 가족이 함께</div>
+        <p class="body-copy">올해 확대된 가족 체험존. 아이와 부모가 나란히 앉아 게임을 즐기는 풍경은 대형 부스의 열기와는 또 다른 온기가 있다.</p>
+        <div class="note">현장에서 채우기 — 가족 단위 방문객 풍경, 기억에 남는 장면</div>
+      </div>
+    </div>
+
+    <figure class="comic-slot" id="cut-04">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 전시장 한 바퀴</span>
+      <span class="slot-cut-id">CUT #04</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">대형 부스의 초대형 스크린과 조형물 아래 왜소하게 서있는 참관자, 바로 옆으로 아기자기한 인디존 부스들이 대비를 이루는 구도.</p>
+          <p class="en" lang="en">Attendee standing tiny beneath a massive booth's giant screen and sculpture, right next to a contrastingly cozy row of indie-zone booths.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-04.png" alt="전시장 한 바퀴 삽화 — 대형 부스와 인디존 대비"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #03 오픈런 신작 톱10 ============ -->
+  <section id="ch03">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #03</span>
+      <h2 class="section-h">오픈런 신작 톱10</h2>
+    </div>
+    <p class="chapter-lede">30주년 마쿠하리, 오픈런 예상 게임 톱10 — 사전 정보 기반으로 지금 채워둔 챕터. 미래시(스마일게이트)는 강조 표시.</p>
+    <span class="pop-badge">POW!</span>
+
+    <div class="grid grid-games">
+      <div class="card mine">
+        <span class="rank-pop">#1</span>
+        <div class="nm">페르소나 6</div>
+        <div class="by">세가 · 아틀러스</div>
+        <div class="desc">시리즈 넘버링 신작, 현대 일본 배경 오컬트 스토리. 국내 서브컬처 팬층이 가장 두꺼운 라인업 중 하나. 부스 전시 여부는 미공지.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#2</span>
+        <div class="nm">무한대 ANANTA</div>
+        <div class="by">넷이즈 · 네이키드 레인</div>
+        <div class="desc">그래플링·웹스윙 이동이 특징인 오픈월드 어반 판타지 RPG. 2026년 중 출시 예고 — TGS가 출시 직전 마지막 대형 시연이 될 가능성.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card mine">
+        <span class="rank-pop">#3</span>
+        <div class="nm">미래시: 보이지 않는 미래</div>
+        <div class="by">스마일게이트</div>
+        <div class="desc">2년 연속 TGS 시연. 연내 PC·모바일 출시 예정인 수집형 RPG. 지난해 대비 변화 확인이 핵심 관전 포인트.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#4</span>
+        <div class="nm">샹그릴라 프론티어: 일곱 최강종</div>
+        <div class="by">넷마블</div>
+        <div class="desc">일본 인기 라이트노벨·애니메이션 원작 오픈월드 신작. 한국 게임사가 일본 IP를 일본 시장에 되파는 방식의 시금석.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#5</span>
+        <div class="nm">프로젝트 RX</div>
+        <div class="by">넥슨 · RX스튜디오</div>
+        <div class="desc">블루 아카이브 핵심 개발진(PD·아트디렉터)이 이끄는 서브컬처 신작. 북미 공개 이후 아시아권 첫 대형 노출.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#6</span>
+        <div class="nm">아스트라에 오라티오</div>
+        <div class="by">엔씨 × 디나미스 원</div>
+        <div class="desc">1989년 도쿄 배경 신전기 마법 서브컬처 RPG. 8월 테스트 참가자 모집 직후 첫 대형 오프라인 노출.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#7</span>
+        <div class="nm">드래곤볼 제노버스 3</div>
+        <div class="by">반다이남코 [출전사만 확정]</div>
+        <div class="desc">2027년 출시 예정, 새로운 미래 세계관 'AGE 1000' 공개. 국내 선체험 이후 도쿄에서 재확인 가능한 몇 안 되는 타이틀.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#8</span>
+        <div class="nm">알케론</div>
+        <div class="by">드림에이지 [출품 예고]</div>
+        <div class="desc">팀 기반 PvP 신작. 글로벌 비공개 베타 피드백을 반영한 빌드를 처음 선보이는 무대.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#9</span>
+        <div class="nm">나 혼자만 레벨업: KARMA</div>
+        <div class="by">넷마블 [출품 미확인]</div>
+        <div class="desc">넷마블 하반기 출시 예고 신작 중 하나. 샹그릴라 프론티어와 동시 출품 여부가 변수.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+      <div class="card">
+        <span class="rank-pop">#10</span>
+        <div class="nm">더스크블러드</div>
+        <div class="by">프롬소프트웨어 [출전 미확인]</div>
+        <div class="desc">닌텐도 스위치 2 독점 액션 RPG. 8월 비공개 네트워크 테스트 직후라 노출 형태가 이번 목록에서 가장 불확실.</div>
+        <label class="demo-check"><input type="checkbox"> 직접 시연함</label>
+      </div>
+    </div>
+
+    <figure class="comic-slot" id="cut-05">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 오픈런 신작 톱10</span>
+      <span class="slot-cut-id">CUT #05</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">여러 게임 캐릭터들이 분할된 만화 컷 프레임 안에 콜라주처럼 등장하고, 참관자가 팜플렛 여러 장을 손에 쥐고 뛰어다니는 모습.</p>
+          <p class="en" lang="en">Multiple game characters collaged inside split comic panels, attendee dashing around clutching a handful of pamphlets.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-05.png" alt="오픈런 신작 톱10 삽화 — 여러 게임 캐릭터 콜라주"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #04 직접 줄 서서 해봤다 ============ -->
+  <section id="ch04">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #04</span>
+      <h2 class="section-h">직접 줄 서서 해봤다</h2>
+    </div>
+    <p class="chapter-lede">평가가 아니라 후기다 — 대기줄에 서서 느낀 그대로.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="nm">시연 후기 #1</div>
+        <div class="by">게임명 TBD</div>
+        <div class="field"><span class="k">대기시간</span><div class="note">현장에서 채우기 — 몇 분 기다렸는지</div></div>
+        <div class="field"><span class="k">부스 연출</span><div class="note">현장에서 채우기 — 부스 인테리어·조명·소리 등 첫인상</div></div>
+        <div class="field"><span class="k">데모 첫인상</span><div class="note">현장에서 채우기 — 시작 화면부터 조작감까지</div></div>
+        <div class="field"><span class="k">한줄 소감</span><div class="note">현장에서 채우기 — 한 문장으로</div></div>
+      </div>
+      <div class="card">
+        <div class="nm">시연 후기 #2</div>
+        <div class="by">게임명 TBD</div>
+        <div class="field"><span class="k">대기시간</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">부스 연출</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">데모 첫인상</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">한줄 소감</span><div class="note">현장에서 채우기</div></div>
+      </div>
+      <div class="card">
+        <div class="nm">시연 후기 #3</div>
+        <div class="by">게임명 TBD</div>
+        <div class="field"><span class="k">대기시간</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">부스 연출</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">데모 첫인상</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">한줄 소감</span><div class="note">현장에서 채우기</div></div>
+      </div>
+      <div class="card">
+        <div class="nm">시연 후기 #4</div>
+        <div class="by">게임명 TBD</div>
+        <div class="field"><span class="k">대기시간</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">부스 연출</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">데모 첫인상</span><div class="note">현장에서 채우기</div></div>
+        <div class="field"><span class="k">한줄 소감</span><div class="note">현장에서 채우기</div></div>
+      </div>
+    </div>
+    <div class="note">현장에서 채우기 — 카드가 부족하면 이 형식 그대로 복사해서 추가(최대 6개 권장)</div>
+
+    <figure class="comic-slot" id="cut-06">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 직접 줄 서서 해봤다</span>
+      <span class="slot-cut-id">CUT #06</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">긴 대기줄 한가운데서 설레는 표정으로 발을 동동 구르는 참관자, 줄이 지평선까지 이어져 있다.</p>
+          <p class="en" lang="en">Attendee standing in the middle of a long queue, fidgeting excitedly, the line stretching all the way to the horizon.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-06.png" alt="직접 줄 서서 해봤다 삽화 — 긴 대기줄"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #05 게임쇼의 또 다른 얼굴 ============ -->
+  <section id="ch05">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #05</span>
+      <h2 class="section-h">게임쇼의 또 다른 얼굴</h2>
+    </div>
+    <p class="chapter-lede">시연 부스 말고도 TGS를 채우는 것들 — 코스프레, 굿즈, e스포츠, 이벤트.</p>
+    <span class="pop-badge">ZOOM!</span>
+
+    <div class="spot-list">
+      <div class="spot">
+        <div class="spot-title">코스프레 존 — 일본 최대 규모</div>
+        <p class="body-copy">일본 최대 규모의 코스프레 존이 매년 운영된다. 게임 캐릭터를 그대로 재현한 화려한 코스튬과 카메라 플래시가 끊이지 않는 구역.</p>
+        <div class="note">현장에서 채우기 — 가장 눈에 띈 코스프레, 인파 규모</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">굿즈 &amp; 한정 상품</div>
+        <p class="body-copy">행사 한정 굿즈와 캐릭터 상품을 구매할 수 있는 존. 오픈런과 맞먹는 줄이 서기도 한다.</p>
+        <div class="note">현장에서 채우기 — 사고 싶었던(혹은 산) 굿즈, 가격대</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">e스포츠 경기</div>
+        <p class="body-copy">프로 선수들의 경기와 다양한 이벤트 매치가 진행되는 무대. 관람석 열기가 시연 부스와는 또 다르다.</p>
+        <div class="note">현장에서 채우기 — 관람한 경기, 관중 반응</div>
+      </div>
+      <div class="spot">
+        <div class="spot-title">특별 이벤트</div>
+        <p class="body-copy">30주년을 맞아 다양한 특별 이벤트가 예고돼 있다. 어떤 형태로 펼쳐질지는 현장에서 직접 확인.</p>
+        <div class="note">현장에서 채우기 — 참여했거나 목격한 이벤트</div>
+      </div>
+    </div>
+
+    <figure class="comic-slot" id="cut-07">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 게임쇼의 또 다른 얼굴</span>
+      <span class="slot-cut-id">CUT #07</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">코스프레 인파 속에서 눈이 휘둥그레진 참관자, 화려한 코스튬 캐릭터들 사이로 카메라 플래시가 여기저기서 터지는 장면.</p>
+          <p class="en" lang="en">Attendee wide-eyed amid a crowd of cosplayers, camera flashes going off all around among the elaborate costumed characters.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-07.png" alt="게임쇼의 또 다른 얼굴 삽화 — 코스프레 인파"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #06 Forum 세션 (컴팩트 유지) ============ -->
+  <section id="ch06">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #06</span>
+      <h2 class="section-h">Forum 세션</h2>
+    </div>
+    <p class="chapter-lede">참석 확정 세션 2건만 짧게 기록. 상세 내용은 별도 포럼 보고서에서 다룬다.</p>
+
+    <div class="panel">
+      <h3 class="sub-h">참석 세션</h3>
+      <div class="table-wrap">
+        <table class="rtable">
+          <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">TGS Forum 참석 세션 목록</caption>
+          <thead>
+            <tr><th scope="col">일시</th><th scope="col">세션명</th><th scope="col">한줄평</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>9/18(금) 13:30</td><td>Creative Generative AI: 개인 노하우의 조직 자산화</td><td class="ph">✍ 현장에서 채우기 — 한 줄 소감</td></tr>
+            <tr><td>9/18(금) 14:00</td><td>AI 번역엔진 (LQA 연관)</td><td class="ph">✍ 현장에서 채우기 — 한 줄 소감</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">현장에서 채우기 — 전체 포럼 타임테이블은 9월 초 공개 예정. 공개되면 추가 참석 세션 재확인</div>
+    </div>
+
+    <div class="pointer-box">
+      <span class="k">📎 상세 내용 별도 문서</span>
+      세션별 상세 내용은 이 참관기에 포함하지 않는다 — <strong>별도 포럼 보고서</strong>에서 다룬다. 작성 완료 후 링크를 아래에 연결할 것.
+      <div class="note">현장에서 채우기 — 별도 포럼 보고서 경로/링크</div>
+    </div>
+
+    <figure class="comic-slot" id="cut-08">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — Forum 세션</span>
+      <span class="slot-cut-id">CUT #08</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">포럼 강연장 좌석에 앉아 노트북에 빠르게 메모하는 참관자. 무대 위 스크린에 "Creative Generative AI" 제목이 떠 있다.</p>
+          <p class="en" lang="en">Attendee seated in the forum hall, furiously taking notes on a laptop, the stage screen displaying the title "Creative Generative AI".</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-08.png" alt="Forum 세션 삽화 — 노트북 메모 장면"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ #07 마무리 ============ -->
+  <section id="ch07">
+    <div class="chapter-head">
+      <span class="issue-badge">ISSUE #07</span>
+      <h2 class="section-h">마무리</h2>
+    </div>
+    <p class="chapter-lede">하루 동안 둘러본 총평.</p>
+
+    <div class="bubble">
+      <strong>총평 한마디</strong>
+      <div class="note">현장에서 채우기 — 참관 하루를 한 문장으로 요약한다면</div>
+      <div class="note">현장에서 채우기 — 다음에 또 온다면 뭘 다르게 할지</div>
+    </div>
+
+    <figure class="comic-slot" id="cut-09">
+      <span class="slot-emoji" aria-hidden="true">🎨</span>
+      <span class="slot-label">컷 예정 — 마무리</span>
+      <span class="slot-cut-id">CUT #09</span>
+      <details>
+        <summary>이미지 생성 프롬프트 보기</summary>
+        <div class="prompt-box">
+          <p class="ko">비즈니스 데이 하루 참관을 마치고 마쿠하리 멧세 정문을 나서는 참관자, 손엔 자료 봉투를 든 채 홀가분한 표정으로 노을 진 하늘을 바라보는 모습.</p>
+          <p class="en" lang="en">Attendee stepping out of Makuhari Messe's main gate at the end of a one-day business-day visit, holding a folder of materials, looking up at the sunset with a satisfied expression.</p>
+          <span class="fixed-style">스타일 고정 문구: 붉은매 만화 그림체, 한국 90년대 극화체 만화, 굵은 잉크 선, 스크린톤 셰이딩, 과장된 표정, 흑백+단색 포인트(red #ff3b30) / <span lang="en">Fixed style: Red Hawk manhwa art style, Korean 90s geukhwa (dramatic manhwa) style, bold ink linework, screentone shading, exaggerated expressions, black-and-white with a single accent color (red #ff3b30)</span></span>
+        </div>
+      </details>
+      <!-- 이미지 생성 후 <img src="cuts/cut-09.png" alt="마무리 삽화 — 하루 참관을 마치고 나서는 정문 앞"> 로 교체 -->
+    </figure>
+  </section>
+
+  <!-- ============ 부록 ============ -->
+  <section id="appendix">
+    <div class="chapter-head">
+      <span class="issue-badge">APPENDIX</span>
+      <h2 class="section-h">부록</h2>
+    </div>
+    <p class="chapter-lede">현장 사진 갤러리.</p>
+
+    <div class="gallery-grid">
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 1 — 아직 업로드되지 않음">📷 사진 예정 #1</div>
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 2 — 아직 업로드되지 않음">📷 사진 예정 #2</div>
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 3 — 아직 업로드되지 않음">📷 사진 예정 #3</div>
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 4 — 아직 업로드되지 않음">📷 사진 예정 #4</div>
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 5 — 아직 업로드되지 않음">📷 사진 예정 #5</div>
+      <div class="gallery-slot" role="img" aria-label="사진 슬롯 6 — 아직 업로드되지 않음">📷 사진 예정 #6</div>
+    </div>
+    <!-- 사진 확보 후 각 .gallery-slot을 <figure><img src="photos/xxx.jpg" alt="..."><figcaption>...</figcaption></figure> 로 교체 -->
+    <div class="note">현장에서 채우기 — 가장 마음에 드는 사진부터 채워 넣기</div>
+  </section>
+
+  <div class="foot-wrap">
+    <footer class="sig">SMILEGATE · TGS 2026 ★</footer>
+    <p class="foot-note">본 문서는 참관 전 사전 준비용 초안 템플릿이다 (작성일: 2026-08-11). 노란 placeholder 박스는 참관 후 전부 실측 내용으로 교체 대상.</p>
+  </div>
+
+</main>
+</body>
+</html>
