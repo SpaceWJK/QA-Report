@@ -684,8 +684,8 @@
             <li class="check-item"><label><input type="checkbox" data-id="doc-tgs-recorder"><span>보이스 레코더 앱 준비</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-invoice"><span>체크아웃 시 인보이스 수령 (도시세 정산용)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-checkout-move"><span>18일 회사 숙소 체크아웃(11:00) — 짐 위탁 동선 숙지 (11:30 미츠이 가든 시오도메 사전 위탁)</span></label></li>
-            <li class="check-item"><label><input type="checkbox" data-id="etc-shibuyasky"><span>시부야 스카이 사전 예약 (일몰 슬롯 조기 매진)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-teamlab"><span>팀랩 보더리스 예약 (18일 저녁 옵션 선택 시)</span></label></li>
+            <li class="check-item"><label><input type="checkbox" data-id="book-sushiden"><span>긴자 스시덴 넷예약 (19일 저녁)</span></label></li>
             <li class="check-item"><label><input type="checkbox" data-id="etc-gimpo-parking-done"><span>주차 예약 완료 (국내선 제2주차장, 예약번호 1834HH0004) — 당일 2층 예약존 입구로 진입</span></label></li>
           </ul>
         </div>
@@ -846,8 +846,7 @@
           <tr><td class="time">14:30-15:30</td><td>Business Solution Area — QA 벤더 AI 전환 실태</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ②</td></tr>
           <tr><td class="time">15:30-16:30</td><td>자사·경쟁사 부스 데모 품질 관찰(넥슨 마비노기모바일 등) + All Accessibility Area</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Makuhari+Messe" target="_blank" rel="noopener">마쿠하리 멧세</a></td><td>-</td><td class="price">보고서 ③</td></tr>
           <tr><td class="time">16:30~</td><td>마쿠하리 휴식 (선택) — 미하마엔 일본정원 산책(입장 ¥100, ~17:00 마감 임박 주의, 월 휴무라 참관일 무관) or 카페 크루아상 WBG점·호텔그린타워 라운지 트로아피유(둘 다 도보 4분)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E8%A6%8B%E6%B5%9C%E5%9C%92" target="_blank" rel="noopener">미하마엔</a></td><td>-</td><td class="price">🌴 휴식</td></tr>
-          <tr><td class="time">저녁 A안</td><td>ZOZO 마린 스타디움 야구 관전 — 9/17(목) 18:00 지바 롯데 vs 라쿠텐 홈경기 (NPB 공식 확정, 멧세 도보권 ~15분) → 경기 후 게이요선으로 도쿄 복귀</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=ZOZO+Marine+Stadium" target="_blank" rel="noopener">ZOZO 마린 스타디움</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-tokyo">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">저녁 B안</td><td>도쿄 시내 복귀 · 저녁: 만텐즈시 마루노우치 (추천 — 도쿄역 5분. 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">만텐즈시 마루노우치</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-tokyo">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">17:00~</td><td>도쿄 시내 복귀 · 저녁: 만텐즈시 마루노우치 (추천 — 도쿄역 5분. 변경 가능)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E3%81%BE%E3%82%93%E3%81%A6%E3%82%93%E9%AE%A8%20%E4%B8%B8%E3%81%AE%E5%86%85" target="_blank" rel="noopener">만텐즈시 마루노우치</a></td><td><button type="button" class="route-detail-btn" data-route="kaihin-to-tokyo">상세</button></td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -877,23 +876,27 @@
       </table>
     </div>
 
-    <h3 style="color:var(--color-vacation)">Day 4 · 9/19 (토) — 🌴 휴식 (코스 A 확정)</h3>
-    <p class="section-sub" style="margin:-.5rem 0 1rem">※ TGS 퍼블릭 데이 첫날 + 실버위크(9/19~23) 연휴 첫날과 겹쳐 마쿠하리 방면·광역 이동 모두 대혼잡 예상 — <strong>코스 A(도쿄 도심 클래식) 확정</strong>. B/C안은 관광 섹션에 참고용으로 유지.</p>
+    <h3 style="color:var(--color-vacation)">Day 4 · 9/19 (토) — 🌴 휴식 (가마쿠라 고즈넉 코스)</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">※ TGS 퍼블릭 데이 첫날 + 실버위크 첫날 — 도심 관광지(아사쿠사·시부야) 대혼잡 예상되어 <strong>근교 가마쿠라(기타카마쿠라 진입)로 확정</strong>. 사찰 도보 루트는 에노덴·코마치도리·하세 인파 병목을 구조적으로 우회. 도심 코스는 관광 섹션에 참고용 유지. ☔ 우천 대안: 야네센(야나카·네즈·센다기, 신바시→닛포리 야마노테선 20분) 골목·카페 산책.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th class="time">시간</th><th>내용</th><th>장소</th><th>교통</th><th class="price">가격</th></tr></thead>
         <tbody>
-          <tr><td class="time">11:00</td><td>숙소 출발</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shiodome-to-asakusa">상세</button></td><td class="price">-</td></tr>
-          <tr><td class="time">11:45</td><td>아사쿠사 도착</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">아사쿠사</a></td><td>-</td><td class="price">-</td></tr>
-          <tr><td class="time">11:50</td><td>다이코쿠야 텐푸라 본점 점심 (12시 전 입장 시도 — ⚠️ 실버위크 토요일, 대기 감수) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 점심</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%BB%92%E5%AE%B6%E5%A4%A9%E9%BA%A9%E7%BE%85%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">다이코쿠야 텐푸라 본점</a></td><td>-</td><td class="price">¥2,000대</td></tr>
-          <tr><td class="time">13:00</td><td>센소지 · 나카미세 (⚠️ 낮 시간 인파 정면 — 실버위크 첫날 혼잡 감수)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Temple" target="_blank" rel="noopener">센소지</a></td><td>-</td><td class="price">무료</td></tr>
-          <tr><td class="time">14:30</td><td>우에노공원 · 아메요코 (긴자선 아사쿠사→우에노)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Ueno+Park+Ameyoko" target="_blank" rel="noopener">우에노공원·아메요코</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">16:30</td><td>시부야 이동(야마노테) — 스크램블 교차로 · 쇼핑</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Scramble+Crossing" target="_blank" rel="noopener">시부야 스크램블</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">17:30</td><td>스미비야키 유지 저녁 (사전 네트예약 필요 — 당일 15시 이후 전화 불가) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 저녁</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">스미비야키 유지</a></td><td>-</td><td class="price">¥6,000-7,999</td></tr>
-          <tr><td class="time">19:30</td><td>시부야 스카이 야경 (사전 예약 슬롯 필수 — 일몰 슬롯 조기 매진)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shibuya+Sky" target="_blank" rel="noopener">시부야 스카이</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
-          <tr><td class="time">21:30</td><td>숙소 복귀 (야마노테→신바시)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td><button type="button" class="route-detail-btn" data-route="shibuya-to-shiodome">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">11:00</td><td>숙소 출발 → 신바시역 (역내 에키벤·오니기리 조달 — 차내 요기, 첫 끼가 15시대라 필수)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Shimbashi+Station" target="_blank" rel="noopener">신바시역</a></td><td><button type="button" class="route-detail-btn" data-route="shimbashi-to-kitakamakura">상세</button></td><td class="price">-</td></tr>
+          <tr><td class="time">11:11</td><td>JR 요코스카선 직통 승차 (49분, IC ¥902) — 놓치면 11시대 환승 1회 편(~51분)</td><td class="location">-</td><td>-</td><td class="price">¥902</td></tr>
+          <tr><td class="time">12:00</td><td>기타카마쿠라역 도착 → 엔가쿠지 — 삼문·삼나무 참배로 (역 도보 1분, 입장 ¥500, ~16:30)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Engakuji" target="_blank" rel="noopener">엔가쿠지</a></td><td>-</td><td class="price">¥500</td></tr>
+          <tr><td class="time">13:05</td><td>도보 15분 → 겐초지 — 일본 最古 선종 사찰 (입장 ¥500 현금만, ~16:30)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Kenchoji" target="_blank" rel="noopener">겐초지</a></td><td>-</td><td class="price">¥500</td></tr>
+          <tr><td class="time">14:10</td><td>도보 25분(1.3km) → 쓰루가오카 하치만구 참배 (본전 무료, ~20:00)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Tsurugaoka+Hachimangu" target="_blank" rel="noopener">쓰루가오카 하치만구</a></td><td>-</td><td class="price">무료</td></tr>
+          <tr><td class="time">15:15</td><td>가마쿠라역 방면 도보 → 해산물덮밥 고테츠(五鉃) 늦점심 — 시라스동 하프&amp;하프 ¥1,880 · 무휴 · ~17:00(LO16:30) · "혼밥하기 좋음" 태그 실측</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Kamakura+Gotetsu" target="_blank" rel="noopener">고테츠</a></td><td>-</td><td class="price">¥2,000대</td></tr>
+          <tr><td class="time">16:10</td><td>코마치도리 이면 골목·카페 산책 (메인 거리는 인파 — 이면 골목만) or 역 앞 여유</td><td class="location">-</td><td>-</td><td class="price">-</td></tr>
+          <tr><td class="time">17:00경</td><td>가마쿠라역 → 요코스카선 → 신바시 (~55분, ¥902)</td><td class="location">-</td><td><button type="button" class="route-detail-btn" data-route="kamakura-to-shimbashi">상세</button></td><td class="price">¥902</td></tr>
+          <tr><td class="time">19:00</td><td>저녁: 긴자 스시덴 오마카세 디너 (¥8,000-9,999 · 무휴 · 넷예약 권장) <span class="course-badge recommend" style="margin-left:.4rem">⭐ 일정 추천 · 19일 저녁</span></td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=Sushiden+Ginza" target="_blank" rel="noopener">긴자 스시덴</a></td><td>-</td><td class="price"><span class="pill pill-personal">💳 개인</span></td></tr>
+          <tr><td class="time">21:00</td><td>숙소 복귀 (긴자→시오도메 도보권)</td><td class="location"><a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%89%E4%BA%95%E3%82%AC%E3%83%BC%E3%83%87%E3%83%B3%E3%83%9B%E3%83%86%E3%83%AB%E6%B1%90%E7%95%99%E3%82%A4%E3%82%BF%E3%83%AA%E3%82%A2%E8%A1%97" target="_blank" rel="noopener">미츠이 가든 호텔 시오도메</a></td><td>-</td><td class="price">-</td></tr>
         </tbody>
       </table>
+    </div>
+    <div class="info-box">
+      <p style="margin:0">🎋 옵션 — 호코쿠지 대나무숲+말차(拝観 ¥400+말차 ¥600): 접수 16:00·말차 15:30 마감이라 본 코스와 시간 경합. 넣으려면 겐초지 30분 단축 후 하치만구(14:15)→가마쿠라역 동쪽출구 버스 4번 승강장(12분, 조묘지 하차 도보 3분)으로 15:15 전 도착 — 이 경우 고테츠 점심이 16:20(LO 직전)으로 밀린다.</p>
     </div>
 
     <h3 style="color:var(--color-return)">Day 5 · 9/20 (일) — ✈️ 복귀</h3>
@@ -1092,23 +1095,68 @@
       </div>
       <div class="restaurant-card">
         <div class="food-photo-wrap">
-          <img class="food-photo" src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=70" alt="소바 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="img-ph grad-1" role="img" aria-label="소바 맛집 이미지 폴백" style="display:none">🍜</div>
+          <img class="food-photo" src="https://images.unsplash.com/photo-1543353071-087092ec393a?w=400&q=70" alt="회전스시 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-2" role="img" aria-label="회전스시 맛집 이미지 폴백" style="display:none">🍣</div>
         </div>
         <div>
-          <h3>소바 사스가<span class="jp-name">蕎麦 流石</span></h3>
-          <div class="genre">소바 · 타베로그 3.67</div>
-          <p class="why-line">극세 수타 소바 — 점심은 오픈런 인기, 저녁은 여유</p>
+          <h3>네무로 하나마루 KITTE 마루노우치점<span class="jp-name">根室花まる KITTE丸の内店</span></h3>
+          <div class="genre">회전스시 · 타베로그 3.54 (1,738건)</div>
+          <p class="why-line">홋카이도 네무로 직송 고퀄 회전스시 — 도쿄역 KITTE 5F, 혼밥 표준</p>
           <dl class="r-detail">
-            <dt>위치</dt><dd>히가시긴자역 364m</dd>
-            <dt>예산</dt><dd>저녁 ¥10,000-14,999 · 점심 ¥1,000대</dd>
-            <dt>메뉴</dt><dd>극세 수타 소바</dd>
-            <dt>피크</dt><dd>점심 11:30 오픈런 몰림, 저녁은 여유</dd>
-            <dt>예약</dt><dd>네트예약</dd>
+            <dt>위치</dt><dd>JR 도쿄역 마루노우치 남쪽출구 도보 1분 (KITTE 5F)</dd>
+            <dt>예산</dt><dd>¥2,000-2,999</dd>
+            <dt>메뉴</dt><dd>홋카이도 네무로 직송 회전스시</dd>
+            <dt>피크</dt><dd>11:00-23:00(LO22:00) · 부정기휴(KITTE 준함) — 예약 불가·현장 번호표, 대기 30분~1.5시간 흔함(오픈 직후·14-16시 권장)</dd>
+            <dt>예약</dt><dd>불가 (현장 대기)</dd>
           </dl>
           <div class="link-row">
-            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E8%95%8E%E9%BA%A6%20%E6%B5%81%E7%9F%B3" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
-            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E8%95%8E%E9%BA%A6%20%E6%B5%81%E7%9F%B3" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Nemuro+Hanamaru+KITTE+Marunouchi" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/tokyo/A1302/A130201/13153777/" target="_blank" rel="noopener">⭐ 타베로그에서 보기</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <span class="reco-badge">⭐ 일정 추천 · 19일 저녁</span>
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&q=70" alt="스시 오마카세 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-3" role="img" aria-label="스시 오마카세 맛집 이미지 폴백" style="display:none">🍣</div>
+        </div>
+        <div>
+          <h3>긴자 스시덴<span class="jp-name">銀座 すし傳</span></h3>
+          <div class="genre">스시 오마카세 · 타베로그 3.52 (281건)</div>
+          <p class="why-line">카운터 10석 오마카세 — 디너도 ¥8,000-9,999로 예산 내, 무휴라 전 일정 안전</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>긴자역 도보 4분 · 히가시긴자역 도보 2분</dd>
+            <dt>예산</dt><dd>런치 ¥6,000-7,999 · 디너 ¥8,000-9,999</dd>
+            <dt>메뉴</dt><dd>카운터 오마카세 (10석)</dd>
+            <dt>피크</dt><dd>매일 12:00-14:30 · 17:00-23:00, 정휴일 없음</dd>
+            <dt>예약</dt><dd>넷예약 가능 — 사전 예약 권장</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Sushiden+Ginza" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/tokyo/A1301/A130101/13291473/" target="_blank" rel="noopener">⭐ 타베로그에서 보기</a>
+          </div>
+        </div>
+      </div>
+      <div class="restaurant-card">
+        <div class="food-photo-wrap">
+          <img class="food-photo" src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400&q=70" alt="돈카츠 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="img-ph grad-4" role="img" aria-label="돈카츠 맛집 이미지 폴백" style="display:none">🍖</div>
+        </div>
+        <div>
+          <h3>톤카츠 아오키 긴자8초메점<span class="jp-name">とんかつ檍 銀座8丁目店</span></h3>
+          <div class="genre">돈카츠 · 타베로그 3.71 (1,805건)</div>
+          <p class="why-line">두툼 로스카츠 명가 — 신바시역 도보 3분, 숙소 시오도메 최근접</p>
+          <dl class="r-detail">
+            <dt>위치</dt><dd>신바시역 도보 3분</dd>
+            <dt>예산</dt><dd>¥2,000-2,999</dd>
+            <dt>메뉴</dt><dd>두툼 로스카츠</dd>
+            <dt>피크</dt><dd>11:00-15:00 · 17:00-21:00 — 수요일 정휴(9/16 이용 불가, 그 외 일정 OK)</dd>
+            <dt>예약</dt><dd>카운터 있음 · 혼밥 무리 없음 (워크인)</dd>
+          </dl>
+          <div class="link-row">
+            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Tonkatsu+Aoki+Ginza+8chome" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
+            <a class="tabelog-link" href="https://tabelog.com/tokyo/A1301/A130101/13219635/" target="_blank" rel="noopener">⭐ 타베로그에서 보기</a>
           </div>
         </div>
       </div>
@@ -1139,7 +1187,6 @@
     <h3 class="food-group-label">🚶 19일 관광 동선 (아사쿠사·시부야·츠키지·츠키시마)</h3>
     <div class="restaurant-grid">
       <div class="restaurant-card">
-        <span class="reco-badge">⭐ 일정 추천 · 19일 점심</span>
         <div class="food-photo-wrap">
           <img class="food-photo" src="https://images.unsplash.com/photo-1580217593608-61931cefc821?w=400&q=70" alt="텐동 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="img-ph grad-3" role="img" aria-label="텐동 맛집 이미지 폴백" style="display:none">🍚</div>
@@ -1206,7 +1253,6 @@
         </div>
       </div>
       <div class="restaurant-card">
-        <span class="reco-badge">⭐ 일정 추천 · 19일 저녁</span>
         <div class="food-photo-wrap">
           <img class="food-photo" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=70" alt="야키니쿠 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="img-ph grad-6" role="img" aria-label="야키니쿠 맛집 이미지 폴백" style="display:none">🥩</div>
@@ -1225,28 +1271,6 @@
           <div class="link-row">
             <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
             <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E7%82%AD%E7%81%AB%E7%84%BC%20%E3%82%86%E3%81%86%E3%81%98" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
-          </div>
-        </div>
-      </div>
-      <div class="restaurant-card">
-        <div class="food-photo-wrap">
-          <img class="food-photo" src="https://images.unsplash.com/photo-1607301405390-d831c242f59b?w=400&q=70" alt="몬자야키 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="img-ph grad-1" role="img" aria-label="몬자야키 맛집 이미지 폴백" style="display:none">🍳</div>
-        </div>
-        <div>
-          <h3>츠키시마 몬자 모헤지 본점<span class="jp-name">月島もんじゃ もへじ 本店</span></h3>
-          <div class="genre">몬자야키 · 타베로그 3.55</div>
-          <p class="why-line">츠키시마 명물 몬자야키 — 로컬 감성으로 하루 마무리</p>
-          <dl class="r-detail">
-            <dt>위치</dt><dd>카치도키역 305m</dd>
-            <dt>예산</dt><dd>¥2,000대</dd>
-            <dt>메뉴</dt><dd>몬자야키</dd>
-            <dt>피크</dt><dd>저녁 러시 19-20시 회피 — 18시 전후 추천</dd>
-            <dt>예약</dt><dd>네트예약</dd>
-          </dl>
-          <div class="link-row">
-            <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=%E6%9C%88%E5%B3%B6%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%82%E3%81%B8%E3%81%98%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">📷 매장·음식 사진 (구글맵)</a>
-            <a class="tabelog-link" href="https://tabelog.com/rst/rstsearch/?sw=%E6%9C%88%E5%B3%B6%E3%82%82%E3%82%93%E3%81%98%E3%82%83%20%E3%82%82%E3%81%B8%E3%81%98%20%E6%9C%AC%E5%BA%97" target="_blank" rel="noopener">⭐ 타베로그 검색</a>
           </div>
         </div>
       </div>
@@ -1403,11 +1427,11 @@
       </div>
     </div>
 
-    <h3 class="sight-group-label" style="margin-top:2rem">🗺️ 19일 종일 — 코스 A 확정 (B/C는 참고용)</h3>
-    <p class="section-sub" style="margin:-.5rem 0 1rem">실버위크(9/19~23) 첫날과 겹쳐 광역 이동 혼잡 위험 판단 결과 <strong>코스 A로 확정</strong> — 시간대별 상세는 일정 섹션 Day 4 참조. B/C안은 미채택.</p>
+    <h3 class="sight-group-label" style="margin-top:2rem">🗺️ 19일 종일 — 도심 코스 3안 (전부 참고용, 실제 확정은 가마쿠라)</h3>
+    <p class="section-sub" style="margin:-.5rem 0 1rem">실버위크(9/19~23) 첫날과 겹쳐 도심 관광지 인파를 피하고자 <strong>Day 4는 근교 가마쿠라(기타카마쿠라 진입)로 확정</strong> — 시간대별 상세는 일정 섹션 Day 4 참조. 아래 A/B/C 도심 코스 3안은 모두 미채택 참고용.</p>
     <div class="course-grid">
-      <div class="course-card">
-        <h4>A. 도쿄 도심 클래식 <span class="course-badge confirmed">✅ 확정</span></h4>
+      <div class="course-card not-adopted">
+        <h4>A. 도쿄 도심 클래식 <span class="course-badge not-adopted-tag">미채택</span></h4>
         <div class="course-photo-strip">
           <div class="course-photo-cell">
             <img src="https://images.unsplash.com/photo-1706813253696-10ee6332edd3?w=400&q=70" alt="센소지 사진" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -1428,7 +1452,7 @@
           <li>시부야 스크램블 · 시부야 스카이</li>
         </ol>
         <div class="course-meta">전 구간 Suica 이용 · 구간 간 이동 짧음</div>
-        <span class="course-badge recommend">✅ 실버위크 혼잡 회피 관점 추천</span>
+        <span class="course-badge caution">⚠️ 실버위크 인파 밀집 예상 — 가마쿠라 안으로 대체</span>
       </div>
       <div class="course-card not-adopted">
         <h4>B. 요코하마 <span class="course-badge not-adopted-tag">미채택</span></h4>
@@ -2012,6 +2036,26 @@
           '주차 후 국제선 터미널로 이동 — 무료 순환셔틀 또는 도보 10-15분',
           '총 주차요금 ₩51,000 — 보증금 ₩10,000 선결제 완료, 잔액은 출차 시 현장 정산',
           '9/20 14:25 국제선 도착 → 국내선 제2주차장으로 이동 → 15:00경 출차, 잔액 정산'
+        ]
+      },
+      'shimbashi-to-kitakamakura': {
+        title: '신바시 → 기타카마쿠라 (9/19)',
+        note: '기준일 2026-08-11 — 당일 시각표 재확인 권장.',
+        suica: true,
+        steps: [
+          'JR 요코스카선 직통 11:11발 승차 (즈시(逗子)·쿠리하마 방면, 지하 승강장)',
+          '기타카마쿠라역까지 약 49분 · IC ¥902',
+          '놓치면 11:00발 도츠카 환승 1회 편(약 51분, 동일 요금)으로 대체 가능'
+        ]
+      },
+      'kamakura-to-shimbashi': {
+        title: '가마쿠라 → 신바시 (역방향, 9/19 저녁)',
+        note: '실버위크 토요일 저녁 혼잡 대비 그린차(추가 요금) 옵션 있음. 기준일 2026-08-11 — 당일 시각표 재확인 권장.',
+        suica: true,
+        steps: [
+          '가마쿠라역에서 JR 요코스카선 도쿄 방면 승차',
+          '신바시역까지 약 55분 · IC ¥902',
+          '혼잡 시 그린차(추가 요금) 좌석 확보 옵션 고려'
         ]
       }
     };
