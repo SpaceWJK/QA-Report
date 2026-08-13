@@ -441,6 +441,19 @@
     .route-modal { max-width: 100%; width: 100%; border-radius: 16px 16px 0 0; max-height: 90vh; }
   }
 
+  /* ---------- 예약 상세 모달(booking) — .route-modal-overlay/.route-modal 룩앤필 재사용 ---------- */
+  .booking-table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: collapse; font-size: .84rem; margin: 0 0 1rem; }
+  .booking-table:last-child { margin-bottom: 0; }
+  .booking-table th, .booking-table td {
+    padding: .5rem .3rem; border-bottom: 1px dashed var(--color-border);
+    text-align: left; vertical-align: top; word-break: break-word; overflow-wrap: anywhere;
+  }
+  .booking-table tr:last-child th, .booking-table tr:last-child td { border-bottom: none; }
+  .booking-table th { width: 38%; font-weight: 700; color: var(--color-text-light); }
+  .booking-table td { color: var(--color-text); }
+  .booking-seg-title { margin: 1rem 0 .4rem; font-size: .92rem; font-weight: 700; color: var(--color-primary); }
+  .booking-seg-title:first-child { margin-top: 0; }
+
   /* ---------- Info box (TGS 참관 안내) ---------- */
   .info-box {
     border-left: 4px solid var(--color-primary); background: var(--color-primary-light);
@@ -705,6 +718,7 @@
         </tbody>
       </table>
     </div>
+    <p style="font-size:.88rem;margin:.8rem 0 0">아시아나 예약 확정번호 <button type="button" class="route-detail-btn" data-booking="flight">EP05ZE 상세</button></p>
 
     <h3>Visit Japan Web 등록 절차</h3>
     <ol class="steps">
@@ -782,6 +796,7 @@
           <dt>위치</dt><dd>카이힌마쿠하리역 도보 약 3분 / 마쿠하리 멧세 도보 약 15분 · <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Springs+Makuhari+Premier" target="_blank" rel="noopener">지도에서 보기 🗺️</a></dd>
           <dt>조식</dt><dd>프레미아 라운지 조식 7:00-10:00 (최종입장 9:30)</dd>
           <dt>주변</dt><dd>플레나 마쿠하리(도보 1분)·미츠이 아울렛 식당가</dd>
+          <dt>예약</dt><dd>컨펌번호 <button type="button" class="route-detail-btn" data-booking="hotel">2608130473 상세</button></dd>
         </dl>
       </div>
       <div class="lodging-card">
@@ -1752,6 +1767,15 @@
   </div>
 </div>
 
+<!-- ============ 예약 상세 모달 ============ -->
+<div class="route-modal-overlay" id="bookingModalOverlay" hidden>
+  <div class="route-modal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+    <button type="button" class="route-modal-close" id="bookingModalClose" aria-label="닫기">✕</button>
+    <h4 id="bookingModalTitle">예약 상세</h4>
+    <div id="bookingModalBody"></div>
+  </div>
+</div>
+
 <footer>
   <p>이 문서는 단일 HTML 파일입니다. 콘텐츠 확정 시 상단 주석의 교체 가이드를 참고하세요.</p>
 </footer>
@@ -2189,7 +2213,7 @@
       if (e.key === 'Escape') closeModal();
     }
 
-    Array.prototype.slice.call(document.querySelectorAll('.route-detail-btn')).forEach(function (btn) {
+    Array.prototype.slice.call(document.querySelectorAll('.route-detail-btn[data-route]')).forEach(function (btn) {
       btn.addEventListener('click', function () {
         openModal(btn.getAttribute('data-route'));
       });
@@ -2199,6 +2223,132 @@
     if (overlay) {
       overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
+      });
+    }
+  })();
+
+  /* ---------- 7.5. 예약 상세 모달 (호텔/항공 확정서) ---------- */
+  (function () {
+    var BOOKINGS = {
+      hotel: {
+        title: '🏨 호텔 예약 확정 (Hotel Springs Makuhari Premier)',
+        rows: [
+          ['Region/City', 'Japan/Chiba'],
+          ['Hotel Name', 'Hotel Springs Makuhari Premier'],
+          ['Hotel Address', '1 Chome-12 Hibino, Mihama Ward, Chiba, 261-0021'],
+          ['Tel', '81 43-296-3111'],
+          ['Booking Reference No', 'A20260895070-1-1'],
+          ['Confirmation No', '2608130473'],
+          ['Guest Name', 'KIM/WOOJU'],
+          ['Check-In/Out', '2026-09-16(Wed) ~ 2026-09-18(Fri) (2N 3D)'],
+          ['Room Type', 'Deluxe Twin Room with Lounge Access, Non Smoking (1Guest/1Room)'],
+          ['Breakfast', 'Breakfast Included']
+        ]
+      },
+      flight: {
+        title: '✈️ 항공 예약 확정 (아시아나 · EP05ZE)',
+        common: [
+          ['확정번호', 'EP05ZE'],
+          ['탑승객', 'KIM/WOOJU MR'],
+          ['예약상태', '확약']
+        ],
+        segments: [
+          {
+            label: '가는 편 · OZ1045',
+            rows: [
+              ['편명', 'OZ1045'],
+              ['날짜', '16 Sep 2026 (Wed)'],
+              ['출발', 'Seoul GMP Terminal 1 15:45'],
+              ['도착', 'Tokyo HND Terminal 3 17:50'],
+              ['소요', '02h05m'],
+              ['기종', 'AIRBUS A330-300'],
+              ['좌석등급', '일반석(M)']
+            ]
+          },
+          {
+            label: '오는 편 · OZ1075',
+            rows: [
+              ['편명', 'OZ1075'],
+              ['날짜', '20 Sep 2026 (Sun)'],
+              ['출발', 'Tokyo HND Terminal 3 12:05'],
+              ['도착', 'Seoul GMP Terminal 1 14:25'],
+              ['소요', '02h20m'],
+              ['기종', 'AIRBUS A330-300'],
+              ['좌석등급', '일반석(Y)']
+            ]
+          }
+        ]
+      }
+    };
+
+    var bkOverlay = document.getElementById('bookingModalOverlay');
+    var bkCloseBtn = document.getElementById('bookingModalClose');
+    var bkTitleEl = document.getElementById('bookingModalTitle');
+    var bkBodyEl = document.getElementById('bookingModalBody');
+    var bkLastFocused = null;
+
+    function buildBookingTable(rows) {
+      var table = document.createElement('table');
+      table.className = 'booking-table';
+      var tbody = document.createElement('tbody');
+      rows.forEach(function (pair) {
+        var tr = document.createElement('tr');
+        var th = document.createElement('th');
+        th.setAttribute('scope', 'row');
+        th.textContent = pair[0];
+        var td = document.createElement('td');
+        td.textContent = pair[1];
+        tr.appendChild(th);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      return table;
+    }
+
+    function openBookingModal(key) {
+      var booking = BOOKINGS[key];
+      if (!booking || !bkOverlay) return;
+      bkTitleEl.textContent = booking.title;
+      bkBodyEl.innerHTML = '';
+      if (booking.rows) bkBodyEl.appendChild(buildBookingTable(booking.rows));
+      if (booking.common) bkBodyEl.appendChild(buildBookingTable(booking.common));
+      if (booking.segments) {
+        booking.segments.forEach(function (seg) {
+          var h = document.createElement('p');
+          h.className = 'booking-seg-title';
+          h.textContent = seg.label;
+          bkBodyEl.appendChild(h);
+          bkBodyEl.appendChild(buildBookingTable(seg.rows));
+        });
+      }
+      bkLastFocused = document.activeElement;
+      bkOverlay.hidden = false;
+      bkCloseBtn.focus();
+      document.addEventListener('keydown', onBookingKeydown);
+    }
+
+    function closeBookingModal() {
+      if (!bkOverlay || bkOverlay.hidden) return;
+      bkOverlay.hidden = true;
+      document.removeEventListener('keydown', onBookingKeydown);
+      if (bkLastFocused && typeof bkLastFocused.focus === 'function') bkLastFocused.focus();
+    }
+
+    function onBookingKeydown(e) {
+      if (e.key === 'Escape') closeBookingModal();
+    }
+
+    Array.prototype.slice.call(document.querySelectorAll('.route-detail-btn[data-booking]')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openBookingModal(btn.getAttribute('data-booking'));
+      });
+    });
+
+    if (bkCloseBtn) bkCloseBtn.addEventListener('click', closeBookingModal);
+    if (bkOverlay) {
+      bkOverlay.addEventListener('click', function (e) {
+        if (e.target === bkOverlay) closeBookingModal();
       });
     }
   })();
