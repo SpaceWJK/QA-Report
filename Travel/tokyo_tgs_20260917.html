@@ -1,10 +1,5 @@
 <!--
-  플레이스홀더 교체 방법 (5줄 요약)
-  1. 텍스트: "[플레이스홀더]"로 표시된 문구를 실제 정보로 교체 (검색: "[" 로 grep 하면 전부 찾힘).
-  2. 이미지: .img-ph 요소 바로 위 HTML 주석에 <img src="실제경로" alt="설명"> 예시가 있음 — 주석 해제 후 .img-ph div 삭제.
-  3. 표/카드 반복 항목: 기존 1개 블록을 복사(Ctrl+C/V)해서 개수만 늘리면 스타일 자동 적용됨.
-  4. 예산 표의 data-jpy 속성값을 실제 엔화 금액으로 바꾸면 원화가 자동 재계산됨 (JS 로직 그대로 재사용).
-  5. 체크리스트 항목 추가 시 <li class="check-item"> 블록을 복사하고 data-id 값만 고유하게 바꾸면 localStorage 저장이 자동 적용됨.
+  플레이스홀더 전수 소거 완료 (2026-08-13)
 -->
 <!doctype html>
 <html lang="ko">
@@ -619,7 +614,7 @@
         <div class="d-num">DAY 4</div>
         <div class="d-date">9/19</div>
         <div class="d-dow">토요일</div>
-        <div class="d-summary">🌴 [플레이스홀더] 관광/쇼핑</div>
+        <div class="d-summary">🌴 가마쿠라 고즈넉 코스</div>
       </div>
       <div class="day-card phase-return">
         <div class="d-num">DAY 5</div>
@@ -717,7 +712,6 @@
       <li>여권 정보 및 항공편 정보 입력</li>
       <li>입국심사(Disembarkation) + 세관신고(Customs) QR 사전 등록</li>
       <li>등록 완료 QR코드 스크린샷 저장 (오프라인 대비)</li>
-      <li>[플레이스홀더] 출장 동행자 인원 등록 여부 확인</li>
     </ol>
 
     <h3>하네다 입국 흐름</h3>
@@ -725,7 +719,7 @@
       <li>착륙 후 입국심사장 이동 → Visit Japan Web QR 제시</li>
       <li>수하물 수취</li>
       <li>세관 신고 QR 제시 → 통과</li>
-      <li>[플레이스홀더] 공항 내 Suica/eSIM 수령 부스 방문 (사전 예약 시)</li>
+      <li>통신은 로밍 사용 (회사 일 2만원 한도 실비 지원 — 통신사 증빙 제출). Suica는 모바일 Suica 앱 충전 권장 — 공항 부스 불필요</li>
     </ol>
 
     <div class="info-box">
@@ -745,7 +739,7 @@
         <tbody>
           <tr><td>도쿄 모노레일 + JR</td><td>약 30~40분</td><td class="price">¥500~700</td><td>하마마츠초 경유, 환승 필요</td></tr>
           <tr><td>케이큐(京急) 본선</td><td>약 40~50분</td><td class="price">¥300~600</td><td>시나가와/도심 직결, 환승 적음</td></tr>
-          <tr><td>리무진 버스</td><td>약 45~60분</td><td class="price">¥1,000~1,500</td><td>[플레이스홀더] 숙소 인근 정류장 확인</td></tr>
+          <tr><td>리무진 버스</td><td>약 45~60분</td><td class="price">¥1,000~1,500</td><td>마쿠하리 방면 직행 없음 — 이번 일정 이용 대상 아님 (전철 루트 확정, 상세 모달 참조)</td></tr>
         </tbody>
       </table>
     </div>
@@ -765,10 +759,10 @@
       </ul>
     </div>
     <div class="tab-panel" id="panel-vac" role="tabpanel" aria-labelledby="tab-vac" hidden>
-      <p>도심 관광 위주 동선. Suica로 지하철/JR 자유롭게 환승. [플레이스홀더] 도쿄 1일권 구매 고려.</p>
+      <p>도심 관광 위주 동선. Suica로 지하철/JR 자유롭게 환승. 19일 가마쿠라 왕복은 JR — Suica로 충분 (지하철 1일권 불필요).</p>
       <ul>
-        <li>[플레이스홀더] 휴식 숙소 → 주요 관광지 대표 노선</li>
-        <li>[플레이스홀더] 나리타/하네다 복귀 교통편 예약</li>
+        <li>시오도메/신바시 → 가마쿠라: JR 요코스카선 직통 ~50분 (Day4·모달 참조)</li>
+        <li>9/20 복귀: 시오도메 → 하네다 T3 — 예약 불요, Day5·모달 참조</li>
       </ul>
     </div>
   </section>
@@ -787,8 +781,7 @@
           <dt>요금</dt><dd>박당 약 $230 <span class="pill pill-business" style="margin-left:.3rem">🏢 회사</span></dd>
           <dt>위치</dt><dd>카이힌마쿠하리역 도보 약 3분 / 마쿠하리 멧세 도보 약 15분 · <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Springs+Makuhari+Premier" target="_blank" rel="noopener">지도에서 보기 🗺️</a></dd>
           <dt>조식</dt><dd>프레미아 라운지 조식 7:00-10:00 (최종입장 9:30)</dd>
-          <dt>취소</dt><dd>취소기한 9/9(수) 17시</dd>
-          <dt>참고</dt><dd>Booking.com 평점 9.1 · 대욕장/스파 없음 — 역 앞 플레나 마쿠하리(도보 1분), 미츠이 아울렛 식당가 이용 가능</dd>
+          <dt>주변</dt><dd>플레나 마쿠하리(도보 1분)·미츠이 아울렛 식당가</dd>
         </dl>
       </div>
       <div class="lodging-card">
@@ -1399,9 +1392,9 @@
   <!-- ============ Section 8: 관광/볼거리 ============ -->
   <section class="section-card phase-vacation" id="sightseeing">
     <h2>🎡 관광 / 볼거리</h2>
-    <p class="section-sub">대상일: 9/16 저녁(도착일) · 9/17-18 저녁(TGS 복귀 후) · 9/19 종일(자유일). ※ 9/19는 TGS 퍼블릭 데이 첫날 + 실버위크 연휴 첫날 겹침 — 마쿠하리 방면·광역 이동 모두 대혼잡 예상, 도쿄 도심 중심 코스 권장.</p>
+    <p class="section-sub">대상일: 9/18 저녁(시오도메 체크인 후) · 9/19 종일(가마쿠라 — Day4 확정). ※ 9/16-17 저녁은 마쿠하리 체류 — 맛집 섹션 '마쿠하리 저녁' 블록·Day2 미하마대교 산책 참조. 9/19는 실버위크 첫날로 도심 대혼잡 — 가마쿠라 확정 사유.</p>
 
-    <h3 class="sight-group-label">🌙 저녁 산책 (16일 도착일 · 17-18일 TGS 복귀 후)</h3>
+    <h3 class="sight-group-label">🌙 저녁 산책 (18일 체크인 후 · 19일 가마쿠라 복귀 후)</h3>
     <div class="sight-grid">
       <div class="sight-card">
         <div class="sight-photo-wrap">
@@ -1410,7 +1403,7 @@
         </div>
         <div class="body">
           <h3>도쿄역 마루노우치 야경 · 나카도리 산책</h3>
-          <p>20시 이후 숙소 인근에서 가볍게 — 마루노우치 역사(붉은 벽돌 청사) 조명 + 나카도리 가로수길. 무료, 도보 접근.</p>
+          <p>18일 저녁 or 19일 가마쿠라 복귀 길에 — 신바시서 한 정거장. 마루노우치 역사(붉은 벽돌 청사) 조명 + 나카도리 가로수길. 무료, 도보 접근.</p>
           <a href="https://www.google.com/maps/search/?api=1&query=%E4%B8%B8%E3%81%AE%E5%86%85%E3%83%8A%E3%82%AB%E9%80%9A%E3%82%8A" target="_blank" rel="noopener">지도 보기 🗺️</a>
         </div>
       </div>
@@ -1421,7 +1414,7 @@
         </div>
         <div class="body">
           <h3>긴자 야간 산책 (긴자식스 옥상정원)</h3>
-          <p>GINZA SIX 옥상정원에서 도심 야경 조망. 무료 — <strong>폐장시간은 현장에서 재확인 필요</strong>(계절/요일별 변동).</p>
+          <p>18-19일 저녁 후보 — GINZA SIX 옥상정원에서 도심 야경 조망. 무료 — <strong>폐장시간은 현장에서 재확인 필요</strong>(계절/요일별 변동).</p>
           <a href="https://www.google.com/maps/search/?api=1&query=GINZA%20SIX%20%E5%B1%8B%E4%B8%8A%E5%BA%AD%E5%9C%92" target="_blank" rel="noopener">지도 보기 🗺️</a>
         </div>
       </div>
@@ -1432,7 +1425,7 @@
         </div>
         <div class="body">
           <h3>KITTE 옥상정원 (도쿄역 직결)</h3>
-          <p>17-18일 TGS 복귀 동선에 편리 — 도쿄역과 직결, 마루노우치 야경 조망대. 무료.</p>
+          <p>18일 마쿠하리→시오도메 짐 이동 때 도쿄역 경유 — 잠깐 들르기 좋음. 도쿄역과 직결, 마루노우치 야경 조망대. 무료.</p>
           <a href="https://www.google.com/maps/search/?api=1&query=KITTE%20%E5%B1%8B%E4%B8%8A%E5%BA%AD%E5%9C%92" target="_blank" rel="noopener">지도 보기 🗺️</a>
         </div>
       </div>
@@ -1566,7 +1559,7 @@
         <tbody>
           <tr class="recalc-item"><td>식비</td><td>4박 5일 식사비</td><td><span class="jpy-amount" data-jpy="16000">¥16,000</span></td><td><span class="krw-amount" data-target="krw-food">₩0</span></td></tr>
           <tr class="recalc-item"><td>교통</td><td>Suica 충전, 리무진버스 등</td><td><span class="jpy-amount" data-jpy="6000">¥6,000</span></td><td><span class="krw-amount" data-target="krw-transport">₩0</span></td></tr>
-          <tr class="recalc-item"><td>쇼핑</td><td>[플레이스홀더] 기념품/개인 쇼핑</td><td><span class="jpy-amount" data-jpy="10000">¥10,000</span></td><td><span class="krw-amount" data-target="krw-shopping">₩0</span></td></tr>
+          <tr class="recalc-item"><td>쇼핑</td><td>기념품 소액 버퍼 (쇼핑 최소 스타일 — 잔여는 예비비 성격)</td><td><span class="jpy-amount" data-jpy="10000">¥10,000</span></td><td><span class="krw-amount" data-target="krw-shopping">₩0</span></td></tr>
           <tr class="recalc-item"><td>입장료</td><td>관광지/전시 입장료</td><td><span class="jpy-amount" data-jpy="3000">¥3,000</span></td><td><span class="krw-amount" data-target="krw-entry">₩0</span></td></tr>
         </tbody>
       </table>
@@ -1603,7 +1596,7 @@
     <h3>eSIM 안내</h3>
     <ul>
       <li>출국 전 eSIM 구매 및 QR 설치 (Wi-Fi 환경에서 사전 설치 권장)</li>
-      <li>[플레이스홀더] 통신사/요금제 확정 시 기재</li>
+      <li>로밍 사용 — 회사 일 2만원 한도 실비 지원 (통신사 자료 증빙 제출, 재무포탈 정산)</li>
       <li>도착 즉시 데이터 활성화 확인</li>
     </ul>
   </section>
@@ -1628,12 +1621,14 @@
           <tr><td>카드로 계산되나요?</td><td>カードで払えますか？</td><td>카-도데 하라에마스카</td></tr>
           <tr><td>영수증(인보이스) 주세요</td><td>領収書をください</td><td>료-슈-쇼오 쿠다사이</td></tr>
           <tr><td>짐 맡길 수 있나요?</td><td>荷物を預かってもらえますか？</td><td>니모츠오 아즈캇테 모라에마스카</td></tr>
+          <tr><td>맡긴 짐을 찾으러 왔어요</td><td>預けた荷物を受け取りに来ました</td><td>아즈케타 니모츠오 우케토리니 키마시타</td></tr>
+          <tr><td>이 번호표예요</td><td>この引換券です</td><td>코노 히키카에켄데스</td></tr>
           <tr><td>몇 시까지 영업하나요?</td><td>何時までですか？</td><td>난지마데 데스카</td></tr>
           <tr><td>포장 되나요?</td><td>持ち帰りできますか？</td><td>모치카에리 데키마스카</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="section-sub" style="margin-top:1rem">💡 #8 자릿세(차지) 확인은 혼술 바가지 방지 핵심 · #12 영수증은 도시세 실비 정산용 · #13 짐 맡기기는 18일 짐 위탁 시 사용</p>
+    <p class="section-sub" style="margin-top:1rem">💡 #8 자릿세(차지) 확인은 혼술 바가지 방지 핵심 · #12 영수증은 도시세 실비 정산용 · #13-15 짐 맡기기·찾기는 18일 Springs 프런트 보관·회수 시 사용</p>
   </section>
 
   <!-- ============ Section 12: 비상 대응 ============ -->
@@ -1646,7 +1641,7 @@
           <tr><td>주일본 대한민국 대사관</td><td>+81-3-3452-7611</td><td>영사 콜센터: +82-2-3210-0404 (유료 상담)</td></tr>
           <tr><td>경찰</td><td>110</td><td>범죄/도난/분실 신고</td></tr>
           <tr><td>구급/화재</td><td>119</td><td>응급 상황</td></tr>
-          <tr><td>카드 분실 (해외이용 정지)</td><td>[플레이스홀더] 카드사 고객센터</td><td>카드 뒷면 번호 사전에 메모/사진 보관</td></tr>
+          <tr><td>카드 분실 (해외이용 정지)</td><td>트래블로그=하나카드 — 하나머니 앱에서 즉시 이용정지 가능, 전화번호는 카드 뒷면 사전 촬영</td><td>카드 뒷면 번호 사전에 메모/사진 보관</td></tr>
           <tr><td>여권 분실</td><td>대사관 방문 접수</td><td>여권 사본 별도 보관 권장</td></tr>
         </tbody>
       </table>
@@ -1688,11 +1683,11 @@
     <h2>💡 꿀팁</h2>
     <ul class="tips-list">
       <li>🔴 TGS 공식 확인: 도쿄 도심·하네다공항 어느 쪽에서도 마쿠하리 직행버스는 없음 — <strong>JR 게이요선(도쿄역 환승)이 유일한 실질 루트</strong>. <strong>카이힌마쿠하리역</strong> 하차 (신설 마쿠하리토요즈미역은 도보 20-30분, 비권장)</li>
-      <li>[플레이스홀더] 편의점 ATM에서 해외카드 인출 가능 (세븐일레븐/패밀리마트)</li>
-      <li>[플레이스홀더] 우천 대비 접이식 우산 상시 소지 (9월은 비 자주 옴)</li>
-      <li>[플레이스홀더] Google Maps 오프라인 지역 다운로드 미리 해두기</li>
-      <li>[플레이스홀더] TGS 기간 숙소/교통 가격 급등 — 예약 서두르기</li>
-      <li>[플레이스홀더] 개인 짐과 출장 짐 분리 포장 (체크인 날짜 다름)</li>
+      <li>편의점 ATM에서 해외카드 인출 가능 (세븐일레븐/패밀리마트)</li>
+      <li>우천 대비 접이식 우산 상시 소지 (9월 평년 강수 11일)</li>
+      <li>Google Maps 오프라인 지역(도쿄·마쿠하리·가마쿠라) 미리 다운로드</li>
+      <li>잔여 사전 예약: 긴자 스시덴 넷예약(19일 저녁) · EventRegist 등록(마감 9/16)</li>
+      <li>마쿠하리 2박·시오도메 2박 — 짐 스테이지 분리 포장 (18일 프런트 보관 후 이동)</li>
     </ul>
   </section>
 
